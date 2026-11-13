@@ -1,0 +1,33 @@
+# S2：最重要嗰個檔 — 少咗就會 upload 整個開發環境，儲存配額即爆
+node_modules/
+.git/
+.github/
+.vercel/
+.cache/
+coverage/
+.nyc_output/
+__tests__/
+tests/
+docs/
+operations/
+# scripts/ 同 shell/ 唔排除：npm run build 要用 scripts/check_rules_v1.0.mjs、sync_index_v1.0.mjs 同 shell/index_v1.0.html
+tools/
+templates/
+uploads/
+temp/
+*.md
+*.log
+*.bak
+*.tmp
+*.old
+*.orig
+*.zip
+*.tar.gz
+*.psd
+*.mp4
+.env
+.env.*
+!.env.example
+*_local_*
+*_injected*
+*.keyed.html

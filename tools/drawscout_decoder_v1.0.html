@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="app-version" content="v1.0">
+<meta name="copyright" content="© SCOUT SYSTEM">
+<title>DrawScout 隱形水印解碼器 v1.0</title>
+<!--
+  版本：v1.0 · © SCOUT SYSTEM
+  來源：用戶提供嘅 drawscout.html（2026-10-26），加上 v2 payload 支援、XSS escape、雙版號、版權頁尾。
+  演算法唯一真理：scout_watermark_codec_v1.0.mjs（本檔內嵌同一組常數，測試會對照）。
+  ⚠️ 水印係來源標記，唔係加密／DRM；陰性結果唔代表圖片一定唔係本系統生成。
+-->
+<style>
+  :root { color-scheme: light dark; font-family: system-ui, -apple-system, "Noto Sans TC", sans-serif; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 1.2rem; background: #f6f1e7; color: #173e2e; }
+  main { max-width: 44rem; margin: 0 auto; background: #fff; border: 1px solid #dce3d9; border-radius: 1rem; padding: 1.5rem; box-shadow: 0 8px 30px #173e2e14; }
+  h1 { font-size: 1.4rem; margin: 0 0 .3rem; }
+  .sub { color: #637267; font-size: .9rem; margin: 0 0 1.2rem; }
+  #drop { border: 2px dashed #91b3a0; border-radius: .8rem; background: #f7fbf8; padding: 1.5rem; text-align: center; cursor: pointer; position: relative; }
+  #drop.drag { border-color: #1f6b4a; background: #eaf3ed; }
+  #file { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+  button { width: 100%; margin-top: .8rem; padding: .75rem; font: inherit; font-weight: 700; color: #fff; background: #1f6b4a; border: 0; border-radius: .7rem; cursor: pointer; }
+  #result { margin-top: 1rem; padding: .9rem; border-radius: .7rem; background: #f1f5f1; border: 1px solid #e2eae2; white-space: pre-wrap; line-height: 1.6; font-size: .9rem; }
+  #preview { display: block; max-width: 100%; max-height: 380px; margin: 1rem auto 0; border-radius: .6rem; border: 1px solid #ddd; }
+  .note { margin-top: 1.2rem; padding: .8rem; border-radius: .6rem; background: #fbf9f4; border: 1px solid #f0ebd9; font-size: .8rem; color: #776a4f; }
+  footer { margin-top: 1.2rem; padding-top: .8rem; border-top: 1px solid #eee; font-size: .75rem; color: #637267; display: flex; justify-content: space-between; flex-wrap: wrap; gap: .4rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>DrawScout 隱形水印解碼器 <small>v1.0</small></h1>
+  <p class="sub">揀生成器下載嘅圖片，或 WhatsApp 傳回嘅圖，檢查 © SCOUT SYSTEM 來源標記。</p>
+
+  <div id="drop">
+    <input id="file" type="file" accept="image/*">
+    <div>📷 點擊揀圖，或拖曳入嚟（JPG／PNG／WebP）</div>
+  </div>
+  <button id="decode">檢測水印</button>
+  <div id="result" aria-live="polite">請先揀一張圖片。</div>
+  <img id="preview" alt="圖片預覽" hidden>
+  <p class="note">💡 <strong>原理提示：</strong>8×8 區塊 DCT 中頻量化重複寫入，可頂住一般 JPEG 重新壓縮。裁切、縮放、旋轉及平台處理可能影響解碼；<strong>陰性結果唔代表圖片一定唔係本系統生成</strong>。水印只係來源標記，唔係加密或 DRM。</p>
+  <footer>
+    <span>© SCOUT SYSTEM · COPYRIGHT SCOUT SYSTEM</span>
+    <span>DrawScout Decoder <strong>v1.0</strong></span>
+  </footer>
+</main>
+
+<script>
+(() => {
+  'use strict';
+  // ---- 與 scout_watermark_codec_v1.0.mjs 對照嘅常數（測試會驗）----
+  const APP_VERSION = 'v1.0';
+  const COPYRIGHT = '© SCOUT SYSTEM';
+  const MARK_V1 = 'DRAWSCOUT|v1';
+  const PREFIX_V2 = 'SCOUTSYSTEM|v2|';
+  const STEP = 32, N = 8;
+  const COS = Array.from({ length: 8 }, (_, u) => Array.from({ length: 8 }, (_, x) => Math.cos((2 * x + 1) * u * Math.PI / 16)));
+  const A = Array.from({ length: 8 }, (_, u) => u === 0 ? Math.sqrt(1 / 8) : Math.sqrt(2 / 8));
+  const B = Array.from({ length: 8 }, (_, y) => Array.from({ length: 8 }, (_, x) => A[2] * A[3] * COS[2][y] * COS[3][x]));
+  const bitsOf = s => Array.from(s, ch => ch.charCodeAt(0).toString(2).padStart(8, '0')).join('');
+  const fromBits = b => { let o = ''; for (let i = 0; i + 8 <= b.length; i += 8) o += String.fromCharCode(parseInt(b.slice(i, i + 8), 2)); return o; };
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+  const $ = id => document.getElementById(id);
+  const fileInput = $('file'), result = $('result'), preview = $('preview'), drop = $('drop');
+
+  function coef(d, w, x0, y0) {
+    let s = 0;
+    for (let y = 0; y < 8; y++) for (let x = 0; x < 8; x++) {
+      const i = ((y0 + y) * w + x0 + x) * 4;
+      s += (.299 * d[i] + .587 * d[i + 1] + .114 * d[i + 2]) * B[y][x];
+    }
+    return s;
+  }
+
+  function decodeWithLength(d, w, h, bitLength) {
+    const votes = Array.from({ length: bitLength }, () => [0, 0]);
+    let bi = 0;
+    for (let y = 0; y + 7 < h; y += 8) for (let xx = 0; xx + 7 < w; xx += 8, bi++) {
+      const bit = Math.round(coef(d, w, xx, y) / STEP) & 1;
+      votes[bi % bitLength][bit]++;
+    }
+    const got = votes.map(v => v[1] > v[0] ? '1' : '0').join('');
+    const confidence = votes.reduce((s, v) => s + Math.max(v[0], v[1]) / (v[0] + v[1] || 1), 0) / votes.length;
+    return { payload: fromBits(got), confidence, blocks: bi };
+  }
+
+  function decodeAll(d, w, h) {
+    let best = null;
+    for (const len of [bitsOf(MARK_V1).length, 33 * 8]) {
+      const r = decodeWithLength(d, w, h, len);
+      const isV1 = r.payload === MARK_V1;
+      const isV2 = r.payload.startsWith(PREFIX_V2);
+      const found = (isV1 || isV2) && r.confidence > .58;
+      const c = { ...r, found, version: isV2 ? 'v2' : 'v1' };
+      if (!best || (c.found && !best.found) || (c.found === best.found && c.confidence > best.confidence)) best = c;
+    }
+    return best;
+  }
+
+  function showFile() {
+    const f = fileInput.files?.[0];
+    if (!f) return;
+    preview.src = URL.createObjectURL(f);
+    preview.hidden = false;
+    result.textContent = `已揀：${f.name}（${Math.round(f.size / 1024)} KB）`;
+  }
+  fileInput.onchange = showFile;
+  ['dragenter', 'dragover'].forEach(e => drop.addEventListener(e, ev => { ev.preventDefault(); drop.classList.add('drag'); }));
+  ['dragleave', 'drop'].forEach(e => drop.addEventListener(e, ev => { ev.preventDefault(); drop.classList.remove('drag'); }));
+  drop.addEventListener('drop', e => {
+    if (e.dataTransfer?.files?.length) { fileInput.files = e.dataTransfer.files; showFile(); }
+  });
+
+  $('decode').onclick = async () => {
+    const f = fileInput.files?.[0];
+    if (!f) { result.textContent = '請先揀一張圖片。'; return; }
+    result.textContent = '分析中…';
+    try {
+      const img = new Image();
+      img.src = URL.createObjectURL(f);
+      await img.decode();
+      const c = document.createElement('canvas');
+      c.width = img.naturalWidth; c.height = img.naturalHeight;
+      const x = c.getContext('2d', { willReadFrequently: true });
+      x.drawImage(img, 0, 0);
+      const d = x.getImageData(0, 0, c.width, c.height).data;
+      const r = decodeAll(d, c.width, c.height);
+      const p = r.payload || '';
+      const parts = p.startsWith(PREFIX_V2) ? p.split('|') : [];
+      const meta = `解碼內容：<code>${esc(p)}</code><br>信心度：<strong>${(r.confidence * 100).toFixed(1)}%</strong><br>圖片：${img.naturalWidth} × ${img.naturalHeight} · ${r.blocks} 區塊`;
+      if (r.found) {
+        // A11：decoded 內容嚟自圖片，必須 escape 先入 innerHTML
+        result.innerHTML = `<strong style="color:#147044">✅ 找到 ${COPYRIGHT} 標記（${r.version}）</strong><br>` + meta +
+          (parts.length ? `<br>單位：<code>${esc(parts[2])}</code> · 日期：<code>${esc(parts[3])}</code> · 校驗：<code>${esc(parts[4])}</code>` : '');
+      } else {
+        result.innerHTML = `<strong style="color:#a23f31">❌ 未能確認標記</strong><br>` + meta +
+          `<br><span style="font-size:.8rem;opacity:.7">可能唔係本系統圖片，亦可能係裁切／縮放／壓縮造成解碼失敗。水印唔係法律證據。</span>`;
+      }
+    } catch (e) {
+      result.textContent = '讀取圖片失敗：' + e.message;
+    }
+  };
+  console.info(`DrawScout Decoder ${APP_VERSION} · ${COPYRIGHT}`);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,355 @@
+{
+  "fileVersion": "v1.0",
+  "copyright": "© SCOUT SYSTEM",
+  "section": { "id": "grasshopper", "zh": "小童軍", "en": "Grasshopper Scouts" },
+  "organisation": { "zh": "香港童軍總會", "en": "Scout Association of Hong Kong" },
+  "review": {
+    "status": "pending",
+    "reviewer": { "zh": "專案負責人（領袖）", "en": "Project owner (leader)" },
+    "lastChecked": null,
+    "compiledOn": "2026-11-13",
+    "note": {
+      "zh": "以下內容由 AI 助手依文件整理，未經核對人逐項確認；確認後請把每項 status 改為 verified 並填 lastChecked。",
+      "en": "Compiled from the documents by an AI assistant and not yet confirmed item by item. After review, set each status to verified and fill lastChecked."
+    }
+  },
+  "sources": {
+    "UH": {
+      "zh": "香港童軍總會《儀容與制服手冊》",
+      "en": "SAHK Uniform Handbook (Chinese edition)",
+      "edition": {
+        "zh": "網上版（含 2026-01-01 第 04/2026 號通告制服帽修訂；該修訂不涉及小童軍服裝）",
+        "en": "Online edition incl. Circular 04/2026 (1 Jan 2026) cap amendment, which does not affect Grasshopper dress"
+      },
+      "url": "https://www.scout.org.hk/uniformhandbook"
+    },
+    "GSG": {
+      "zh": "《小童軍活動指引》（第三版）",
+      "en": "Grasshopper Scout Activity Guide (3rd edition)",
+      "edition": { "zh": "青少年活動署，2026 年 2 月", "en": "Youth Programme Branch, February 2026" },
+      "url": null
+    },
+    "GLH": {
+      "zh": "《小童軍領袖手冊》",
+      "en": "Grasshopper Scout Leader Handbook",
+      "edition": { "zh": "訓練署", "en": "Training Branch" },
+      "url": null
+    }
+  },
+  "garments": [
+    {
+      "id": "hat",
+      "required": false,
+      "zh": { "name": "帽（非必需）", "rule": "單色、漁夫帽或鴨咀帽（棒球帽）。" },
+      "en": { "name": "Hat (optional)", "rule": "Plain single colour; bucket hat or baseball cap." },
+      "sources": [{ "ref": "UH", "page": "23" }, { "ref": "GSG", "page": "P.8" }],
+      "status": "documented"
+    },
+    {
+      "id": "shirt",
+      "required": true,
+      "zh": { "name": "上衣", "rule": "橙色小童軍活動服；或單色、有領／圓領、短袖／長袖上衣。" },
+      "en": { "name": "Top", "rule": "Orange Grasshopper activity shirt; or a plain single-colour top, collared or round-neck, short or long sleeves." },
+      "sources": [{ "ref": "UH", "page": "23" }, { "ref": "GSG", "page": "P.8" }],
+      "status": "documented",
+      "modelNote": {
+        "zh": "手冊未附橙色活動服款式細節，模型以 T 恤形狀示意。",
+        "en": "The handbook gives no cut for the orange activity shirt; the model shows a T-shirt shape."
+      }
+    },
+    {
+      "id": "trousers",
+      "required": true,
+      "zh": { "name": "褲", "rule": "單色、短褲或長褲。" },
+      "en": { "name": "Trousers", "rule": "Plain single colour; shorts or long trousers." },
+      "sources": [{ "ref": "UH", "page": "23" }, { "ref": "GSG", "page": "P.8" }],
+      "status": "documented"
+    },
+    {
+      "id": "necker",
+      "required": true,
+      "zh": { "name": "旅巾", "rule": "已宣誓小童軍佩戴旅巾。假若穿著有領上衣，旅巾在衣領外。" },
+      "en": { "name": "Group neckerchief", "rule": "Worn by invested Grasshopper Scouts. With a collared top, the neckerchief goes outside the collar." },
+      "sources": [{ "ref": "UH", "page": "23" }, { "ref": "GSG", "page": "P.8" }],
+      "status": "documented",
+      "modelNote": {
+        "zh": "旅巾顏色及花邊由各旅自定，模型可自選顏色。",
+        "en": "Neckerchief colours are set by each Group; pick them in the model."
+      }
+    },
+    {
+      "id": "woggle",
+      "required": true,
+      "zh": { "name": "巾圈", "rule": "顏色巾圈（採用幼童軍支部巾圈）。" },
+      "en": { "name": "Woggle", "rule": "Colour woggle (the Cub Scout section woggle)." },
+      "sources": [{ "ref": "UH", "page": "24, 110" }, { "ref": "GSG", "page": "P.8" }],
+      "status": "documented",
+      "modelNote": {
+        "zh": "文件未指定小童軍巾圈顏色，模型可自選。",
+        "en": "The documents do not set a woggle colour for Grasshoppers; pick one in the model."
+      }
+    },
+    {
+      "id": "vest",
+      "required": false,
+      "zh": { "name": "背心／風褸（非必需）", "rule": "簡單款式的背心或風褸，同時佩戴小童軍團員章在左胸前。" },
+      "en": { "name": "Vest / windbreaker (optional)", "rule": "A simple vest or windbreaker, with the Membership Badge on the left chest." },
+      "sources": [{ "ref": "UH", "page": "24" }, { "ref": "GSG", "page": "P.8" }],
+      "status": "documented",
+      "modelNote": { "zh": "第一版只示範背心。", "en": "Version 1 shows the vest only." }
+    },
+    {
+      "id": "socks",
+      "required": true,
+      "zh": { "name": "襪", "rule": "單色、短襪或長襪。" },
+      "en": { "name": "Socks", "rule": "Plain single colour; short or long socks." },
+      "sources": [{ "ref": "UH", "page": "24" }],
+      "status": "documented"
+    },
+    {
+      "id": "shoes",
+      "required": true,
+      "zh": { "name": "鞋", "rule": "運動鞋（《小童軍活動指引》第三版寫「皮鞋或運動鞋」）。" },
+      "en": { "name": "Shoes", "rule": "Sports shoes (the 3rd-edition Activity Guide says leather or sports shoes)." },
+      "sources": [{ "ref": "UH", "page": "24" }, { "ref": "GSG", "page": "P.8" }],
+      "status": "documented"
+    }
+  ],
+  "badges": [
+    {
+      "id": "membership",
+      "required": true,
+      "needsInvestiture": true,
+      "side": "left",
+      "zh": {
+        "name": "小童軍團員章",
+        "place": "穿著者左胸前。穿背心／風褸時，戴在背心／風褸左胸前。",
+        "quote": "小童軍團員章佩戴在上衣左胸前位置。",
+        "conditions": "參加 4 次集會並完成入團要求後，宣誓時由團長佩戴；未宣誓不可佩戴。"
+      },
+      "en": {
+        "name": "Grasshopper Membership Badge",
+        "place": "Wearer's left chest. With a vest or windbreaker, on its left chest.",
+        "quote": "Worn on the left chest of the top.",
+        "conditions": "Awarded at investiture after 4 meetings and the joining requirements; not worn before investiture."
+      },
+      "size": { "shape": "circle", "wCm": 5, "hCm": 5, "measured": true, "ref": "GSG", "page": "P.10" },
+      "anchor": { "part": "torso", "side": "left", "xCm": 6.5, "yCm": -7, "measured": false },
+      "sources": [{ "ref": "UH", "page": "24" }, { "ref": "GSG", "page": "P.8–10" }],
+      "status": "documented"
+    },
+    {
+      "id": "progress",
+      "required": true,
+      "side": "left",
+      "zh": {
+        "name": "進步獎章（第 1–4 步）",
+        "place": "穿著者左袖，袖口縫線上方中央；四枚排成正方形：下行紅（第 1 步）、啡（第 2 步），上行藍（第 3 步）、綠（第 4 步），同一行相連。長袖上衣戴在相同位置。",
+        "quote": "進步章佩戴在短袖上衣左袖縫線上方中央位置或長袖上衣相同位置。／以正方形排列：左下方為紅色進步獎、右下方為啡色進步獎、左上方為藍色進步獎、右上方為綠色進步獎，紅色及啡色進步獎要相連成一行，藍色及綠色進步獎章要相連成一行，以示一步一步前進。",
+        "conditions": "按參與時間頒發：第 1 步約 5–6 個月、第 2 步 11–12 個月、第 3 步 16–18 個月、第 4 步滿 22 個月。"
+      },
+      "en": {
+        "name": "Progress Awards (Steps 1–4)",
+        "place": "Wearer's left sleeve, centred above the sleeve-hem seam. The four sit in a square: bottom row red (Step 1) and brown (Step 2), top row blue (Step 3) and green (Step 4); badges in a row touch. Same position on long sleeves.",
+        "quote": "Worn centred above the left sleeve seam of a short-sleeved top, or the same position on a long-sleeved top. Square layout: red bottom-left, brown bottom-right, blue top-left, green top-right; each row joined.",
+        "conditions": "Given by attendance time: Step 1 about 5–6 months, Step 2 11–12, Step 3 16–18, Step 4 after 22 months."
+      },
+      "size": { "shape": "square", "wCm": 2, "hCm": 2, "measured": true, "ref": "GSG", "page": "P.11" },
+      "anchor": { "part": "sleeve", "side": "left", "fromHemCm": 0.5, "edge": "bottom", "grid": true, "measured": false },
+      "sources": [{ "ref": "UH", "page": "24" }, { "ref": "GSG", "page": "P.11–12" }],
+      "status": "pending",
+      "pendingReason": {
+        "zh": "「左下／右下」未寫明係看圖者定穿著者角度；模型暫以看着左袖嘅角度擺放（紅色靠穿著者前方）。另「縫線上方」未寫距離，模型留 0.5 釐米。",
+        "en": "The guide does not say whether bottom-left/right is from the viewer or wearer. The model uses the view of someone looking at the left sleeve (red toward the wearer's front). No gap above the seam is given; the model leaves 0.5 cm."
+      }
+    },
+    {
+      "id": "grasshopperAward",
+      "required": false,
+      "side": "left",
+      "zh": {
+        "name": "小草蜢獎章",
+        "place": "穿著者左袖（第三版指引寫「個別位置詳見上圖」）。模型暫放在進步獎章上方。",
+        "quote": "小草蜢獎章及進步獎章－左手袖（個別位置詳見上圖）。",
+        "conditions": "完成 4 個進步章或年滿 6 歲可參與小草蜢歷險，七大範疇體驗完成後頒發，不早於 7 歲。"
+      },
+      "en": {
+        "name": "Grasshopper Award",
+        "place": "Wearer's left sleeve (the 3rd-edition guide refers to a figure for the exact spot). The model places it above the Progress Awards for now.",
+        "quote": "Grasshopper Award and Progress Awards – left sleeve (see figure for exact positions).",
+        "conditions": "Open after 4 Progress Awards or from age 6; awarded after the seven experience areas, not before age 7."
+      },
+      "size": { "shape": "circle", "wCm": 4, "hCm": 4, "measured": false, "ref": null, "page": null },
+      "anchor": { "part": "sleeve", "side": "left", "aboveProgressCm": 1, "edge": "bottom", "measured": false },
+      "sources": [{ "ref": "GSG", "page": "P.9, P.12" }],
+      "status": "pending",
+      "pendingReason": {
+        "zh": "只見於 2026 年第三版指引；附圖未能由文字版讀出，確實位置、尺寸及圖案待確認。《儀容與制服手冊》未收錄此章。",
+        "en": "Only in the 2026 3rd-edition guide; its figure could not be read from the text version, so position, size and design are unconfirmed. Not yet in the Uniform Handbook."
+      }
+    },
+    {
+      "id": "troop",
+      "required": false,
+      "side": "right",
+      "zh": {
+        "name": "旅章",
+        "place": "穿著者右袖，肩膊縫線下方 2 釐米，置中。",
+        "quote": "旅章佩戴在上衣右袖肩膊位下方兩釐米中央位置。",
+        "conditions": "非必須佩戴；由所屬旅安排。"
+      },
+      "en": {
+        "name": "Group Badge",
+        "place": "Wearer's right sleeve, centred 2 cm below the shoulder seam.",
+        "quote": "Worn centred 2 cm below the shoulder on the right sleeve.",
+        "conditions": "Optional; arranged by the Group."
+      },
+      "size": { "shape": "rect", "wCm": 7, "hCm": 2.5, "measured": false, "ref": null, "page": null },
+      "anchor": { "part": "sleeve", "side": "right", "fromShoulderCm": 2, "edge": "top", "measured": true },
+      "sources": [{ "ref": "UH", "page": "24" }, { "ref": "GSG", "page": "P.9" }],
+      "status": "documented"
+    },
+    {
+      "id": "district",
+      "required": false,
+      "side": "right",
+      "zh": {
+        "name": "區章",
+        "place": "穿著者右袖，旅章下方 2 釐米，置中。",
+        "quote": "區章在旅章下方兩釐米位置。",
+        "conditions": "非必須佩戴。"
+      },
+      "en": {
+        "name": "District Badge",
+        "place": "Wearer's right sleeve, centred 2 cm below the Group Badge.",
+        "quote": "Worn 2 cm below the Group Badge.",
+        "conditions": "Optional."
+      },
+      "size": { "shape": "rect", "wCm": 5, "hCm": 2.5, "measured": false, "ref": null, "page": null },
+      "anchor": { "part": "sleeve", "side": "right", "belowBadge": "troop", "gapCm": 2, "edge": "top", "measured": true },
+      "sources": [{ "ref": "UH", "page": "24" }, { "ref": "GSG", "page": "P.9" }],
+      "status": "documented"
+    },
+    {
+      "id": "meritorious",
+      "required": false,
+      "side": "right",
+      "zh": {
+        "name": "優異旅團章",
+        "place": "穿著者右袖，袖口縫線上方中央；長袖上衣戴在相同位置。須在該章有效期內佩戴。",
+        "quote": "優異旅團章佩戴在短袖上衣右袖縫線上方中央位置或長袖上衣相同位置。",
+        "conditions": "非必須佩戴；只限有效期內。"
+      },
+      "en": {
+        "name": "Meritorious Group Badge",
+        "place": "Wearer's right sleeve, centred above the sleeve-hem seam; same position on long sleeves. Only within its validity period.",
+        "quote": "Worn centred above the right sleeve seam of a short-sleeved top, or the same position on a long-sleeved top.",
+        "conditions": "Optional; only while valid."
+      },
+      "size": { "shape": "rect", "wCm": 5, "hCm": 2.5, "measured": false, "ref": null, "page": null },
+      "anchor": { "part": "sleeve", "side": "right", "fromHemCm": 0.5, "edge": "bottom", "measured": false },
+      "sources": [{ "ref": "UH", "page": "24" }, { "ref": "GSG", "page": "P.9" }],
+      "status": "documented"
+    },
+    {
+      "id": "commemorative",
+      "required": false,
+      "side": "right",
+      "zh": {
+        "name": "活動紀念章",
+        "place": "穿著者右胸上方。只限已獲批准的紀念章，並須在有效期內佩戴。",
+        "quote": "已獲批准的紀念章佩戴在右胸上方位置。",
+        "conditions": "非必須佩戴；只限已批准、有效期內。"
+      },
+      "en": {
+        "name": "Commemorative Badge",
+        "place": "Above the wearer's right chest. Approved badges only, within their validity period.",
+        "quote": "Approved commemorative badges are worn above the right chest.",
+        "conditions": "Optional; approved and valid only."
+      },
+      "size": { "shape": "circle", "wCm": 5, "hCm": 5, "measured": false, "ref": null, "page": null },
+      "anchor": { "part": "torso", "side": "right", "xCm": 6.5, "yCm": -5.5, "measured": false },
+      "sources": [{ "ref": "UH", "page": "24" }, { "ref": "GSG", "page": "P.9" }],
+      "status": "documented"
+    }
+  ],
+  "schoolTop": {
+    "status": "pending",
+    "zh": {
+      "name": "學校運動上衣（未能縫章）",
+      "place": "團員章戴在領巾尖（背後）中央；進步章依左袖排列，戴在前面巾尾的左、右末端。",
+      "quote": "假若穿著學校運動上衣而又未能在其上縫徽章的話，可選擇佩戴小童軍團員章在領巾尖中央位置，進步章依左手袖排列位置佩戴在巾尾的左、右末端位置。",
+      "otherSource": "第三版指引：可將小童軍團員章、小草蜢獎章及進步獎章佩戴於旅巾上（未寫小草蜢獎章位置）。"
+    },
+    "en": {
+      "name": "School sports top (badges cannot be sewn on)",
+      "place": "Membership Badge centred on the neckerchief point (at the back); Progress Awards on the left and right ends of the front tails, following the left-sleeve order.",
+      "quote": "If wearing a school sports top that badges cannot be sewn onto, the Membership Badge may be worn centred on the neckerchief point, and Progress Awards on the left and right ends of the tails following the left-sleeve order.",
+      "otherSource": "3rd-edition guide: Membership Badge, Grasshopper Award and Progress Awards may be worn on the neckerchief (Grasshopper Award position not given)."
+    },
+    "sources": [{ "ref": "UH", "page": "24" }, { "ref": "GSG", "page": "P.9" }],
+    "pendingReason": {
+      "zh": "「巾尾左、右末端」如何排四枚章未有圖示；模型每條巾尾放兩枚（紅、藍在穿著者左邊巾尾），待確認。",
+      "en": "No figure shows how four badges go on the tail ends; the model puts two on each tail (red and blue on the wearer's left tail). Unconfirmed."
+    }
+  },
+  "notAllowed": [
+    {
+      "id": "otherBadges",
+      "zh": "除上列徽章外，不可佩戴其他徽章。",
+      "en": "No badges other than those listed.",
+      "sources": [{ "ref": "UH", "page": "24" }, { "ref": "GSG", "page": "P.9" }]
+    },
+    {
+      "id": "otherSectionItems",
+      "zh": "除顏色巾圈外，不可使用其他支部制服配件，例如皮帶、制服帽等。",
+      "en": "No uniform items from other sections (e.g. belt, uniform cap) except the colour woggle.",
+      "sources": [{ "ref": "UH", "page": "24" }, { "ref": "GSG", "page": "P.9" }]
+    },
+    {
+      "id": "worldBadge",
+      "zh": "世界童軍會員章等基本徽章只列明適用於「青少年成員（小童軍除外）」。",
+      "en": "Basic badges such as the World Membership Badge apply to youth members except Grasshoppers.",
+      "sources": [{ "ref": "UH", "page": "26" }]
+    },
+    {
+      "id": "nameTape",
+      "zh": "布質名牌適用於童軍成員（小童軍除外）。",
+      "en": "Name tapes apply to members except Grasshoppers.",
+      "sources": [{ "ref": "UH", "page": "128" }]
+    },
+    {
+      "id": "serviceStar",
+      "zh": "小童軍服務年星要晉升幼童軍後先可佩戴，不可佩戴在小童軍服裝上。",
+      "en": "Grasshopper service stars are worn only after moving up to Cubs, never on Grasshopper dress.",
+      "sources": [{ "ref": "UH", "page": "129" }]
+    }
+  ],
+  "uninvested": {
+    "zh": "未宣誓小童軍可穿著全套小童軍服裝（不需扣上衣領釦）；小童軍團員章及旅巾需待宣誓後纔可佩戴。",
+    "en": "Uninvested Grasshoppers may wear the full dress (top button undone); the Membership Badge and neckerchief are worn only after investiture.",
+    "sources": [{ "ref": "UH", "page": "24" }]
+  },
+  "conflicts": [
+    {
+      "id": "shoes",
+      "zh": "鞋：手冊寫「運動鞋」，第三版指引寫「皮鞋或運動鞋」。模型示範運動鞋（兩份文件都接受）。",
+      "en": "Shoes: the Handbook says sports shoes; the 3rd-edition guide says leather or sports shoes. The model shows sports shoes (accepted by both)."
+    },
+    {
+      "id": "shirt",
+      "zh": "上衣：手冊列「橙色小童軍活動服」及長袖；第三版指引只寫「單色 polo 恤或圓領 T 恤」。模型兩者都提供。",
+      "en": "Top: the Handbook lists the orange activity shirt and long sleeves; the 3rd-edition guide only says plain polo or round-neck T-shirt. The model offers both."
+    },
+    {
+      "id": "grasshopperAward",
+      "zh": "小草蜢獎章：只見於 2026 年第三版指引，手冊未收錄；位置待確認。",
+      "en": "Grasshopper Award: only in the 2026 3rd-edition guide, not yet in the Handbook; position unconfirmed."
+    },
+    {
+      "id": "schoolTop",
+      "zh": "學校運動上衣：手冊寫明團員章在領巾尖、進步章在巾尾末端；第三版指引只寫「佩戴於旅巾上」並加入小草蜢獎章。",
+      "en": "School sports top: the Handbook gives the neckerchief point and tail ends; the 3rd-edition guide only says on the neckerchief and adds the Grasshopper Award."
+    }
+  ]
+}

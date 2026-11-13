@@ -1,0 +1,50 @@
+name: guard
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 3 * * 1'   # 每週一 HKT 11:17 掃一次，防止「靜靜變肥」
+
+permissions:
+  contents: read
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      # A16：Actions 釘 commit SHA（tag 可以被人移位）；版號註解畀 Dependabot 認得再升。
+      # SHA 於 2026-11-08 用 GitHub API 核實；guard 會驗所有 workflow 有冇釘 SHA。
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '20'
+      - name: Install (devDependencies needed for build + 3D placement tests)
+        run: npm ci --include=dev
+      - name: Build (rules check + vite build)
+        run: npm run build
+      - name: Guard (docs / secrets / size / links)
+        run: node scripts/guard.mjs
+      - name: Brain guard tests (F14)
+        if: hashFiles('**/*.test.mjs') != ''
+        run: node --test
+      - name: Bilingual UI check (L2-L5; only if the checker was copied in)
+        if: hashFiles('scripts/i18n_check_v1.0.mjs') != ''
+        run: node scripts/i18n_check_v1.0.mjs src
+        # L applies only to apps newly created after 2026-11-08; existing repos are not retroactive.
+        # Default-required but exemptible: no bilingual implementation = WARN, not FAIL.
+        # Exemptions must be recorded as `EXCEPTION: L1 - reason - mitigation` in the PR/SCOPE.
+      - name: Size gate (S7)
+        if: hashFiles('package.json') != ''
+        run: |
+          if [ -d dist ]; then
+            BYTES=$(du -sb dist | cut -f1)
+            echo "dist = $BYTES bytes"
+            [ "$BYTES" -lt 5242880 ] || { echo "::error::dist >= 5MB (S7)"; exit 1; }
+          fi
+      - name: Dependency audit (A16)
+        if: hashFiles('package-lock.json') != ''
+        run: npm audit --audit-level=high

@@ -1,0 +1,31 @@
+{
+  "name": "scout3d",
+  "version": "1.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "type": "module",
+  "description": "SCOUT3D — 小童軍服裝 3D 預覽：可旋轉 3D 公仔示範香港童軍總會小童軍服裝穿著及徽章位置（非官方）",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "dev": "node scripts/sync_index_v1.0.mjs && vite --host 0.0.0.0 --port 5173",
+    "build": "node scripts/sync_index_v1.0.mjs --check && node scripts/check_rules_v1.0.mjs && vite build",
+    "preview": "vite preview --host 0.0.0.0 --port 4173",
+    "check": "node scripts/check_rules_v1.0.mjs",
+    "test": "node --test",
+    "guard": "node scripts/guard.mjs",
+    "preflight": "node scripts/preflight_v1.0.mjs . --json",
+    "final-check": "node scripts/final_check_v1.0.mjs --json",
+    "sync": "node scripts/sync_index_v1.0.mjs"
+  },
+  "devDependencies": {
+    "@react-three/drei": "^9.122.0",
+    "@react-three/fiber": "^8.18.0",
+    "@vitejs/plugin-react": "^4.7.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "three": "^0.170.0",
+    "vite": "^6.4.6"
+  }
+}
