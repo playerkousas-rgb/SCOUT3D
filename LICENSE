@@ -1,0 +1,18 @@
+Copyright (c) 2026 SCOUT SYSTEM. All rights reserved.
+
+SCOUT3D (source code, 3D figure design, artwork, icons and documentation in
+this repository) is proprietary. No licence is granted to copy, modify,
+merge, publish, distribute, sublicense or sell any part of it without prior
+written permission from SCOUT SYSTEM. Viewing the source on GitHub does not
+grant any of these rights.
+
+Third-party material:
+- Rule summaries cite the Scout Association of Hong Kong "Uniform Handbook"
+  (儀容與制服手冊) and the "Grasshopper Scout Activity Guide (3rd edition)".
+  Those documents remain the copyright of the Scout Association of Hong Kong;
+  this project only summarises them with page references.
+- Open-source dependencies (React, three.js, React Three Fiber, drei, Vite)
+  are used under their own licences; see package.json and node_modules.
+
+版權所有 © 2026 SCOUT SYSTEM，保留一切權利。未經書面同意，不得複製、修改、
+發佈或轉售本 repo 任何部分。手冊及指引內容版權屬香港童軍總會。

@@ -1,0 +1,17 @@
+{
+  "name": "SCOUT3D 小童軍服裝預覽",
+  "short_name": "SCOUT3D",
+  "description": "香港童軍總會小童軍服裝同徽章位置 3D 預覽（依手冊整理・待領袖核對）",
+  "lang": "zh-Hant-HK",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "theme_color": "#7fcae9",
+  "background_color": "#7fcae9",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
