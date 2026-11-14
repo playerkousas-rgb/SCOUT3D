@@ -28,6 +28,30 @@
         "item": "epauletteRequired",
         "zh": "深資童軍肩章當必備章類處理，但要可以開關（用戶指示）",
         "en": "Treat the Venture Scout Epaulettes as a required-type badge that can be switched on or off (user instruction)"
+      },
+      {
+        "date": "2026-11-14",
+        "item": "airCapBadge",
+        "zh": "深資空童軍帽章跟手冊（童軍帽章），唔跟綱要嘅「成員帽章」（用戶確認）",
+        "en": "Venture Air Scout cap badge follows the Handbook (Scout cap badge), not the Training Scheme’s “member’s cap badge” (user confirmed)"
+      },
+      {
+        "date": "2026-11-14",
+        "item": "tieUniform",
+        "zh": "手冊 P.48–49 有領帶制服（用戶指出）；顏色跟 P.113",
+        "en": "The Handbook has the tie uniform on pp.48–49 (pointed out by the user); colours per p.113"
+      },
+      {
+        "date": "2026-11-14",
+        "item": "girlTrousers",
+        "zh": "手冊 P.50–51 有女性深資童軍長褲制服（用戶指出）",
+        "en": "The Handbook has the female Venture Scout trouser uniform on pp.50–51 (pointed out by the user)"
+      },
+      {
+        "date": "2026-11-14",
+        "item": "sweater",
+        "zh": "制服毛衣係制服一部分，深資童軍肩章可以戴喺毛衣肩帶上（手冊 P.121–122，用戶指出）",
+        "en": "The uniform jersey is part of the uniform; the Venture Scout Epaulettes may go on the jersey’s shoulder straps (Handbook pp.121–122, pointed out by the user)"
       }
     ]
   },
@@ -36,8 +60,8 @@
       "zh": "香港童軍總會《儀容與制服手冊》",
       "en": "SAHK Uniform Handbook (Chinese edition)",
       "edition": {
-        "zh": "網上版（含 2026-01-01 第 04/2026 號通告制服帽修訂）；P.26 未宣誓成員，P.36–41 深資童軍／深資海童軍／深資空童軍制服，P.92–95 基本徽章，P.99 軟帽，P.101 海童軍領袖白頂帽，P.102 帽章，P.110 童軍巾圈，P.112 戴領巾，P.145 深資童軍肩章，P.159 優異旅團章，P.170 深資童軍徽章佩戴圖",
-        "en": "Online edition incl. Circular 04/2026 (1 Jan 2026) cap amendment; p.26 uninvested members, pp.36–41 Venture / Venture Sea / Venture Air Scout uniforms, pp.92–95 basic badges, p.99 berets, p.101 Sea Scout leader's white-top caps, p.102 cap badges, p.110 Scout woggle, p.112 wearing the neckerchief, p.145 Venture Scout Epaulettes, p.159 Meritorious Group Badge, p.170 Venture Scout badge chart"
+        "zh": "網上版（含 2026-01-01 第 04/2026 號通告制服帽修訂）；P.26 未宣誓成員，P.36–41 深資童軍／深資海童軍／深資空童軍制服，P.48 深資童軍領帶制服，P.50–51 女性深資童軍長褲制服，P.92–95 基本徽章，P.99 軟帽，P.101 海童軍領袖白頂帽，P.102 帽章，P.110 童軍巾圈，P.112 戴領巾，P.113 領帶，P.121–122 制服毛衣，P.145 深資童軍肩章，P.159 優異旅團章，P.170 深資童軍徽章佩戴圖",
+        "en": "Online edition incl. Circular 04/2026 (1 Jan 2026) cap amendment; p.26 uninvested members, pp.36–41 Venture / Venture Sea / Venture Air Scout uniforms, p.48 Venture Scout tie uniform, pp.50–51 female Venture Scout trouser uniform, pp.92–95 basic badges, p.99 berets, p.101 Sea Scout leader's white-top caps, p.102 cap badges, p.110 Scout woggle, p.112 wearing the neckerchief, p.113 ties, pp.121–122 uniform jersey, p.145 Venture Scout Epaulettes, p.159 Meritorious Group Badge, p.170 Venture Scout badge chart"
       },
       "url": "https://www.scout.org.hk/uniformhandbook"
     },
@@ -113,16 +137,16 @@
       "id": "trousers",
       "zh": {
         "name": "長褲／半截裙",
-        "rule": "男團員：草青色長褲，兩斜袋、兩後袋、有褶。女團員：草青色半截裙，側袋、無褶、及膝。"
+        "rule": "男團員：草青色長褲，兩斜袋、兩後袋、有褶。女團員：草青色半截裙，側袋、無褶、及膝；或者女性深資童軍長褲制服（手冊 P.50–51）：草青色長褲，兩斜袋、兩後袋、有褶。"
       },
       "en": {
         "name": "Trousers / skirt",
-        "rule": "Boys: grass-green trousers, two slanted pockets, two back pockets, pleated. Girls: grass-green skirt, side pockets, no pleats, knee length."
+        "rule": "Boys: grass-green trousers, two slanted pockets, two back pockets, pleated. Girls: grass-green skirt, side pockets, no pleats, knee length; or the female Venture Scout trouser uniform (Handbook pp.50–51): grass-green trousers, two slanted pockets, two back pockets, pleated."
       },
       "sources": [
         {
           "ref": "UH",
-          "page": "36–37"
+          "page": "36–37, 50–51"
         },
         {
           "ref": "VTS",
@@ -131,8 +155,8 @@
       ],
       "status": "documented",
       "modelNote": {
-        "zh": "綱要 P.15 另外列明女團員可以著長褲（配黑襪、綁帶皮鞋）；手冊 P.36 只寫半截裙。模型預設半截裙，可以喺服裝分頁改長褲。",
-        "en": "Training Scheme p.15 also allows girls to wear trousers (with black socks and laced shoes); Handbook p.36 lists only the skirt. The model defaults to the skirt; switch to trousers in the Outfit tab."
+        "zh": "模型預設半截裙，女團員可以喺服裝分頁改長褲。",
+        "en": "The model defaults to the skirt; girls can switch to trousers in the Outfit tab."
       }
     },
     {
@@ -165,16 +189,16 @@
       "id": "socks",
       "zh": {
         "name": "襪",
-        "rule": "男團員：黑色短襪。女團員：肉色、尼龍、無花、襪褲（配半截裙）；著長褲就配黑色襪。"
+        "rule": "男團員：黑色短襪。女團員：肉色、尼龍、無花、襪褲（配半截裙）；長褲制服配黑色襪（手冊 P.50）。"
       },
       "en": {
         "name": "Socks",
-        "rule": "Boys: black short socks. Girls: flesh-coloured plain nylon tights (with the skirt); black socks with trousers."
+        "rule": "Boys: black short socks. Girls: flesh-coloured plain nylon tights (with the skirt); black socks with the trouser uniform (Handbook p.50)."
       },
       "sources": [
         {
           "ref": "UH",
-          "page": "36–37"
+          "page": "36–37, 50"
         },
         {
           "ref": "VTS",
@@ -187,16 +211,16 @@
       "id": "shoes",
       "zh": {
         "name": "皮鞋",
-        "rule": "男團員：黑色、無花紋、綁帶。女團員：黑色、無花紋、非綁帶、中跟（配半截裙）；著長褲就配黑色綁帶皮鞋。"
+        "rule": "男團員：黑色、無花紋、綁帶。女團員：黑色、無花紋、非綁帶、中跟（配半截裙）；長褲制服配黑色、無花紋、綁帶皮鞋（手冊 P.50）。"
       },
       "en": {
         "name": "Shoes",
-        "rule": "Boys: black, plain, laced. Girls: black, plain, not laced, medium heel (with the skirt); black laced shoes with trousers."
+        "rule": "Boys: black, plain, laced. Girls: black, plain, not laced, medium heel (with the skirt); black plain laced shoes with the trouser uniform (Handbook p.50)."
       },
       "sources": [
         {
           "ref": "UH",
-          "page": "36–37"
+          "page": "36–37, 50"
         },
         {
           "ref": "VTS",
@@ -213,16 +237,16 @@
       "id": "necker",
       "zh": {
         "name": "領巾",
-        "rule": "旅巾（連童軍巾圈）。宣誓後纔可佩戴。"
+        "rule": "旅巾（連童軍巾圈）；或者改戴領帶（領帶制服，手冊 P.48）。宣誓後纔可佩戴。著毛衣時領巾放喺毛衣外面（手冊 P.122）。"
       },
       "en": {
         "name": "Neckerchief",
-        "rule": "Group neckerchief with the Scout woggle. Worn only after investiture."
+        "rule": "Group neckerchief with the Scout woggle; or a tie instead (tie uniform, Handbook p.48). Worn only after investiture. With the jersey the neckerchief goes outside it (Handbook p.122)."
       },
       "sources": [
         {
           "ref": "UH",
-          "page": "26, 36, 110, 112"
+          "page": "26, 36, 48, 110, 112, 122"
         },
         {
           "ref": "VTS",
@@ -233,6 +257,54 @@
       "modelNote": {
         "zh": "旅巾顏色由各旅自定，模型可自選；巾圈畫做啡色皮巾圈（手冊 P.110）。",
         "en": "Neckerchief colours are set by each Group; pick them in the model. The woggle is drawn as the brown leather Scout woggle (Handbook p.110)."
+      }
+    },
+    {
+      "id": "tie",
+      "zh": {
+        "name": "領帶（可選，代替旅巾）",
+        "rule": "深資童軍領帶制服（手冊 P.48）：深資童軍戴棗紅色領帶（手冊 P.113「深資海童軍及深資空童軍除外」）。其餘衣物同徽章同旅巾制服一樣。著毛衣時領帶放喺毛衣同恤衫之間（手冊 P.122）。"
+      },
+      "en": {
+        "name": "Tie (optional, instead of the neckerchief)",
+        "rule": "Venture Scout tie uniform (Handbook p.48): Venture Scouts wear the maroon tie (Handbook p.113, “except Venture Sea and Venture Air Scouts”). Everything else, including badges, is as the neckerchief uniform. With the jersey the tie goes between the jersey and the shirt (Handbook p.122)."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "48, 113, 122"
+        },
+        {
+          "ref": "VTS",
+          "page": "14–15"
+        }
+      ],
+      "status": "documented",
+      "modelNote": {
+        "zh": "手冊冇講領帶幾時用、未宣誓可唔可以戴；模型當同旅巾一樣，宣誓後先顯示（待確認）。",
+        "en": "The Handbook does not say when the tie is worn or whether uninvested members may wear it; the model treats it like the neckerchief and shows it only after investiture (to be confirmed)."
+      }
+    },
+    {
+      "id": "sweater",
+      "zh": {
+        "name": "制服毛衣（可選）",
+        "rule": "可因應個人體質或天氣情況穿著深草青色制服毛衣。領巾放喺毛衣外面；毛衣上只可以喺適當位置戴世界童軍會員章、香港章同旅章，同埋喺毛衣雙肩肩帶上戴深資童軍肩章，其他章唔可以戴喺毛衣上。"
+      },
+      "en": {
+        "name": "Uniform jersey (optional)",
+        "rule": "A dark grass-green uniform jersey may be worn for personal comfort or the weather. The neckerchief goes outside the jersey; only the World Membership Badge, Hong Kong Badge and Group Badge, and the Venture Scout Epaulettes on the jersey’s shoulder straps may be worn on it, in the appropriate places; no other badges."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "121–122"
+        }
+      ],
+      "status": "documented",
+      "modelNote": {
+        "zh": "毛衣畫做長袖、坑紋、圓領（見到恤衫領）、膊頭淺色膊布（手冊 P.121–122 附圖）。徽章「或制服毛衣相同位置」：位置同恤衫一樣，向外移一個毛衣厚度。",
+        "en": "The jersey is drawn long-sleeved and ribbed, with a crew neck (shirt collar showing) and lighter shoulder patches (Handbook pp.121–122 figures). Badges go in “the same position on the uniform jersey”: the shirt positions, moved out by the jersey thickness."
       }
     }
   ],
@@ -332,16 +404,16 @@
           "id": "trousers",
           "zh": {
             "name": "長褲／半截裙",
-            "rule": "男團員：深藍色長褲，兩斜袋、兩後袋、有褶。女團員：深藍色半截裙，側袋、無褶、及膝。"
+            "rule": "男團員：深藍色長褲，兩斜袋、兩後袋、有褶。女團員：深藍色半截裙，側袋、無褶、及膝；或者女性長褲制服（手冊 P.50–51）：深藍色長褲，兩斜袋、兩後袋、有褶。"
           },
           "en": {
             "name": "Trousers / skirt",
-            "rule": "Boys: dark blue trousers, two slanted pockets, two back pockets, pleated. Girls: dark blue skirt, side pockets, no pleats, knee length."
+            "rule": "Boys: dark blue trousers, two slanted pockets, two back pockets, pleated. Girls: dark blue skirt, side pockets, no pleats, knee length; or the female trouser uniform (Handbook pp.50–51): dark blue trousers, two slanted pockets, two back pockets, pleated."
           },
           "sources": [
             {
               "ref": "UH",
-              "page": "38–39"
+              "page": "38–39, 50–51"
             },
             {
               "ref": "VTS",
@@ -349,6 +421,54 @@
             }
           ],
           "status": "documented"
+        },
+        {
+          "id": "tie",
+          "zh": {
+            "name": "領帶（可選，代替旅巾）",
+            "rule": "深資童軍領帶制服（手冊 P.48）：深資海童軍戴黑色領帶（手冊 P.113）。其餘衣物同徽章同旅巾制服一樣。著毛衣時領帶放喺毛衣同恤衫之間（手冊 P.122）。"
+          },
+          "en": {
+            "name": "Tie (optional, instead of the neckerchief)",
+            "rule": "Venture Scout tie uniform (Handbook p.48): Venture Sea Scouts wear the black tie (Handbook p.113). Everything else, including badges, is as the neckerchief uniform. With the jersey the tie goes between the jersey and the shirt (Handbook p.122)."
+          },
+          "sources": [
+            {
+              "ref": "UH",
+              "page": "48, 113, 122"
+            },
+            {
+              "ref": "VTS",
+              "page": "14–15"
+            }
+          ],
+          "status": "documented",
+          "modelNote": {
+            "zh": "手冊冇講領帶幾時用、未宣誓可唔可以戴；模型當同旅巾一樣，宣誓後先顯示（待確認）。",
+            "en": "The Handbook does not say when the tie is worn or whether uninvested members may wear it; the model treats it like the neckerchief and shows it only after investiture (to be confirmed)."
+          }
+        },
+        {
+          "id": "sweater",
+          "zh": {
+            "name": "制服毛衣（可選）",
+            "rule": "可因應個人體質或天氣情況穿著深藍色制服毛衣。領巾放喺毛衣外面；毛衣上只可以喺適當位置戴世界童軍會員章、香港章同旅章，同埋喺毛衣雙肩肩帶上戴深資童軍肩章，其他章唔可以戴喺毛衣上。"
+          },
+          "en": {
+            "name": "Uniform jersey (optional)",
+            "rule": "A dark blue uniform jersey may be worn for personal comfort or the weather. The neckerchief goes outside the jersey; only the World Membership Badge, Hong Kong Badge and Group Badge, and the Venture Scout Epaulettes on the jersey’s shoulder straps may be worn on it, in the appropriate places; no other badges."
+          },
+          "sources": [
+            {
+              "ref": "UH",
+              "page": "121–122"
+            }
+          ],
+          "status": "documented",
+          "modelNote": {
+            "zh": "手冊 P.121：海童軍／空童軍青少年成員穿深藍色制服毛衣；模型當深資海童軍、深資空童軍都係（待確認）。毛衣畫做長袖、坑紋、圓領（見到恤衫領）、膊頭淺色膊布（手冊 P.121–122 附圖）。徽章「或制服毛衣相同位置」：位置同恤衫一樣，向外移一個毛衣厚度。",
+            "en": "Handbook p.121: Sea/Air Scout youth members wear the dark blue jersey; the model treats Venture Sea and Venture Air Scouts as included (to be confirmed). The jersey is drawn long-sleeved and ribbed, with a crew neck (shirt collar showing) and lighter shoulder patches (Handbook pp.121–122 figures). Badges go in “the same position on the uniform jersey”: the shirt positions, moved out by the jersey thickness."
+          }
         }
       ]
     },
@@ -425,16 +545,16 @@
           "id": "trousers",
           "zh": {
             "name": "長褲／半截裙",
-            "rule": "男團員：深藍色長褲，兩斜袋、兩後袋、有褶。女團員：深藍色半截裙，側袋、無褶、及膝。"
+            "rule": "男團員：深藍色長褲，兩斜袋、兩後袋、有褶。女團員：深藍色半截裙，側袋、無褶、及膝；或者女性長褲制服（手冊 P.50–51）：深藍色長褲，兩斜袋、兩後袋、有褶。"
           },
           "en": {
             "name": "Trousers / skirt",
-            "rule": "Boys: dark blue trousers, two slanted pockets, two back pockets, pleated. Girls: dark blue skirt, side pockets, no pleats, knee length."
+            "rule": "Boys: dark blue trousers, two slanted pockets, two back pockets, pleated. Girls: dark blue skirt, side pockets, no pleats, knee length; or the female trouser uniform (Handbook pp.50–51): dark blue trousers, two slanted pockets, two back pockets, pleated."
           },
           "sources": [
             {
               "ref": "UH",
-              "page": "40–41"
+              "page": "40–41, 50–51"
             },
             {
               "ref": "VTS",
@@ -442,6 +562,54 @@
             }
           ],
           "status": "documented"
+        },
+        {
+          "id": "tie",
+          "zh": {
+            "name": "領帶（可選，代替旅巾）",
+            "rule": "深資童軍領帶制服（手冊 P.48）：深資空童軍戴深藍色領帶（手冊 P.113）。其餘衣物同徽章同旅巾制服一樣。著毛衣時領帶放喺毛衣同恤衫之間（手冊 P.122）。"
+          },
+          "en": {
+            "name": "Tie (optional, instead of the neckerchief)",
+            "rule": "Venture Scout tie uniform (Handbook p.48): Venture Air Scouts wear the dark blue tie (Handbook p.113). Everything else, including badges, is as the neckerchief uniform. With the jersey the tie goes between the jersey and the shirt (Handbook p.122)."
+          },
+          "sources": [
+            {
+              "ref": "UH",
+              "page": "48, 113, 122"
+            },
+            {
+              "ref": "VTS",
+              "page": "14–15"
+            }
+          ],
+          "status": "documented",
+          "modelNote": {
+            "zh": "手冊冇講領帶幾時用、未宣誓可唔可以戴；模型當同旅巾一樣，宣誓後先顯示（待確認）。",
+            "en": "The Handbook does not say when the tie is worn or whether uninvested members may wear it; the model treats it like the neckerchief and shows it only after investiture (to be confirmed)."
+          }
+        },
+        {
+          "id": "sweater",
+          "zh": {
+            "name": "制服毛衣（可選）",
+            "rule": "可因應個人體質或天氣情況穿著深藍色制服毛衣。領巾放喺毛衣外面；毛衣上只可以喺適當位置戴世界童軍會員章、香港章同旅章，同埋喺毛衣雙肩肩帶上戴深資童軍肩章，其他章唔可以戴喺毛衣上。"
+          },
+          "en": {
+            "name": "Uniform jersey (optional)",
+            "rule": "A dark blue uniform jersey may be worn for personal comfort or the weather. The neckerchief goes outside the jersey; only the World Membership Badge, Hong Kong Badge and Group Badge, and the Venture Scout Epaulettes on the jersey’s shoulder straps may be worn on it, in the appropriate places; no other badges."
+          },
+          "sources": [
+            {
+              "ref": "UH",
+              "page": "121–122"
+            }
+          ],
+          "status": "documented",
+          "modelNote": {
+            "zh": "手冊 P.121：海童軍／空童軍青少年成員穿深藍色制服毛衣；模型當深資海童軍、深資空童軍都係（待確認）。毛衣畫做長袖、坑紋、圓領（見到恤衫領）、膊頭淺色膊布（手冊 P.121–122 附圖）。徽章「或制服毛衣相同位置」：位置同恤衫一樣，向外移一個毛衣厚度。",
+            "en": "Handbook p.121: Sea/Air Scout youth members wear the dark blue jersey; the model treats Venture Sea and Venture Air Scouts as included (to be confirmed). The jersey is drawn long-sleeved and ribbed, with a crew neck (shirt collar showing) and lighter shoulder patches (Handbook pp.121–122 figures). Badges go in “the same position on the uniform jersey”: the shirt positions, moved out by the jersey thickness."
+          }
         }
       ]
     }
@@ -498,7 +666,8 @@
       "modelNote": {
         "zh": "手冊冇寫尺寸；模型用直徑 4 cm，按 P.170 附圖同胸袋嘅比例。",
         "en": "No size in the Handbook; the model uses 4 cm diameter, from its proportion to the pocket in the p.170 figure."
-      }
+      },
+      "sweater": true
     },
     {
       "id": "hongKong",
@@ -551,7 +720,8 @@
       "modelNote": {
         "zh": "手冊冇寫尺寸；模型用 4 × 5.6 cm（跟 P.93 圖案比例）。",
         "en": "No size in the Handbook; the model uses 4 × 5.6 cm (the p.93 artwork's proportions)."
-      }
+      },
+      "sweater": true
     },
     {
       "id": "troop",
@@ -604,7 +774,8 @@
       "modelNote": {
         "zh": "手冊 P.94：新成立旅嘅旅章不小過 8.5 × 2 cm、不大過 10.5 × 2.5 cm；模型用 9 × 2.2 cm。圖案係手冊示例（2222 旅），各旅實際圖案唔同。",
         "en": "Handbook p.94: a new Group's badge is between 8.5 × 2 cm and 10.5 × 2.5 cm; the model uses 9 × 2.2 cm. The artwork is the handbook example (2222th Group); each Group's badge differs."
-      }
+      },
+      "sweater": true
     },
     {
       "id": "region",
@@ -661,7 +832,8 @@
       "modelNote": {
         "zh": "圖案跟「區章」揀咗嘅區自動轉做所屬地域；未揀區就用手冊 P.168 示例色塊。總會總部屬下嘅區（例如銀禧區）網頁冇列地域章，模型唔顯示。手冊 P.170 附圖喺旅章同地域／區章中間多咗「深資童軍急救章」（考獲先有）；呢版只做必備章，所以照 P.95 文字：地域章、區章喺旅章下 2 cm。",
         "en": "The artwork follows the Region of the District picked under District Badge; with no District picked it uses the Handbook p.168 example block. Districts under AHQ (e.g. Silver Jubilee) have no Region Badge on the web page, so none is shown. The Handbook p.170 figure has the Venture Scout First Aid Badge (earned) between the Group Badge and the Region/District Badges; this version shows required badges only, so it follows the p.95 text: Region and District Badges 2 cm below the Group Badge."
-      }
+      },
+      "sweater": false
     },
     {
       "id": "district",
@@ -718,7 +890,8 @@
       "modelNote": {
         "zh": "可以揀全港所有區（香港童軍總會網頁「地域及區」）；未揀區就用手冊示例色塊。",
         "en": "Every District can be picked (SAHK “Regions and Districts” page); with none picked it uses the handbook example block."
-      }
+      },
+      "sweater": false
     },
     {
       "id": "epaulette",
@@ -753,7 +926,7 @@
       "sources": [
         {
           "ref": "UH",
-          "page": "145, 170"
+          "page": "122, 145, 170"
         },
         {
           "ref": "VTS",
@@ -798,7 +971,8 @@
           }
         }
       ],
-      "default": "venture"
+      "default": "venture",
+      "sweater": true
     },
     {
       "id": "meritorious",
@@ -848,7 +1022,8 @@
       "modelNote": {
         "zh": "手冊冇寫尺寸；模型用 9 × 2 cm（P.159 圖案比例）。可以輸入年份：圖案底色同文字取自 P.159，只換年份數字；顏色每 3 年輪一次（1999 紅、2000 紫、2001 藍……，P.159 2016 藍、2017 紅、2018 紫吻合）。 手冊 P.170 附圖：深資童軍嘅優異旅團章喺右袖最下、貼近袖口縫線。",
         "en": "No size in the Handbook; the model uses 9 × 2 cm (p.159 artwork proportions). Type a year: the background and lettering come from p.159 and only the year digits change; the colour cycles every 3 years (1999 red, 2000 purple, 2001 blue…, matching 2016 blue, 2017 red, 2018 purple on p.159). Handbook p.170 figure: for Venture Scouts the Meritorious Group Badge is lowest on the right sleeve, just above the cuff seam."
-      }
+      },
+      "sweater": false
     }
   ],
   "notAllowed": [
@@ -899,24 +1074,19 @@
   },
   "conflicts": [
     {
-      "id": "tie",
-      "zh": "綱要 P.14–15 有「領呔」一行（棗紅色／深藍色／黑色）；手冊 P.36–41 制服頁冇呢行，只寫旅巾。模型跟手冊畫旅巾。",
-      "en": "Training Scheme pp.14–15 has a “tie” row (maroon / dark blue / black); the Handbook pp.36–41 uniform pages have no such row and list only the neckerchief. The model follows the Handbook and shows the neckerchief."
-    },
-    {
-      "id": "girlTrousers",
-      "zh": "女團員：手冊 P.36–41 只寫半截裙；綱要 P.15 另外寫可以著長褲（配黑襪、綁帶皮鞋）。模型兩樣都俾揀，預設半截裙。",
-      "en": "Girls: the Handbook pp.36–41 list only the skirt; Training Scheme p.15 also allows trousers (with black socks and laced shoes). The model offers both, defaulting to the skirt."
-    },
-    {
-      "id": "airCapBadge",
-      "zh": "深資空童軍帽章：手冊寫「童軍帽章」，綱要寫「成員帽章」。模型跟手冊。",
-      "en": "Venture Air Scout cap badge: the Handbook says “Scout cap badge”, the Training Scheme “member's cap badge”. The model follows the Handbook."
-    },
-    {
       "id": "regionDistrictFigure",
       "zh": "地域章／區章：手冊 P.95 文字「地域章在前，區章在後」，P.170 附圖一致；附圖喺旅章下面先有急救章（考獲先有），模型冇急救章，所以照 P.95 喺旅章下 2 cm。",
       "en": "Region/District: Handbook p.95 says Region in front, District behind, and the p.170 figure agrees; the figure has the (earned) First Aid Badge under the Group Badge, which the model omits, so it follows p.95 — 2 cm below the Group Badge."
+    },
+    {
+      "id": "tieInvestiture",
+      "zh": "領帶：手冊冇講未宣誓可唔可以戴；模型當同旅巾一樣，宣誓後先顯示（待確認）。",
+      "en": "Tie: the Handbook does not say whether uninvested members may wear it; the model treats it like the neckerchief and shows it only after investiture (to be confirmed)."
+    },
+    {
+      "id": "ventureSeaAirSweater",
+      "zh": "深資海童軍、深資空童軍毛衣顏色：手冊 P.121 寫「海童軍／空童軍青少年成員」穿深藍色；模型當包括深資海／空童軍（待確認）。",
+      "en": "Venture Sea / Air Scout jersey colour: Handbook p.121 says Sea/Air Scout youth members wear dark blue; the model assumes this includes Venture Sea/Air Scouts (to be confirmed)."
     }
   ],
   "artCredit": {

@@ -72,6 +72,7 @@ export function validateRules(rules) {
   if (rules.variants && rules.variants[0]?.garments?.length) errors.push('第一個 variant 要係基本款（garments 空白）');
 
   const badgeIds = new Set((rules.badges || []).map((b) => b.id));
+  const hasSweaterGarment = (rules.garments || []).some((g) => g.id === 'sweater');
   for (const b of rules.badges || []) {
     const w = `badge ${b.id}`;
     if (ids.has(b.id)) errors.push(`${w}: id 重複`);
@@ -97,6 +98,8 @@ export function validateRules(rules) {
     if (a.pocket != null && !POCKET.has(a.pocket)) errors.push(`${w}: anchor.pocket 錯`);
     if (a.towards != null && (!TOWARDS.has(a.towards) || !(a.offsetCm > 0))) errors.push(`${w}: anchor.towards 要係 front/back 兼有 offsetCm`);
     if (b.dynamic != null && !DYNAMIC.has(b.dynamic)) errors.push(`${w}: dynamic 錯`);
+    // 制服毛衣（手冊 P.122）：有毛衣嘅支部，每個章都要講明戴唔戴得喺毛衣上
+    if (hasSweaterGarment && typeof b.sweater !== 'boolean') errors.push(`${w}: 有制服毛衣嘅支部要寫 sweater（true/false）`);
     // 選項（例：深資童軍肩章「未考獲／深資童軍肩章」）：每個選項要有中英名；有圖案就要有官方來源；預設要係其中一個
     if (b.choices != null) {
       if (!Array.isArray(b.choices) || b.choices.length < 2) errors.push(`${w}: choices 最少要兩個`);

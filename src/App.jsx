@@ -39,6 +39,7 @@ const CUB_OUTFIT = {
   finish: 'painted',
   invested: true,
   hat: true,
+  sweater: false, // 制服毛衣（手冊 P.121–122）
   neckerMain: '#2e7d4f',
   neckerBorder: '#2e7d4f',
   woggle: '#1f4e9c',
@@ -51,13 +52,15 @@ const SCOUT_OUTFIT = {
   finish: 'painted',
   invested: true,
   hat: true,
+  sweater: false, // 制服毛衣（手冊 P.121–122）
   neckerMain: '#2e7d4f',
   neckerBorder: '#2e7d4f',
   woggle: '#1f4e9c',
 };
 
 // 深資童軍（手冊 P.36–41）：同童軍一樣揀款式；女團員可以揀半截裙／長褲（綱要 P.15）
-const VENTURE_OUTFIT = { ...SCOUT_OUTFIT, ventureLegwear: 'skirt', neckerMain: '#8b2231', neckerBorder: '#8b2231' };
+// neckwear：旅巾／領帶（領帶制服，手冊 P.48、P.113）
+const VENTURE_OUTFIT = { ...SCOUT_OUTFIT, ventureLegwear: 'skirt', neckwear: 'necker', neckerMain: '#8b2231', neckerBorder: '#8b2231' };
 
 const DEFAULT_OUTFITS = { grasshopper: DEFAULT_OUTFIT, cub: CUB_OUTFIT, scout: SCOUT_OUTFIT, venture: VENTURE_OUTFIT };
 /** 各支部共用嘅設定（轉支部時保留） */
@@ -446,7 +449,7 @@ function BadgesTab({ rules, section, outfit, badges, setBadges, picks, setPicks,
         {rules.badges.map((b) => {
           const disabled = b.needsInvestiture && !outfit.invested;
           const why = shownReason(rules, outfit, badges, b.id, { unavailable });
-          const whyNote = ['school', 'vest', 'schoolUninvested', 'noArt'].includes(why) ? t(`badge.why.${why}`) : null;
+          const whyNote = ['school', 'vest', 'sweater', 'schoolUninvested', 'noArt'].includes(why) ? t(`badge.why.${why}`) : null;
           const example = b.dynamic ? resolveArt(b, picks, DISTRICTS, PATROLS)?.example : (Array.isArray(b.art) ? b.art[0] : b.art).example;
           return (
             <li key={b.id} className={`badgerow${selected === b.id ? ' is-sel' : ''}${disabled ? ' is-disabled' : ''}`}>
@@ -695,6 +698,7 @@ function CubOutfitTab({ outfit, setOutfit }) {
         onChange={(v) => set('hat', v)}
         note={t('outfit.cubHatNote')}
       />
+      <Switch label={t('outfit.sweater')} checked={!!outfit.sweater} onChange={(v) => set('sweater', v)} note={outfit.sweater ? t('outfit.sweaterNoteGreen') : null} />
       {outfit.invested && (
         <>
           <Swatches
@@ -736,6 +740,7 @@ function ScoutOutfitTab({ section = 'scout', outfit, setOutfit }) {
   const venture = section === 'venture';
   const hatKey = HAT_KEY[section][v];
   const girlTrousers = venture && outfit.gender === 'girl' && outfit.ventureLegwear === 'trousers';
+  const tie = venture && outfit.neckwear === 'tie';
   return (
     <div className="tabbody">
       <Segmented
@@ -769,6 +774,12 @@ function ScoutOutfitTab({ section = 'scout', outfit, setOutfit }) {
         note={outfit.invested ? null : t(venture ? 'outfit.investedNoteVenture' : 'outfit.investedNoteScout')}
       />
       <Switch label={t(`outfit.${hatKey}`)} checked={outfit.hat} disabled={!outfit.invested} onChange={(x) => set('hat', x)} note={t(`outfit.${hatKey}Note`)} />
+      <Switch
+        label={t('outfit.sweater')}
+        checked={!!outfit.sweater}
+        onChange={(x) => set('sweater', x)}
+        note={outfit.sweater ? t(venture ? 'outfit.sweaterNoteVenture' : v === 'land' ? 'outfit.sweaterNoteGreen' : 'outfit.sweaterNoteNavy') : null}
+      />
       {venture && outfit.gender === 'girl' && (
         <>
           <Segmented
@@ -783,7 +794,21 @@ function ScoutOutfitTab({ section = 'scout', outfit, setOutfit }) {
           <p className="note">{t('outfit.ventureLegwearNote')}</p>
         </>
       )}
-      {outfit.invested && (
+      {outfit.invested && venture && (
+        <>
+          <Segmented
+            label={t('outfit.neckwear')}
+            value={tie ? 'tie' : 'necker'}
+            onChange={(x) => set('neckwear', x)}
+            options={[
+              { value: 'necker', label: t('outfit.neckwearNecker') },
+              { value: 'tie', label: t('outfit.neckwearTie') },
+            ]}
+          />
+          {tie && <p className="note">{t('outfit.tieNote')}</p>}
+        </>
+      )}
+      {outfit.invested && !tie && (
         <>
           <Swatches label={neckerLabel(t, 'outfit.neckerMain')} value={outfit.neckerMain} options={NECKER} onChange={(v) => set('neckerMain', v)} />
           <Swatches label={neckerLabel(t, 'outfit.neckerBorder')} value={outfit.neckerBorder} options={NECKER} onChange={(v) => set('neckerBorder', v)} />

@@ -4,8 +4,8 @@ import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
 import * as THREE from 'three';
 import { validateRules, garmentsFor, variantOf } from '../src/data/validate.js';
-import { placeAll, placeFor, visible, shownReason, sleeveFace } from '../src/three/badgeLayout.js';
-import { layout, strapLayout, neckerLayout, VENTURE_VARIANTS, ventureVariant, ventureLegwear, COLOURS } from '../src/three/body.js';
+import { placeAll, placeFor, visible, shownReason, sleeveFace, hasSweater } from '../src/three/badgeLayout.js';
+import { layout, strapLayout, neckerLayout, VENTURE_VARIANTS, ventureVariant, ventureLegwear, COLOURS, VEST_T, SWEATER_TOP } from '../src/three/body.js';
 
 const read = (p) => JSON.parse(readFileSync(new URL(`../${p}`, import.meta.url), 'utf8'));
 const venture = read('src/data/venture_rules_v1.0.json');
@@ -137,11 +137,64 @@ test('深資童軍三款制服：顏色跟手冊 P.36–41；徽章一樣（手�
   for (const v of venture.variants) assert.ok(v.garments.every((g) => g.sources.some((s) => s.ref === 'UH')));
 });
 
-test('深資童軍下身：男長褲；女預設半截裙 + 襪褲，可以改長褲 + 黑襪（綱要 P.15）', () => {
+test('深資童軍下身：男長褲；女預設半截裙 + 襪褲，可以改長褲 + 黑襪（手冊 P.50–51）', () => {
   assert.deepEqual(ventureLegwear('boy', 'skirt'), { skirt: false, laced: true, sock: COLOURS.blackSock });
   assert.deepEqual(ventureLegwear('girl', undefined), { skirt: true, laced: false, sock: COLOURS.tights });
   assert.deepEqual(ventureLegwear('girl', 'trousers'), { skirt: false, laced: true, sock: COLOURS.blackSock });
-  assert.ok(venture.conflicts.some((c) => c.id === 'girlTrousers'));
-  assert.ok(venture.conflicts.some((c) => c.id === 'tie'));
-  assert.ok(venture.conflicts.some((c) => c.id === 'airCapBadge'));
+  const tr = venture.garments.find((g) => g.id === 'trousers');
+  assert.ok(tr.sources.some((s) => s.ref === 'UH' && s.page.includes('50–51')), '女性長褲制服跟手冊 P.50–51');
+  // 用戶已確認／指出嘅項目唔再係衝突
+  for (const id of ['girlTrousers', 'tie', 'airCapBadge']) assert.ok(!venture.conflicts.some((c) => c.id === id), `${id} 已解決`);
+  for (const id of ['girlTrousers', 'tieUniform', 'airCapBadge', 'sweater']) assert.ok(venture.review.userChecks.some((u) => u.item === id), `${id} 記錄喺 userChecks`);
+});
+
+test('領帶制服（手冊 P.48、P.113）：深資童軍棗紅、深資海童軍黑、深資空童軍深藍', () => {
+  assert.match(garmentsFor(venture, 'land').find((g) => g.id === 'tie').zh.rule, /棗紅色/);
+  assert.match(garmentsFor(venture, 'sea').find((g) => g.id === 'tie').zh.rule, /黑色/);
+  assert.match(garmentsFor(venture, 'air').find((g) => g.id === 'tie').zh.rule, /深藍色/);
+  assert.equal(VENTURE_VARIANTS.land.tie, COLOURS.tieMaroon);
+  assert.equal(VENTURE_VARIANTS.sea.tie, COLOURS.tieBlack);
+  assert.equal(VENTURE_VARIANTS.air.tie, COLOURS.tieNavy);
+  // 領帶唔影響徽章
+  const a = placeFor(venture, OUTFIT).map((p) => p.key).sort();
+  const b = placeFor(venture, { ...OUTFIT, neckwear: 'tie' }).map((p) => p.key).sort();
+  assert.deepEqual(a, b);
+});
+
+test('制服毛衣（手冊 P.122）：深資童軍只戴會員章、香港章、旅章、肩章；肩章喺毛衣肩帶上', () => {
+  const sw = { ...OUTFIT, sweater: true };
+  const all = placeFor(venture, sw);
+  assert.deepEqual([...new Set(all.map((p) => p.id))].sort(), ['epaulette', 'hongKong', 'membership', 'troop']);
+  const shirt = placeFor(venture, OUTFIT);
+  for (const id of ['membership', 'hongKong']) {
+    const a = by(shirt, id), b = by(all, id);
+    assert.equal(a.x, b.x); assert.equal(a.y, b.y);
+    assert.ok(Math.abs(b.z - a.z - VEST_T) < 1e-9, `${id} 向外移一個毛衣厚度`);
+  }
+  assert.deepEqual(by(all, 'troop'), by(shirt, 'troop'), '旅章喺毛衣袖同一位置');
+  const L = layout('boy', 'venture');
+  for (const p of all.filter((x) => x.id === 'epaulette')) assert.ok(Math.abs(p.y - (L.top + SWEATER_TOP + L.B.strap.t)) < 1e-9, '肩章喺毛衣肩帶面');
+  assert.equal(shownReason(venture, sw, ALL_ON, 'district'), 'sweater');
+  assert.equal(shownReason(venture, sw, ALL_ON, 'meritorious'), 'sweater');
+  assert.equal(shownReason(venture, sw, ALL_ON, 'epaulette'), null);
+});
+
+test('制服毛衣：童軍、幼童軍都有；小隊章、地域／區章唔戴喺毛衣上', () => {
+  const scout = read('src/data/scout_rules_v1.0.json');
+  const cub = read('src/data/cub_rules_v1.0.json');
+  const grass = read('src/data/grasshopper_rules_v1.0.json');
+  for (const r of [scout, cub, venture]) {
+    assert.deepEqual(validateRules(r), []);
+    assert.ok(hasSweater(r), `${r.section.id} 有毛衣`);
+    assert.deepEqual(r.badges.filter((b) => b.sweater).map((b) => b.id).filter((id) => id !== 'epaulette').sort(), ['hongKong', 'membership', 'troop']);
+  }
+  assert.ok(!hasSweater(grass), '小童軍冇制服毛衣（手冊 P.121「小童軍除外」）');
+  const ids = new Set(placeFor(scout, { gender: 'girl', invested: true, sweater: true }).map((p) => p.id));
+  assert.deepEqual([...ids].sort(), ['hongKong', 'membership', 'troop']);
+  assert.match(garmentsFor(scout, 'sea').find((g) => g.id === 'sweater').zh.rule, /深藍色/);
+  assert.match(garmentsFor(scout, 'land').find((g) => g.id === 'sweater').zh.rule, /深草青色/);
+  // 有毛衣嘅支部，章冇寫 sweater 就 fail
+  const bad = structuredClone(scout);
+  delete bad.badges[0].sweater;
+  assert.ok(validateRules(bad).some((e) => e.includes('sweater')));
 });

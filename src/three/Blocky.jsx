@@ -3,7 +3,7 @@
 // 人物面向 +z；穿著者左 = +x。
 import { useEffect, useMemo } from 'react';
 import * as THREE from 'three';
-import { layout, neckerLayout, strapLayout, VEST_T, PX, scoutVariant, SCOUT_VARIANTS, ventureVariant, ventureLegwear } from './body.js';
+import { layout, neckerLayout, strapLayout, VEST_T, SWEATER_TOP, PX, scoutVariant, SCOUT_VARIANTS, ventureVariant, ventureLegwear } from './body.js';
 import { useTexture } from '@react-three/drei';
 import { SECTIONS, DISTRICTS, PATROLS } from '../data/rules.js';
 import { resolveArt } from '../lib/picks.js';
@@ -12,7 +12,7 @@ import { useBadgeTextures, useDynamicTextures, TorsoBadges, SleeveBadges } from 
 import {
   headFaces, pigtailFaces, neckFaces, torsoFaces, sleeveFaces, cuffFaces, skinFaces, handFaces, legFaces, shortsFaces, shinFaces,
   shoeFaces, vestFaces, hatFaces, brimFaces, shirtPalette, rollFaces, tailCanvas, backTriangleCanvas, plain, material, wogglePaint,
-  cubTorsoFaces, cubShinFaces, cubCapFaces, scoutWogglePaint, seaCapFaces,
+  cubTorsoFaces, cubShinFaces, cubCapFaces, scoutWogglePaint, seaCapFaces, shade, brighten, sweaterFaces, sweaterSleeveFaces, sweaterCuffFaces, tieCanvas,
 } from './pixels.js';
 import { COLOURS as C } from './body.js';
 
@@ -297,11 +297,16 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
   const painted = outfit.finish !== 'unpainted';
   const L = useMemo(() => layout(gender, section), [gender, section]);
   const VL = venture ? ventureLegwear(gender, outfit.ventureLegwear) : null;
-  const strap = useMemo(() => (venture ? strapLayout(L) : null), [venture, L]);
+  // 制服毛衣（手冊 P.121–122）：幼童軍、童軍、深資童軍；深草青色，海／空童軍深藍色
+  const sweater = cub && !!outfit.sweater;
+  const sweaterColour = U.sweater ?? C.sweaterGreen;
+  // 深資童軍領帶（手冊 P.48、P.113）：代替旅巾；宣誓後先戴（同旅巾一樣，待確認）
+  const tie = venture && outfit.neckwear === 'tie';
+  const strap = useMemo(() => (venture ? strapLayout(L, { sweater }) : null), [venture, L, sweater]);
   const { B } = L;
   const top = cub ? 'cub' : outfit.top ?? 'orange';
   const topColour = cub ? U.shirt : outfit.topColour ?? '#ffffff';
-  const long = !cub && outfit.sleeves === 'long';
+  const long = (!cub && outfit.sleeves === 'long') || (cub && !!outfit.sweater);
   const vest = !cub && !!outfit.vest;
   const shorts = venture ? false : cub || outfit.legwear === 'shorts';
   const legColour = cub ? U.leg : outfit.legColour ?? '#8a9099';
@@ -353,13 +358,17 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
   }, [B, L, cub, skirt]);
 
   // 衫（跟款式、顏色、袖長變）
-  const shirt = useMemo(() => ({
-    torso: cub ? cubTorsoFaces(B, { legColour, shirt: topColour }) : torsoFaces(B, top, topColour),
-    sleeve: sleeveFaces(body.sl, B.sleeve.band, top, topColour, false),
-    sleeveLong: sleeveFaces(body.slLong, B.sleeve.band, top, topColour, true),
-    cuff: cuffFaces([B.lowerArm.w + 1, B.lowerArm.h, B.lowerArm.d + 1.4], top, topColour),
-    collar: [1, 1, 1, 1, 1, 1].map(() => plain(2, 2, shirtPalette(top, topColour).collar)),
-  }), [B, body, top, topColour, cub, legColour]);
+  const shirt = useMemo(() => {
+    const cuffSize = [B.lowerArm.w + 1, B.lowerArm.h, B.lowerArm.d + 1.4];
+    return {
+      torso: cub ? cubTorsoFaces(B, { legColour, shirt: topColour }) : torsoFaces(B, top, topColour),
+      sleeve: sleeveFaces(body.sl, B.sleeve.band, top, topColour, false),
+      // 著毛衣：長袖同前臂袖改做毛衣（坑紋、膊布、袖口坑紋）
+      sleeveLong: sweater ? sweaterSleeveFaces(body.slLong, sweaterColour) : sleeveFaces(body.slLong, B.sleeve.band, top, topColour, true),
+      cuff: sweater ? sweaterCuffFaces(cuffSize, sweaterColour) : cuffFaces(cuffSize, top, topColour),
+      collar: [1, 1, 1, 1, 1, 1].map(() => plain(2, 2, shirtPalette(top, topColour).collar)),
+    };
+  }, [B, body, top, topColour, cub, legColour, sweater, sweaterColour]);
   const armFaces = useMemo(() => ({ ...body.arm, ...shirt }), [body, shirt]);
 
   // 褲、襪
@@ -386,10 +395,18 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
   const t = B.torso, h = B.head;
   const vestBox = [t.w + VEST_T * 2, t.h + 1.5, t.d + VEST_T * 2];
   const vestF = useMemo(() => (vest ? vestFaces(vestBox, outfit.vestColour ?? '#1f2f4f', B.neck.w) : null), [vest, outfit.vestColour, B, t.w]); // eslint-disable-line react-hooks/exhaustive-deps
+  // 毛衣殼同背心一樣大（頂面高過膊頭 SWEATER_TOP）
+  const sweaterF = useMemo(() => (sweater ? sweaterFaces(vestBox, sweaterColour, B.neck.w) : null), [sweater, sweaterColour, B, t.w]); // eslint-disable-line react-hooks/exhaustive-deps
+  // 領帶：結喺衣領前面；帶身貼住恤衫（著毛衣時俾毛衣遮住，手冊 P.122「領帶放在毛衣與制服恤衫之間」）
+  const tieF = useMemo(() => {
+    if (!tie) return null;
+    const len = L.top - B.waist - 1;
+    return { len, blade: tieCanvas(3.2, 6.4, len, U.tie), knot: hatFaces([3, 2.6, 1.4], shade(U.tie, 0.92)) };
+  }, [tie, L, B, U.tie]);
 
   // 旅巾（跟顏色、背心變）
   const N = useMemo(() => {
-    const G = neckerLayout(L, { vest });
+    const G = neckerLayout(L, { vest: vest || sweater });
     return {
       ...G,
       roll: {
@@ -400,12 +417,16 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
       lowerC: tailCanvas(G.tail.w, G.tail.len, outfit.neckerMain, outfit.neckerBorder, G.tail.tip),
       backC: backTriangleCanvas(G.back.w, G.back.h, outfit.neckerMain, outfit.neckerBorder),
     };
-  }, [L, vest, outfit.neckerMain, outfit.neckerBorder]);
+  }, [L, vest, sweater, outfit.neckerMain, outfit.neckerBorder]);
 
   // 童軍：啡色皮巾圈（手冊 P.110）；其他支部：顏色巾圈
   const wogFaces = useMemo(() => (leather ? scoutWogglePaint([8, 3, 1.4]) : wogglePaint([8, 2.6, 1.2], outfit.woggle)), [outfit.woggle, leather]);
   // 肩帶（恤衫色，邊深少少）
-  const strapF = useMemo(() => (strap ? hatFaces([strap.len, strap.t, strap.w], shirtPalette('cub', topColour).main) : null), [strap, topColour]);
+  // 肩帶：恤衫色；著毛衣就係毛衣膊布色（手冊 P.122 附圖）
+  const strapF = useMemo(
+    () => (strap ? hatFaces([strap.len, strap.t, strap.w], sweater ? brighten(sweaterColour, 1.75) : shirtPalette('cub', topColour).main) : null),
+    [strap, topColour, sweater, sweaterColour],
+  );
 
   const collarH = 3.6;
   const hasCollar = top !== 'tee';
@@ -428,6 +449,7 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
         <Box size={[t.w, t.h, t.d]} faces={shirt.torso} painted={painted} position={[0, t.y + t.h / 2, 0]} />
         {strap &&
           [1, -1].map((s) => <Box key={`strap${s}`} size={[strap.len, strap.t, strap.w]} faces={strapF} painted={painted} position={[s * strap.cx, strap.y, 0]} />)}
+        {sweater && <Box size={vestBox} faces={sweaterF} painted={painted} alpha position={[0, t.y - 1 + vestBox[1] / 2, 0]} />}
         {vest && <Box size={vestBox} faces={vestF} painted={painted} alpha position={[0, t.y - 1 + vestBox[1] / 2, 0]} />}
         {/* 企領（有領上衣先有；前面開口） */}
         {hasCollar && (
@@ -466,7 +488,14 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
         ))}
         {venture && skirt && <Box size={legs.skirtSize} faces={legs.skirtF} painted={painted} position={[0, (shortsBottom + B.leg.top) / 2, 0]} />}
         {/* 旅巾 + 巾圈（宣誓後先戴；戴喺衣領／背心外面） */}
-        {outfit.invested && (
+        {outfit.invested && tie && (
+          <group>
+            <Box size={[3, 2.6, 1.4]} faces={tieF.knot} painted={painted} position={[0, L.top + SWEATER_TOP + 1.4, B.neck.d / 2 + 0.9]} />
+            <Plane size={[6.4, tieF.len]} canvas={tieF.blade} painted={painted} position={[0, L.top - tieF.len / 2, t.d / 2 + 0.12]} />
+            <Box size={[3, 0.5, t.d / 2 - B.neck.d / 2]} faces={tieF.knot} painted={painted} position={[0, L.top + 0.25, (t.d / 2 + B.neck.d / 2) / 2 + 0.2]} />
+          </group>
+        )}
+        {outfit.invested && !tie && (
           <group>
             <Box size={[N.outer, N.rollH, N.rollT]} faces={N.roll.back} painted={painted} position={[0, L.top + N.rollH / 2, -(N.inner / 2 + N.rollT / 2)]} />
             {[1, -1].map((s) => (

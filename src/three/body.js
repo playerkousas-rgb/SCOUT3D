@@ -144,6 +144,13 @@ export const COLOURS = {
   tights: '#e9c2a0', // 肉色尼龍襪褲（比皮膚深少少）
   blackSock: '#1c1c20',
   capPeak: '#17171a', // 白頂帽黑色帽舌
+  // 制服毛衣（手冊 P.121–122 附圖）
+  sweaterGreen: '#353c23', // 深草青色
+  sweaterNavy: '#2c2749', // 深藍色
+  // 領帶（手冊 P.113）
+  tieMaroon: '#8e1f2c',
+  tieBlack: '#16161a',
+  tieNavy: '#262a55',
 };
 
 /**
@@ -151,9 +158,9 @@ export const COLOURS = {
  * hat：'beret' = 軟帽 + 金屬帽章；'sea' = 海童軍白頂帽 + 帽帶
  */
 export const SCOUT_VARIANTS = {
-  land: { shirt: COLOURS.cubShirt, leg: COLOURS.cubGreen, sock: COLOURS.cubSock, hat: 'beret', beret: COLOURS.beret },
-  sea: { shirt: COLOURS.seaShirt, leg: COLOURS.navy, sock: COLOURS.navySock, hat: 'sea' },
-  air: { shirt: COLOURS.airShirt, leg: COLOURS.navy, sock: COLOURS.navySock, hat: 'beret', beret: COLOURS.airBeret },
+  land: { shirt: COLOURS.cubShirt, leg: COLOURS.cubGreen, sock: COLOURS.cubSock, hat: 'beret', beret: COLOURS.beret, sweater: COLOURS.sweaterGreen },
+  sea: { shirt: COLOURS.seaShirt, leg: COLOURS.navy, sock: COLOURS.navySock, hat: 'sea', sweater: COLOURS.sweaterNavy },
+  air: { shirt: COLOURS.airShirt, leg: COLOURS.navy, sock: COLOURS.navySock, hat: 'beret', beret: COLOURS.airBeret, sweater: COLOURS.sweaterNavy },
 };
 export const scoutVariant = (id) => SCOUT_VARIANTS[id] ?? SCOUT_VARIANTS.land;
 
@@ -162,9 +169,9 @@ export const scoutVariant = (id) => SCOUT_VARIANTS[id] ?? SCOUT_VARIANTS.land;
  * hat：'beret' = 軟帽 + 童軍帽章；'seaLeader' = 海童軍男／女領袖白頂帽 + 深資海童軍帽章
  */
 export const VENTURE_VARIANTS = {
-  land: { shirt: COLOURS.cubShirt, leg: COLOURS.cubGreen, hat: 'beret', beret: COLOURS.maroon },
-  sea: { shirt: COLOURS.seaShirt, leg: COLOURS.navy, hat: 'seaLeader' },
-  air: { shirt: COLOURS.airShirt, leg: COLOURS.navy, hat: 'beret', beret: COLOURS.ventureAirBeret },
+  land: { shirt: COLOURS.cubShirt, leg: COLOURS.cubGreen, hat: 'beret', beret: COLOURS.maroon, sweater: COLOURS.sweaterGreen, tie: COLOURS.tieMaroon },
+  sea: { shirt: COLOURS.seaShirt, leg: COLOURS.navy, hat: 'seaLeader', sweater: COLOURS.sweaterNavy, tie: COLOURS.tieBlack },
+  air: { shirt: COLOURS.airShirt, leg: COLOURS.navy, hat: 'beret', beret: COLOURS.ventureAirBeret, sweater: COLOURS.sweaterNavy, tie: COLOURS.tieNavy },
 };
 export const ventureVariant = (id) => VENTURE_VARIANTS[id] ?? VENTURE_VARIANTS.land;
 
@@ -177,14 +184,21 @@ export function ventureLegwear(gender, choice) {
   return { skirt, laced: !skirt, sock: skirt ? COLOURS.tights : COLOURS.blackSock };
 }
 
-/** 肩帶 + 深資童軍肩章（cm）：肩帶由膊頭邊（torso 邊）向衣領；肩章方頭（徽號）近膊頭 */
-export function strapLayout(L) {
+/** 制服毛衣（手冊 P.121–122）：同背心一樣嘅殼（每邊厚 VEST_T），頂面高過膊頭 SWEATER_TOP cm */
+export const SWEATER_TOP = 0.5;
+
+/**
+ * 肩帶 + 深資童軍肩章（cm）：肩帶由膊頭邊（torso 邊）向衣領；肩章方頭（徽號）近膊頭。
+ * 著制服毛衣：肩章改戴喺毛衣雙肩肩帶上（手冊 P.122），所以高 SWEATER_TOP、闊 VEST_T。
+ */
+export function strapLayout(L, { sweater = false } = {}) {
   const { B, top } = L;
   const S = B.strap;
   if (!S) return null;
-  const outer = B.torso.w / 2; // 膊頭邊
+  const outer = B.torso.w / 2 + (sweater ? VEST_T : 0); // 膊頭邊
   const inner = B.neck.w / 2 + 1.75; // 衣領外圍
-  return { w: S.w, t: S.t, outer, inner, len: outer - inner, y: top + S.t / 2, cx: (outer + inner) / 2 };
+  const base = top + (sweater ? SWEATER_TOP : 0);
+  return { w: S.w, t: S.t, outer, inner, len: outer - inner, base, y: base + S.t / 2, cx: (outer + inner) / 2 };
 }
 
 /** 計出每個部件嘅大細同位置（cm）。 */

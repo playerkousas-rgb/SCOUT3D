@@ -43,7 +43,7 @@ export const PROGRESS_GRID = [
  * 計出所有徽章嘅位置（就算未開都計，方便測試同聚焦）。
  * @returns {Array<{key,id,mount,shape,w,h,x?,y?,u?,v?,art,step?}>}
  */
-export function placeAll(rules, gender) {
+export function placeAll(rules, gender, { sweater = false } = {}) {
   const section = sectionOf(rules);
   const { B, top } = layout(gender, section);
   const face = sleeveFace(gender, section);
@@ -60,7 +60,7 @@ export function placeAll(rules, gender) {
     if (a.part === 'shoulder') {
       // 深資童軍肩章：套喺雙肩肩帶上（手冊 P.145、P.170）。方頭（圖案左、徽號）近膊頭，圓頭近衣領。
       // 右膊（-x）：圖案右 = +x（向衣領）、圖案上 = 向後；左膊（+x）係同一款章轉 180°。
-      const S = strapLayout(layout(gender, section));
+      const S = strapLayout(layout(gender, section), { sweater });
       if (!S) throw new Error(`徽章 ${b.id} 要肩帶，但呢個身形冇肩帶`);
       // 有 choices 就每個有圖案嘅選項各出一對（visible() 按揀咗邊個顯示）
       const opts = b.choices ? b.choices.filter((c) => c.art).map((c) => ({ choice: c.id, art: c.art.file })) : [{ art }];
@@ -68,7 +68,7 @@ export function placeAll(rules, gender) {
         for (const [k, sx] of [['l', 1], ['r', -1]]) {
           out.push({
             key: [b.id, o.choice, k].filter(Boolean).join('-'), id: b.id, mount: 'torso', facing: 'up', shape, w, h,
-            x: sx * (S.outer - 0.3 - w / 2), y: top + S.t, z: 0,
+            x: sx * (S.outer - 0.3 - w / 2), y: S.base + S.t, z: 0,
             rot: sx > 0 ? [Math.PI / 2, Math.PI, 0] : [-Math.PI / 2, 0, 0],
             art: o.art, ...(o.choice ? { choice: o.choice } : {}), ...(b.needsInvestiture ? { inv: true } : {}),
           });
@@ -194,10 +194,21 @@ export function placeFor(rules, outfit) {
   const gender = outfit.gender === 'girl' ? 'girl' : 'boy';
   const vest = !!outfit.vest;
   if (outfit.school) return placeSchool(rules, gender, outfit.schoolLayout, { vest });
+  if (outfit.sweater && hasSweater(rules)) {
+    // 制服毛衣（手冊 P.122）：只戴世界童軍會員章、香港章、旅章（「或制服毛衣相同位置」）同深資童軍肩章；
+    // 其他章唔可以戴喺毛衣上。胸前章向外移一個毛衣厚度；袖章喺毛衣袖同一位置。
+    const ok = new Set(rules.badges.filter((b) => b.sweater === true).map((b) => b.id));
+    return placeAll(rules, gender, { sweater: true })
+      .filter((p) => ok.has(p.id))
+      .map((p) => (p.mount === 'torso' && p.facing !== 'up' ? { ...p, z: p.z + VEST_T } : p));
+  }
   return placeAll(rules, gender)
     .filter((p) => !(vest && p.id === 'commemorative'))
     .map((p) => (vest && p.id === 'membership' ? { ...p, z: p.z + VEST_T } : p));
 }
+
+/** 呢個支部有冇制服毛衣（規則 JSON 有 sweater 衣物） */
+export const hasSweater = (rules) => (rules.garments || []).some((g) => g.id === 'sweater');
 
 /**
  * 按開關揀返要顯示嘅章。
@@ -217,7 +228,7 @@ export function visible(placements, state, { invested, school = false, unavailab
 /** 某個章喺而家嘅服裝會唔會顯示，同埋點解唔顯示 */
 export function shownReason(rules, outfit, state, id, { unavailable = [] } = {}) {
   const all = placeFor(rules, outfit);
-  if (!all.some((p) => p.id === id)) return outfit.school ? 'school' : 'vest';
+  if (!all.some((p) => p.id === id)) return outfit.school ? 'school' : outfit.sweater && hasSweater(rules) ? 'sweater' : 'vest';
   if (visible(all, state, { invested: outfit.invested, school: outfit.school, unavailable }).some((p) => p.id === id)) return null;
   if (outfit.school && !outfit.invested) return 'schoolUninvested';
   if ((id === 'membership' || all.some((p) => p.id === id && p.inv)) && !outfit.invested) return 'uninvested';

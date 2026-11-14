@@ -503,6 +503,90 @@ export function backTriangleCanvas(wcm, hcm, main, border) {
   });
 }
 
+/* ---------------- 制服毛衣、領帶（手冊 P.113、P.121–122） ---------------- */
+/** 調光（唔混白色，保持色相）：膊布用 */
+export const brighten = (hex, k) => {
+  const n = parseInt(hex.slice(1), 16);
+  const ch = (v) => Math.min(255, Math.round(v * k));
+  return `#${((ch((n >> 16) & 255) << 16) | (ch((n >> 8) & 255) << 8) | ch(n & 255)).toString(16).padStart(6, '0')}`;
+};
+
+/** 毛衣坑紋：每 1 cm 一條深色直線 */
+const ribs = (g, ww, hh, dark, y0 = 0) => { for (let x = 0.5; x < ww; x += 1) g.rect(x, y0, 0.3, hh - y0, dark); };
+
+/**
+ * 制服毛衣上身（同背心一樣嘅殼）：深草青色／深藍色、坑紋、圓領（頂面透明見到恤衫領）、
+ * 膊頭淺色膊布（附圖）、坑紋衫腳。前面同頂面有透明位，要用 alpha 材質。
+ */
+export function sweaterFaces(size, colour, neck) {
+  const [w, h, d] = size;
+  const dark = shade(colour, 0.8);
+  const patch = brighten(colour, 1.75); // 膊布（附圖較淺色）
+  const cx = w / 2;
+  const hole = neck / 2 + 1.2;
+  const band = 3.5; // 衫腳坑紋
+  const body = (ww) => (g) => {
+    ribs(g, ww, h, dark);
+    g.rect(0, h - band, ww, band, shade(colour, 0.9));
+    ribs(g, ww, h, shade(colour, 0.7), h - band);
+    g.rect(0, 0, ww, 3.5, patch);
+    g.rect(0, 3.5, ww, 0.4, dark);
+  };
+  return boxFaces(size, {
+    pz: (g) => {
+      body(w)(g);
+      g.rect(cx - hole - 1, 0, (hole + 1) * 2, 1, dark); // 領口坑紋
+    },
+    nz: body(w),
+    px: body(d),
+    nx: body(d),
+    py: (g) => {
+      g.fill(patch);
+      g.shape((x, y) => Math.abs(x - cx) < hole + 1 && Math.abs(y - d / 2) < hole + 1, dark); // 領口坑紋
+      g.clear((x, y) => Math.abs(x - cx) < hole && Math.abs(y - d / 2) < hole);
+    },
+    ny: (g) => g.fill(dark),
+  }, colour);
+}
+
+/** 毛衣長袖（上袖）：坑紋；頂 3 cm 膊布 */
+export function sweaterSleeveFaces(size, colour) {
+  const [w, h, d] = size;
+  const dark = shade(colour, 0.8);
+  const patch = brighten(colour, 1.75);
+  const f = (ww) => (g) => {
+    ribs(g, ww, h, dark);
+    g.rect(0, 0, ww, 3, patch);
+  };
+  return boxFaces(size, { px: f(d), nx: f(d), pz: f(w), nz: f(w), py: (g) => g.fill(patch) }, colour);
+}
+
+/** 毛衣前臂袖：坑紋 + 袖口坑紋 */
+export function sweaterCuffFaces(size, colour) {
+  const [w, h, d] = size;
+  const dark = shade(colour, 0.8);
+  const f = (ww) => (g) => {
+    ribs(g, ww, h, dark);
+    g.rect(0, h - 3, ww, 3, shade(colour, 0.9));
+    ribs(g, ww, h, shade(colour, 0.7), h - 3);
+  };
+  return boxFaces(size, { px: f(d), nx: f(d), pz: f(w), nz: f(w), ny: (g) => g.fill(dark) }, colour);
+}
+
+/** 領帶（手冊 P.113）：上窄下闊，尖頭；中間一條淺少少嘅摺線 */
+export function tieCanvas(wTop, wBottom, len, colour) {
+  return canvas(wBottom, len, (g) => {
+    const half = (y) => (wTop + (wBottom - wTop) * Math.min(1, y / (len - wBottom / 2))) / 2;
+    const tip = wBottom / 2;
+    g.shape((x, y) => {
+      const dx = Math.abs(x - wBottom / 2);
+      if (y > len - tip) return dx < (len - y);
+      return dx < half(y);
+    }, colour);
+    g.shape((x, y) => y < len - tip && Math.abs(x - wBottom / 2) < 0.25, shade(colour, 1.18));
+  });
+}
+
 export const plain = (w, h, color) => solid(w, h, color);
 
 /** 巾圈：一個環（前面畫出中間窿位，見到後面嘅旅巾） */
