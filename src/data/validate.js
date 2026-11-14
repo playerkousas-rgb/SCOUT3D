@@ -5,6 +5,9 @@ const STATUSES = new Set(['documented', 'pending', 'verified']);
 const SIDES = new Set(['left', 'right', 'centre']);
 const SHAPES = new Set(['circle', 'square', 'rect']);
 const PARTS = new Set(['torso', 'sleeve']);
+const DYNAMIC = new Set(['district', 'region', 'meritorious']);
+const POCKET = new Set(['centre', 'aboveFlap']);
+const TOWARDS = new Set(['front', 'back']);
 
 function bilingual(obj, keys, where, errors) {
   for (const lang of ['zh', 'en']) {
@@ -68,21 +71,27 @@ export function validateRules(rules) {
     if (a.side !== b.side) errors.push(`${w}: anchor.side 同「side」唔一致`);
     if (a.belowBadge && !badgeIds.has(a.belowBadge)) errors.push(`${w}: belowBadge 指向不存在嘅章`);
     if (a.aboveBadge && !badgeIds.has(a.aboveBadge)) errors.push(`${w}: aboveBadge 指向不存在嘅章`);
+    if (a.part === 'torso' && a.pocket == null && !(Number.isFinite(a.xCm) && Number.isFinite(a.fromTopCm))) errors.push(`${w}: 上身位置要有 xCm + fromTopCm 或 pocket`);
+    if (a.pocket != null && !POCKET.has(a.pocket)) errors.push(`${w}: anchor.pocket 錯`);
+    if (a.towards != null && (!TOWARDS.has(a.towards) || !(a.offsetCm > 0))) errors.push(`${w}: anchor.towards 要係 front/back 兼有 offsetCm`);
+    if (b.dynamic != null && !DYNAMIC.has(b.dynamic)) errors.push(`${w}: dynamic 錯`);
     // 圖案一定要來自官方文件（唔可以自己設計）
     const arts = Array.isArray(b.art) ? b.art : b.art ? [b.art] : [];
     if (!arts.length) errors.push(`${w}: 冇徽章圖案（art）`);
     for (const art of arts) {
-      if (!/^\/badges\/[\w-]+\.png$/.test(art.file || '')) errors.push(`${w}: art.file 格式錯`);
+      if (!/^\/badges\/(districts\/)?[\w-]+\.png$/.test(art.file || '')) errors.push(`${w}: art.file 格式錯`);
       if (!sources[art.ref] || !art.page) errors.push(`${w}: art 要寫官方文件來源同頁碼`);
     }
   }
 
   const st = rules.schoolTop;
-  if (!st) errors.push('缺「schoolTop」');
-  else {
+  if (!st && rules.section?.id === 'grasshopper') errors.push('缺「schoolTop」');
+  else if (st) {
     bilingual(st, ['name', 'place', 'quote'], 'schoolTop', errors);
     checkSources(st.sources, sources, 'schoolTop', errors);
   }
+  if (!rules.uninvested?.zh || !rules.uninvested?.en) errors.push('缺「uninvested」');
+  if (!rules.artCredit?.zh || !rules.artCredit?.en) errors.push('缺「artCredit」');
   for (const n of rules.notAllowed || []) {
     if (!n.zh || !n.en) errors.push(`notAllowed ${n.id}: 缺中英`);
     checkSources(n.sources, sources, `notAllowed ${n.id}`, errors);

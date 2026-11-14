@@ -152,9 +152,10 @@ export function shade(hex, f) {
   return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`;
 }
 
-/** 上衣配色：orange = 橙色活動服（白領、白袖邊）；polo / tee = 單色 */
+/** 上衣配色：orange = 橙色活動服（白領、白袖邊）；cub = 幼童軍杏色恤衫；polo / tee = 單色 */
 export function shirtPalette(top, colour) {
   if (top === 'orange') return { main: C.shirt, dark: C.shirtShade, trim: C.trim, collar: C.trim };
+  if (top === 'cub') return { main: C.cubShirt, dark: C.cubShirtShade, trim: C.cubShirtShade, collar: shade(C.cubShirt, 1.04) };
   const dark = shade(colour, colour === '#ffffff' ? 0.86 : 0.8);
   return { main: colour, dark, trim: dark, collar: shade(colour, colour === '#ffffff' ? 0.95 : 0.92) };
 }
@@ -219,7 +220,16 @@ export function sleeveFaces(size, band, top = 'orange', colour = C.shirt, long =
   const [w, h, d] = size;
   const P = shirtPalette(top, colour);
   const cuff = top === 'orange' ? band : 0.75;
-  const f = (ww) => (g) => { if (!long) g.rect(0, h - cuff, ww, cuff, P.trim); };
+  const f = (ww) => (g) => {
+    if (long) return;
+    if (top === 'cub') {
+      // 摺邊：袖口縫線（離袖口 band cm）+ 袖口邊
+      g.rect(0, h - band, ww, 0.5, P.dark);
+      g.rect(0, h - 0.5, ww, 0.5, P.dark);
+      return;
+    }
+    g.rect(0, h - cuff, ww, cuff, P.trim);
+  };
   return boxFaces([w, h, d], { px: f(d), nx: f(d), pz: f(w), nz: f(w), py: () => {}, ny: (g) => g.fill(long ? P.main : P.trim) }, P.main);
 }
 
@@ -316,9 +326,9 @@ export function shinFaces(size, sockH, sockColour) {
   return boxFaces(size, { px: f(d), nx: f(d), pz: f(w), nz: f(w), ny: (g) => g.fill(sockColour) }, C.skin);
 }
 
-export function shoeFaces(size) {
+export function shoeFaces(size, { colour = C.shoe, sole: soleC = C.sole, lace = C.lace } = {}) {
   const [w, h, d] = size;
-  const sole = (ww) => (g) => g.rect(0, h - 1.5, ww, 1.5, C.sole);
+  const sole = (ww) => (g) => g.rect(0, h - 1.5, ww, 1.5, soleC);
   return boxFaces(
     size,
     {
@@ -326,11 +336,128 @@ export function shoeFaces(size) {
       nx: sole(d),
       pz: sole(w),
       nz: sole(w),
-      py: (g) => { for (let i = 0; i < 4; i++) g.rect(w / 2 - 2, d * 0.45 + i * 1.5, 4, 0.5, C.lace); },
-      ny: (g) => g.fill(C.sole),
+      py: (g) => { for (let i = 0; i < 4; i++) g.rect(w / 2 - 2, d * 0.45 + i * 1.5, 4, 0.5, lace); },
+      ny: (g) => g.fill(soleC),
     },
-    C.shoe,
+    colour,
   );
+}
+
+/* ---------------- 幼童軍 ---------------- */
+/** 尖領兩片（cx = 中線，nw = 頸闊） */
+function drawCollar(g, cx, nw, fill, outline) {
+  const inside = (x, y, grow = 0) => {
+    const dx = Math.abs(x - cx);
+    return y < 6.5 + grow && dx > 0.4 - grow && dx < nw / 2 + 4 + grow - y * 0.3 && dx > (y - 0.5) * 0.5 - grow;
+  };
+  g.shape((x, y) => inside(x, y, 0.5), outline);
+  g.shape((x, y) => inside(x, y), fill);
+}
+
+/**
+ * 幼童軍恤衫（塞入褲）：杏色、兩胸袋、肩帶、門襟鈕；
+ * 上身方塊最底嗰截畫做短褲 + 棕色皮帶（belt = 皮帶中心離衫腳幾高，cm）。
+ */
+export function cubTorsoFaces(B, { legColour = C.cubGreen } = {}) {
+  const { w, h, d } = B.torso;
+  const P = shirtPalette('cub', C.cubShirt);
+  const nw = B.neck.w, cx = w / 2;
+  const beltMid = h - (B.waist - B.torso.y); // 由頂量
+  const beltH = 3;
+  const lower = (ww, front = false) => (g) => {
+    g.rect(0, beltMid + beltH / 2, ww, h - beltMid - beltH / 2, legColour);
+    g.rect(0, beltMid - beltH / 2, ww, beltH, C.belt);
+    g.rect(0, beltMid - beltH / 2, ww, 0.5, shade(C.belt, 0.75));
+    g.rect(0, beltMid - beltH / 2 - 0.5, ww, 0.5, P.dark); // 塞入褲嘅摺位
+    if (front) {
+      g.rect(cx - 2.5, beltMid - 2, 5, 4, C.buckle); // 皮帶扣（示意）
+      g.rect(cx - 1.8, beltMid - 1.3, 3.6, 2.6, shade(C.buckle, 0.82));
+      g.rect(cx - 0.25, beltMid + beltH / 2, 0.5, h, shade(legColour, 0.85)); // 褲頭中線
+    } else {
+      for (const x of [ww * 0.2, ww * 0.8]) g.rect(x - 0.5, beltMid - beltH / 2, 1, beltH, shade(C.belt, 0.8)); // 褲耳
+    }
+  };
+  const pocket = (g, px) => {
+    const Q = B.pocket;
+    const x0 = px - Q.w / 2;
+    g.rect(x0, Q.top, Q.w, Q.h, P.dark);
+    g.rect(x0 + 0.5, Q.top + 0.5, Q.w - 1, Q.h - 1, P.main);
+    g.shape((x, y) => y > Q.top && y < Q.top + Q.flap + 1.2 && x > x0 && x < x0 + Q.w && y - Q.top < Q.flap + 1.2 - (Math.abs(x - px) / (Q.w / 2)) * 1.2, P.dark); // 袋蓋（中間尖）
+    g.shape((x, y) => y > Q.top + 0.5 && x > x0 + 0.5 && x < x0 + Q.w - 0.5 && y - Q.top < Q.flap + 0.7 - (Math.abs(x - px) / (Q.w / 2)) * 1.2, shade(P.main, 1.03));
+    g.rect(px - 0.75, Q.top + Q.flap - 0.5, 1.5, 1.5, '#d9d2bf'); // 鈕
+  };
+  const front = (g) => {
+    g.rect(cx - 1.25, 4, 2.5, beltMid - 4, P.main); // 門襟
+    g.rect(cx - 1.25, 4, 0.5, beltMid - 4, P.dark);
+    for (let y = 9; y < beltMid - 3; y += 6.5) g.rect(cx - 0.5, y, 1, 1, '#d9d2bf');
+    pocket(g, cx + B.pocket.x); // 穿著者左（望落去右手邊）
+    pocket(g, cx - B.pocket.x);
+    drawCollar(g, cx, nw, P.collar, P.dark);
+    lower(w, true)(g);
+  };
+  return boxFaces(
+    [w, h, d],
+    {
+      pz: front,
+      nz: (g) => {
+        g.rect(0, 9, w, 0.5, P.dark); // 背後膊頭擔干
+        g.rect(cx - nw / 2 - 2.5, 0, nw + 5, 2, P.collar);
+        g.rect(cx - nw / 2 - 2.5, 2, nw + 5, 0.5, P.dark);
+        lower(w)(g);
+      },
+      px: (g) => { g.rect(0, 0, d, 0.5, P.dark); lower(d)(g); },
+      nx: (g) => { g.rect(0, 0, d, 0.5, P.dark); lower(d)(g); },
+      py: (g) => {
+        // 領圈 + 肩帶（由領去到膊頭邊，近領嗰頭有粒鈕）
+        g.shape((x, y) => Math.abs(x - cx) < nw / 2 + 2 && Math.abs(y - d / 2) < B.neck.d / 2 + 2, P.collar);
+        for (const sx of [-1, 1]) {
+          const x0 = sx < 0 ? 0 : cx + nw / 2 + 2.5;
+          const len = cx - nw / 2 - 2.5;
+          g.rect(x0, d / 2 - 2, len, 4, P.dark);
+          g.rect(x0 + 0.3, d / 2 - 1.6, len - 0.6, 3.2, shade(P.main, 1.02));
+          g.rect(sx < 0 ? x0 + len - 2 : x0 + 1, d / 2 - 0.6, 1.2, 1.2, '#d9d2bf');
+        }
+      },
+      ny: (g) => g.fill(legColour),
+    },
+    P.main,
+  );
+}
+
+/** 幼童軍長襪：深草青色、直坑紋、襪頭摺下（sockH = 襪由腳底量起幾高） */
+export function cubShinFaces(size, sockH) {
+  const [w, h, d] = size;
+  const turn = 3;
+  const f = (ww) => (g) => {
+    g.rect(0, h - sockH, ww, sockH, C.cubSock);
+    for (let x = 0.75; x < ww; x += 1.5) g.rect(x, h - sockH + turn, 0.5, sockH - turn - 1, shade(C.cubSock, 0.85)); // 直坑紋
+    g.rect(0, h - sockH, ww, turn, shade(C.cubSock, 1.12)); // 摺落嚟嘅襪頭
+    g.rect(0, h - sockH + turn - 0.5, ww, 0.5, shade(C.cubSock, 0.7));
+  };
+  return boxFaces(size, { px: f(d), nx: f(d), pz: f(w), nz: f(w), ny: (g) => g.fill(C.cubSock) }, C.skin);
+}
+
+/** 幼童軍帽身：kind = 'cap'（男，黃間條鴨舌帽）／'round'（女，圓形有邊帽） */
+export function cubCapFaces(size, kind) {
+  const [w, h, d] = size;
+  const G = C.capGreen, Y = C.capPiping;
+  if (kind === 'round') {
+    const side = (ww) => (g) => { g.rect(0, h - 1.5, ww, 1.5, shade(G, 0.75)); };
+    return boxFaces(size, { px: side(d), nx: side(d), pz: side(w), nz: side(w), ny: (g) => g.fill(shade(G, 0.7)) }, G);
+  }
+  const side = (ww) => (g) => {
+    for (const x of [ww * 0.25, ww * 0.5, ww * 0.75]) g.rect(x - 0.3, 0, 0.6, h, Y); // 間條
+    g.rect(0, h - 0.6, ww, 0.6, Y);
+  };
+  return boxFaces(size, {
+    px: side(d), nx: side(d), pz: side(w), nz: side(w),
+    py: (g) => {
+      g.rect(w / 2 - 0.3, 0, 0.6, d, Y);
+      g.rect(0, d / 2 - 0.3, w, 0.6, Y);
+      g.rect(w / 2 - 1, d / 2 - 1, 2, 2, Y); // 帽頂鈕
+    },
+    ny: (g) => g.fill(shade(G, 0.7)),
+  }, G);
 }
 
 /* ---------------- 旅巾、巾圈 ---------------- */

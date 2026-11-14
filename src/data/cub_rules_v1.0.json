@@ -1,0 +1,603 @@
+{
+  "fileVersion": "v1.0",
+  "copyright": "© SCOUT SYSTEM",
+  "section": {
+    "id": "cub",
+    "zh": "幼童軍",
+    "en": "Cub Scouts"
+  },
+  "organisation": {
+    "zh": "香港童軍總會",
+    "en": "Scout Association of Hong Kong"
+  },
+  "review": {
+    "status": "pending",
+    "reviewer": {
+      "zh": "專案負責人（領袖）",
+      "en": "Project owner (leader)"
+    },
+    "lastChecked": null,
+    "compiledOn": "2026-11-14",
+    "note": {
+      "zh": "以下內容由 AI 助手依文件整理，未經核對人逐項確認；確認後請把每項 status 改為 verified 並填 lastChecked。",
+      "en": "Compiled from the documents by an AI assistant and not yet confirmed item by item. After review, set each status to verified and fill lastChecked."
+    },
+    "userChecks": []
+  },
+  "sources": {
+    "UH": {
+      "zh": "香港童軍總會《儀容與制服手冊》",
+      "en": "SAHK Uniform Handbook (Chinese edition)",
+      "edition": {
+        "zh": "網上版（含 2026-01-01 第 04/2026 號通告制服帽修訂）；P.26–29 幼童軍制服，P.92–95 基本徽章，P.98 幼童軍帽，P.159 優異旅團章，P.168 幼童軍徽章佩戴圖",
+        "en": "Online edition incl. Circular 04/2026 (1 Jan 2026) cap amendment; pp.26–29 Cub uniform, pp.92–95 basic badges, p.98 Cub caps, p.159 Meritorious Group Badge, p.168 Cub badge chart"
+      },
+      "url": "https://www.scout.org.hk/uniformhandbook"
+    },
+    "CTS": {
+      "zh": "《幼童軍支部訓練綱要》",
+      "en": "Cub Scout Section Training Scheme",
+      "edition": {
+        "zh": "2026 年 8 月 9 日版；第 6–7 頁制服及「制服標誌及徽章佩戴」圖",
+        "en": "9 August 2026 edition; pp.6–7 uniform and badge chart"
+      },
+      "url": null
+    },
+    "WEB": {
+      "zh": "香港童軍總會網頁「地域及區」",
+      "en": "SAHK “Regions and Districts” page",
+      "edition": {
+        "zh": "2026-11-14 擷取",
+        "en": "Retrieved 2026-11-14"
+      },
+      "url": "https://www.scout.org.hk/tc/scout-units/regions-districts/index.html"
+    }
+  },
+  "garments": [
+    {
+      "id": "hat",
+      "required": true,
+      "zh": {
+        "name": "帽",
+        "rule": "男團員：深綠色黃間條鴨舌帽；女團員：深綠色圓形有邊帽（後面蝴蝶結）。帽冠已縫上布質帽章，帽徽朝前戴。宣誓後纔可佩戴。"
+      },
+      "en": {
+        "name": "Cap / hat",
+        "rule": "Boys: dark green peaked cap with yellow piping. Girls: dark green round brimmed hat (bow at the back). The cloth cap badge is sewn on; wear it facing front. Worn only after investiture."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "28, 98"
+        },
+        {
+          "ref": "CTS",
+          "page": "6–7"
+        }
+      ],
+      "status": "documented",
+      "modelNote": {
+        "zh": "帽章圖案取自《幼童軍支部訓練綱要》P.7 附圖（細圖放大，會有啲矇）。",
+        "en": "The cap badge artwork is from the Training Scheme p.7 figure (a small image enlarged, so slightly blurry)."
+      }
+    },
+    {
+      "id": "shirt",
+      "required": true,
+      "zh": {
+        "name": "恤衫",
+        "rule": "杏色、短袖、兩胸袋、無褶、肩帶。"
+      },
+      "en": {
+        "name": "Shirt",
+        "rule": "Beige, short sleeves, two chest pockets, no pleats, shoulder straps."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "28"
+        },
+        {
+          "ref": "CTS",
+          "page": "6–7"
+        }
+      ],
+      "status": "documented"
+    },
+    {
+      "id": "shorts",
+      "required": true,
+      "zh": {
+        "name": "短褲／裙褲",
+        "rule": "男團員：草青色短褲，兩斜袋、兩後袋、有褶。女團員：草青色裙褲，側袋、弓字褶。"
+      },
+      "en": {
+        "name": "Shorts / culottes",
+        "rule": "Boys: grass-green shorts, two slanted pockets, two back pockets, pleated. Girls: grass-green culottes, side pockets, box pleat."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "28"
+        },
+        {
+          "ref": "CTS",
+          "page": "6–7"
+        }
+      ],
+      "status": "documented",
+      "modelNote": {
+        "zh": "手冊 P.28 註：舊款短褲／長褲仍可穿著，直至破舊或有需要更換為止。",
+        "en": "Handbook p.28 note: the old shorts/trousers may still be worn until worn out."
+      }
+    },
+    {
+      "id": "belt",
+      "required": true,
+      "zh": {
+        "name": "皮帶",
+        "rule": "棕色（連童軍徽皮帶扣）。"
+      },
+      "en": {
+        "name": "Belt",
+        "rule": "Brown, with the Scout badge buckle."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "28"
+        },
+        {
+          "ref": "CTS",
+          "page": "6–7"
+        }
+      ],
+      "status": "documented",
+      "modelNote": {
+        "zh": "皮帶扣只畫銀色方塊示意，冇畫徽號。",
+        "en": "The buckle is a plain silver block; the emblem is not drawn."
+      }
+    },
+    {
+      "id": "socks",
+      "required": true,
+      "zh": {
+        "name": "長襪",
+        "rule": "深草青色、直坑紋、襪頭摺下。"
+      },
+      "en": {
+        "name": "Long socks",
+        "rule": "Dark grass green, vertical ribs, turned-down tops."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "28"
+        },
+        {
+          "ref": "CTS",
+          "page": "6–7"
+        }
+      ],
+      "status": "documented"
+    },
+    {
+      "id": "shoes",
+      "required": true,
+      "zh": {
+        "name": "皮鞋",
+        "rule": "黑色、無花紋、縛帶、低筒、平底。"
+      },
+      "en": {
+        "name": "Shoes",
+        "rule": "Black leather, plain, laced, low-cut, flat."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "28"
+        },
+        {
+          "ref": "CTS",
+          "page": "6–7"
+        }
+      ],
+      "status": "documented"
+    },
+    {
+      "id": "necker",
+      "required": true,
+      "zh": {
+        "name": "領巾",
+        "rule": "旅巾（連顏色巾圈）。宣誓後纔可佩戴。"
+      },
+      "en": {
+        "name": "Neckerchief",
+        "rule": "Group neckerchief with colour woggle. Worn only after investiture."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "26, 28, 110"
+        },
+        {
+          "ref": "CTS",
+          "page": "6–7"
+        }
+      ],
+      "status": "documented",
+      "modelNote": {
+        "zh": "旅巾顏色由各旅自定，模型可自選；預設跟附圖用綠色。",
+        "en": "Neckerchief colours are set by each Group; pick them in the model. Default is green as in the figures."
+      }
+    }
+  ],
+  "badges": [
+    {
+      "id": "membership",
+      "required": true,
+      "needsInvestiture": true,
+      "side": "left",
+      "zh": {
+        "name": "世界童軍會員章",
+        "place": "穿著者左胸袋中央。",
+        "quote": "童軍成員佩戴在制服恤衫……左胸袋中央位置，或制服毛衣相同位置。童軍成員宣誓後纔可佩戴。",
+        "conditions": "宣誓後纔可佩戴。"
+      },
+      "en": {
+        "name": "World Membership Badge",
+        "place": "Centre of the wearer's left chest pocket.",
+        "quote": "Worn centred on the left chest pocket of the uniform shirt, or the same position on the uniform sweater. Worn only after investiture.",
+        "conditions": "Worn only after investiture."
+      },
+      "size": {
+        "shape": "circle",
+        "wCm": 4,
+        "hCm": 4,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "side": "left",
+        "pocket": "centre",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "26, 28, 92, 168"
+        },
+        {
+          "ref": "CTS",
+          "page": "7"
+        }
+      ],
+      "status": "documented",
+      "art": {
+        "file": "/badges/world_membership.png",
+        "ref": "UH",
+        "page": "92",
+        "example": false
+      },
+      "modelNote": {
+        "zh": "手冊冇寫尺寸；模型用直徑 4 cm，按 P.93 附圖同胸袋嘅比例。",
+        "en": "No size in the Handbook; the model uses 4 cm diameter, from its proportion to the pocket in the p.93 figure."
+      }
+    },
+    {
+      "id": "hongKong",
+      "required": true,
+      "side": "left",
+      "zh": {
+        "name": "香港章",
+        "place": "穿著者左胸袋袋蓋上方 3 釐米，置中。",
+        "quote": "幼童軍、童軍及深資童軍佩戴在制服恤衫左胸袋袋蓋上方三釐米中央位置，或制服毛衣相同位置。",
+        "conditions": "基本徽章。"
+      },
+      "en": {
+        "name": "Hong Kong Badge",
+        "place": "Centred 3 cm above the flap of the wearer's left chest pocket.",
+        "quote": "Cub Scouts, Scouts and Venture Scouts wear it centred 3 cm above the left chest pocket flap of the uniform shirt, or the same position on the sweater.",
+        "conditions": "Basic badge."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 4,
+        "hCm": 5.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "side": "left",
+        "pocket": "aboveFlap",
+        "gapCm": 3,
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "26, 28, 93, 168"
+        },
+        {
+          "ref": "CTS",
+          "page": "7"
+        }
+      ],
+      "status": "documented",
+      "art": {
+        "file": "/badges/hong_kong_badge.png",
+        "ref": "UH",
+        "page": "93",
+        "example": false
+      },
+      "modelNote": {
+        "zh": "手冊冇寫尺寸；模型用 4 × 5.6 cm（跟 P.93 圖案比例）。",
+        "en": "No size in the Handbook; the model uses 4 × 5.6 cm (the p.93 artwork's proportions)."
+      }
+    },
+    {
+      "id": "troop",
+      "required": true,
+      "side": "right",
+      "zh": {
+        "name": "旅章",
+        "place": "穿著者右袖，肩膊縫線下方 2 釐米，置中。",
+        "quote": "旅成員佩戴在制服恤衫……右袖肩膊位下方二釐米中央位置，或制服毛衣相同位置。",
+        "conditions": "基本徽章；由所屬旅提供。"
+      },
+      "en": {
+        "name": "Group Badge",
+        "place": "Wearer's right sleeve, centred 2 cm below the shoulder seam.",
+        "quote": "Group members wear it centred 2 cm below the shoulder on the right sleeve of the uniform shirt, or the same position on the sweater.",
+        "conditions": "Basic badge; supplied by the Group."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 9,
+        "hCm": 2.2,
+        "measured": true,
+        "ref": "UH",
+        "page": "94"
+      },
+      "anchor": {
+        "part": "sleeve",
+        "side": "right",
+        "fromShoulderCm": 2,
+        "edge": "top",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "26, 28, 94, 168"
+        },
+        {
+          "ref": "CTS",
+          "page": "7"
+        }
+      ],
+      "status": "documented",
+      "art": {
+        "file": "/badges/handbook_example_troop.png",
+        "ref": "UH",
+        "page": "25",
+        "example": true
+      },
+      "modelNote": {
+        "zh": "手冊 P.94：新成立旅嘅旅章不小過 8.5 × 2 cm、不大過 10.5 × 2.5 cm；模型用 9 × 2.2 cm。圖案係手冊示例（2222 旅），各旅實際圖案唔同。",
+        "en": "Handbook p.94: a new Group's badge is between 8.5 × 2 cm and 10.5 × 2.5 cm; the model uses 9 × 2.2 cm. The artwork is the handbook example (2222th Group); each Group's badge differs."
+      }
+    },
+    {
+      "id": "region",
+      "required": true,
+      "side": "right",
+      "dynamic": "region",
+      "zh": {
+        "name": "地域章",
+        "place": "穿著者右袖，旅章下方 2 釐米；地域章在前（靠穿著者前面），區章在後，兩章相距 1 釐米。",
+        "quote": "區幹部……及旅成員同時佩戴所屬地域章及區章在制服恤衫右袖香港肩章／旅章下方二釐米中央位置；地域章在前，區章在後，兩章相距一釐米。",
+        "conditions": "基本徽章；跟所屬區嘅地域。"
+      },
+      "en": {
+        "name": "Region Badge",
+        "place": "Wearer's right sleeve, 2 cm below the Group Badge; Region Badge in front (toward the wearer's front), District Badge behind, 1 cm apart.",
+        "quote": "Group members wear both the Region and District Badges centred 2 cm below the Group Badge on the right sleeve; Region Badge in front, District Badge behind, 1 cm apart.",
+        "conditions": "Basic badge; the Region of the member's District."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3.8,
+        "hCm": 5,
+        "measured": true,
+        "ref": "UH",
+        "page": "95"
+      },
+      "anchor": {
+        "part": "sleeve",
+        "side": "right",
+        "belowBadge": "troop",
+        "gapCm": 2,
+        "towards": "front",
+        "offsetCm": 2.4,
+        "edge": "top",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "26, 28, 95, 168"
+        },
+        {
+          "ref": "CTS",
+          "page": "7"
+        }
+      ],
+      "status": "documented",
+      "art": {
+        "file": "/badges/handbook_example_region.png",
+        "ref": "UH",
+        "page": "168",
+        "example": true
+      },
+      "modelNote": {
+        "zh": "圖案跟「區章」揀咗嘅區自動轉做所屬地域；未揀區就用手冊 P.168 示例色塊。總會總部屬下嘅區（例如銀禧區）網頁冇列地域章，模型唔顯示。手冊 P.168 同綱要 P.7 附圖都係前面（望住右袖時右手邊）地域章、後面區章，同 P.95 文字一致。",
+        "en": "The artwork follows the Region of the District picked under District Badge; with no District picked it uses the Handbook p.168 example block. Districts under AHQ (e.g. Silver Jubilee) have no Region Badge on the web page, so none is shown. The Handbook p.168 and Training Scheme p.7 figures both put the Region Badge in front (right-hand side when looking at the right sleeve) and the District Badge behind, matching the p.95 text."
+      }
+    },
+    {
+      "id": "district",
+      "required": true,
+      "side": "right",
+      "dynamic": "district",
+      "zh": {
+        "name": "區章",
+        "place": "穿著者右袖，旅章下方 2 釐米；喺地域章後面，相距 1 釐米。",
+        "quote": "地域章在前，區章在後，兩章相距一釐米。地域章及區章……尺寸是 3.8 釐米（闊）× 5 釐米（高）。",
+        "conditions": "基本徽章；揀返自己所屬嘅區。"
+      },
+      "en": {
+        "name": "District Badge",
+        "place": "Wearer's right sleeve, 2 cm below the Group Badge; behind the Region Badge, 1 cm apart.",
+        "quote": "Region Badge in front, District Badge behind, 1 cm apart. Region and District Badges are 3.8 cm wide × 5 cm high.",
+        "conditions": "Basic badge; pick your own District."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3.8,
+        "hCm": 5,
+        "measured": true,
+        "ref": "UH",
+        "page": "95"
+      },
+      "anchor": {
+        "part": "sleeve",
+        "side": "right",
+        "belowBadge": "troop",
+        "gapCm": 2,
+        "towards": "back",
+        "offsetCm": 2.4,
+        "edge": "top",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "26, 28, 95, 168"
+        },
+        {
+          "ref": "CTS",
+          "page": "7"
+        }
+      ],
+      "status": "documented",
+      "art": {
+        "file": "/badges/handbook_example_district.png",
+        "ref": "UH",
+        "page": "25",
+        "example": true
+      },
+      "modelNote": {
+        "zh": "可以揀全港所有區（香港童軍總會網頁「地域及區」）；未揀區就用手冊示例色塊。",
+        "en": "Every District can be picked (SAHK “Regions and Districts” page); with none picked it uses the handbook example block."
+      }
+    },
+    {
+      "id": "meritorious",
+      "required": false,
+      "side": "right",
+      "dynamic": "meritorious",
+      "zh": {
+        "name": "優異旅團章",
+        "place": "穿著者右袖，袖口縫線上方中央，為期一年。",
+        "quote": "佩戴在制服恤衫右袖縫線上方中央位置，為期一年。有紅、紫和粉藍等三種顏色，每年輪流使用。",
+        "conditions": "「優異旅團獎勵計劃」獲獎旅團嘅領袖、教練員及團員；為期一年。"
+      },
+      "en": {
+        "name": "Meritorious Group Badge",
+        "place": "Wearer's right sleeve, centred above the sleeve-hem seam, for one year.",
+        "quote": "Worn centred above the right sleeve seam of the uniform shirt, for one year. Comes in red, purple and light blue, used in turn each year.",
+        "conditions": "Leaders, instructors and members of a Group awarded under the Meritorious Group Scheme; for one year."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 9,
+        "hCm": 2,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "side": "right",
+        "aboveCuffSeamCm": 0.3,
+        "edge": "bottom",
+        "measured": false
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "159, 168"
+        },
+        {
+          "ref": "CTS",
+          "page": "7"
+        }
+      ],
+      "status": "documented",
+      "art": {
+        "file": "/badges/meritorious_base_blue.png",
+        "ref": "UH",
+        "page": "159",
+        "example": false
+      },
+      "modelNote": {
+        "zh": "手冊冇寫尺寸；模型用 9 × 2 cm（P.159 圖案比例）。可以輸入年份：圖案底色同文字取自 P.159，只換年份數字；顏色每 3 年輪一次（1999 紅、2000 紫、2001 藍……，P.159 2016 藍、2017 紅、2018 紫吻合）。",
+        "en": "No size in the Handbook; the model uses 9 × 2 cm (p.159 artwork proportions). Type a year: the background and lettering come from p.159 and only the year digits change; the colour cycles every 3 years (1999 red, 2000 purple, 2001 blue…, matching 2016 blue, 2017 red, 2018 purple on p.159)."
+      }
+    }
+  ],
+  "notAllowed": [
+    {
+      "id": "activityBadges",
+      "zh": "第一版只示範制服頁列明嘅基本徽章同優異旅團章；進度性獎章、活動徽章等之後再加。",
+      "en": "Version 1 shows only the basic badges on the uniform pages and the Meritorious Group Badge; progress awards, activity badges and others come later.",
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "26, 28"
+        }
+      ]
+    }
+  ],
+  "uninvested": {
+    "zh": "未宣誓嘅青少年成員（小童軍除外）可穿著全套制服（不需扣上衣領鈕扣）；世界童軍會員章、制服帽、旅巾需待宣誓後纔可佩戴。",
+    "en": "Uninvested youth members (except Grasshoppers) may wear the full uniform (top button undone); the World Membership Badge, uniform cap and neckerchief are worn only after investiture.",
+    "sources": [
+      {
+        "ref": "UH",
+        "page": "26"
+      }
+    ]
+  },
+  "conflicts": [
+    {
+      "id": "regionDistrictFigure",
+      "zh": "地域章／區章前後：手冊 P.95 文字「地域章在前，區章在後」；P.168 同綱要 P.7 附圖亦一致。模型照做。",
+      "en": "Region/District order: the Handbook p.95 text says Region in front, District behind; the p.168 and Training Scheme p.7 figures agree. The model follows this."
+    },
+    {
+      "id": "socks",
+      "zh": "長襪：手冊 P.28 寫「深草青色」；綱要 P.6–7 寫「深草青色、直坑紋、襪頭摺下」。模型跟綱要（較詳細，冇矛盾）。",
+      "en": "Socks: Handbook p.28 says dark grass green; the Training Scheme pp.6–7 adds vertical ribs and turned-down tops. The model follows the more detailed scheme (no conflict)."
+    }
+  ],
+  "artCredit": {
+    "zh": "徽章圖案取自香港童軍總會《儀容與制服手冊》P.25、P.92–93、P.159、P.168、《幼童軍支部訓練綱要》P.7 及香港童軍總會網頁「地域及區」，版權屬香港童軍總會。旅章係手冊示例圖案；區章、地域章可以揀返自己嘅區。",
+    "en": "Badge artwork is from the Scout Association of Hong Kong Uniform Handbook (pp.25, 92–93, 159, 168), the Cub Scout Section Training Scheme (p.7) and the SAHK “Regions and Districts” page; copyright the Scout Association of Hong Kong. The Group Badge is the handbook example; pick your own District to get the right District and Region Badges."
+  }
+}

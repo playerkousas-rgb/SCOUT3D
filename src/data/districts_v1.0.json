@@ -1,0 +1,388 @@
+{
+  "fileVersion": "v1.0",
+  "copyright": "© SCOUT SYSTEM",
+  "source": {
+    "zh": "香港童軍總會網頁「地域及區」",
+    "en": "Scout Association of Hong Kong, “Regions and Districts” page",
+    "url": "https://www.scout.org.hk/tc/scout-units/regions-districts/index.html",
+    "imageBase": "https://www.scout.org.hk/uploads/tc/districts/",
+    "fetchedOn": "2026-11-14"
+  },
+  "artCredit": {
+    "zh": "地域章及區章圖案取自香港童軍總會網頁「地域及區」，版權屬香港童軍總會；本站只縮細檔案，冇改圖案。",
+    "en": "Region and District badge artwork is from the Scout Association of Hong Kong “Regions and Districts” page; copyright the Scout Association of Hong Kong. Files are only resized here; the designs are unchanged."
+  },
+  "regions": [
+    {
+      "id": "hkir",
+      "zh": "港島地域",
+      "en": "Hong Kong Island Region",
+      "badge": {
+        "src": "HKIR.jpg",
+        "file": "/badges/districts/region_hkir.png"
+      },
+      "districts": [
+        {
+          "id": "chai_wan",
+          "zh": "柴灣區",
+          "en": "Chai Wan District",
+          "src": "Chai_Wan.JPG",
+          "file": "/badges/districts/chai_wan.png"
+        },
+        {
+          "id": "hk_north",
+          "zh": "港島北區",
+          "en": "Northern District",
+          "src": "HK_North.JPG",
+          "file": "/badges/districts/hk_north.png"
+        },
+        {
+          "id": "hk_south",
+          "zh": "港島南區",
+          "en": "Southern District",
+          "src": "HK_South.JPG",
+          "file": "/badges/districts/hk_south.png"
+        },
+        {
+          "id": "hk_west",
+          "zh": "港島西區",
+          "en": "Western District",
+          "src": "HK_West.JPG",
+          "file": "/badges/districts/hk_west.png"
+        },
+        {
+          "id": "shau_kei_wan",
+          "zh": "筲箕灣區",
+          "en": "Shau Kei Wan District",
+          "src": "Shau_Kei_Wan.JPG",
+          "file": "/badges/districts/shau_kei_wan.png"
+        },
+        {
+          "id": "vic2",
+          "zh": "維多利亞城區",
+          "en": "Victoria City District",
+          "src": "vic2.jpg",
+          "file": "/badges/districts/vic2.png"
+        },
+        {
+          "id": "wan_chai",
+          "zh": "灣仔區",
+          "en": "Wan Chai District",
+          "src": "Wan_Chai.JPG",
+          "file": "/badges/districts/wan_chai.png"
+        }
+      ]
+    },
+    {
+      "id": "kr",
+      "zh": "九龍地域",
+      "en": "Kowloon Region",
+      "badge": {
+        "src": "KR.jpg",
+        "file": "/badges/districts/region_kr.png"
+      },
+      "districts": [
+        {
+          "id": "hung_hom",
+          "zh": "紅磡區",
+          "en": "Hung Hom District",
+          "src": "Hung_Hom.gif",
+          "file": "/badges/districts/hung_hom.png"
+        },
+        {
+          "id": "ho_man_tin",
+          "zh": "何文田區",
+          "en": "Ho Man Tin District",
+          "src": "Ho_Man_Tin.gif",
+          "file": "/badges/districts/ho_man_tin.png"
+        },
+        {
+          "id": "kr_district_08",
+          "zh": "九龍城區",
+          "en": "Kowloon City District",
+          "src": "KR_District-08.png",
+          "file": "/badges/districts/kr_district_08.png"
+        },
+        {
+          "id": "kr_district_03",
+          "zh": "九龍塘區",
+          "en": "Kowloon Tong District",
+          "src": "KR_District-03.png",
+          "file": "/badges/districts/kr_district_03.png"
+        },
+        {
+          "id": "mong_kok",
+          "zh": "旺角區",
+          "en": "Mong Kok District",
+          "src": "Mong_Kok.gif",
+          "file": "/badges/districts/mong_kok.png"
+        },
+        {
+          "id": "sam_mong",
+          "zh": "深旺區",
+          "en": "Sham Mong District",
+          "src": "Sam_Mong.gif",
+          "file": "/badges/districts/sam_mong.png"
+        },
+        {
+          "id": "sham_shui_po_east",
+          "zh": "深水埗東區",
+          "en": "Sham Shui Po East District",
+          "src": "Sham_Shui_Po_East.gif",
+          "file": "/badges/districts/sham_shui_po_east.png"
+        },
+        {
+          "id": "sham_shui_po_west",
+          "zh": "深水埗西區",
+          "en": "Sham Shui Po West District",
+          "src": "Sham_Shui_Po_West.gif",
+          "file": "/badges/districts/sham_shui_po_west.png"
+        },
+        {
+          "id": "yau_tsim",
+          "zh": "油尖區",
+          "en": "Yau Tsim District",
+          "src": "Yau_Tsim.png",
+          "file": "/badges/districts/yau_tsim.png"
+        }
+      ]
+    },
+    {
+      "id": "ekr",
+      "zh": "東九龍地域",
+      "en": "East Kowloon Region",
+      "badge": {
+        "src": "EKR.jpg",
+        "file": "/badges/districts/region_ekr.png"
+      },
+      "districts": [
+        {
+          "id": "sai_kung",
+          "zh": "西貢區",
+          "en": "Sai Kung District",
+          "src": "Sai_Kung.jpg",
+          "file": "/badges/districts/sai_kung.png"
+        },
+        {
+          "id": "tws",
+          "zh": "慈雲山區",
+          "en": "Tsz Wan Shan District",
+          "src": "TWS.jpg",
+          "file": "/badges/districts/tws.png"
+        },
+        {
+          "id": "wts",
+          "zh": "黃大仙區",
+          "en": "Wong Tai Sin District",
+          "src": "WTS.JPG",
+          "file": "/badges/districts/wts.png"
+        },
+        {
+          "id": "kln_bay",
+          "zh": "九龍灣區",
+          "en": "Kowloon Bay District",
+          "src": "Kln_Bay.jpg",
+          "file": "/badges/districts/kln_bay.png"
+        },
+        {
+          "id": "smp",
+          "zh": "秀茂坪區",
+          "en": "Sau Mau Ping District",
+          "src": "SMP.jpg",
+          "file": "/badges/districts/smp.png"
+        },
+        {
+          "id": "tko",
+          "zh": "將軍澳區",
+          "en": "Tseung Kwan O District",
+          "src": "TKO.JPG",
+          "file": "/badges/districts/tko.png"
+        },
+        {
+          "id": "ktd",
+          "zh": "觀塘區",
+          "en": "Kwun Tong District",
+          "src": "KTD.jpg",
+          "file": "/badges/districts/ktd.png"
+        },
+        {
+          "id": "lei_yue_mun",
+          "zh": "鯉魚門區",
+          "en": "Lei Yue Mun District",
+          "src": "Lei_Yue_Mun.jpg",
+          "file": "/badges/districts/lei_yue_mun.png"
+        }
+      ]
+    },
+    {
+      "id": "ntr",
+      "zh": "新界地域",
+      "en": "New Territories Region",
+      "badge": {
+        "src": "NT.jpg",
+        "file": "/badges/districts/region_ntr.png"
+      },
+      "districts": [
+        {
+          "id": "yle",
+          "zh": "元朗東區",
+          "en": "Yuen Long East District",
+          "src": "YLE.JPG",
+          "file": "/badges/districts/yle.png"
+        },
+        {
+          "id": "ylw",
+          "zh": "元朗西區",
+          "en": "Yuen Long West District",
+          "src": "YLW.JPG",
+          "file": "/badges/districts/ylw.png"
+        },
+        {
+          "id": "shap_pat_heung",
+          "zh": "十八鄉區",
+          "en": "Shap Pat Heung District",
+          "src": "Shap_Pat_Heung.jpg",
+          "file": "/badges/districts/shap_pat_heung.png"
+        },
+        {
+          "id": "tmw",
+          "zh": "屯門西區",
+          "en": "Tuen Mun West District",
+          "src": "TMW.JPG",
+          "file": "/badges/districts/tmw.png"
+        },
+        {
+          "id": "north_kwai_chung",
+          "zh": "北葵涌區",
+          "en": "North Kwai Chung District",
+          "src": "North_Kwai_Chung.JPG",
+          "file": "/badges/districts/north_kwai_chung.png"
+        },
+        {
+          "id": "tme",
+          "zh": "屯門東區",
+          "en": "Tuen Mun East District",
+          "src": "TME.JPG",
+          "file": "/badges/districts/tme.png"
+        },
+        {
+          "id": "tsuen_wan",
+          "zh": "荃灣區",
+          "en": "Tsuen Wan District",
+          "src": "Tsuen_Wan.jpg",
+          "file": "/badges/districts/tsuen_wan.png"
+        },
+        {
+          "id": "south_kwai_chung",
+          "zh": "南葵涌區",
+          "en": "South Kwai Chung District",
+          "src": "South_Kwai_Chung.JPG",
+          "file": "/badges/districts/south_kwai_chung.png"
+        },
+        {
+          "id": "ty",
+          "zh": "青衣區",
+          "en": "Tsing Yi District",
+          "src": "TY.JPG",
+          "file": "/badges/districts/ty.png"
+        },
+        {
+          "id": "island",
+          "zh": "離島區",
+          "en": "Islands District",
+          "src": "Island.jpg",
+          "file": "/badges/districts/island.png"
+        },
+        {
+          "id": "lantau",
+          "zh": "大嶼山區",
+          "en": "Lantau District",
+          "src": "Lantau.jpg",
+          "file": "/badges/districts/lantau.png"
+        }
+      ]
+    },
+    {
+      "id": "nter",
+      "zh": "新界東地域",
+      "en": "New Territories East Region",
+      "badge": {
+        "src": "NTE.jpg",
+        "file": "/badges/districts/region_nter.png"
+      },
+      "districts": [
+        {
+          "id": "sheung_yue",
+          "zh": "雙魚區",
+          "en": "Sheung Yue District",
+          "src": "Sheung_Yue.jpg",
+          "file": "/badges/districts/sheung_yue.png"
+        },
+        {
+          "id": "pik_fung",
+          "zh": "璧峰區",
+          "en": "Pik Fung District",
+          "src": "Pik_Fung.jpg",
+          "file": "/badges/districts/pik_fung.png"
+        },
+        {
+          "id": "tai_po_north",
+          "zh": "大埔北區",
+          "en": "Tai Po North District",
+          "src": "Tai_Po_North.jpg",
+          "file": "/badges/districts/tai_po_north.png"
+        },
+        {
+          "id": "tai_po_south",
+          "zh": "大埔南區",
+          "en": "Tai Po South District",
+          "src": "Tai_Po_South.jpg",
+          "file": "/badges/districts/tai_po_south.png"
+        },
+        {
+          "id": "stw",
+          "zh": "沙田西區",
+          "en": "Shatin West District",
+          "src": "STW.jpg",
+          "file": "/badges/districts/stw.png"
+        },
+        {
+          "id": "sha_tin_south",
+          "zh": "沙田南區",
+          "en": "Shatin South District",
+          "src": "Sha_Tin_South.jpg",
+          "file": "/badges/districts/sha_tin_south.png"
+        },
+        {
+          "id": "sha_tin_east",
+          "zh": "沙田東區",
+          "en": "Shatin East District",
+          "src": "Sha_Tin_East.jpg",
+          "file": "/badges/districts/sha_tin_east.png"
+        },
+        {
+          "id": "sha_tin_north",
+          "zh": "沙田北區",
+          "en": "Shatin North District",
+          "src": "Sha_Tin_North.jpg",
+          "file": "/badges/districts/sha_tin_north.png"
+        }
+      ]
+    },
+    {
+      "id": "ahq",
+      "zh": "總會總部",
+      "en": "Association Headquarters (AHQ)",
+      "badge": null,
+      "districts": [
+        {
+          "id": "silver_jubilee_district",
+          "zh": "銀禧區",
+          "en": "Silver Jubilee District",
+          "src": "Silver_Jubilee_District.jpg",
+          "file": "/badges/districts/silver_jubilee_district.png"
+        }
+      ]
+    }
+  ]
+}

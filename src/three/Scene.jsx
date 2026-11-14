@@ -1,5 +1,5 @@
 // 3D 場景：燈、相機控制、預設視角 — v1.0 · © SCOUT SYSTEM
-import { Suspense, forwardRef, useImperativeHandle, useMemo, useRef } from 'react';
+import { Suspense, forwardRef, useEffect, useImperativeHandle, useMemo, useRef } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls, ContactShadows, useProgress } from '@react-three/drei';
 import * as THREE from 'three';
@@ -7,6 +7,8 @@ import Blocky from './Blocky.jsx';
 import { useLang } from '../i18n.jsx';
 
 const TARGET = new THREE.Vector3(0, 0.6, 0);
+/** 幼童軍高啲（135 cm vs 117 cm）：望住點同相機一齊升 */
+const LIFT = { grasshopper: 0, cub: 0.09 };
 const DIST = 3.05;
 const EYE = 0.82;
 export const VIEWS = {
@@ -22,7 +24,7 @@ const BODY_TOP = 1.3;
 const MIN_DIST = 0.45;
 const MAX_DIST = 3.4;
 
-const Rig = forwardRef(function Rig(_, ref) {
+const Rig = forwardRef(function Rig({ lift = 0 }, ref) {
   const controls = useRef();
   const goal = useRef(null);
   const { camera } = useThree();
@@ -30,7 +32,7 @@ const Rig = forwardRef(function Rig(_, ref) {
   useImperativeHandle(ref, () => ({
     view(name) {
       const p = VIEWS[name] ?? VIEWS.front;
-      goal.current = { pos: new THREE.Vector3(...p), target: TARGET.clone() };
+      goal.current = { pos: new THREE.Vector3(p[0], p[1] + lift, p[2]), target: TARGET.clone().setY(TARGET.y + lift) };
     },
     focus(point, normal) {
       const target = point.clone();
@@ -53,13 +55,13 @@ const Rig = forwardRef(function Rig(_, ref) {
     }
     // 目標點限制喺身體附近
     c.target.x = THREE.MathUtils.clamp(c.target.x, -0.32, 0.32);
-    c.target.y = THREE.MathUtils.clamp(c.target.y, 0.1, 1.2);
+    c.target.y = THREE.MathUtils.clamp(c.target.y, 0.1, 1.35);
     c.target.z = THREE.MathUtils.clamp(c.target.z, -0.32, 0.32);
     // 相機唔可以入身體、唔可以去咗地底
     const p = camera.position;
     if (p.y < 0.04) p.y = 0.04;
     const r = Math.hypot(p.x, p.z);
-    if (p.y < BODY_TOP && r < BODY_R) {
+    if (p.y < BODY_TOP + lift && r < BODY_R) {
       const k = r < 1e-4 ? 1 : BODY_R / r;
       p.x = r < 1e-4 ? BODY_R : p.x * k;
       p.z *= r < 1e-4 ? 0 : k;
@@ -97,8 +99,13 @@ function Loading() {
   );
 }
 
-const Scene = forwardRef(function Scene({ outfit, badges, selected, onSelect, onReady }, ref) {
+const Scene = forwardRef(function Scene({ section = 'grasshopper', outfit, badges, picks, selected, onSelect, onReady }, ref) {
   const rig = useRef();
+  const lift = LIFT[section] ?? 0;
+  // 轉支部：鏡頭返去正面（高度唔同）
+  useEffect(() => {
+    rig.current?.view('front');
+  }, [section]);
   const glRef = useRef();
   const registry = useMemo(() => new Map(), []);
 
@@ -146,7 +153,7 @@ const Scene = forwardRef(function Scene({ outfit, badges, selected, onSelect, on
           shadow-mapSize={[2048, 2048]}
           shadow-camera-left={-0.8}
           shadow-camera-right={0.8}
-          shadow-camera-top={1.5}
+          shadow-camera-top={1.7}
           shadow-camera-bottom={-0.2}
           shadow-bias={-0.0004}
           shadow-normalBias={0.03}
@@ -154,10 +161,10 @@ const Scene = forwardRef(function Scene({ outfit, badges, selected, onSelect, on
         <directionalLight position={[-1.6, 2, -2.4]} intensity={1.5} />
         <directionalLight position={[-1.6, 1.2, 1.8]} intensity={0.35} />
         <Suspense fallback={null}>
-          <Blocky outfit={outfit} badges={badges} selected={selected} onSelect={onSelect} registry={registry} />
+          <Blocky section={section} outfit={outfit} badges={badges} picks={picks} selected={selected} onSelect={onSelect} registry={registry} />
         </Suspense>
         <ContactShadows position={[0, 0.001, 0]} scale={1.8} blur={2.6} opacity={0.4} far={0.5} />
-        <Rig ref={rig} />
+        <Rig ref={rig} lift={lift} />
       </Canvas>
       <Loading />
     </>
