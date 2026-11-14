@@ -4,9 +4,14 @@
 // 袖：u = 望住嗰隻袖外側時嘅左右（+ = 望嘅人右手邊），v = 章中心喺肩膊縫線下幾多 cm。
 import { layout, neckerLayout, VEST_T } from './body.js';
 
+const sectionOf = (rules) => rules?.section?.id ?? 'grasshopper';
+
+/** 動態圖案（區章、地域章、優異旅團章）嘅 art key；真正圖案由 lib/picks.js resolveArt 決定 */
+export const dynKey = (id) => `dyn:${id}`;
+
 /** 袖外側面嘅尺寸 */
-export function sleeveFace(gender) {
-  const { B } = layout(gender);
+export function sleeveFace(gender, section = 'grasshopper') {
+  const { B } = layout(gender, section);
   return { width: B.sleeve.d, length: B.sleeve.len, cuffSeam: B.sleeve.len - B.sleeve.band };
 }
 
@@ -23,8 +28,9 @@ export const PROGRESS_GRID = [
  * @returns {Array<{key,id,mount,shape,w,h,x?,y?,u?,v?,art,step?}>}
  */
 export function placeAll(rules, gender) {
-  const { B, top } = layout(gender);
-  const face = sleeveFace(gender);
+  const section = sectionOf(rules);
+  const { B, top } = layout(gender, section);
+  const face = sleeveFace(gender, section);
   const out = [];
   const box = {}; // 每個章喺袖上面佔嘅 v 範圍：{ top, bottom }
 
@@ -33,12 +39,27 @@ export function placeAll(rules, gender) {
   for (const b of order) {
     const a = b.anchor;
     const { wCm: w, hCm: h, shape } = b.size;
+    const art = b.dynamic ? dynKey(b.id) : Array.isArray(b.art) ? null : b.art.file;
+    const fit = b.dynamic === 'district' || b.dynamic === 'region'; // 各區圖案比例唔同：喺 w × h 入面置中縮放
     if (a.part === 'torso') {
       const sx = a.side === 'left' ? 1 : -1;
-      out.push({ key: b.id, id: b.id, mount: 'torso', shape, w, h, x: sx * a.xCm, y: top - a.fromTopCm, z: B.torso.d / 2, art: b.art.file });
+      let x = sx * a.xCm;
+      let y = top - a.fromTopCm;
+      if (a.pocket) {
+        // 胸袋（body.js 嘅 pocket）：centre = 袋身（袋蓋以下）中央；aboveFlap = 章底喺袋蓋頂上 gapCm
+        const P = B.pocket;
+        if (!P) throw new Error(`徽章 ${b.id} 要胸袋，但呢個身形冇胸袋`);
+        x = sx * P.x;
+        const flapTop = top - P.top;
+        y = a.pocket === 'centre' ? flapTop - P.flap - (P.h - P.flap) / 2 : flapTop + a.gapCm + h / 2;
+      }
+      out.push({ key: b.id, id: b.id, mount: 'torso', shape, w, h, x, y, z: B.torso.d / 2, art, fit });
       continue;
     }
     const mount = a.side === 'left' ? 'l' : 'r';
+    // 袖面 u：+ = 望住袖外側嘅右手邊。右袖右手邊 = 穿著者前面；左袖右手邊 = 後面
+    const frontSign = a.side === 'right' ? 1 : -1;
+    const u = a.towards ? (a.towards === 'front' ? frontSign : -frontSign) * a.offsetCm : 0;
     if (a.grid) {
       // 2×2 格：底邊喺袖口縫線上方 aboveCuffSeamCm
       const bottom = face.cuffSeam - a.aboveCuffSeamCm;
@@ -66,7 +87,7 @@ export function placeAll(rules, gender) {
     else if (a.aboveCuffSeamCm != null) t = face.cuffSeam - a.aboveCuffSeamCm - h;
     else throw new Error(`徽章 ${b.id} 冇袖上位置`);
     box[b.id] = { top: t, bottom: t + h };
-    out.push({ key: b.id, id: b.id, mount, shape, w, h, u: 0, v: t + h / 2, art: b.art.file });
+    out.push({ key: b.id, id: b.id, mount, shape, w, h, u, v: t + h / 2, art, fit });
   }
   return out;
 }
@@ -86,7 +107,7 @@ const artOf = (rules, id, step) => {
  * 回傳嘅位置同上身一樣：x / y / z（cm），facing = 'front' | 'back'。
  */
 export function placeSchool(rules, gender, mode = 'uh', { vest = false } = {}) {
-  const N = neckerLayout(layout(gender), { vest });
+  const N = neckerLayout(layout(gender, sectionOf(rules)), { vest });
   const tip = N.back.top - N.back.h; // 領巾尖最低點
   const out = [];
   const add = (id, step, x, y, facing) => {
@@ -143,22 +164,27 @@ export function placeFor(rules, outfit) {
     .map((p) => (vest && p.id === 'membership' ? { ...p, z: p.z + VEST_T } : p));
 }
 
-/** 按開關揀返要顯示嘅章 */
-export function visible(placements, state, { invested, school = false }) {
+/**
+ * 按開關揀返要顯示嘅章。
+ * unavailable = 而家冇圖案嘅章（例如揀咗總會總部屬下嘅區，冇地域章）
+ */
+export function visible(placements, state, { invested, school = false, unavailable = [] }) {
   if (school && !invested) return []; // 未宣誓冇旅巾，冇地方戴
   return placements.filter((p) => {
     if (p.id === 'membership' && !invested) return false;
+    if (unavailable.includes(p.id)) return false;
     if (p.id === 'progress') return p.step <= (state.progress || 0);
     return !!state[p.id];
   });
 }
 
 /** 某個章喺而家嘅服裝會唔會顯示，同埋點解唔顯示 */
-export function shownReason(rules, outfit, state, id) {
+export function shownReason(rules, outfit, state, id, { unavailable = [] } = {}) {
   const all = placeFor(rules, outfit);
   if (!all.some((p) => p.id === id)) return outfit.school ? 'school' : 'vest';
-  if (visible(all, state, { invested: outfit.invested, school: outfit.school }).some((p) => p.id === id)) return null;
+  if (visible(all, state, { invested: outfit.invested, school: outfit.school, unavailable }).some((p) => p.id === id)) return null;
   if (outfit.school && !outfit.invested) return 'schoolUninvested';
   if (id === 'membership' && !outfit.invested) return 'uninvested';
+  if (unavailable.includes(id)) return 'noArt';
   return 'off';
 }

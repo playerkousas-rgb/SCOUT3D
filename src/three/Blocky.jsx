@@ -1,16 +1,22 @@
-// 方塊人小童軍（真實比例）— v1.0 · © SCOUT SYSTEM
+// 方塊人（真實比例；小童軍 / 幼童軍）— v1.0 · © SCOUT SYSTEM
 // 全部由程式畫，唔使下載模型。單位：厘米，整個人縮放 0.01 變米。
 // 人物面向 +z；穿著者左 = +x。
 import { useEffect, useMemo } from 'react';
 import * as THREE from 'three';
 import { layout, neckerLayout, VEST_T, PX } from './body.js';
-import { RULES } from '../data/rules.js';
-import { placeAll, placeFor, visible } from './badgeLayout.js';
-import { useBadgeTextures, TorsoBadges, SleeveBadges } from './Badges.jsx';
+import { useTexture } from '@react-three/drei';
+import { SECTIONS, DISTRICTS } from '../data/rules.js';
+import { resolveArt } from '../lib/picks.js';
+import { placeAll, placeFor, visible, dynKey } from './badgeLayout.js';
+import { useBadgeTextures, useDynamicTextures, TorsoBadges, SleeveBadges } from './Badges.jsx';
 import {
   headFaces, pigtailFaces, neckFaces, torsoFaces, sleeveFaces, cuffFaces, skinFaces, handFaces, legFaces, shortsFaces, shinFaces,
   shoeFaces, vestFaces, hatFaces, brimFaces, shirtPalette, rollFaces, tailCanvas, backTriangleCanvas, plain, material, wogglePaint,
+  cubTorsoFaces, cubShinFaces, cubCapFaces,
 } from './pixels.js';
+import { COLOURS as C } from './body.js';
+
+const CAP_BADGE = '/badges/cub_cap_badge.png';
 
 export const BASE_H = 0.045; // 底座高度（米）
 const PIGTAIL_TIE = '#5b3fa0';
@@ -99,25 +105,82 @@ function Hat({ B, kind, colour, painted }) {
   );
 }
 
+/** 幼童軍帽（手冊 P.98）：男 = 深綠色黃間條鴨舌帽；女 = 深綠色圓形有邊帽（後面蝴蝶結）。帽章縫喺帽冠前面 */
+function CubHat({ B, girl, painted }) {
+  const h = B.head;
+  const headTop = h.y + h.h;
+  const base = headTop - 4.5;
+  const badgeTex = useTexture(CAP_BADGE);
+  const F = useMemo(() => {
+    const crown = girl ? [h.w + 1.6, 7, h.d + 1.6] : [h.w + 1.2, 6.5, h.d + 1.2];
+    const brim = girl ? [h.w + 7, 0.8, h.d + 7] : [h.w - 2, 0.8, 8];
+    return {
+      crown, brim,
+      crownF: cubCapFaces(crown, girl ? 'round' : 'cap'),
+      brimF: brimFaces(brim, C.capGreen),
+      bowF: hatFaces([2.4, 2.4, 1], C.capGreen),
+    };
+  }, [girl, h]);
+  const { crown, brim } = F;
+  const front = h.z + crown[2] / 2 + 0.06;
+  return (
+    <group>
+      <Box size={crown} faces={F.crownF} painted={painted} position={[0, base + crown[1] / 2, h.z]} />
+      {girl ? (
+        <>
+          <Box size={brim} faces={F.brimF} painted={painted} position={[0, base + 0.3, h.z]} />
+          {[1, -1].map((s) => (
+            <Box key={s} size={[2.4, 2.4, 1]} faces={F.bowF} painted={painted} position={[s * 1.5, base + 2.4, h.z - crown[2] / 2 - 0.5]} rotation={[0, 0, s * 0.5]} />
+          ))}
+        </>
+      ) : (
+        <Box size={brim} faces={F.brimF} painted={painted} position={[0, base + 0.4, h.z + crown[2] / 2 + brim[2] / 2 - 1]} rotation={[0.08, 0, 0]} />
+      )}
+      <mesh position={[0, base + crown[1] * 0.55, front]}>
+        <planeGeometry args={[3.2, 2.4]} />
+        <meshStandardMaterial map={painted ? badgeTex : null} color={painted ? '#f2f2f2' : '#b4b6b9'} roughness={0.8} polygonOffset polygonOffsetFactor={-2} />
+      </mesh>
+    </group>
+  );
+}
+
 const SHORTS_BOTTOM = 38; // 短褲腳離地（cm，膝頭上面）
+const CUB_SHORTS_BOTTOM = { boy: 47, girl: 45 }; // 幼童軍短褲／裙褲腳離地
+const CUB_SOCK_H = 34; // 長襪到膝頭下
 const SOCK_H = { short: 6, long: 25 }; // 襪由腳底量起（短襪過腳眼；長襪到膝頭下）
 
-export default function Blocky({ outfit, badges = {}, selected = null, onSelect, registry }) {
+export default function Blocky({ section = 'grasshopper', outfit, badges = {}, picks = {}, selected = null, onSelect, registry }) {
+  const RULES = SECTIONS[section] ?? SECTIONS.grasshopper;
+  const cub = section === 'cub';
   const gender = outfit.gender === 'girl' ? 'girl' : 'boy';
   const painted = outfit.finish !== 'unpainted';
-  const L = useMemo(() => layout(gender), [gender]);
+  const L = useMemo(() => layout(gender, section), [gender, section]);
   const { B } = L;
-  const top = outfit.top ?? 'orange';
+  const top = cub ? 'cub' : outfit.top ?? 'orange';
   const topColour = outfit.topColour ?? '#ffffff';
-  const long = outfit.sleeves === 'long';
-  const vest = !!outfit.vest;
-  const shorts = outfit.legwear === 'shorts';
-  const legColour = outfit.legColour ?? '#8a9099';
+  const long = !cub && outfit.sleeves === 'long';
+  const vest = !cub && !!outfit.vest;
+  const shorts = cub || outfit.legwear === 'shorts';
+  const legColour = cub ? C.cubGreen : outfit.legColour ?? '#8a9099';
+  const shortsBottom = cub ? CUB_SHORTS_BOTTOM[gender] : SHORTS_BOTTOM;
+  const culottes = cub && gender === 'girl';
 
-  // 徽章：位置全部由規則 JSON 計出嚟（學校運動上衣、背心會改位）
-  const textures = useBadgeTextures(useMemo(() => placeAll(RULES, gender).map((p) => p.art), [gender]));
-  const all = useMemo(() => placeFor(RULES, outfit), [outfit]);
-  const shown = useMemo(() => visible(all, badges, { invested: outfit.invested, school: outfit.school }), [all, badges, outfit.invested, outfit.school]);
+  // 徽章：位置全部由規則 JSON 計出嚟（學校運動上衣、背心會改位）；區章、地域章、優異旅團章圖案跟用戶揀
+  const staticUrls = useMemo(() => placeAll(RULES, gender).map((p) => p.art).filter((a) => a && !a.startsWith('dyn:')), [RULES, gender]);
+  const fixed = useBadgeTextures(staticUrls);
+  const dynArts = useMemo(() => {
+    const o = {};
+    for (const b of RULES.badges) if (b.dynamic) o[dynKey(b.id)] = resolveArt(b, picks, DISTRICTS);
+    return o;
+  }, [RULES, picks]);
+  const dyn = useDynamicTextures(dynArts);
+  const textures = useMemo(() => ({ ...fixed, ...dyn }), [fixed, dyn]);
+  const unavailable = useMemo(() => RULES.badges.filter((b) => b.dynamic && !dynArts[dynKey(b.id)]).map((b) => b.id), [RULES, dynArts]);
+  const all = useMemo(() => placeFor(RULES, outfit), [RULES, outfit]);
+  const shown = useMemo(
+    () => visible(all, badges, { invested: outfit.invested, school: outfit.school, unavailable }),
+    [all, badges, outfit.invested, outfit.school, unavailable],
+  );
   const patchProps = { textures, painted, onSelect, registry };
   const torsoItems = shown.filter((p) => p.mount === 'torso');
   const armItems = (side) => shown.filter((p) => p.mount === side);
@@ -138,32 +201,37 @@ export default function Blocky({ outfit, badges = {}, selected = null, onSelect,
         hand: handFaces([B.hand.w, B.hand.h, B.hand.d]),
       },
       legH,
-      shoe: shoeFaces([B.shoe.w, B.shoe.h, B.shoe.d]),
+      shoe: cub ? shoeFaces([B.shoe.w, B.shoe.h, B.shoe.d], { colour: C.shoeBlack, sole: C.soleBlack, lace: '#3a3a40' }) : shoeFaces([B.shoe.w, B.shoe.h, B.shoe.d]),
       sl,
       slLong,
     };
-  }, [B, L]);
+  }, [B, L, cub]);
 
   // 衫（跟款式、顏色、袖長變）
   const shirt = useMemo(() => ({
-    torso: torsoFaces(B, top, topColour),
+    torso: cub ? cubTorsoFaces(B, { legColour }) : torsoFaces(B, top, topColour),
     sleeve: sleeveFaces(body.sl, B.sleeve.band, top, topColour, false),
     sleeveLong: sleeveFaces(body.slLong, B.sleeve.band, top, topColour, true),
     cuff: cuffFaces([B.lowerArm.w + 1, B.lowerArm.h, B.lowerArm.d + 1.4], top, topColour),
     collar: [1, 1, 1, 1, 1, 1].map(() => plain(2, 2, shirtPalette(top, topColour).collar)),
-  }), [B, body, top, topColour]);
+  }), [B, body, top, topColour, cub, legColour]);
   const armFaces = useMemo(() => ({ ...body.arm, ...shirt }), [body, shirt]);
 
   // 褲、襪
   const legs = useMemo(() => {
-    const shinH = SHORTS_BOTTOM - B.leg.y;
+    const shinH = shortsBottom - B.leg.y;
+    const grow = culottes ? 1.8 : 0.6; // 裙褲闊啲
+    const shortsSize = [B.leg.w + grow, B.leg.top - shortsBottom, B.leg.d + grow];
+    const shinSize = [B.leg.w - 1.4, shinH, B.leg.d - 1.4];
     return {
       trousers: legFaces([B.leg.w, body.legH, B.leg.d], legColour),
-      shorts: shortsFaces([B.leg.w + 0.6, B.leg.top - SHORTS_BOTTOM, B.leg.d + 0.6], legColour),
-      shin: shinFaces([B.leg.w - 1.4, shinH, B.leg.d - 1.4], SOCK_H[outfit.socks] ?? SOCK_H.short, outfit.sockColour ?? '#ffffff'),
+      shorts: shortsFaces(shortsSize, legColour),
+      shortsSize,
+      shin: cub ? cubShinFaces(shinSize, CUB_SOCK_H - B.leg.y) : shinFaces(shinSize, SOCK_H[outfit.socks] ?? SOCK_H.short, outfit.sockColour ?? '#ffffff'),
+      shinSize,
       shinH,
     };
-  }, [B, body.legH, legColour, outfit.socks, outfit.sockColour]);
+  }, [B, body.legH, legColour, outfit.socks, outfit.sockColour, shortsBottom, culottes, cub]);
 
   // 背心
   const t = B.torso, h = B.head;
@@ -199,7 +267,8 @@ export default function Blocky({ outfit, badges = {}, selected = null, onSelect,
           [1, -1].map((s) => (
             <Box key={s} size={[4.5, 12, 4.5]} faces={body.pigtail} painted={painted} position={[s * (h.w / 2 + 1.6), h.y + 5, -4.5]} rotation={[0.15, 0, s * 0.12]} />
           ))}
-        {outfit.hat && outfit.hat !== 'none' && <Hat B={B} kind={outfit.hat} colour={outfit.hatColour ?? '#1f2f4f'} painted={painted} />}
+        {!cub && outfit.hat && outfit.hat !== 'none' && <Hat B={B} kind={outfit.hat} colour={outfit.hatColour ?? '#1f2f4f'} painted={painted} />}
+        {cub && outfit.hat && outfit.invested && <CubHat B={B} girl={gender === 'girl'} painted={painted} />}
         <Box size={[B.neck.w, B.neck.h, B.neck.d]} faces={body.neck} painted={painted} position={[0, B.neck.y + B.neck.h / 2, 0]} />
         {/* 上身 */}
         <Box size={[t.w, t.h, t.d]} faces={shirt.torso} painted={painted} position={[0, t.y + t.h / 2, 0]} />
@@ -228,8 +297,8 @@ export default function Blocky({ outfit, badges = {}, selected = null, onSelect,
           <group key={s}>
             {shorts ? (
               <>
-                <Box size={[B.leg.w + 0.6, B.leg.top - SHORTS_BOTTOM, B.leg.d + 0.6]} faces={legs.shorts} painted={painted} position={[s * L.legX, (SHORTS_BOTTOM + B.leg.top) / 2, 0]} />
-                <Box size={[B.leg.w - 1.4, legs.shinH, B.leg.d - 1.4]} faces={legs.shin} painted={painted} position={[s * L.legX, B.leg.y + legs.shinH / 2, 0]} />
+                <Box size={legs.shortsSize} faces={legs.shorts} painted={painted} position={[s * (L.legX + (culottes ? 0.4 : 0)), (shortsBottom + B.leg.top) / 2, 0]} />
+                <Box size={legs.shinSize} faces={legs.shin} painted={painted} position={[s * L.legX, B.leg.y + legs.shinH / 2, 0]} />
               </>
             ) : (
               <Box size={[B.leg.w, body.legH, B.leg.d]} faces={legs.trousers} painted={painted} position={[s * L.legX, (B.leg.y + B.leg.top) / 2, 0]} />

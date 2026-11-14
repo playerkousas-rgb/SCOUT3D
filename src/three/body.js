@@ -1,4 +1,4 @@
-// 方塊人身形（真實比例，約 6 歲、117 cm）— v1.0 · © SCOUT SYSTEM
+// 方塊人身形（真實比例：小童軍約 6 歲、117 cm；幼童軍約 9 歲、135 cm）— v1.0 · © SCOUT SYSTEM
 // 單位：厘米（cm）。人物面向 +z；穿著者左 = +x。y = 0 係地面。
 // 每一格貼圖 = 0.5 cm（PX = 2），所以徽章位置可以直接用手冊嘅厘米數。
 
@@ -6,6 +6,7 @@ export const PX = 2; // 每厘米幾多格
 
 const COMMON = {
   height: 117,
+  necker: { tailLen: 19, backW: 22, backH: 16, wogDrop: 7.5 },
   head: { w: 18, h: 21, d: 19, y: 96, z: 0.5 },
   neck: { w: 8, h: 4, d: 8, y: 92 },
   torso: { h: 37, d: 13, y: 55 }, // y = 衫腳；頂 = 92（膊頭）
@@ -17,10 +18,34 @@ const COMMON = {
   shoe: { w: 10.5, h: 6, d: 17, z: 2 },
 };
 
+/** 幼童軍：約 9 歲、135 cm。恤衫塞入褲；兩個胸袋（pocket = 左右胸袋中心、闊、高、袋蓋，cm，由膊頂量） */
+const CUB = {
+  height: 135,
+  necker: { tailLen: 22, backW: 25, backH: 18.5, wogDrop: 7.5 },
+  head: { w: 19, h: 22, d: 20, y: 112, z: 0.5 },
+  neck: { w: 8.5, h: 4, d: 8.5, y: 108 },
+  torso: { h: 44, d: 15, y: 64 }, // 頂 = 108（膊頭）
+  upperArm: { w: 7, h: 22, d: 7 },
+  lowerArm: { w: 6.5, h: 18, d: 6.5 },
+  hand: { w: 6, h: 11, d: 4.5 },
+  sleeve: { len: 18.5, band: 2, w: 8.6, d: 12 }, // 袖外側 12 cm：旅章 9 cm、地域章 + 區章 3.8 + 1 + 3.8 cm 擺得落
+  leg: { w: 11.5, d: 11.5, y: 6, top: 67, gap: 1 },
+  shoe: { w: 11.5, h: 6.5, d: 19, z: 2.5 },
+  pocket: { x: 7.8, w: 10, h: 12.5, flap: 4, top: 13.5 },
+  waist: 70, // 皮帶中心離地
+};
+
 export const BODY = {
   boy: { ...COMMON, torso: { ...COMMON.torso, w: 24 }, hair: 'short' },
   girl: { ...COMMON, torso: { ...COMMON.torso, w: 23 }, hair: 'pigtails' },
 };
+
+export const CUB_BODY = {
+  boy: { ...CUB, torso: { ...CUB.torso, w: 27 }, hair: 'short' },
+  girl: { ...CUB, torso: { ...CUB.torso, w: 26 }, hair: 'pigtails' },
+};
+
+export const BODIES = { grasshopper: BODY, cub: CUB_BODY };
 
 export const COLOURS = {
   skin: '#f1c6a2',
@@ -40,11 +65,24 @@ export const COLOURS = {
   shoe: '#f4f4f4',
   sole: '#b9bcc0',
   lace: '#d4d6da',
+  // 幼童軍（手冊 P.28–29 附圖）
+  cubShirt: '#e4d8b6', // 杏色
+  cubShirtShade: '#c9b98f',
+  cubGreen: '#6e7d43', // 草青色
+  cubGreenShade: '#5c6a36',
+  cubSock: '#3d5230', // 深草青色
+  belt: '#6a4326', // 棕色
+  buckle: '#c9ccd1',
+  shoeBlack: '#202024',
+  soleBlack: '#111114',
+  capGreen: '#1f4a2c', // 深綠色
+  capPiping: '#f0cc1e', // 黃間條
 };
 
 /** 計出每個部件嘅大細同位置（cm）。 */
-export function layout(gender) {
-  const B = BODY[gender] ?? BODY.boy;
+export function layout(gender, section = 'grasshopper') {
+  const set = BODIES[section] ?? BODY;
+  const B = set[gender] ?? set.boy;
   const top = B.torso.y + B.torso.h; // 膊頭
   const armX = B.torso.w / 2 + B.upperArm.w / 2 + 0.3;
   const shoulderY = top - 1;
@@ -70,11 +108,12 @@ export function neckerLayout(L, { vest = false } = {}) {
   const inner = nw + collarT * 2; // 衣領外圍 = 旅巾內圍
   const outer = inner + rollT * 2;
   const front = B.torso.d / 2 + (vest ? VEST_T : 0); // 胸口表面 z
-  const wogY = top - 7.5;
+  const NK = B.necker;
+  const wogY = top - NK.wogDrop;
   const a = [outer / 2 - rollT / 2, top + 0.4];
   const b = [1.3, wogY];
-  const tail = { w: 5.2, len: 19, tip: 4, x: 1.7, top: wogY + 1 };
-  const back = { w: 22, h: 16, top, z: -(B.torso.d / 2 + (vest ? VEST_T : 0) + 0.2) };
+  const tail = { w: 5.2, len: NK.tailLen, tip: 4, x: 1.7, top: wogY + 1 };
+  const back = { w: NK.backW, h: NK.backH, top, z: -(B.torso.d / 2 + (vest ? VEST_T : 0) + 0.2) };
   return {
     nw, collarT, rollT, rollH, inner, outer, front, wogY, a, b,
     len: Math.hypot(a[0] - b[0], a[1] - b[1]),

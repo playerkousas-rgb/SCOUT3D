@@ -58,6 +58,15 @@
         "en": "Training Branch"
       },
       "url": null
+    },
+    "WEB": {
+      "zh": "香港童軍總會網頁「地域及區」",
+      "en": "SAHK “Regions and Districts” page",
+      "edition": {
+        "zh": "2026-11-14 擷取",
+        "en": "Retrieved 2026-11-14"
+      },
+      "url": "https://www.scout.org.hk/tc/scout-units/regions-districts/index.html"
     }
   },
   "garments": [
@@ -538,9 +547,10 @@
         "example": true
       },
       "modelNote": {
-        "zh": "手冊 P.95：區章 3.8 cm（闊）× 5 cm（高）。圖案係手冊示例色塊，各區實際圖案唔同。",
-        "en": "Handbook p.95: District Badge 3.8 cm wide × 5 cm high. The artwork is the handbook's example block; each District's badge differs."
-      }
+        "zh": "手冊 P.95：區章 3.8 cm（闊）× 5 cm（高）。可以揀全港所有區（香港童軍總會網頁「地域及區」）；揀「手冊示例」就用返手冊色塊。",
+        "en": "Handbook p.95: District Badge 3.8 cm wide × 5 cm high. Every District can be picked (SAHK “Regions and Districts” page); “Handbook example” uses the handbook's colour block."
+      },
+      "dynamic": "district"
     },
     {
       "id": "meritorious",
@@ -576,7 +586,7 @@
       "sources": [
         {
           "ref": "UH",
-          "page": "24–25"
+          "page": "24–25, 159"
         },
         {
           "ref": "GSG",
@@ -585,15 +595,16 @@
       ],
       "status": "documented",
       "art": {
-        "file": "/badges/handbook_example_meritorious.png",
+        "file": "/badges/meritorious_base_blue.png",
         "ref": "UH",
-        "page": "25",
-        "example": true
+        "page": "159",
+        "example": false
       },
       "modelNote": {
-        "zh": "手冊未寫尺寸；模型按 P.25 附圖比例用 9 × 2 cm。圖案係手冊示例（2016 年優異旅團），實際年份唔同。",
-        "en": "No size in the handbook; the model uses 9 × 2 cm from the p.25 figure's proportions. The artwork is the handbook example (2016); the actual year differs."
-      }
+        "zh": "手冊未寫尺寸；模型按附圖比例用 9 × 2 cm。可以輸入年份：圖案底色同文字取自手冊 P.159，只換年份數字；顏色每 3 年輪一次（1999 紅、2000 紫、2001 藍……）。",
+        "en": "No size in the handbook; the model uses 9 × 2 cm from the figure's proportions. Type a year: the background and lettering come from Handbook p.159 and only the year digits change; the colour cycles every 3 years (1999 red, 2000 purple, 2001 blue…)."
+      },
+      "dynamic": "meritorious"
     },
     {
       "id": "commemorative",
@@ -781,7 +792,7 @@
     }
   ],
   "artCredit": {
-    "zh": "徽章圖案取自香港童軍總會《儀容與制服手冊》P.23、P.25 及《小童軍活動指引》（第三版）P.10–12，版權屬香港童軍總會。旅章、區章、優異旅團章、紀念章用手冊附圖嘅示例，各旅／區實際圖案唔同。",
-    "en": "Badge artwork is taken from the Scout Association of Hong Kong Uniform Handbook (pp.23, 25) and the Grasshopper Scout Activity Guide, 3rd ed. (P.10–12); copyright the Scout Association of Hong Kong. Group, District, Meritorious Group and Commemorative badges use the handbook's example artwork; real badges differ by Group or District."
+    "zh": "徽章圖案取自香港童軍總會《儀容與制服手冊》P.23、P.25、P.159、《小童軍活動指引》（第三版）P.10–12 及香港童軍總會網頁「地域及區」，版權屬香港童軍總會。旅章、紀念章用手冊附圖嘅示例，各旅實際圖案唔同；區章可以揀返自己嘅區。",
+    "en": "Badge artwork is from the Scout Association of Hong Kong Uniform Handbook (pp.23, 25, 159), the Grasshopper Scout Activity Guide, 3rd ed. (P.10–12) and the SAHK “Regions and Districts” page; copyright the Scout Association of Hong Kong. The Group and Commemorative badges use the handbook's example artwork and real badges differ by Group; pick your own District Badge."
   }
 }

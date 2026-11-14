@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTexture } from '@react-three/drei';
 import * as THREE from 'three';
+import { meritCanvas } from '../lib/meritCanvas.js';
 
 const EPS = 0.06; // 離布面 0.06 cm，避免閃
 const ACCENT = '#f2791c';
@@ -27,6 +28,67 @@ export function useBadgeTextures(urls) {
   }, [list, loaded]);
 }
 
+const prep = (x) => {
+  x.colorSpace = THREE.SRGBColorSpace;
+  x.anisotropy = 8;
+  x.needsUpdate = true;
+  return x;
+};
+
+/**
+ * 動態圖案（區章、地域章用圖檔；優異旅團章用 canvas 畫年份），唔用 Suspense：
+ * 轉區／改年份時唔會成個公仔閃一閃，未載入完就先顯示素色。
+ * arts = { key: resolveArt 結果 }，回傳 { key: texture | null }
+ */
+export function useDynamicTextures(arts) {
+  const [out, setOut] = useState({});
+  const sig = JSON.stringify(arts);
+  useEffect(() => {
+    let alive = true;
+    const made = [];
+    const entries = Object.entries(JSON.parse(sig));
+    Promise.all(
+      entries.map(async ([k, a]) => {
+        if (!a) return [k, null];
+        try {
+          if (a.kind === 'merit') {
+            const t = prep(new THREE.CanvasTexture(await meritCanvas(a)));
+            made.push(t);
+            return [k, t];
+          }
+          const t = prep(await new THREE.TextureLoader().loadAsync(a.file));
+          made.push(t);
+          return [k, t];
+        } catch {
+          return [k, null];
+        }
+      }),
+    ).then((list) => {
+      if (alive) setOut(Object.fromEntries(list));
+      else made.forEach((t) => t.dispose());
+    });
+    return () => {
+      alive = false;
+    };
+  }, [sig]);
+  // 舊 texture 喺換咗之後先釋放
+  const prev = useRef({});
+  useEffect(() => {
+    const old = prev.current;
+    prev.current = out;
+    for (const [k, t] of Object.entries(old)) if (t && out[k] !== t) t.dispose();
+  }, [out]);
+  return out;
+}
+
+/** fit：圖案喺 w × h 入面置中縮放（各區區章比例唔同） */
+function fitSize(p, tex) {
+  const img = tex?.image;
+  if (!p.fit || !img?.width || !img?.height) return { w: p.w, h: p.h };
+  const k = Math.min(p.w / img.width, p.h / img.height);
+  return { w: img.width * k, h: img.height * k };
+}
+
 function Patch({ p, tex, painted, selected, onSelect, registry }) {
   const ref = useRef();
   const [hover, setHover] = useState(false);
@@ -45,6 +107,7 @@ function Patch({ p, tex, painted, selected, onSelect, registry }) {
 
   const round = p.shape === 'circle';
   const ring = selected || hover;
+  const { w, h } = fitSize(p, tex);
   return (
     <group>
       <mesh
@@ -61,10 +124,11 @@ function Patch({ p, tex, painted, selected, onSelect, registry }) {
         onPointerOut={() => setHover(false)}
         receiveShadow
       >
-        {round ? <circleGeometry args={[p.w / 2, 48]} /> : <planeGeometry args={[p.w, p.h]} />}
+        {round ? <circleGeometry args={[w / 2, 48]} /> : <planeGeometry args={[w, h]} />}
         <meshStandardMaterial
-          map={painted ? tex : null}
-          color={painted ? '#f2f2f2' : '#b4b6b9'}
+          key={tex ? tex.uuid : 'none'}
+          map={painted && tex ? tex : null}
+          color={painted ? (tex ? '#f2f2f2' : '#9aa0a6') : '#b4b6b9'}
           roughness={0.8}
           metalness={0}
           polygonOffset
@@ -73,7 +137,7 @@ function Patch({ p, tex, painted, selected, onSelect, registry }) {
       </mesh>
       {ring && (
         <mesh position={[0, 0, -EPS / 2]} renderOrder={1}>
-          {round ? <ringGeometry args={[p.w / 2 - 0.05, p.w / 2 + (selected ? 0.55 : 0.35), 48]} /> : <planeGeometry args={[p.w + (selected ? 1.1 : 0.7), p.h + (selected ? 1.1 : 0.7)]} />}
+          {round ? <ringGeometry args={[w / 2 - 0.05, w / 2 + (selected ? 0.55 : 0.35), 48]} /> : <planeGeometry args={[w + (selected ? 1.1 : 0.7), h + (selected ? 1.1 : 0.7)]} />}
           <meshBasicMaterial color={selected ? ACCENT : '#ffffff'} polygonOffset polygonOffsetFactor={-1} />
         </mesh>
       )}

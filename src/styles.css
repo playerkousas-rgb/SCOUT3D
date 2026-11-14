@@ -673,6 +673,99 @@ a {
 }
 
 /* ---------- 闊螢幕：3D 左、側欄右 ---------- */
+/* ---------- 支部切換、自選圖案（v1.0 幼童軍） ---------- */
+.sectionswitch {
+  flex-wrap: nowrap;
+  margin-left: auto;
+}
+
+.sectionswitch .seg__btn {
+  padding: 4px 10px;
+  min-height: 34px;
+  white-space: nowrap;
+}
+
+@media (max-width: 599px) {
+  .top {
+    flex-wrap: wrap;
+  }
+
+  .sectionswitch {
+    order: 3;
+    flex-basis: 100%;
+    margin-left: 0;
+  }
+
+  .sectionswitch .seg__btn {
+    flex: 1;
+  }
+}
+
+.picker {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 4px;
+}
+
+.picker__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.picker .muted,
+.picker .note {
+  margin: 0;
+  font-size: 12px;
+}
+
+.select,
+.input {
+  font: inherit;
+  min-height: 36px;
+  padding: 4px 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--ink);
+  max-width: 100%;
+}
+
+.input {
+  width: 7em;
+}
+
+.input[aria-invalid='true'] {
+  border-color: #c0392b;
+}
+
+.chip--merit {
+  color: #fff;
+}
+
+.chip--red {
+  background: #b3262b;
+}
+
+.chip--purple {
+  background: #6b3a8e;
+}
+
+.chip--blue {
+  background: #3d8fc6;
+}
+
+.artimg--empty {
+  display: inline-block;
+  background: repeating-linear-gradient(45deg, #eef0f3 0 4px, #f8f9fb 4px 8px);
+  border-radius: 4px;
+}
+
+.card__art .artimg--empty {
+  width: 48px;
+  height: 64px;
+}
+
 @media (max-width: 899px) {
   /* 手機：控制列放喺 3D 下面，唔遮公仔對腳 */
   .stage {

@@ -20,6 +20,8 @@ test('五處版號一致：meta／title／檔頭／APP_VERSION／頁尾', () => 
   assert.ok(i18n.includes("'footer.copy': '© SCOUT SYSTEM · COPYRIGHT SCOUT SYSTEM · SCOUT3D v1.0'"));
   assert.ok(read('package.json').includes('"version": "1.0.0"'));
   assert.ok(read('src/data/grasshopper_rules_v1.0.json').includes('"fileVersion": "v1.0"'));
+  assert.ok(read('src/data/cub_rules_v1.0.json').includes('"fileVersion": "v1.0"'));
+  assert.ok(read('src/data/districts_v1.0.json').includes('"fileVersion": "v1.0"'));
 });
 
 test('版權：meta + 可見頁尾 + 截圖角標', () => {

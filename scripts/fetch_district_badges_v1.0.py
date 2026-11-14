@@ -27,6 +27,7 @@ def save(src, dest, base):
     print(f'{src}: {im.size} {len(raw)} bytes')
     im.thumbnail(BOX, Image.LANCZOS)
     q = im.convert('RGB').quantize(colors=64, method=Image.Quantize.FASTOCTREE)
+    q.info = {}  # 唔好帶 EXIF／ICC（有兩個檔試過因此大到 400 KB）
     q.save(f'{OUT}/{dest}', optimize=True)
 
 def main():

@@ -1,9 +1,10 @@
 // SCOUT3D 主介面 — v1.0 · © SCOUT SYSTEM
 import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLang, LangToggle, bi, pick } from './i18n.jsx';
-import { RULES, RULE_ERRORS, badgeById, sourceLines } from './data/rules.js';
+import { SECTIONS, SECTION_IDS, DISTRICTS, RULE_ERRORS, badgeById, sourceLines } from './data/rules.js';
 import { NECKER, WOGGLE, PLAIN } from './palette.js';
 import { shownReason } from './three/badgeLayout.js';
+import { resolveArt, meritYearOk, findDistrict } from './lib/picks.js';
 import { APP_VERSION } from './version.js';
 
 const Scene = lazy(() => import('./three/Scene.jsx'));
@@ -31,6 +32,34 @@ const DEFAULT_OUTFIT = {
   woggle: '#1f4e9c',
 };
 
+// 幼童軍（手冊 P.28–29）：制服固定，只揀人物、帽、旅巾顏色
+const CUB_OUTFIT = {
+  gender: 'boy',
+  finish: 'painted',
+  invested: true,
+  hat: true,
+  neckerMain: '#2e7d4f',
+  neckerBorder: '#2e7d4f',
+  woggle: '#1f4e9c',
+};
+
+const DEFAULT_OUTFITS = { grasshopper: DEFAULT_OUTFIT, cub: CUB_OUTFIT };
+/** 兩個支部共用嘅設定（轉支部時保留） */
+const SHARED_OUTFIT_KEYS = ['gender', 'finish', 'invested'];
+
+// 幼童軍預設：基本徽章全開（手冊 P.26：世界童軍會員章、香港章、地域章、區章、旅章）
+const CUB_BADGES = {
+  membership: true,
+  hongKong: true,
+  troop: true,
+  region: true,
+  district: true,
+  meritorious: false,
+};
+
+// 用戶自選：所屬區（決定區章、地域章圖案）、優異旅團章年份
+const DEFAULT_PICKS = { districtId: '', meritYear: new Date().getFullYear() };
+
 // 預設：必須佩戴嘅章 + 旅章、區章（同手冊 P.25 附圖一樣）
 const DEFAULT_BADGES = {
   membership: true,
@@ -41,6 +70,7 @@ const DEFAULT_BADGES = {
   meritorious: false,
   commemorative: false,
 };
+const DEFAULT_BADGE_STATES = { grasshopper: DEFAULT_BADGES, cub: CUB_BADGES };
 
 function hasWebGL() {
   try {
@@ -117,11 +147,11 @@ function StatusChip({ status }) {
   return <span className={`chip chip--${status}`}>{t(`status.${status}`)}</span>;
 }
 
-function Sources({ list }) {
+function Sources({ rules, list }) {
   const { lang, t } = useLang();
   return (
     <ul className="srclist">
-      {sourceLines(lang, list).map((s) => (
+      {sourceLines(rules, lang, list).map((s) => (
         <li key={`${s.ref}-${s.page}`}>
           {s.name}
           {lang === 'en' ? ', ' : '，'}
@@ -133,9 +163,9 @@ function Sources({ list }) {
 }
 
 /* ---------- 徽章圖案 ---------- */
-function ArtLine({ art }) {
+function ArtLine({ rules, art }) {
   const { lang, t } = useLang();
-  const src = RULES.sources[art.ref];
+  const src = rules.sources[art.ref];
   return (
     <span className="muted">
       {t(art.example ? 'info.artExample' : 'info.artOfficial')}
@@ -147,16 +177,116 @@ function ArtLine({ art }) {
   );
 }
 
-/* ---------- 徽章資料卡 ---------- */
-function InfoCard({ id, outfit, badges, onClose, onFocus }) {
+/* ---------- 自選圖案（區章、地域章、優異旅團章） ---------- */
+/** 某個章而家嘅圖案（resolveArt 結果）；優異旅團章要即場畫年份，所以有 src 狀態 */
+function useArtSrc(art) {
+  const [src, setSrc] = useState(art?.kind === 'image' ? art.file : null);
+  const key = art ? (art.kind === 'merit' ? `m-${art.colour}-${art.year}` : art.file) : '';
+  useEffect(() => {
+    let alive = true;
+    if (!art) setSrc(null);
+    else if (art.kind === 'image') setSrc(art.file);
+    else
+      import('./lib/meritCanvas.js')
+        .then((m) => m.meritDataUrl(art))
+        .then((u) => alive && setSrc(u))
+        .catch(() => alive && setSrc(null));
+    return () => {
+      alive = false;
+    };
+  }, [key]); // eslint-disable-line react-hooks/exhaustive-deps
+  return src;
+}
+
+function ArtImg({ art, alt, className }) {
+  const src = useArtSrc(art);
+  if (!src) return <span className={`${className} artimg--empty`} aria-hidden="true" />;
+  return <img src={src} alt={alt} className={className} />;
+}
+
+const MERIT_NAME = { red: { zh: '紅色', en: 'red' }, purple: { zh: '紫色', en: 'purple' }, blue: { zh: '粉藍色', en: 'light blue' } };
+
+/** 揀區：一個選單，按地域分組；地域章跟住自動轉 */
+function DistrictPicker({ picks, setPicks, id }) {
   const { lang, t } = useLang();
-  const b = badgeById(id);
+  const hit = picks.districtId ? findDistrict(DISTRICTS, picks.districtId) : null;
+  return (
+    <div className="picker">
+      <label className="field__label" htmlFor={id}>
+        {t('pick.district')}
+      </label>
+      <select id={id} className="select" value={picks.districtId} onChange={(e) => setPicks((p) => ({ ...p, districtId: e.target.value }))}>
+        <option value="">{t('pick.none')}</option>
+        {DISTRICTS.regions.map((r) => (
+          <optgroup key={r.id} label={bi(lang, r.zh, r.en)}>
+            {r.districts.map((d) => (
+              <option key={d.id} value={d.id}>
+                {bi(lang, d.zh, d.en)}
+              </option>
+            ))}
+          </optgroup>
+        ))}
+      </select>
+      {hit && (
+        <p className="muted">
+          {t('pick.region')}
+          {lang === 'en' ? ': ' : '：'}
+          {bi(lang, hit.region.zh, hit.region.en)}
+          {!hit.region.badge && ` — ${t('pick.noRegionBadge')}`}
+        </p>
+      )}
+    </div>
+  );
+}
+
+/** 優異旅團章年份：顏色每 3 年輪一次 */
+function YearPicker({ picks, setPicks, id }) {
+  const { lang, t } = useLang();
+  const [text, setText] = useState(String(picks.meritYear));
+  useEffect(() => setText(String(picks.meritYear)), [picks.meritYear]);
+  const ok = meritYearOk(text);
+  const art = resolveArt({ dynamic: 'meritorious', art: { file: '' } }, { meritYear: picks.meritYear }, DISTRICTS);
+  return (
+    <div className="picker">
+      <label className="field__label" htmlFor={id}>
+        {t('pick.year')}
+      </label>
+      <div className="picker__row">
+        <input
+          id={id}
+          className="input"
+          type="number"
+          inputMode="numeric"
+          min="1999"
+          max={new Date().getFullYear() + 1}
+          value={text}
+          onChange={(e) => {
+            setText(e.target.value);
+            if (meritYearOk(e.target.value)) setPicks((p) => ({ ...p, meritYear: Number(e.target.value) }));
+          }}
+          aria-invalid={!ok}
+        />
+        {art && (
+          <span className={`chip chip--merit chip--${art.colour}`}>{bi(lang, MERIT_NAME[art.colour].zh, MERIT_NAME[art.colour].en)}</span>
+        )}
+      </div>
+      <p className={ok ? 'muted' : 'note note--warn'}>{ok ? t('pick.yearCycle') : t('pick.yearBad')}</p>
+    </div>
+  );
+}
+
+/* ---------- 徽章資料卡 ---------- */
+function InfoCard({ rules, id, outfit, badges, picks, unavailable, onClose, onFocus }) {
+  const { lang, t } = useLang();
+  const b = badgeById(rules, id);
   const arts = Array.isArray(b.art) ? b.art : [b.art];
-  const reason = shownReason(RULES, outfit, badges, id);
+  const now = b.dynamic ? resolveArt(b, picks, DISTRICTS) : null;
+  const reason = shownReason(rules, outfit, badges, id, { unavailable });
   const shown = reason === null;
-  const st = RULES.schoolTop;
-  const onNecker = outfit.school && ['membership', 'progress', 'grasshopperAward'].includes(id);
+  const st = rules.schoolTop;
+  const onNecker = st && outfit.school && ['membership', 'progress', 'grasshopperAward'].includes(id);
   const sizeText = `${b.size.wCm} × ${b.size.hCm} cm（${t(b.size.measured ? 'info.sizeMeasured' : 'info.sizeGuess')}）`;
+  const picked = now?.district;
   return (
     <section className="card" aria-live="polite">
       <header className="card__head">
@@ -170,11 +300,25 @@ function InfoCard({ id, outfit, badges, onClose, onFocus }) {
         <span className="chip chip--plain">{t(b.required ? 'info.required' : 'info.optional')}</span>
       </div>
       <div className="card__art">
-        {arts.map((a) => (
-          <img key={a.file} src={a.file} alt={pick(lang, b, 'name')} className={b.size.shape === 'circle' ? 'is-round' : ''} />
-        ))}
+        {b.dynamic ? (
+          <ArtImg art={now} alt={pick(lang, b, 'name')} className="" />
+        ) : (
+          arts.map((a) => <img key={a.file} src={a.file} alt={pick(lang, b, 'name')} className={b.size.shape === 'circle' ? 'is-round' : ''} />)
+        )}
       </div>
-      <ArtLine art={arts[0]} />
+      {b.dynamic && picked ? (
+        <span className="muted">
+          {t('pick.artWeb')}
+          {lang === 'en' ? ': ' : '：'}
+          {b.dynamic === 'region' ? bi(lang, now.region.zh, now.region.en) : bi(lang, picked.zh, picked.en)}
+        </span>
+      ) : b.dynamic === 'meritorious' && now ? (
+        <span className="muted">
+          {t('pick.artMerit')} {now.year}・{bi(lang, MERIT_NAME[now.colour].zh, MERIT_NAME[now.colour].en)}
+        </span>
+      ) : (
+        <ArtLine rules={rules} art={arts[0]} />
+      )}
       {!shown && <p className="note">{t(reason === 'off' ? 'info.hidden' : `badge.why.${reason}`)}</p>}
       {onNecker && (
         <div className="note note--warn">
@@ -202,7 +346,7 @@ function InfoCard({ id, outfit, badges, onClose, onFocus }) {
         )}
         <dt>{t('info.source')}</dt>
         <dd>
-          <Sources list={b.sources} />
+          <Sources rules={rules} list={b.sources} />
         </dd>
         {b.pendingReason && (
           <>
@@ -219,12 +363,19 @@ function InfoCard({ id, outfit, badges, onClose, onFocus }) {
 }
 
 /* ---------- 徽章分頁 ---------- */
-function BadgesTab({ outfit, badges, setBadges, selected, onPick }) {
+function BadgeRowArt({ b, badges, picks }) {
+  const art = b.dynamic
+    ? resolveArt(b, picks, DISTRICTS)
+    : { kind: 'image', file: (Array.isArray(b.art) ? b.art[Math.max(0, Math.min(3, (badges.progress || 1) - 1))] : b.art).file };
+  return <ArtImg art={art} alt="" className={`badgerow__art${b.size.shape === 'circle' ? ' is-round' : ''}`} />;
+}
+
+function BadgesTab({ rules, section, outfit, badges, setBadges, picks, setPicks, unavailable, selected, onPick }) {
   const { lang, t } = useLang();
   const set = (k, v) => setBadges((b) => ({ ...b, [k]: v }));
   return (
     <div className="tabbody">
-      <p className="note note--strong">{t('badges.tip')}</p>
+      <p className="note note--strong">{t(section === 'cub' ? 'badges.tipCub' : 'badges.tip')}</p>
       {outfit.school && (
         <p className="note note--warn">
           {t('badges.schoolOn')}
@@ -232,15 +383,15 @@ function BadgesTab({ outfit, badges, setBadges, selected, onPick }) {
         </p>
       )}
       <ul className="badgelist">
-        {RULES.badges.map((b) => {
-          const disabled = b.id === 'membership' && !outfit.invested;
-          const why = shownReason(RULES, outfit, badges, b.id);
-          const whyNote = ['school', 'vest', 'schoolUninvested'].includes(why) ? t(`badge.why.${why}`) : null;
-          const art = Array.isArray(b.art) ? b.art[Math.max(0, Math.min(3, (badges.progress || 1) - 1))] : b.art;
+        {rules.badges.map((b) => {
+          const disabled = b.needsInvestiture && !outfit.invested;
+          const why = shownReason(rules, outfit, badges, b.id, { unavailable });
+          const whyNote = ['school', 'vest', 'schoolUninvested', 'noArt'].includes(why) ? t(`badge.why.${why}`) : null;
+          const example = b.dynamic ? resolveArt(b, picks, DISTRICTS)?.example : (Array.isArray(b.art) ? b.art[0] : b.art).example;
           return (
             <li key={b.id} className={`badgerow${selected === b.id ? ' is-sel' : ''}${disabled ? ' is-disabled' : ''}`}>
               <div className="badgerow__main">
-                <img src={art.file} alt="" className={`badgerow__art${b.size.shape === 'circle' ? ' is-round' : ''}`} />
+                <BadgeRowArt b={b} badges={badges} picks={picks} />
                 <div>
                   <button type="button" className="badgerow__name" onClick={() => onPick(b.id)}>
                     {pick(lang, b, 'name')}
@@ -248,7 +399,7 @@ function BadgesTab({ outfit, badges, setBadges, selected, onPick }) {
                   <div className="badgerow__meta">
                     <StatusChip status={b.status} />
                     <span className="chip chip--plain">{t(b.required ? 'info.required' : 'info.optional')}</span>
-                    {art.example && <span className="chip chip--plain">{t('badge.example')}</span>}
+                    {example && <span className="chip chip--plain">{t('badge.example')}</span>}
                   </div>
                 </div>
               </div>
@@ -280,13 +431,17 @@ function BadgesTab({ outfit, badges, setBadges, selected, onPick }) {
                   <span className="switch__track" aria-hidden="true" />
                 </label>
               )}
+              {b.dynamic === 'district' && <DistrictPicker picks={picks} setPicks={setPicks} id={`pick-district-${section}`} />}
+              {b.dynamic === 'region' && <p className="note">{t('pick.regionAuto')}</p>}
+              {b.dynamic === 'meritorious' && <YearPicker picks={picks} setPicks={setPicks} id={`pick-year-${section}`} />}
               {disabled && <p className="note">{t('badge.needInvest')}</p>}
               {!disabled && whyNote && <p className="note">{whyNote}</p>}
             </li>
           );
         })}
       </ul>
-      <p className="note">{bi(lang, RULES.artCredit.zh, RULES.artCredit.en)}</p>
+      <p className="note">{bi(lang, rules.artCredit.zh, rules.artCredit.en)}</p>
+      <p className="note">{bi(lang, DISTRICTS.artCredit.zh, DISTRICTS.artCredit.en)}</p>
     </div>
   );
 }
@@ -420,8 +575,67 @@ function OutfitTab({ outfit, setOutfit }) {
   );
 }
 
+/** 幼童軍：制服固定（手冊 P.28–29），只揀人物、帽、旅巾顏色 */
+function CubOutfitTab({ outfit, setOutfit }) {
+  const { t } = useLang();
+  const set = (k, v) => setOutfit((o) => ({ ...o, [k]: v }));
+  return (
+    <div className="tabbody">
+      <Segmented
+        label={t('outfit.figure')}
+        value={outfit.gender}
+        onChange={(v) => set('gender', v)}
+        options={[
+          { value: 'boy', label: t('outfit.boy') },
+          { value: 'girl', label: t('outfit.girl') },
+        ]}
+      />
+      <Segmented
+        label={t('outfit.finish')}
+        value={outfit.finish}
+        onChange={(v) => set('finish', v)}
+        options={[
+          { value: 'painted', label: t('outfit.painted') },
+          { value: 'unpainted', label: t('outfit.unpainted') },
+        ]}
+      />
+      <Switch
+        label={t('outfit.invested')}
+        checked={outfit.invested}
+        onChange={(v) => set('invested', v)}
+        note={outfit.invested ? null : t('outfit.investedNoteCub')}
+      />
+      <Switch
+        label={t(outfit.gender === 'girl' ? 'outfit.cubHatGirl' : 'outfit.cubHatBoy')}
+        checked={outfit.hat}
+        disabled={!outfit.invested}
+        onChange={(v) => set('hat', v)}
+        note={t('outfit.cubHatNote')}
+      />
+      {outfit.invested && (
+        <>
+          <Swatches
+            label={`${t('outfit.necker')}・${t('outfit.neckerMain')}`}
+            value={outfit.neckerMain}
+            options={NECKER}
+            onChange={(v) => set('neckerMain', v)}
+          />
+          <Swatches
+            label={`${t('outfit.necker')}・${t('outfit.neckerBorder')}`}
+            value={outfit.neckerBorder}
+            options={NECKER}
+            onChange={(v) => set('neckerBorder', v)}
+          />
+          <Swatches label={t('outfit.woggle')} value={outfit.woggle} options={WOGGLE} onChange={(v) => set('woggle', v)} />
+        </>
+      )}
+      <p className="note">{t(outfit.gender === 'girl' ? 'outfit.cubNoteGirl' : 'outfit.cubNoteBoy')}</p>
+    </div>
+  );
+}
+
 /* ---------- 來源分頁 ---------- */
-function SourcesTab() {
+function SourcesTab({ rules: RULES }) {
   const { lang, t } = useLang();
   const rv = RULES.review;
   return (
@@ -442,6 +656,12 @@ function SourcesTab() {
       </ul>
       <p className="note">{t('src.handbookCopy')}</p>
       <p className="note">{bi(lang, RULES.artCredit.zh, RULES.artCredit.en)}</p>
+      <p className="note">
+        {bi(lang, DISTRICTS.artCredit.zh, DISTRICTS.artCredit.en)}{' '}
+        <a href={DISTRICTS.source.url} target="_blank" rel="noopener noreferrer">
+          {t('src.open')}
+        </a>
+      </p>
       <dl className="facts facts--tight">
         <dt>{t('rules.version')}</dt>
         <dd>{RULES.fileVersion}</dd>
@@ -459,7 +679,7 @@ function SourcesTab() {
             <strong>{pick(lang, g, 'name')}</strong>
             <span>{pick(lang, g, 'rule')}</span>
             {g.modelNote && <span className="muted">{bi(lang, g.modelNote.zh, g.modelNote.en)}</span>}
-            <Sources list={g.sources} />
+            <Sources rules={RULES} list={g.sources} />
           </li>
         ))}
       </ul>
@@ -472,7 +692,7 @@ function SourcesTab() {
         {RULES.notAllowed.map((n) => (
           <li key={n.id}>
             <span>{bi(lang, n.zh, n.en)}</span>
-            <Sources list={n.sources} />
+            <Sources rules={RULES} list={n.sources} />
           </li>
         ))}
       </ul>
@@ -490,9 +710,36 @@ function SourcesTab() {
 /* ---------- 主程式 ---------- */
 export default function App() {
   const { lang, t } = useLang();
-  const [outfit, setOutfit] = useState(DEFAULT_OUTFIT);
-  const [badges, setBadges] = useState(DEFAULT_BADGES);
+  const [section, setSection] = useState('grasshopper');
+  const [outfits, setOutfits] = useState(DEFAULT_OUTFITS);
+  const [badgeStates, setBadgeStates] = useState(DEFAULT_BADGE_STATES);
+  const [picks, setPicks] = useState(DEFAULT_PICKS);
   const [selected, setSelected] = useState(null);
+  const RULES = SECTIONS[section];
+  const outfit = outfits[section];
+  const badges = badgeStates[section];
+  // 人物、外觀、宣誓兩個支部共用
+  const setOutfit = useCallback(
+    (fn) =>
+      setOutfits((all) => {
+        const next = typeof fn === 'function' ? fn(all[section]) : fn;
+        const shared = Object.fromEntries(SHARED_OUTFIT_KEYS.map((k) => [k, next[k]]));
+        return Object.fromEntries(SECTION_IDS.map((id) => [id, id === section ? next : { ...all[id], ...shared }]));
+      }),
+    [section],
+  );
+  const setBadges = useCallback(
+    (fn) => setBadgeStates((all) => ({ ...all, [section]: typeof fn === 'function' ? fn(all[section]) : fn })),
+    [section],
+  );
+  const unavailable = useMemo(
+    () => RULES.badges.filter((b) => b.dynamic && !resolveArt(b, picks, DISTRICTS)).map((b) => b.id),
+    [RULES, picks],
+  );
+  const switchSection = (id) => {
+    setSelected(null);
+    setSection(id);
+  };
   const [tab, setTab] = useState('badges');
   const [toast, setToast] = useState('');
   const [busy, setBusy] = useState(false);
@@ -517,8 +764,8 @@ export default function App() {
     setBusy(true);
     try {
       const { captureScreenshot, downloadBlob, stamp } = await import('./lib/screenshot.js');
-      const blob = await captureScreenshot(canvas, t('shot.caption'));
-      downloadBlob(blob, `scout3d_grasshopper_${APP_VERSION}_${stamp()}.png`);
+      const blob = await captureScreenshot(canvas, t(`shot.caption.${section}`));
+      downloadBlob(blob, `scout3d_${section}_${APP_VERSION}_${stamp()}.png`);
       setToast(t('shot.done'));
     } catch {
       setToast(t('shot.fail'));
@@ -540,8 +787,22 @@ export default function App() {
           <img src="/icons/favicon-32.png" width="28" height="28" alt="" className="brand__icon" />
           <div>
             <h1 className="brand__title">{t('app.title')}</h1>
-            <p className="brand__sub">{t('app.sub')}</p>
+            <p className="brand__sub">{t(`app.sub.${section}`)}</p>
           </div>
+        </div>
+        <div className="sectionswitch seg" role="radiogroup" aria-label={t('section.label')}>
+          {SECTION_IDS.map((id) => (
+            <button
+              key={id}
+              type="button"
+              role="radio"
+              aria-checked={section === id}
+              className={`seg__btn${section === id ? ' is-on' : ''}`}
+              onClick={() => switchSection(id)}
+            >
+              {bi(lang, SECTIONS[id].section.zh, SECTIONS[id].section.en)}
+            </button>
+          ))}
         </div>
         <LangToggle />
       </header>
@@ -556,7 +817,7 @@ export default function App() {
         <section className="stage" aria-label={t('app.title')}>
           {webgl ? (
             <Suspense fallback={<div className="stage__msg">{t('loading')}</div>}>
-              <Scene ref={scene} outfit={outfit} badges={badges} selected={selected} onSelect={onSceneSelect} />
+              <Scene ref={scene} section={section} outfit={outfit} badges={badges} picks={picks} selected={selected} onSelect={onSceneSelect} />
             </Suspense>
           ) : (
             <div className="stage__msg">{t('nowebgl')}</div>
@@ -589,9 +850,13 @@ export default function App() {
         <aside className="panel">
           {selected && (
             <InfoCard
+              key={`${section}-${selected}`}
+              rules={RULES}
               id={selected}
               outfit={outfit}
               badges={badges}
+              picks={picks}
+              unavailable={unavailable}
               onClose={() => setSelected(null)}
               onFocus={() => scene.current?.focus(selected)}
             />
@@ -613,9 +878,22 @@ export default function App() {
             ))}
           </div>
           <div role="tabpanel" id={`pane-${tab}`} aria-labelledby={`tab-${tab}`}>
-            {tab === 'badges' && <BadgesTab outfit={outfit} badges={badges} setBadges={setBadges} selected={selected} onPick={onPick} />}
-            {tab === 'outfit' && <OutfitTab outfit={outfit} setOutfit={setOutfit} />}
-            {tab === 'sources' && <SourcesTab />}
+            {tab === 'badges' && (
+              <BadgesTab
+                rules={RULES}
+                section={section}
+                outfit={outfit}
+                badges={badges}
+                setBadges={setBadges}
+                picks={picks}
+                setPicks={setPicks}
+                unavailable={unavailable}
+                selected={selected}
+                onPick={onPick}
+              />
+            )}
+            {tab === 'outfit' && (section === 'cub' ? <CubOutfitTab outfit={outfit} setOutfit={setOutfit} /> : <OutfitTab outfit={outfit} setOutfit={setOutfit} />)}
+            {tab === 'sources' && <SourcesTab rules={RULES} />}
           </div>
         </aside>
       </main>

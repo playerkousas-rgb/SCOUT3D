@@ -1,11 +1,9 @@
 name: fetch district badges
 
-# 一次性：下載地域章／區章（scout.org.hk），縮細後 commit 返去同一條 branch。
+# 手動執行：重新下載地域章／區章（scout.org.hk），縮細後 commit 返去同一條 branch。
+# 區章有更新（例如新區）先需要跑；平時唔會自動行。
 on:
   workflow_dispatch:
-  push:
-    branches: ['arena/**']
-    paths: ['.github/workflows/fetch_district_badges.yml', 'scripts/fetch_district_badges_v1.0.py']
 
 permissions:
   contents: write
