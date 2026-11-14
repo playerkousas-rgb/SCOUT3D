@@ -7,10 +7,10 @@ import Blocky from './Blocky.jsx';
 import { useLang } from '../i18n.jsx';
 
 const TARGET = new THREE.Vector3(0, 0.6, 0);
-/** 幼童軍、童軍高啲（135 cm、155 cm vs 117 cm）：望住點同相機一齊升 */
-const LIFT = { grasshopper: 0, cub: 0.09, scout: 0.17 };
-/** 童軍成個人高咗：預設視角企遠少少，先至見到全身 */
-const ZOOM = { grasshopper: 1, cub: 1, scout: 1.15 };
+/** 幼童軍、童軍、深資童軍高啲（135、155、168 cm vs 117 cm）：望住點同相機一齊升 */
+const LIFT = { grasshopper: 0, cub: 0.09, scout: 0.17, venture: 0.23 };
+/** 童軍、深資童軍成個人高咗：預設視角企遠少少，先至見到全身 */
+const ZOOM = { grasshopper: 1, cub: 1, scout: 1.15, venture: 1.24 };
 const DIST = 3.05;
 const EYE = 0.82;
 export const VIEWS = {
@@ -60,7 +60,7 @@ const Rig = forwardRef(function Rig({ lift: liftProp = 0, zoom: zoomProp = 1 }, 
     }
     // 目標點限制喺身體附近
     c.target.x = THREE.MathUtils.clamp(c.target.x, -0.32, 0.32);
-    c.target.y = THREE.MathUtils.clamp(c.target.y, 0.1, 1.35);
+    c.target.y = THREE.MathUtils.clamp(c.target.y, 0.1, 1.35 + liftProp);
     c.target.z = THREE.MathUtils.clamp(c.target.z, -0.32, 0.32);
     // 相機唔可以入身體、唔可以去咗地底
     const p = camera.position;
@@ -129,6 +129,8 @@ const Scene = forwardRef(function Scene({ section = 'grasshopper', outfit, badge
         normal.add(new THREE.Vector3(0, 0, 1).applyQuaternion(m.getWorldQuaternion(q)));
       }
       point.divideScalar(meshes.length);
+      // 平放喺膊頭嘅章（深資童軍肩章）：由前面斜上望，唔好由頭頂直落（會俾個頭遮住）
+      if (normal.lengthSq() > 0 && Math.abs(normal.clone().normalize().y) > 0.9) normal.set(0, 0.75, 0.66);
       rig.current?.focus(point, normal);
       return true;
     },

@@ -1,4 +1,4 @@
-// 方塊人身形（真實比例：小童軍約 6 歲、117 cm；幼童軍約 9 歲、135 cm；童軍約 13 歲、155 cm）— v1.0 · © SCOUT SYSTEM
+// 方塊人身形（真實比例：小童軍約 6 歲、117 cm；幼童軍約 9 歲、135 cm；童軍約 13 歲、155 cm；深資童軍約 18 歲、168 cm）— v1.0 · © SCOUT SYSTEM
 // 單位：厘米（cm）。人物面向 +z；穿著者左 = +x。y = 0 係地面。
 // 每一格貼圖 = 0.5 cm（PX = 2），所以徽章位置可以直接用手冊嘅厘米數。
 
@@ -52,6 +52,28 @@ const SCOUT = {
   waist: 81,
 };
 
+/**
+ * 深資童軍：約 18 歲、168 cm（深資童軍 16–21 歲嘅中間）。恤衫有肩帶（深資童軍肩章套喺肩帶上）；
+ * 袖要擺得落旅章、地域／區章同優異旅團章。strap = 肩帶（由膊頭邊向衣領量，cm）。
+ */
+const VENTURE = {
+  height: 168,
+  necker: { tailLen: 30, backW: 32, backH: 24, wogDrop: 10 },
+  head: { w: 21, h: 24, d: 22, y: 142, z: 0.5 },
+  neck: { w: 10, h: 4, d: 10, y: 138 },
+  torso: { h: 54, d: 18, y: 84 }, // 頂 = 138（膊頭）
+  upperArm: { w: 8.5, h: 29, d: 8.5 },
+  lowerArm: { w: 7.5, h: 23, d: 7.5 },
+  hand: { w: 7, h: 14, d: 5.5 },
+  sleeve: { len: 24, band: 2, w: 10.5, d: 15 }, // 袖口縫線離膊頂 22 cm：旅章 2–4.2、地域／區章 6.2–11.2、優異旅團章 19.7–21.7
+  leg: { w: 14, d: 14, y: 7.5, top: 87, gap: 1 },
+  shoe: { w: 13, h: 7.5, d: 25, z: 3.5 },
+  pocket: { x: 9.2, w: 12, h: 14.5, flap: 5, top: 17 },
+  waist: 88,
+  strap: { w: 4.4, t: 0.5 },
+  skirtBottom: 46, // 半截裙及膝（裙腳離地，蓋住膝頭）
+};
+
 export const BODY = {
   boy: { ...COMMON, torso: { ...COMMON.torso, w: 24 }, hair: 'short' },
   girl: { ...COMMON, torso: { ...COMMON.torso, w: 23 }, hair: 'pigtails' },
@@ -67,7 +89,12 @@ export const SCOUT_BODY = {
   girl: { ...SCOUT, torso: { ...SCOUT.torso, w: 30 }, hair: 'pigtails' },
 };
 
-export const BODIES = { grasshopper: BODY, cub: CUB_BODY, scout: SCOUT_BODY };
+export const VENTURE_BODY = {
+  boy: { ...VENTURE, torso: { ...VENTURE.torso, w: 34 }, hair: 'short' },
+  girl: { ...VENTURE, torso: { ...VENTURE.torso, w: 33 }, hair: 'pigtails' },
+};
+
+export const BODIES = { grasshopper: BODY, cub: CUB_BODY, scout: SCOUT_BODY, venture: VENTURE_BODY };
 
 export const COLOURS = {
   skin: '#f1c6a2',
@@ -111,6 +138,19 @@ export const COLOURS = {
   seaCapTop: '#fbfbfa', // 白頂帽
   airShirt: '#94afdb', // 淺藍色恤衫
   airBeret: '#24364f', // 灰藍色軟帽
+  // 深資童軍（手冊 P.36–41 附圖）
+  maroon: '#8b2231', // 棗紅色軟帽
+  ventureAirBeret: '#2c344e', // 深資空童軍灰藍色軟帽
+  tights: '#e9c2a0', // 肉色尼龍襪褲（比皮膚深少少）
+  blackSock: '#1c1c20',
+  capPeak: '#17171a', // 白頂帽黑色帽舌
+  // 制服毛衣（手冊 P.121–122 附圖）
+  sweaterGreen: '#353c23', // 深草青色
+  sweaterNavy: '#2c2749', // 深藍色
+  // 領帶（手冊 P.113）
+  tieMaroon: '#8e1f2c',
+  tieBlack: '#16161a',
+  tieNavy: '#262a55',
 };
 
 /**
@@ -118,11 +158,48 @@ export const COLOURS = {
  * hat：'beret' = 軟帽 + 金屬帽章；'sea' = 海童軍白頂帽 + 帽帶
  */
 export const SCOUT_VARIANTS = {
-  land: { shirt: COLOURS.cubShirt, leg: COLOURS.cubGreen, sock: COLOURS.cubSock, hat: 'beret', beret: COLOURS.beret },
-  sea: { shirt: COLOURS.seaShirt, leg: COLOURS.navy, sock: COLOURS.navySock, hat: 'sea' },
-  air: { shirt: COLOURS.airShirt, leg: COLOURS.navy, sock: COLOURS.navySock, hat: 'beret', beret: COLOURS.airBeret },
+  land: { shirt: COLOURS.cubShirt, leg: COLOURS.cubGreen, sock: COLOURS.cubSock, hat: 'beret', beret: COLOURS.beret, sweater: COLOURS.sweaterGreen },
+  sea: { shirt: COLOURS.seaShirt, leg: COLOURS.navy, sock: COLOURS.navySock, hat: 'sea', sweater: COLOURS.sweaterNavy },
+  air: { shirt: COLOURS.airShirt, leg: COLOURS.navy, sock: COLOURS.navySock, hat: 'beret', beret: COLOURS.airBeret, sweater: COLOURS.sweaterNavy },
 };
 export const scoutVariant = (id) => SCOUT_VARIANTS[id] ?? SCOUT_VARIANTS.land;
+
+/**
+ * 深資童軍三款制服嘅配色（手冊 P.36–41；綱要 P.14–15）。徽章同擺位三款一樣（手冊 P.170）。
+ * hat：'beret' = 軟帽 + 童軍帽章；'seaLeader' = 海童軍男／女領袖白頂帽 + 深資海童軍帽章
+ */
+export const VENTURE_VARIANTS = {
+  land: { shirt: COLOURS.cubShirt, leg: COLOURS.cubGreen, hat: 'beret', beret: COLOURS.maroon, sweater: COLOURS.sweaterGreen, tie: COLOURS.tieMaroon },
+  sea: { shirt: COLOURS.seaShirt, leg: COLOURS.navy, hat: 'seaLeader', sweater: COLOURS.sweaterNavy, tie: COLOURS.tieBlack },
+  air: { shirt: COLOURS.airShirt, leg: COLOURS.navy, hat: 'beret', beret: COLOURS.ventureAirBeret, sweater: COLOURS.sweaterNavy, tie: COLOURS.tieNavy },
+};
+export const ventureVariant = (id) => VENTURE_VARIANTS[id] ?? VENTURE_VARIANTS.land;
+
+/**
+ * 深資童軍下身（手冊 P.36；綱要 P.15）：男 = 長褲 + 黑短襪 + 綁帶皮鞋；
+ * 女 = 半截裙 + 肉色襪褲 + 非綁帶中跟皮鞋，或者（綱要 P.15）長褲 + 黑襪 + 綁帶皮鞋。
+ */
+export function ventureLegwear(gender, choice) {
+  const skirt = gender === 'girl' && choice !== 'trousers';
+  return { skirt, laced: !skirt, sock: skirt ? COLOURS.tights : COLOURS.blackSock };
+}
+
+/** 制服毛衣（手冊 P.121–122）：同背心一樣嘅殼（每邊厚 VEST_T），頂面高過膊頭 SWEATER_TOP cm */
+export const SWEATER_TOP = 0.5;
+
+/**
+ * 肩帶 + 深資童軍肩章（cm）：肩帶由膊頭邊（torso 邊）向衣領；肩章方頭（徽號）近膊頭。
+ * 著制服毛衣：肩章改戴喺毛衣雙肩肩帶上（手冊 P.122），所以高 SWEATER_TOP、闊 VEST_T。
+ */
+export function strapLayout(L, { sweater = false } = {}) {
+  const { B, top } = L;
+  const S = B.strap;
+  if (!S) return null;
+  const outer = B.torso.w / 2 + (sweater ? VEST_T : 0); // 膊頭邊
+  const inner = B.neck.w / 2 + 1.75; // 衣領外圍
+  const base = top + (sweater ? SWEATER_TOP : 0);
+  return { w: S.w, t: S.t, outer, inner, len: outer - inner, base, y: base + S.t / 2, cx: (outer + inner) / 2 };
+}
 
 /** 計出每個部件嘅大細同位置（cm）。 */
 export function layout(gender, section = 'grasshopper') {

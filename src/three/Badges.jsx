@@ -146,13 +146,13 @@ function Patch({ p, tex, painted, selected, onSelect, registry }) {
   );
 }
 
-/** 上身嘅章（喺人物 group 入面，單位 cm）；facing = 'back' 嘅（領巾尖）向後 */
+/** 上身嘅章（喺人物 group 入面，單位 cm）；facing = 'back' 嘅（領巾尖）向後；facing = 'up'（肩章）平放喺肩帶上，rot 由 badgeLayout 計 */
 export function TorsoBadges({ items, textures, ...rest }) {
   return items.map((p) => (
     <group
       key={p.key}
-      position={[p.x, p.y, p.facing === 'back' ? p.z - EPS * 2 : p.z + EPS]}
-      rotation={p.facing === 'back' ? [0, Math.PI, 0] : undefined}
+      position={p.facing === 'up' ? [p.x, p.y + EPS, p.z] : [p.x, p.y, p.facing === 'back' ? p.z - EPS * 2 : p.z + EPS]}
+      rotation={p.rot ?? (p.facing === 'back' ? [0, Math.PI, 0] : undefined)}
     >
       <Patch p={p} tex={textures[p.art]} {...rest} />
     </group>

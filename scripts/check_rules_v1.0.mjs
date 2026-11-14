@@ -5,7 +5,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { validateRules } from '../src/data/validate.js';
 
 export const VERSION = 'v1.0';
-const SECTIONS = ['grasshopper', 'cub', 'scout'];
+const SECTIONS = ['grasshopper', 'cub', 'scout', 'venture'];
 const read = (p) => JSON.parse(readFileSync(new URL(`../${p}`, import.meta.url), 'utf8'));
 const pub = (file) => existsSync(new URL(`../public${file}`, import.meta.url));
 
@@ -15,6 +15,7 @@ for (const id of SECTIONS) {
   const errors = validateRules(rules);
   for (const b of rules.badges) {
     for (const a of Array.isArray(b.art) ? b.art : [b.art]) if (!pub(a.file)) errors.push(`${b.id}：圖案 ${a.file} 唔存在`);
+    for (const c of b.choices || []) if (c.art && !pub(c.art.file)) errors.push(`${b.id}：選項 ${c.id} 圖案 ${c.art.file} 唔存在`);
   }
   if (errors.length) {
     failed += errors.length;
@@ -30,10 +31,12 @@ for (const id of SECTIONS) {
   }
 }
 
-// 海童軍帽帶圖案（手冊 P.102）
-if (!pub('/badges/sea_scout_cap_tally.png')) {
-  failed += 1;
-  console.error('✗ 海童軍帽帶圖案 /badges/sea_scout_cap_tally.png 唔存在');
+// 帽章／帽帶圖案（手冊 P.102）：海童軍帽帶、童軍帽章、深資海童軍帽章
+for (const f of ['/badges/sea_scout_cap_tally.png', '/badges/scout_cap_badge.png', '/badges/venture_sea_cap_badge.png']) {
+  if (!pub(f)) {
+    failed += 1;
+    console.error(`✗ 帽章圖案 ${f} 唔存在`);
+  }
 }
 
 // 地域章、區章：每個圖案都要喺 public/ 入面

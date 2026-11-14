@@ -39,6 +39,7 @@ const CUB_OUTFIT = {
   finish: 'painted',
   invested: true,
   hat: true,
+  sweater: false, // 制服毛衣（手冊 P.121–122）
   neckerMain: '#2e7d4f',
   neckerBorder: '#2e7d4f',
   woggle: '#1f4e9c',
@@ -51,12 +52,17 @@ const SCOUT_OUTFIT = {
   finish: 'painted',
   invested: true,
   hat: true,
+  sweater: false, // 制服毛衣（手冊 P.121–122）
   neckerMain: '#2e7d4f',
   neckerBorder: '#2e7d4f',
   woggle: '#1f4e9c',
 };
 
-const DEFAULT_OUTFITS = { grasshopper: DEFAULT_OUTFIT, cub: CUB_OUTFIT, scout: SCOUT_OUTFIT };
+// 深資童軍（手冊 P.36–41）：同童軍一樣揀款式；女團員可以揀半截裙／長褲（綱要 P.15）
+// neckwear：旅巾／領帶（領帶制服，手冊 P.48、P.113）
+const VENTURE_OUTFIT = { ...SCOUT_OUTFIT, ventureLegwear: 'skirt', neckwear: 'necker', neckerMain: '#8b2231', neckerBorder: '#8b2231' };
+
+const DEFAULT_OUTFITS = { grasshopper: DEFAULT_OUTFIT, cub: CUB_OUTFIT, scout: SCOUT_OUTFIT, venture: VENTURE_OUTFIT };
 /** 各支部共用嘅設定（轉支部時保留） */
 const SHARED_OUTFIT_KEYS = ['gender', 'finish', 'invested'];
 
@@ -73,6 +79,9 @@ const CUB_BADGES = {
 // 童軍預設：制服頁列明嘅基本徽章全開（手冊 P.30：世界童軍會員章、香港章、地域章、區章、旅章、小隊章）
 const SCOUT_BADGES = { ...CUB_BADGES, patrol: true };
 
+// 深資童軍預設：基本徽章全開（手冊 P.36）；深資童軍肩章（有選項）用規則 JSON 嘅 default
+const VENTURE_BADGES = { ...CUB_BADGES, epaulette: SECTIONS.venture.badges.find((b) => b.id === 'epaulette')?.default ?? 'none' };
+
 // 用戶自選：所屬區（決定區章、地域章圖案）、優異旅團章年份、童軍小隊
 const DEFAULT_PICKS = { districtId: '', meritYear: new Date().getFullYear(), patrolId: '' };
 
@@ -86,7 +95,7 @@ const DEFAULT_BADGES = {
   meritorious: false,
   commemorative: false,
 };
-const DEFAULT_BADGE_STATES = { grasshopper: DEFAULT_BADGES, cub: CUB_BADGES, scout: SCOUT_BADGES };
+const DEFAULT_BADGE_STATES = { grasshopper: DEFAULT_BADGES, cub: CUB_BADGES, scout: SCOUT_BADGES, venture: VENTURE_BADGES };
 
 function hasWebGL() {
   try {
@@ -414,7 +423,11 @@ function InfoCard({ rules, id, outfit, badges, picks, unavailable, onClose, onFo
 
 /* ---------- 徽章分頁 ---------- */
 function BadgeRowArt({ b, badges, picks }) {
-  const art = b.dynamic
+  const chosen = b.choices ? b.choices.find((c) => c.id === badges[b.id]) : null;
+  if (chosen && !chosen.art) return <span className="badgerow__art badgerow__art--none" aria-hidden="true" />;
+  const art = chosen
+    ? { kind: 'image', file: chosen.art.file }
+    : b.dynamic
     ? resolveArt(b, picks, DISTRICTS, PATROLS)
     : { kind: 'image', file: (Array.isArray(b.art) ? b.art[Math.max(0, Math.min(3, (badges.progress || 1) - 1))] : b.art).file };
   return <ArtImg art={art} alt="" className={`badgerow__art${b.size.shape === 'circle' ? ' is-round' : ''}`} />;
@@ -425,7 +438,7 @@ function BadgesTab({ rules, section, outfit, badges, setBadges, picks, setPicks,
   const set = (k, v) => setBadges((b) => ({ ...b, [k]: v }));
   return (
     <div className="tabbody">
-      <p className="note note--strong">{t({ cub: 'badges.tipCub', scout: 'badges.tipScout' }[section] ?? 'badges.tip')}</p>
+      <p className="note note--strong">{t({ cub: 'badges.tipCub', scout: 'badges.tipScout', venture: 'badges.tipVenture' }[section] ?? 'badges.tip')}</p>
       {outfit.school && (
         <p className="note note--warn">
           {t('badges.schoolOn')}
@@ -436,7 +449,7 @@ function BadgesTab({ rules, section, outfit, badges, setBadges, picks, setPicks,
         {rules.badges.map((b) => {
           const disabled = b.needsInvestiture && !outfit.invested;
           const why = shownReason(rules, outfit, badges, b.id, { unavailable });
-          const whyNote = ['school', 'vest', 'schoolUninvested', 'noArt'].includes(why) ? t(`badge.why.${why}`) : null;
+          const whyNote = ['school', 'vest', 'sweater', 'schoolUninvested', 'noArt'].includes(why) ? t(`badge.why.${why}`) : null;
           const example = b.dynamic ? resolveArt(b, picks, DISTRICTS, PATROLS)?.example : (Array.isArray(b.art) ? b.art[0] : b.art).example;
           return (
             <li key={b.id} className={`badgerow${selected === b.id ? ' is-sel' : ''}${disabled ? ' is-disabled' : ''}`}>
@@ -453,7 +466,23 @@ function BadgesTab({ rules, section, outfit, badges, setBadges, picks, setPicks,
                   </div>
                 </div>
               </div>
-              {b.id === 'progress' ? (
+              {b.choices ? (
+                <div className="steps steps--choices" role="radiogroup" aria-label={`${t('badge.choice')}：${pick(lang, b, 'name')}`}>
+                  {b.choices.map((c) => (
+                    <button
+                      key={c.id}
+                      type="button"
+                      role="radio"
+                      aria-checked={badges[b.id] === c.id}
+                      disabled={disabled && !!c.art}
+                      className={`steps__btn steps__btn--wide${badges[b.id] === c.id ? ' is-on' : ''}`}
+                      onClick={() => set(b.id, c.id)}
+                    >
+                      {pick(lang, c, 'name')}
+                    </button>
+                  ))}
+                </div>
+              ) : b.id === 'progress' ? (
                 <div className="steps" role="radiogroup" aria-label={t('badge.steps')}>
                   {[0, 1, 2, 3, 4].map((n) => (
                     <button
@@ -669,6 +698,7 @@ function CubOutfitTab({ outfit, setOutfit }) {
         onChange={(v) => set('hat', v)}
         note={t('outfit.cubHatNote')}
       />
+      <Switch label={t('outfit.sweater')} checked={!!outfit.sweater} onChange={(v) => set('sweater', v)} note={outfit.sweater ? t('outfit.sweaterNoteGreen') : null} />
       {outfit.invested && (
         <>
           <Swatches
@@ -692,13 +722,25 @@ function CubOutfitTab({ outfit, setOutfit }) {
 }
 
 /** 童軍：揀款式（童軍／海童軍／空童軍，手冊 P.30–35），制服跟款式固定；只揀人物、帽、旅巾顏色；巾圈固定係皮巾圈 */
-const SCOUT_HAT_KEY = { land: 'scoutHat', sea: 'seaHat', air: 'airHat' };
-const SCOUT_NOTE_KEY = { land: 'scoutNote', sea: 'seaNote', air: 'airNote' };
-function ScoutOutfitTab({ outfit, setOutfit }) {
+const HAT_KEY = {
+  scout: { land: 'scoutHat', sea: 'seaHat', air: 'airHat' },
+  venture: { land: 'ventureHat', sea: 'ventureSeaHat', air: 'ventureAirHat' },
+};
+const NOTE_KEY = {
+  scout: { land: 'scoutNote', sea: 'seaNote', air: 'airNote' },
+  venture: { land: 'ventureNote', sea: 'ventureSeaNote', air: 'ventureAirNote' },
+};
+/** 童軍同深資童軍共用（深資童軍：手冊 P.36–41；女團員可揀半截裙／長褲，綱要 P.15） */
+function ScoutOutfitTab({ section = 'scout', outfit, setOutfit }) {
   const { lang, t } = useLang();
   const set = (k, v) => setOutfit((o) => ({ ...o, [k]: v }));
-  const variants = SECTIONS.scout.variants ?? [];
-  const v = variantOf(SECTIONS.scout, outfit.variant)?.id ?? 'land';
+  const R = SECTIONS[section];
+  const variants = R.variants ?? [];
+  const v = variantOf(R, outfit.variant)?.id ?? 'land';
+  const venture = section === 'venture';
+  const hatKey = HAT_KEY[section][v];
+  const girlTrousers = venture && outfit.gender === 'girl' && outfit.ventureLegwear === 'trousers';
+  const tie = venture && outfit.neckwear === 'tie';
   return (
     <div className="tabbody">
       <Segmented
@@ -729,18 +771,53 @@ function ScoutOutfitTab({ outfit, setOutfit }) {
         label={t('outfit.invested')}
         checked={outfit.invested}
         onChange={(v) => set('invested', v)}
-        note={outfit.invested ? null : t('outfit.investedNoteScout')}
+        note={outfit.invested ? null : t(venture ? 'outfit.investedNoteVenture' : 'outfit.investedNoteScout')}
       />
-      <Switch label={t(`outfit.${SCOUT_HAT_KEY[v]}`)} checked={outfit.hat} disabled={!outfit.invested} onChange={(x) => set('hat', x)} note={t(`outfit.${SCOUT_HAT_KEY[v]}Note`)} />
-      {outfit.invested && (
+      <Switch label={t(`outfit.${hatKey}`)} checked={outfit.hat} disabled={!outfit.invested} onChange={(x) => set('hat', x)} note={t(`outfit.${hatKey}Note`)} />
+      <Switch
+        label={t('outfit.sweater')}
+        checked={!!outfit.sweater}
+        onChange={(x) => set('sweater', x)}
+        note={outfit.sweater ? t(venture ? 'outfit.sweaterNoteVenture' : v === 'land' ? 'outfit.sweaterNoteGreen' : 'outfit.sweaterNoteNavy') : null}
+      />
+      {venture && outfit.gender === 'girl' && (
+        <>
+          <Segmented
+            label={t('outfit.ventureLegwear')}
+            value={outfit.ventureLegwear === 'trousers' ? 'trousers' : 'skirt'}
+            onChange={(x) => set('ventureLegwear', x)}
+            options={[
+              { value: 'skirt', label: t('outfit.skirt') },
+              { value: 'trousers', label: t('outfit.trousers') },
+            ]}
+          />
+          <p className="note">{t('outfit.ventureLegwearNote')}</p>
+        </>
+      )}
+      {outfit.invested && venture && (
+        <>
+          <Segmented
+            label={t('outfit.neckwear')}
+            value={tie ? 'tie' : 'necker'}
+            onChange={(x) => set('neckwear', x)}
+            options={[
+              { value: 'necker', label: t('outfit.neckwearNecker') },
+              { value: 'tie', label: t('outfit.neckwearTie') },
+            ]}
+          />
+          {tie && <p className="note">{t('outfit.tieNote')}</p>}
+        </>
+      )}
+      {outfit.invested && !tie && (
         <>
           <Swatches label={neckerLabel(t, 'outfit.neckerMain')} value={outfit.neckerMain} options={NECKER} onChange={(v) => set('neckerMain', v)} />
           <Swatches label={neckerLabel(t, 'outfit.neckerBorder')} value={outfit.neckerBorder} options={NECKER} onChange={(v) => set('neckerBorder', v)} />
           <p className="note">{t('outfit.scoutWoggle')}</p>
         </>
       )}
-      <p className="note">{t(`outfit.${SCOUT_NOTE_KEY[v]}${outfit.gender === 'girl' ? 'Girl' : 'Boy'}`)}</p>
-      <p className="note">{t('outfit.scoutVariants')}</p>
+      <p className="note">{t(`outfit.${NOTE_KEY[section][v]}${outfit.gender === 'girl' ? 'Girl' : 'Boy'}`)}</p>
+      {girlTrousers && <p className="note note--strong">{t('outfit.ventureTrousersOn')}</p>}
+      <p className="note">{t(venture ? 'outfit.ventureVariants' : 'outfit.scoutVariants')}</p>
     </div>
   );
 }
@@ -838,7 +915,7 @@ export default function App() {
   const RULES = SECTIONS[section];
   const outfit = outfits[section];
   // 童軍支部嘅款式（海童軍／空童軍）用自己嘅副標題、截圖說明同檔名
-  const variantTag = section === 'scout' && outfit.variant && outfit.variant !== 'land' ? `${section}_${outfit.variant}` : section;
+  const variantTag = (section === 'scout' || section === 'venture') && outfit.variant && outfit.variant !== 'land' ? `${section}_${outfit.variant}` : section;
   const badges = badgeStates[section];
   // 人物、外觀、宣誓各支部共用
   const setOutfit = useCallback(
@@ -1017,8 +1094,8 @@ export default function App() {
             {tab === 'outfit' &&
               (section === 'cub' ? (
                 <CubOutfitTab outfit={outfit} setOutfit={setOutfit} />
-              ) : section === 'scout' ? (
-                <ScoutOutfitTab outfit={outfit} setOutfit={setOutfit} />
+              ) : section === 'scout' || section === 'venture' ? (
+                <ScoutOutfitTab key={section} section={section} outfit={outfit} setOutfit={setOutfit} />
               ) : (
                 <OutfitTab outfit={outfit} setOutfit={setOutfit} />
               ))}

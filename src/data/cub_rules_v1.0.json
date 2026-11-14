@@ -29,8 +29,8 @@
       "zh": "香港童軍總會《儀容與制服手冊》",
       "en": "SAHK Uniform Handbook (Chinese edition)",
       "edition": {
-        "zh": "網上版（含 2026-01-01 第 04/2026 號通告制服帽修訂）；P.26–29 幼童軍制服，P.92–95 基本徽章，P.98 幼童軍帽，P.159 優異旅團章，P.168 幼童軍徽章佩戴圖",
-        "en": "Online edition incl. Circular 04/2026 (1 Jan 2026) cap amendment; pp.26–29 Cub uniform, pp.92–95 basic badges, p.98 Cub caps, p.159 Meritorious Group Badge, p.168 Cub badge chart"
+        "zh": "網上版（含 2026-01-01 第 04/2026 號通告制服帽修訂）；P.26–29 幼童軍制服，P.92–95 基本徽章，P.98 幼童軍帽，P.121–122 制服毛衣，P.159 優異旅團章，P.168 幼童軍徽章佩戴圖",
+        "en": "Online edition incl. Circular 04/2026 (1 Jan 2026) cap amendment; pp.26–29 Cub uniform, pp.92–95 basic badges, p.98 Cub caps, pp.121–122 uniform jersey, p.159 Meritorious Group Badge, p.168 Cub badge chart"
       },
       "url": "https://www.scout.org.hk/uniformhandbook"
     },
@@ -230,6 +230,28 @@
         "zh": "旅巾顏色由各旅自定，模型可自選；預設跟附圖用綠色。",
         "en": "Neckerchief colours are set by each Group; pick them in the model. Default is green as in the figures."
       }
+    },
+    {
+      "id": "sweater",
+      "zh": {
+        "name": "制服毛衣（可選）",
+        "rule": "可因應個人體質或天氣情況穿著深草青色制服毛衣。領巾放喺毛衣外面；毛衣上只可以喺適當位置戴世界童軍會員章、香港章同旅章，其他章唔可以戴喺毛衣上。"
+      },
+      "en": {
+        "name": "Uniform jersey (optional)",
+        "rule": "A dark grass-green uniform jersey may be worn for personal comfort or the weather. The neckerchief goes outside the jersey; only the World Membership Badge, Hong Kong Badge and Group Badge may be worn on it, in the appropriate places; no other badges."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "121–122"
+        }
+      ],
+      "status": "documented",
+      "modelNote": {
+        "zh": "毛衣畫做長袖、坑紋、圓領（見到恤衫領）、膊頭淺色膊布（手冊 P.121–122 附圖）。徽章「或制服毛衣相同位置」：位置同恤衫一樣，向外移一個毛衣厚度。",
+        "en": "The jersey is drawn long-sleeved and ribbed, with a crew neck (shirt collar showing) and lighter shoulder patches (Handbook pp.121–122 figures). Badges go in “the same position on the uniform jersey”: the shirt positions, moved out by the jersey thickness."
+      }
     }
   ],
   "badges": [
@@ -284,7 +306,8 @@
       "modelNote": {
         "zh": "手冊冇寫尺寸；模型用直徑 4 cm，按 P.93 附圖同胸袋嘅比例。",
         "en": "No size in the Handbook; the model uses 4 cm diameter, from its proportion to the pocket in the p.93 figure."
-      }
+      },
+      "sweater": true
     },
     {
       "id": "hongKong",
@@ -337,7 +360,8 @@
       "modelNote": {
         "zh": "手冊冇寫尺寸；模型用 4 × 5.6 cm（跟 P.93 圖案比例）。",
         "en": "No size in the Handbook; the model uses 4 × 5.6 cm (the p.93 artwork's proportions)."
-      }
+      },
+      "sweater": true
     },
     {
       "id": "troop",
@@ -390,7 +414,8 @@
       "modelNote": {
         "zh": "手冊 P.94：新成立旅嘅旅章不小過 8.5 × 2 cm、不大過 10.5 × 2.5 cm；模型用 9 × 2.2 cm。圖案係手冊示例（2222 旅），各旅實際圖案唔同。",
         "en": "Handbook p.94: a new Group's badge is between 8.5 × 2 cm and 10.5 × 2.5 cm; the model uses 9 × 2.2 cm. The artwork is the handbook example (2222th Group); each Group's badge differs."
-      }
+      },
+      "sweater": true
     },
     {
       "id": "region",
@@ -447,7 +472,8 @@
       "modelNote": {
         "zh": "圖案跟「區章」揀咗嘅區自動轉做所屬地域；未揀區就用手冊 P.168 示例色塊。總會總部屬下嘅區（例如銀禧區）網頁冇列地域章，模型唔顯示。手冊 P.168 同綱要 P.7 附圖都係前面（望住右袖時右手邊）地域章、後面區章，同 P.95 文字一致。",
         "en": "The artwork follows the Region of the District picked under District Badge; with no District picked it uses the Handbook p.168 example block. Districts under AHQ (e.g. Silver Jubilee) have no Region Badge on the web page, so none is shown. The Handbook p.168 and Training Scheme p.7 figures both put the Region Badge in front (right-hand side when looking at the right sleeve) and the District Badge behind, matching the p.95 text."
-      }
+      },
+      "sweater": false
     },
     {
       "id": "district",
@@ -504,7 +530,8 @@
       "modelNote": {
         "zh": "可以揀全港所有區（香港童軍總會網頁「地域及區」）；未揀區就用手冊示例色塊。",
         "en": "Every District can be picked (SAHK “Regions and Districts” page); with none picked it uses the handbook example block."
-      }
+      },
+      "sweater": false
     },
     {
       "id": "meritorious",
@@ -558,7 +585,8 @@
       "modelNote": {
         "zh": "手冊冇寫尺寸；模型用 9 × 2 cm（P.159 圖案比例）。可以輸入年份：圖案底色同文字取自 P.159，只換年份數字；顏色每 3 年輪一次（1999 紅、2000 紫、2001 藍……，P.159 2016 藍、2017 紅、2018 紫吻合）。",
         "en": "No size in the Handbook; the model uses 9 × 2 cm (p.159 artwork proportions). Type a year: the background and lettering come from p.159 and only the year digits change; the colour cycles every 3 years (1999 red, 2000 purple, 2001 blue…, matching 2016 blue, 2017 red, 2018 purple on p.159)."
-      }
+      },
+      "sweater": false
     }
   ],
   "notAllowed": [
