@@ -1,0 +1,30 @@
+name: fetch district badges
+
+# 一次性：下載地域章／區章（scout.org.hk），縮細後 commit 返去同一條 branch。
+on:
+  workflow_dispatch:
+  push:
+    branches: ['arena/**']
+    paths: ['.github/workflows/fetch_district_badges.yml', 'scripts/fetch_district_badges_v1.0.py']
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - name: Download and shrink
+        run: |
+          pip install --quiet pillow
+          python3 scripts/fetch_district_badges_v1.0.py
+          du -sh public/badges/districts
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/badges/districts
+          git diff --cached --quiet || git commit -m "chore: 地域章及區章圖案（scout.org.hk，縮細）"
+          git push
