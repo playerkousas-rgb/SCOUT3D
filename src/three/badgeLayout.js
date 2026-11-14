@@ -6,7 +6,7 @@ import { layout, neckerLayout, VEST_T } from './body.js';
 
 const sectionOf = (rules) => rules?.section?.id ?? 'grasshopper';
 
-/** 動態圖案（區章、地域章、優異旅團章）嘅 art key；真正圖案由 lib/picks.js resolveArt 決定 */
+/** 動態圖案（區章、地域章、優異旅團章、童軍小隊章）嘅 art key；真正圖案由 lib/picks.js resolveArt 決定 */
 export const dynKey = (id) => `dyn:${id}`;
 
 /** 袖外側面嘅尺寸 */
@@ -87,7 +87,7 @@ export function placeAll(rules, gender) {
     else if (a.aboveCuffSeamCm != null) t = face.cuffSeam - a.aboveCuffSeamCm - h;
     else throw new Error(`徽章 ${b.id} 冇袖上位置`);
     box[b.id] = { top: t, bottom: t + h };
-    out.push({ key: b.id, id: b.id, mount, shape, w, h, u, v: t + h / 2, art, fit });
+    out.push({ key: b.id, id: b.id, mount, shape, w, h, u, v: t + h / 2, art, fit, ...(b.needsInvestiture ? { inv: true } : {}) });
   }
   return out;
 }
@@ -171,7 +171,7 @@ export function placeFor(rules, outfit) {
 export function visible(placements, state, { invested, school = false, unavailable = [] }) {
   if (school && !invested) return []; // 未宣誓冇旅巾，冇地方戴
   return placements.filter((p) => {
-    if (p.id === 'membership' && !invested) return false;
+    if ((p.id === 'membership' || p.inv) && !invested) return false; // 世界童軍會員章、童軍小隊章：宣誓後先戴
     if (unavailable.includes(p.id)) return false;
     if (p.id === 'progress') return p.step <= (state.progress || 0);
     return !!state[p.id];
@@ -184,7 +184,7 @@ export function shownReason(rules, outfit, state, id, { unavailable = [] } = {})
   if (!all.some((p) => p.id === id)) return outfit.school ? 'school' : 'vest';
   if (visible(all, state, { invested: outfit.invested, school: outfit.school, unavailable }).some((p) => p.id === id)) return null;
   if (outfit.school && !outfit.invested) return 'schoolUninvested';
-  if (id === 'membership' && !outfit.invested) return 'uninvested';
+  if ((id === 'membership' || all.some((p) => p.id === id && p.inv)) && !outfit.invested) return 'uninvested';
   if (unavailable.includes(id)) return 'noArt';
   return 'off';
 }

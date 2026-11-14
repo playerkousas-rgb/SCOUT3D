@@ -1,4 +1,4 @@
-// 方塊人身形（真實比例：小童軍約 6 歲、117 cm；幼童軍約 9 歲、135 cm）— v1.0 · © SCOUT SYSTEM
+// 方塊人身形（真實比例：小童軍約 6 歲、117 cm；幼童軍約 9 歲、135 cm；童軍約 13 歲、155 cm）— v1.0 · © SCOUT SYSTEM
 // 單位：厘米（cm）。人物面向 +z；穿著者左 = +x。y = 0 係地面。
 // 每一格貼圖 = 0.5 cm（PX = 2），所以徽章位置可以直接用手冊嘅厘米數。
 
@@ -35,6 +35,23 @@ const CUB = {
   waist: 70, // 皮帶中心離地
 };
 
+/** 童軍：約 13 歲、155 cm（童軍 11–16 歲嘅中間）。恤衫塞入褲；兩個胸袋；袖要擺得落旅章、地域／區章、小隊章同優異旅團章 */
+const SCOUT = {
+  height: 155,
+  necker: { tailLen: 27, backW: 29, backH: 21.5, wogDrop: 9 },
+  head: { w: 20, h: 23, d: 21, y: 131, z: 0.5 },
+  neck: { w: 9.5, h: 4, d: 9.5, y: 127 },
+  torso: { h: 50, d: 17, y: 77 }, // 頂 = 127（膊頭）
+  upperArm: { w: 8, h: 26, d: 8 },
+  lowerArm: { w: 7, h: 21, d: 7 },
+  hand: { w: 6.5, h: 13, d: 5 },
+  sleeve: { len: 22, band: 2, w: 10, d: 14 }, // 袖口縫線離膊頂 20 cm：旅章 2–4.2、地域／區章 6.2–11.2、小隊章 15.4–17、優異旅團章 17.7–19.7
+  leg: { w: 13, d: 13, y: 7, top: 80, gap: 1 },
+  shoe: { w: 12.5, h: 7, d: 22, z: 3 },
+  pocket: { x: 8.6, w: 11, h: 13.5, flap: 4.5, top: 15.5 },
+  waist: 81,
+};
+
 export const BODY = {
   boy: { ...COMMON, torso: { ...COMMON.torso, w: 24 }, hair: 'short' },
   girl: { ...COMMON, torso: { ...COMMON.torso, w: 23 }, hair: 'pigtails' },
@@ -45,7 +62,12 @@ export const CUB_BODY = {
   girl: { ...CUB, torso: { ...CUB.torso, w: 26 }, hair: 'pigtails' },
 };
 
-export const BODIES = { grasshopper: BODY, cub: CUB_BODY };
+export const SCOUT_BODY = {
+  boy: { ...SCOUT, torso: { ...SCOUT.torso, w: 31 }, hair: 'short' },
+  girl: { ...SCOUT, torso: { ...SCOUT.torso, w: 30 }, hair: 'pigtails' },
+};
+
+export const BODIES = { grasshopper: BODY, cub: CUB_BODY, scout: SCOUT_BODY };
 
 export const COLOURS = {
   skin: '#f1c6a2',
@@ -77,6 +99,11 @@ export const COLOURS = {
   soleBlack: '#111114',
   capGreen: '#1f4a2c', // 深綠色
   capPiping: '#f0cc1e', // 黃間條
+  // 童軍（手冊 P.30–31、P.102、P.110）
+  beret: '#1f4a2c', // 深綠色軟帽
+  beretBand: '#141414', // 黑色膠邊
+  leather: '#4a2f1f', // 皮巾圈
+  leatherHi: '#6b4630',
 };
 
 /** 計出每個部件嘅大細同位置（cm）。 */

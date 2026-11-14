@@ -5,7 +5,7 @@ const STATUSES = new Set(['documented', 'pending', 'verified']);
 const SIDES = new Set(['left', 'right', 'centre']);
 const SHAPES = new Set(['circle', 'square', 'rect']);
 const PARTS = new Set(['torso', 'sleeve']);
-const DYNAMIC = new Set(['district', 'region', 'meritorious']);
+const DYNAMIC = new Set(['district', 'region', 'meritorious', 'patrol']);
 const POCKET = new Set(['centre', 'aboveFlap']);
 const TOWARDS = new Set(['front', 'back']);
 
@@ -79,7 +79,7 @@ export function validateRules(rules) {
     const arts = Array.isArray(b.art) ? b.art : b.art ? [b.art] : [];
     if (!arts.length) errors.push(`${w}: 冇徽章圖案（art）`);
     for (const art of arts) {
-      if (!/^\/badges\/(districts\/)?[\w-]+\.png$/.test(art.file || '')) errors.push(`${w}: art.file 格式錯`);
+      if (!/^\/badges\/((districts|patrols)\/)?[\w-]+\.png$/.test(art.file || '')) errors.push(`${w}: art.file 格式錯`);
       if (!sources[art.ref] || !art.page) errors.push(`${w}: art 要寫官方文件來源同頁碼`);
     }
   }

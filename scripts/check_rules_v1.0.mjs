@@ -5,7 +5,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { validateRules } from '../src/data/validate.js';
 
 export const VERSION = 'v1.0';
-const SECTIONS = ['grasshopper', 'cub'];
+const SECTIONS = ['grasshopper', 'cub', 'scout'];
 const read = (p) => JSON.parse(readFileSync(new URL(`../${p}`, import.meta.url), 'utf8'));
 const pub = (file) => existsSync(new URL(`../public${file}`, import.meta.url));
 
@@ -43,5 +43,15 @@ if (missing.length) {
   console.error(`✗ 地域章／區章圖案唔見咗：${missing.join(', ')}`);
 } else {
   console.log(`✓ 地域及區 ${d.fileVersion}：${d.regions.length} 個地域、${n} 個區，圖案齊`);
+}
+
+// 童軍小隊章：32 隊，每隊都要有圖案同兩個隊色
+const pt = read('src/data/patrols_v1.0.json');
+const bad = pt.patrols.filter((p) => !pub(p.file) || !Array.isArray(p.hex) || p.hex.length !== 2 || !p.zh || !p.en || !p.colours?.zh || !p.colours?.en);
+if (bad.length || pt.patrols.length !== 32) {
+  failed += bad.length || 1;
+  console.error(`✗ 小隊資料有問題（${pt.patrols.length} 隊）：${bad.map((p) => p.id).join(', ')}`);
+} else {
+  console.log(`✓ 童軍小隊 ${pt.fileVersion}：${pt.patrols.length} 隊，圖案齊`);
 }
 if (failed) process.exit(1);
