@@ -2,6 +2,7 @@
 import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLang, LangToggle, bi, pick } from './i18n.jsx';
 import { SECTIONS, SECTION_IDS, DISTRICTS, PATROLS, RULE_ERRORS, badgeById, sourceLines } from './data/rules.js';
+import { garmentsFor, variantOf } from './data/validate.js';
 import { NECKER, WOGGLE, PLAIN } from './palette.js';
 import { shownReason } from './three/badgeLayout.js';
 import { resolveArt, meritYearOk, findDistrict, findPatrol } from './lib/picks.js';
@@ -43,8 +44,9 @@ const CUB_OUTFIT = {
   woggle: '#1f4e9c',
 };
 
-// 童軍（手冊 P.30–31）：制服固定；巾圈係啡色皮巾圈（唔使揀顏色）
+// 童軍（手冊 P.30–35）：揀款式（童軍／海童軍／空童軍），其餘制服固定；巾圈係啡色皮巾圈（唔使揀顏色）
 const SCOUT_OUTFIT = {
+  variant: 'land',
   gender: 'boy',
   finish: 'painted',
   invested: true,
@@ -689,12 +691,22 @@ function CubOutfitTab({ outfit, setOutfit }) {
   );
 }
 
-/** 童軍：制服固定（手冊 P.30–31），只揀人物、帽、旅巾顏色；巾圈固定係皮巾圈 */
+/** 童軍：揀款式（童軍／海童軍／空童軍，手冊 P.30–35），制服跟款式固定；只揀人物、帽、旅巾顏色；巾圈固定係皮巾圈 */
+const SCOUT_HAT_KEY = { land: 'scoutHat', sea: 'seaHat', air: 'airHat' };
+const SCOUT_NOTE_KEY = { land: 'scoutNote', sea: 'seaNote', air: 'airNote' };
 function ScoutOutfitTab({ outfit, setOutfit }) {
-  const { t } = useLang();
+  const { lang, t } = useLang();
   const set = (k, v) => setOutfit((o) => ({ ...o, [k]: v }));
+  const variants = SECTIONS.scout.variants ?? [];
+  const v = variantOf(SECTIONS.scout, outfit.variant)?.id ?? 'land';
   return (
     <div className="tabbody">
+      <Segmented
+        label={t('outfit.scoutVariant')}
+        value={v}
+        onChange={(x) => set('variant', x)}
+        options={variants.map((x) => ({ value: x.id, label: pick(lang, x, 'name') }))}
+      />
       <Segmented
         label={t('outfit.figure')}
         value={outfit.gender}
@@ -719,7 +731,7 @@ function ScoutOutfitTab({ outfit, setOutfit }) {
         onChange={(v) => set('invested', v)}
         note={outfit.invested ? null : t('outfit.investedNoteScout')}
       />
-      <Switch label={t('outfit.scoutHat')} checked={outfit.hat} disabled={!outfit.invested} onChange={(v) => set('hat', v)} note={t('outfit.scoutHatNote')} />
+      <Switch label={t(`outfit.${SCOUT_HAT_KEY[v]}`)} checked={outfit.hat} disabled={!outfit.invested} onChange={(x) => set('hat', x)} note={t(`outfit.${SCOUT_HAT_KEY[v]}Note`)} />
       {outfit.invested && (
         <>
           <Swatches label={neckerLabel(t, 'outfit.neckerMain')} value={outfit.neckerMain} options={NECKER} onChange={(v) => set('neckerMain', v)} />
@@ -727,15 +739,17 @@ function ScoutOutfitTab({ outfit, setOutfit }) {
           <p className="note">{t('outfit.scoutWoggle')}</p>
         </>
       )}
-      <p className="note">{t(outfit.gender === 'girl' ? 'outfit.scoutNoteGirl' : 'outfit.scoutNoteBoy')}</p>
+      <p className="note">{t(`outfit.${SCOUT_NOTE_KEY[v]}${outfit.gender === 'girl' ? 'Girl' : 'Boy'}`)}</p>
       <p className="note">{t('outfit.scoutVariants')}</p>
     </div>
   );
 }
 
 /* ---------- 來源分頁 ---------- */
-function SourcesTab({ rules: RULES }) {
+function SourcesTab({ rules: RULES, variant }) {
   const { lang, t } = useLang();
+  const V = variantOf(RULES, variant);
+  const garments = garmentsFor(RULES, V?.id);
   const rv = RULES.review;
   return (
     <div className="tabbody">
@@ -771,9 +785,16 @@ function SourcesTab({ rules: RULES }) {
       </dl>
       <p className="note note--warn">{bi(lang, rv.note.zh, rv.note.en)}</p>
 
-      <h3 className="h3">{t('src.rules')}</h3>
+      <h3 className="h3">{t('src.rules').replace('{section}', V ? pick(lang, V, 'name') : bi(lang, RULES.section.zh, RULES.section.en))}</h3>
+      {V && (
+        <div className="note">
+          {t('src.variant')}
+          <strong>{pick(lang, V, 'name')}</strong> — {pick(lang, V, 'note')}
+          <Sources rules={RULES} list={V.sources} />
+        </div>
+      )}
       <ul className="plainlist">
-        {RULES.garments.map((g) => (
+        {garments.map((g) => (
           <li key={g.id}>
             <strong>{pick(lang, g, 'name')}</strong>
             <span>{pick(lang, g, 'rule')}</span>
@@ -816,6 +837,8 @@ export default function App() {
   const [selected, setSelected] = useState(null);
   const RULES = SECTIONS[section];
   const outfit = outfits[section];
+  // 童軍支部嘅款式（海童軍／空童軍）用自己嘅副標題、截圖說明同檔名
+  const variantTag = section === 'scout' && outfit.variant && outfit.variant !== 'land' ? `${section}_${outfit.variant}` : section;
   const badges = badgeStates[section];
   // 人物、外觀、宣誓各支部共用
   const setOutfit = useCallback(
@@ -863,8 +886,8 @@ export default function App() {
     setBusy(true);
     try {
       const { captureScreenshot, downloadBlob, stamp } = await import('./lib/screenshot.js');
-      const blob = await captureScreenshot(canvas, t(`shot.caption.${section}`));
-      downloadBlob(blob, `scout3d_${section}_${APP_VERSION}_${stamp()}.png`);
+      const blob = await captureScreenshot(canvas, t(`shot.caption.${variantTag}`));
+      downloadBlob(blob, `scout3d_${variantTag}_${APP_VERSION}_${stamp()}.png`);
       setToast(t('shot.done'));
     } catch {
       setToast(t('shot.fail'));
@@ -886,7 +909,7 @@ export default function App() {
           <img src="/icons/favicon-32.png" width="28" height="28" alt="" className="brand__icon" />
           <div>
             <h1 className="brand__title">{t('app.title')}</h1>
-            <p className="brand__sub">{t(`app.sub.${section}`)}</p>
+            <p className="brand__sub">{t(`app.sub.${variantTag}`)}</p>
           </div>
         </div>
         <div className="sectionswitch seg" role="radiogroup" aria-label={t('section.label')}>
@@ -999,7 +1022,7 @@ export default function App() {
               ) : (
                 <OutfitTab outfit={outfit} setOutfit={setOutfit} />
               ))}
-            {tab === 'sources' && <SourcesTab rules={RULES} />}
+            {tab === 'sources' && <SourcesTab rules={RULES} variant={outfit.variant} />}
           </div>
         </aside>
       </main>

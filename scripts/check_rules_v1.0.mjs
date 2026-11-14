@@ -25,6 +25,15 @@ for (const id of SECTIONS) {
   const pending = rules.badges.filter((b) => b.status === 'pending').map((b) => b.id);
   console.log(`✓ ${rules.section.zh} 規則資料 ${rules.fileVersion} 通過（${rules.badges.length} 個徽章、${rules.garments.length} 件衣物）`);
   console.log(`  核對狀態：${rules.review.status}；待確認：${pending.join(', ') || '無'}`);
+  if (rules.variants?.length) {
+    console.log(`  制服款式：${rules.variants.map((v) => `${v.zh.name}（換 ${v.garments.length} 件）`).join('、')}`);
+  }
+}
+
+// 海童軍帽帶圖案（手冊 P.102）
+if (!pub('/badges/sea_scout_cap_tally.png')) {
+  failed += 1;
+  console.error('✗ 海童軍帽帶圖案 /badges/sea_scout_cap_tally.png 唔存在');
 }
 
 // 地域章、區章：每個圖案都要喺 public/ 入面

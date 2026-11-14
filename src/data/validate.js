@@ -50,6 +50,27 @@ export function validateRules(rules) {
     if (!STATUSES.has(g.status)) errors.push(`${w}: status 錯`);
   }
 
+  // 支部入面嘅制服款式（例：童軍／海童軍／空童軍）：只可以換走已有嘅衣物，徽章一樣
+  const garmentIds = new Set((rules.garments || []).map((g) => g.id));
+  const variantIds = new Set();
+  for (const v of rules.variants || []) {
+    const w = `variant ${v.id}`;
+    if (!/^[a-z]+$/.test(v.id || '')) errors.push(`${w}: id 格式錯`);
+    if (variantIds.has(v.id)) errors.push(`${w}: id 重複`);
+    variantIds.add(v.id);
+    bilingual(v, ['name', 'note'], w, errors);
+    checkSources(v.sources, sources, w, errors);
+    if (!Array.isArray(v.garments)) errors.push(`${w}: garments 要係陣列`);
+    for (const g of v.garments || []) {
+      const wg = `${w} garment ${g.id}`;
+      if (!garmentIds.has(g.id)) errors.push(`${wg}: 只可以換走基本衣物入面已有嘅 id`);
+      bilingual(g, ['name', 'rule'], wg, errors);
+      checkSources(g.sources, sources, wg, errors);
+      if (!STATUSES.has(g.status)) errors.push(`${wg}: status 錯`);
+    }
+  }
+  if (rules.variants && rules.variants[0]?.garments?.length) errors.push('第一個 variant 要係基本款（garments 空白）');
+
   const badgeIds = new Set((rules.badges || []).map((b) => b.id));
   for (const b of rules.badges || []) {
     const w = `badge ${b.id}`;
@@ -98,4 +119,18 @@ export function validateRules(rules) {
   }
   for (const c of rules.conflicts || []) if (!c.zh || !c.en) errors.push(`conflict ${c.id}: 缺中英`);
   return errors;
+}
+
+/** 某個制服款式嘅衣物清單：基本衣物，再用 variant 嘅同 id 衣物換走（次序不變） */
+export function garmentsFor(rules, variantId) {
+  const v = (rules.variants || []).find((x) => x.id === variantId);
+  if (!v) return rules.garments || [];
+  const over = new Map(v.garments.map((g) => [g.id, g]));
+  return (rules.garments || []).map((g) => over.get(g.id) ?? g);
+}
+
+/** 款式 id 唔存在就用第一個（基本款） */
+export function variantOf(rules, variantId) {
+  const list = rules.variants || [];
+  return list.find((x) => x.id === variantId) ?? list[0] ?? null;
 }

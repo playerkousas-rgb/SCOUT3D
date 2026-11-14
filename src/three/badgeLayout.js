@@ -15,6 +15,22 @@ export function sleeveFace(gender, section = 'grasshopper') {
   return { width: B.sleeve.d, length: B.sleeve.len, cuffSeam: B.sleeve.len - B.sleeve.band };
 }
 
+/**
+ * 袖章貼片喺手臂 group 入面嘅位置同轉角（Badges.jsx 用）。貼片本身面向 +z、圖案左→右 = 本地 +x；
+ * 轉 rotY 之後，圖案右手邊會指向 artRight（世界方向）。右袖：artRight = +z（近胸），
+ * 即係圖案左邊（例如小隊章第一個隊色）近背 —— 同用戶確認嘅方向一致。
+ */
+export function sleevePose(side, sleeveW, seamY, p, eps = 0.06) {
+  const s = side === 'l' ? 1 : -1;
+  const rotY = (s * Math.PI) / 2;
+  return {
+    position: [s * (sleeveW / 2 + eps), seamY - p.v, -s * p.u],
+    rotY,
+    // 繞 y 軸轉 θ：本地 +x → (cos θ, 0, −sin θ)
+    artRight: [Math.round(Math.cos(rotY)), 0, Math.round(-Math.sin(rotY))],
+  };
+}
+
 /** 進步獎章每一步喺 2×2 格入面嘅位置（望住左袖外側）：下行紅、啡；上行藍、綠 */
 export const PROGRESS_GRID = [
   { step: 1, col: -1, row: 0 },

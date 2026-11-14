@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 import { meritCanvas } from '../lib/meritCanvas.js';
+import { sleevePose } from './badgeLayout.js';
 
 const EPS = 0.06; // 離布面 0.06 cm，避免閃
 const ACCENT = '#f2791c';
@@ -163,10 +164,12 @@ export function TorsoBadges({ items, textures, ...rest }) {
  * 左袖外側 = +x 面：望住佢時右手邊 = -z。右袖外側 = -x 面：右手邊 = +z。
  */
 export function SleeveBadges({ items, textures, side, sleeveW, seamY, ...rest }) {
-  const s = side === 'l' ? 1 : -1;
-  return items.map((p) => (
-    <group key={p.key} position={[s * (sleeveW / 2 + EPS), seamY - p.v, -s * p.u]} rotation={[0, (s * Math.PI) / 2, 0]}>
-      <Patch p={p} tex={textures[p.art]} {...rest} />
-    </group>
-  ));
+  return items.map((p) => {
+    const pose = sleevePose(side, sleeveW, seamY, p, EPS);
+    return (
+      <group key={p.key} position={pose.position} rotation={[0, pose.rotY, 0]}>
+        <Patch p={p} tex={textures[p.art]} {...rest} />
+      </group>
+    );
+  });
 }

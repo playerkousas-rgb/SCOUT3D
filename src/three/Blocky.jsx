@@ -3,7 +3,7 @@
 // 人物面向 +z；穿著者左 = +x。
 import { useEffect, useMemo } from 'react';
 import * as THREE from 'three';
-import { layout, neckerLayout, VEST_T, PX } from './body.js';
+import { layout, neckerLayout, VEST_T, PX, scoutVariant, SCOUT_VARIANTS } from './body.js';
 import { useTexture } from '@react-three/drei';
 import { SECTIONS, DISTRICTS, PATROLS } from '../data/rules.js';
 import { resolveArt } from '../lib/picks.js';
@@ -12,12 +12,13 @@ import { useBadgeTextures, useDynamicTextures, TorsoBadges, SleeveBadges } from 
 import {
   headFaces, pigtailFaces, neckFaces, torsoFaces, sleeveFaces, cuffFaces, skinFaces, handFaces, legFaces, shortsFaces, shinFaces,
   shoeFaces, vestFaces, hatFaces, brimFaces, shirtPalette, rollFaces, tailCanvas, backTriangleCanvas, plain, material, wogglePaint,
-  cubTorsoFaces, cubShinFaces, cubCapFaces, scoutWogglePaint,
+  cubTorsoFaces, cubShinFaces, cubCapFaces, scoutWogglePaint, seaCapFaces,
 } from './pixels.js';
 import { COLOURS as C } from './body.js';
 
 const CAP_BADGE = '/badges/cub_cap_badge.png';
 const SCOUT_CAP_BADGE = '/badges/scout_cap_badge.png';
+const SEA_TALLY = '/badges/sea_scout_cap_tally.png';
 
 export const BASE_H = 0.045; // 底座高度（米）
 const PIGTAIL_TIE = '#5b3fa0';
@@ -149,7 +150,7 @@ function CubHat({ B, girl, painted }) {
  * 童軍深綠色軟帽（手冊 P.30、P.98–99、P.102）：黑色膠邊離眉毛約 2 cm；向穿著者右邊（-x）拉低；
  * 金屬帽章戴喺膠邊、左眼（+x）上方。方塊造型只係示意。
  */
-function ScoutBeret({ B, painted }) {
+function ScoutBeret({ B, painted, colour = C.beret }) {
   const h = B.head;
   const headTop = h.y + h.h;
   const browY = headTop - 7.5; // pixels.js headFaces：眉毛離頭頂 7.5 cm
@@ -161,10 +162,10 @@ function ScoutBeret({ B, painted }) {
     return {
       band, crown,
       bandF: hatFaces(band, C.beretBand),
-      crownF: hatFaces(crown, C.beret),
-      knob: hatFaces([1.2, 0.8, 1.2], C.beret),
+      crownF: hatFaces(crown, colour),
+      knob: hatFaces([1.2, 0.8, 1.2], colour),
     };
-  }, [h]);
+  }, [h, colour]);
   const { band, crown } = F;
   const eyeX = h.w / 2 - 5.25; // 穿著者左眼（+x）
   return (
@@ -182,6 +183,60 @@ function ScoutBeret({ B, painted }) {
   );
 }
 
+/**
+ * 海童軍白頂帽（手冊 P.32–33、P.100、P.102）：帽邊喺眼眉上方約 2 cm、同水平線看齊；
+ * 黑色帽帶喺白色帽邊下面，「SEA SCOUTS」字放喺帽前中央；帽子左邊（穿著者左 = +x）中央綁蝴蝶結，
+ * 蝴蝶結同帽帶尾各長 3 cm。方塊造型只係示意。
+ */
+function SeaCap({ B, painted }) {
+  const h = B.head;
+  const headTop = h.y + h.h;
+  const browY = headTop - 7.5;
+  const bandH = 3.6;
+  const bandY = browY + 2 + bandH / 2; // 帽邊（帽帶底）離眉 2 cm
+  const tallyTex = useTexture(SEA_TALLY);
+  const F = useMemo(() => {
+    const band = [h.w + 0.8, bandH, h.d + 0.8];
+    const wall = [h.w + 1.4, 1.6, h.d + 1.4]; // 白色帽邊（帽帶上面）
+    const top = [h.w + 5, 1.4, h.d + 5]; // 白頂
+    return {
+      band, wall, top,
+      bandF: hatFaces(band, C.beretBand),
+      wallF: seaCapFaces(wall, C.seaCapTop),
+      topF: seaCapFaces(top, C.seaCapTop),
+      // 蝴蝶結用淺少少嘅黑（同黑頭髮分得開）
+      bowF: hatFaces([0.5, 1.4, 1.5], '#34343a'),
+      tailF: hatFaces([0.3, 3, 0.9], '#34343a'),
+    };
+  }, [h]);
+  const { band, wall, top } = F;
+  const wallY = bandY + bandH / 2 + wall[1] / 2;
+  const topY = wallY + wall[1] / 2 + top[1] / 2 - 0.2;
+  const tallyW = Math.min(h.w - 2, 13);
+  const sideX = band[0] / 2 + 0.25;
+  return (
+    <group>
+      <Box size={band} faces={F.bandF} painted={painted} position={[0, bandY, h.z]} />
+      <Box size={wall} faces={F.wallF} painted={painted} position={[0, wallY, h.z]} />
+      <Box size={top} faces={F.topF} painted={painted} position={[0, topY, h.z]} />
+      <mesh position={[0, bandY, h.z + band[2] / 2 + 0.06]}>
+        <planeGeometry args={[tallyW, tallyW / 4.3]} />
+        <meshStandardMaterial map={painted ? tallyTex : null} color={painted ? '#ffffff' : '#9a9da1'} roughness={0.8} polygonOffset polygonOffsetFactor={-2} />
+      </mesh>
+      {/* 蝴蝶結（左右兩翼共 3 cm）+ 兩條 3 cm 帽帶尾，喺穿著者左邊中央 */}
+      <group position={[sideX, bandY, h.z]}>
+        {[1, -1].map((s) => (
+          <Box key={s} size={[0.5, 1.4, 1.5]} faces={F.bowF} painted={painted} position={[0, 0, s * 0.75]} rotation={[s * 0.35, 0, 0]} />
+        ))}
+        <Box size={[0.7, 0.9, 0.7]} faces={F.bowF} painted={painted} position={[0.1, 0, 0]} />
+        {[1, -1].map((s) => (
+          <Box key={s} size={[0.3, 3, 0.9]} faces={F.tailF} painted={painted} position={[0.05, -1.6, s * 0.5]} rotation={[s * 0.25, 0, 0]} />
+        ))}
+      </group>
+    </group>
+  );
+}
+
 const SHORTS_BOTTOM = 38; // 短褲腳離地（cm，膝頭上面）
 const BEIGE_SHORTS_BOTTOM = { cub: { boy: 47, girl: 45 }, scout: { boy: 54, girl: 52 } }; // 幼童軍／童軍短褲、裙褲腳離地
 const BEIGE_SOCK_H = { cub: 34, scout: 40 }; // 長襪到膝頭下
@@ -192,16 +247,18 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
   // 幼童軍同童軍：同款杏色恤衫、草青色短褲／裙褲、深草青色長襪（手冊 P.28、P.30）
   const cub = section === 'cub' || section === 'scout';
   const scout = section === 'scout';
+  // 童軍支部制服款式：童軍／海童軍／空童軍（手冊 P.30–35）；幼童軍同陸上童軍同色
+  const U = scout ? scoutVariant(outfit.variant) : SCOUT_VARIANTS.land;
   const gender = outfit.gender === 'girl' ? 'girl' : 'boy';
   const painted = outfit.finish !== 'unpainted';
   const L = useMemo(() => layout(gender, section), [gender, section]);
   const { B } = L;
   const top = cub ? 'cub' : outfit.top ?? 'orange';
-  const topColour = outfit.topColour ?? '#ffffff';
+  const topColour = cub ? U.shirt : outfit.topColour ?? '#ffffff';
   const long = !cub && outfit.sleeves === 'long';
   const vest = !cub && !!outfit.vest;
   const shorts = cub || outfit.legwear === 'shorts';
-  const legColour = cub ? C.cubGreen : outfit.legColour ?? '#8a9099';
+  const legColour = cub ? U.leg : outfit.legColour ?? '#8a9099';
   const shortsBottom = cub ? BEIGE_SHORTS_BOTTOM[section][gender] : SHORTS_BOTTOM;
   const culottes = cub && gender === 'girl';
 
@@ -249,7 +306,7 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
 
   // 衫（跟款式、顏色、袖長變）
   const shirt = useMemo(() => ({
-    torso: cub ? cubTorsoFaces(B, { legColour }) : torsoFaces(B, top, topColour),
+    torso: cub ? cubTorsoFaces(B, { legColour, shirt: topColour }) : torsoFaces(B, top, topColour),
     sleeve: sleeveFaces(body.sl, B.sleeve.band, top, topColour, false),
     sleeveLong: sleeveFaces(body.slLong, B.sleeve.band, top, topColour, true),
     cuff: cuffFaces([B.lowerArm.w + 1, B.lowerArm.h, B.lowerArm.d + 1.4], top, topColour),
@@ -267,11 +324,11 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
       trousers: legFaces([B.leg.w, body.legH, B.leg.d], legColour),
       shorts: shortsFaces(shortsSize, legColour),
       shortsSize,
-      shin: cub ? cubShinFaces(shinSize, BEIGE_SOCK_H[section] - B.leg.y) : shinFaces(shinSize, SOCK_H[outfit.socks] ?? SOCK_H.short, outfit.sockColour ?? '#ffffff'),
+      shin: cub ? cubShinFaces(shinSize, BEIGE_SOCK_H[section] - B.leg.y, U.sock) : shinFaces(shinSize, SOCK_H[outfit.socks] ?? SOCK_H.short, outfit.sockColour ?? '#ffffff'),
       shinSize,
       shinH,
     };
-  }, [B, body.legH, legColour, outfit.socks, outfit.sockColour, shortsBottom, culottes, cub, section]);
+  }, [B, body.legH, legColour, outfit.socks, outfit.sockColour, shortsBottom, culottes, cub, section, U.sock]);
 
   // 背心
   const t = B.torso, h = B.head;
@@ -310,7 +367,7 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
           ))}
         {!cub && outfit.hat && outfit.hat !== 'none' && <Hat B={B} kind={outfit.hat} colour={outfit.hatColour ?? '#1f2f4f'} painted={painted} />}
         {cub && !scout && outfit.hat && outfit.invested && <CubHat B={B} girl={gender === 'girl'} painted={painted} />}
-        {scout && outfit.hat && outfit.invested && <ScoutBeret B={B} painted={painted} />}
+        {scout && outfit.hat && outfit.invested && (U.hat === 'sea' ? <SeaCap B={B} painted={painted} /> : <ScoutBeret B={B} painted={painted} colour={U.beret} />)}
         <Box size={[B.neck.w, B.neck.h, B.neck.d]} faces={body.neck} painted={painted} position={[0, B.neck.y + B.neck.h / 2, 0]} />
         {/* 上身 */}
         <Box size={[t.w, t.h, t.d]} faces={shirt.torso} painted={painted} position={[0, t.y + t.h / 2, 0]} />
