@@ -3,7 +3,7 @@
 // 人物面向 +z；穿著者左 = +x。
 import { useEffect, useMemo } from 'react';
 import * as THREE from 'three';
-import { layout, neckerLayout, VEST_T, PX, scoutVariant, SCOUT_VARIANTS } from './body.js';
+import { layout, neckerLayout, strapLayout, VEST_T, PX, scoutVariant, SCOUT_VARIANTS, ventureVariant, ventureLegwear } from './body.js';
 import { useTexture } from '@react-three/drei';
 import { SECTIONS, DISTRICTS, PATROLS } from '../data/rules.js';
 import { resolveArt } from '../lib/picks.js';
@@ -19,6 +19,7 @@ import { COLOURS as C } from './body.js';
 const CAP_BADGE = '/badges/cub_cap_badge.png';
 const SCOUT_CAP_BADGE = '/badges/scout_cap_badge.png';
 const SEA_TALLY = '/badges/sea_scout_cap_tally.png';
+const VENTURE_SEA_CAP_BADGE = '/badges/venture_sea_cap_badge.png';
 
 export const BASE_H = 0.045; // 底座高度（米）
 const PIGTAIL_TIE = '#5b3fa0';
@@ -237,6 +238,46 @@ function SeaCap({ B, painted }) {
   );
 }
 
+/**
+ * 海童軍男／女領袖白頂帽（深資海童軍戴；手冊 P.38–39、P.101、P.102）：帽邊喺眼眉上方約 2 cm、同水平線看齊；
+ * 深資海童軍帽章喺帽前黑色帽帶中央。男裝白頂闊、黑帽舌；女裝白頂細、後面向上翹、帽舌短。方塊造型只係示意。
+ */
+function SeaLeaderCap({ B, girl, painted }) {
+  const h = B.head;
+  const headTop = h.y + h.h;
+  const browY = headTop - 7.5;
+  const bandH = girl ? 2.6 : 3.4;
+  const bandY = browY + 2 + bandH / 2;
+  const badgeTex = useTexture(VENTURE_SEA_CAP_BADGE);
+  const F = useMemo(() => {
+    const band = [h.w + 0.8, bandH, h.d + 0.8];
+    const top = girl ? [h.w + 1.6, 2.2, h.d + 1.2] : [h.w + 6, 1.6, h.d + 6];
+    const peak = girl ? [h.w - 5, 0.5, 3] : [h.w - 3, 0.6, 5];
+    return {
+      band, top, peak,
+      bandF: hatFaces(band, C.beretBand),
+      topF: seaCapFaces(top, C.seaCapTop),
+      peakF: brimFaces(peak, C.capPeak),
+    };
+  }, [h, girl, bandH]);
+  const { band, top, peak } = F;
+  const topY = bandY + bandH / 2 + top[1] / 2 - 0.1;
+  const front = h.z + band[2] / 2;
+  return (
+    <group>
+      <Box size={band} faces={F.bandF} painted={painted} position={[0, bandY, h.z]} />
+      <group position={[0, topY, h.z - (girl ? 0.4 : 0)]} rotation={[girl ? -0.12 : 0, 0, 0]}>
+        <Box size={top} faces={F.topF} painted={painted} position={[0, 0, 0]} />
+      </group>
+      <Box size={peak} faces={F.peakF} painted={painted} position={[0, bandY - bandH / 2 + 0.2, front + peak[2] / 2 - 0.6]} rotation={[0.28, 0, 0]} />
+      <mesh position={[0, bandY + (girl ? 0.3 : 0.2), front + 0.08]}>
+        <planeGeometry args={girl ? [2.4, 2.8] : [2.8, 3.3]} />
+        <meshStandardMaterial map={painted ? badgeTex : null} color={painted ? '#ffffff' : '#9a9da1'} transparent alphaTest={0.3} roughness={0.7} polygonOffset polygonOffsetFactor={-2} />
+      </mesh>
+    </group>
+  );
+}
+
 const SHORTS_BOTTOM = 38; // 短褲腳離地（cm，膝頭上面）
 const BEIGE_SHORTS_BOTTOM = { cub: { boy: 47, girl: 45 }, scout: { boy: 54, girl: 52 } }; // 幼童軍／童軍短褲、裙褲腳離地
 const BEIGE_SOCK_H = { cub: 34, scout: 40 }; // 長襪到膝頭下
@@ -245,22 +286,28 @@ const SOCK_H = { short: 6, long: 25 }; // 襪由腳底量起（短襪過腳眼�
 export default function Blocky({ section = 'grasshopper', outfit, badges = {}, picks = {}, selected = null, onSelect, registry }) {
   const RULES = SECTIONS[section] ?? SECTIONS.grasshopper;
   // 幼童軍同童軍：同款杏色恤衫、草青色短褲／裙褲、深草青色長襪（手冊 P.28、P.30）
-  const cub = section === 'cub' || section === 'scout';
+  // 深資童軍：同樣係恤衫制服（兩胸袋、皮帶），另加肩帶；長褲／半截裙（手冊 P.36–41）
+  const venture = section === 'venture';
+  const cub = section === 'cub' || section === 'scout' || venture;
   const scout = section === 'scout';
+  const leather = scout || venture; // 啡色皮巾圈（手冊 P.110）
   // 童軍支部制服款式：童軍／海童軍／空童軍（手冊 P.30–35）；幼童軍同陸上童軍同色
-  const U = scout ? scoutVariant(outfit.variant) : SCOUT_VARIANTS.land;
+  const U = scout ? scoutVariant(outfit.variant) : venture ? ventureVariant(outfit.variant) : SCOUT_VARIANTS.land;
   const gender = outfit.gender === 'girl' ? 'girl' : 'boy';
   const painted = outfit.finish !== 'unpainted';
   const L = useMemo(() => layout(gender, section), [gender, section]);
+  const VL = venture ? ventureLegwear(gender, outfit.ventureLegwear) : null;
+  const strap = useMemo(() => (venture ? strapLayout(L) : null), [venture, L]);
   const { B } = L;
   const top = cub ? 'cub' : outfit.top ?? 'orange';
   const topColour = cub ? U.shirt : outfit.topColour ?? '#ffffff';
   const long = !cub && outfit.sleeves === 'long';
   const vest = !cub && !!outfit.vest;
-  const shorts = cub || outfit.legwear === 'shorts';
+  const shorts = venture ? false : cub || outfit.legwear === 'shorts';
   const legColour = cub ? U.leg : outfit.legColour ?? '#8a9099';
-  const shortsBottom = cub ? BEIGE_SHORTS_BOTTOM[section][gender] : SHORTS_BOTTOM;
-  const culottes = cub && gender === 'girl';
+  const shortsBottom = venture ? B.skirtBottom : cub ? BEIGE_SHORTS_BOTTOM[section][gender] : SHORTS_BOTTOM;
+  const culottes = cub && !venture && gender === 'girl';
+  const skirt = !!VL?.skirt;
 
   // 徽章：位置全部由規則 JSON 計出嚟（學校運動上衣、背心會改位）；區章、地域章、優異旅團章圖案跟用戶揀
   const staticUrls = useMemo(() => placeAll(RULES, gender).map((p) => p.art).filter((a) => a && !a.startsWith('dyn:')), [RULES, gender]);
@@ -298,11 +345,12 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
         hand: handFaces([B.hand.w, B.hand.h, B.hand.d]),
       },
       legH,
-      shoe: cub ? shoeFaces([B.shoe.w, B.shoe.h, B.shoe.d], { colour: C.shoeBlack, sole: C.soleBlack, lace: '#3a3a40' }) : shoeFaces([B.shoe.w, B.shoe.h, B.shoe.d]),
+      // 黑皮鞋；深資童軍女團員配半截裙 = 非綁帶（鞋帶畫返鞋面色）
+      shoe: cub ? shoeFaces([B.shoe.w, B.shoe.h, B.shoe.d], { colour: C.shoeBlack, sole: C.soleBlack, lace: skirt ? C.shoeBlack : '#3a3a40' }) : shoeFaces([B.shoe.w, B.shoe.h, B.shoe.d]),
       sl,
       slLong,
     };
-  }, [B, L, cub]);
+  }, [B, L, cub, skirt]);
 
   // 衫（跟款式、顏色、袖長變）
   const shirt = useMemo(() => ({
@@ -327,8 +375,12 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
       shin: cub ? cubShinFaces(shinSize, BEIGE_SOCK_H[section] - B.leg.y, U.sock) : shinFaces(shinSize, SOCK_H[outfit.socks] ?? SOCK_H.short, outfit.sockColour ?? '#ffffff'),
       shinSize,
       shinH,
+      // 深資童軍半截裙：一件過包住兩隻腳，及膝；下面肉色襪褲
+      skirtSize: [L.legX * 2 + B.leg.w + 2.4, B.leg.top - shortsBottom, B.leg.d + 2.4],
+      skirtF: venture ? shortsFaces([L.legX * 2 + B.leg.w + 2.4, B.leg.top - shortsBottom, B.leg.d + 2.4], legColour) : null,
+      tightsF: venture ? [0, 1, 2, 3, 4, 5].map(() => plain(2, 2, C.tights)) : null,
     };
-  }, [B, body.legH, legColour, outfit.socks, outfit.sockColour, shortsBottom, culottes, cub, section, U.sock]);
+  }, [B, L, body.legH, legColour, outfit.socks, outfit.sockColour, shortsBottom, culottes, cub, venture, section, U.sock]);
 
   // 背心
   const t = B.torso, h = B.head;
@@ -351,7 +403,9 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
   }, [L, vest, outfit.neckerMain, outfit.neckerBorder]);
 
   // 童軍：啡色皮巾圈（手冊 P.110）；其他支部：顏色巾圈
-  const wogFaces = useMemo(() => (scout ? scoutWogglePaint([8, 3, 1.4]) : wogglePaint([8, 2.6, 1.2], outfit.woggle)), [outfit.woggle, scout]);
+  const wogFaces = useMemo(() => (leather ? scoutWogglePaint([8, 3, 1.4]) : wogglePaint([8, 2.6, 1.2], outfit.woggle)), [outfit.woggle, leather]);
+  // 肩帶（恤衫色，邊深少少）
+  const strapF = useMemo(() => (strap ? hatFaces([strap.len, strap.t, strap.w], shirtPalette('cub', topColour).main) : null), [strap, topColour]);
 
   const collarH = 3.6;
   const hasCollar = top !== 'tee';
@@ -366,11 +420,14 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
             <Box key={s} size={[4.5, 12, 4.5]} faces={body.pigtail} painted={painted} position={[s * (h.w / 2 + 1.6), h.y + 5, -4.5]} rotation={[0.15, 0, s * 0.12]} />
           ))}
         {!cub && outfit.hat && outfit.hat !== 'none' && <Hat B={B} kind={outfit.hat} colour={outfit.hatColour ?? '#1f2f4f'} painted={painted} />}
-        {cub && !scout && outfit.hat && outfit.invested && <CubHat B={B} girl={gender === 'girl'} painted={painted} />}
+        {section === 'cub' && outfit.hat && outfit.invested && <CubHat B={B} girl={gender === 'girl'} painted={painted} />}
         {scout && outfit.hat && outfit.invested && (U.hat === 'sea' ? <SeaCap B={B} painted={painted} /> : <ScoutBeret B={B} painted={painted} colour={U.beret} />)}
+        {venture && outfit.hat && outfit.invested && (U.hat === 'seaLeader' ? <SeaLeaderCap B={B} girl={gender === 'girl'} painted={painted} /> : <ScoutBeret B={B} painted={painted} colour={U.beret} />)}
         <Box size={[B.neck.w, B.neck.h, B.neck.d]} faces={body.neck} painted={painted} position={[0, B.neck.y + B.neck.h / 2, 0]} />
         {/* 上身 */}
         <Box size={[t.w, t.h, t.d]} faces={shirt.torso} painted={painted} position={[0, t.y + t.h / 2, 0]} />
+        {strap &&
+          [1, -1].map((s) => <Box key={`strap${s}`} size={[strap.len, strap.t, strap.w]} faces={strapF} painted={painted} position={[s * strap.cx, strap.y, 0]} />)}
         {vest && <Box size={vestBox} faces={vestF} painted={painted} alpha position={[0, t.y - 1 + vestBox[1] / 2, 0]} />}
         {/* 企領（有領上衣先有；前面開口） */}
         {hasCollar && (
@@ -394,7 +451,9 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
         {/* 褲、襪、鞋 */}
         {[1, -1].map((s) => (
           <group key={s}>
-            {shorts ? (
+            {venture && skirt ? (
+              <Box size={[B.leg.w - 1, legs.shinH + 2, B.leg.d - 1]} faces={legs.tightsF} painted={painted} position={[s * L.legX, B.leg.y + (legs.shinH + 2) / 2, 0]} />
+            ) : shorts ? (
               <>
                 <Box size={legs.shortsSize} faces={legs.shorts} painted={painted} position={[s * (L.legX + (culottes ? 0.4 : 0)), (shortsBottom + B.leg.top) / 2, 0]} />
                 <Box size={legs.shinSize} faces={legs.shin} painted={painted} position={[s * L.legX, B.leg.y + legs.shinH / 2, 0]} />
@@ -405,6 +464,7 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
             <Box size={[B.shoe.w, B.shoe.h, B.shoe.d]} faces={body.shoe} painted={painted} position={[s * L.legX, B.shoe.h / 2, B.shoe.z]} />
           </group>
         ))}
+        {venture && skirt && <Box size={legs.skirtSize} faces={legs.skirtF} painted={painted} position={[0, (shortsBottom + B.leg.top) / 2, 0]} />}
         {/* 旅巾 + 巾圈（宣誓後先戴；戴喺衣領／背心外面） */}
         {outfit.invested && (
           <group>
@@ -418,7 +478,7 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
                 <Plane size={[N.tail.w, N.tail.len]} canvas={N.lowerC} painted={painted} position={[s * N.tail.x, N.tail.top - N.tail.len / 2, N.tailZ(s)]} />
               </group>
             ))}
-            {scout ? (
+            {leather ? (
               <Box size={[8, 3, 1.4]} faces={wogFaces} painted={painted} position={[0, N.wogY, N.front + 1.2]} />
             ) : (
               <Box size={[8, 2.6, 1.2]} faces={wogFaces} painted={painted} position={[0, N.wogY, N.front + 1.1]} />

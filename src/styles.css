@@ -385,6 +385,31 @@ a {
   color: #fff;
 }
 
+/* 有選項嘅章（深資童軍肩章）：選項自己一行、平均分；字長啲 */
+.steps--choices {
+  grid-column: 1 / -1;
+  display: flex;
+}
+
+.steps--choices .steps__btn {
+  flex: 1 1 0;
+  min-height: 38px;
+  line-height: 1.25;
+  padding: 4px 10px;
+}
+
+.steps__btn--wide,
+.steps__btn--wide:first-child {
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 0 10px;
+}
+
+.steps__btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
 /* 開關 */
 .switch {
   position: relative;
@@ -879,6 +904,12 @@ a {
   height: 40px;
   object-fit: contain;
   flex: none;
+}
+
+.badgerow__art--none {
+  display: inline-block;
+  border: 1.5px dashed var(--line);
+  border-radius: 6px;
 }
 
 .badgerow__art.is-round,

@@ -2,9 +2,9 @@
 // 防呆（F）：資料唔齊就 fail closed，唔會靜靜出一個冇來源嘅「權威」位置。
 
 const STATUSES = new Set(['documented', 'pending', 'verified']);
-const SIDES = new Set(['left', 'right', 'centre']);
+const SIDES = new Set(['left', 'right', 'centre', 'both']); // both = 雙肩（深資童軍肩章）
 const SHAPES = new Set(['circle', 'square', 'rect']);
-const PARTS = new Set(['torso', 'sleeve']);
+const PARTS = new Set(['torso', 'sleeve', 'shoulder']); // shoulder = 套喺肩帶上
 const DYNAMIC = new Set(['district', 'region', 'meritorious', 'patrol']);
 const POCKET = new Set(['centre', 'aboveFlap']);
 const TOWARDS = new Set(['front', 'back']);
@@ -78,7 +78,7 @@ export function validateRules(rules) {
     ids.add(b.id);
     bilingual(b, ['name', 'place', 'quote', 'conditions'], w, errors);
     checkSources(b.sources, sources, w, errors);
-    if (!SIDES.has(b.side)) errors.push(`${w}: side 必須以穿著者角度寫「left/right/centre」`);
+    if (!SIDES.has(b.side)) errors.push(`${w}: side 必須以穿著者角度寫「left/right/centre/both」`);
     if (!STATUSES.has(b.status)) errors.push(`${w}: status 錯`);
     if (b.status === 'pending' && !(b.pendingReason && b.pendingReason.zh && b.pendingReason.en)) {
       errors.push(`${w}: 待確認項目要寫「pendingReason」（中英）`);
@@ -92,10 +92,24 @@ export function validateRules(rules) {
     if (a.side !== b.side) errors.push(`${w}: anchor.side 同「side」唔一致`);
     if (a.belowBadge && !badgeIds.has(a.belowBadge)) errors.push(`${w}: belowBadge 指向不存在嘅章`);
     if (a.aboveBadge && !badgeIds.has(a.aboveBadge)) errors.push(`${w}: aboveBadge 指向不存在嘅章`);
+    if ((a.part === 'shoulder') !== (b.side === 'both')) errors.push(`${w}: 雙肩（side both）同 part shoulder 要一齊用`);
     if (a.part === 'torso' && a.pocket == null && !(Number.isFinite(a.xCm) && Number.isFinite(a.fromTopCm))) errors.push(`${w}: 上身位置要有 xCm + fromTopCm 或 pocket`);
     if (a.pocket != null && !POCKET.has(a.pocket)) errors.push(`${w}: anchor.pocket 錯`);
     if (a.towards != null && (!TOWARDS.has(a.towards) || !(a.offsetCm > 0))) errors.push(`${w}: anchor.towards 要係 front/back 兼有 offsetCm`);
     if (b.dynamic != null && !DYNAMIC.has(b.dynamic)) errors.push(`${w}: dynamic 錯`);
+    // 選項（例：深資童軍肩章「未考獲／深資童軍肩章」）：每個選項要有中英名；有圖案就要有官方來源；預設要係其中一個
+    if (b.choices != null) {
+      if (!Array.isArray(b.choices) || b.choices.length < 2) errors.push(`${w}: choices 最少要兩個`);
+      const cids = new Set();
+      for (const c of b.choices || []) {
+        if (!/^[a-z]+$/.test(c.id || '') || cids.has(c.id)) errors.push(`${w}: choice id「${c.id}」錯或重複`);
+        cids.add(c.id);
+        if (!c.zh?.name || !c.en?.name) errors.push(`${w}: choice ${c.id} 缺中英名`);
+        if (c.art && (!/^\/badges\/[\w-]+\.png$/.test(c.art.file || '') || !sources[c.art.ref] || !c.art.page)) errors.push(`${w}: choice ${c.id} 圖案要寫官方文件來源同頁碼`);
+      }
+      if (!cids.has(b.default)) errors.push(`${w}: default 要係 choices 其中一個`);
+      if (!(b.choices || []).some((c) => !c.art)) errors.push(`${w}: choices 要有一個「冇章」選項`);
+    }
     // 圖案一定要來自官方文件（唔可以自己設計）
     const arts = Array.isArray(b.art) ? b.art : b.art ? [b.art] : [];
     if (!arts.length) errors.push(`${w}: 冇徽章圖案（art）`);

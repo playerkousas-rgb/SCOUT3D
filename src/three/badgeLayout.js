@@ -2,7 +2,7 @@
 // 全部用厘米，數字直接嚟自規則 JSON 嘅 size / anchor。
 // 上身：x = 穿著者角度（+ = 穿著者左），y = 離地高度。
 // 袖：u = 望住嗰隻袖外側時嘅左右（+ = 望嘅人右手邊），v = 章中心喺肩膊縫線下幾多 cm。
-import { layout, neckerLayout, VEST_T } from './body.js';
+import { layout, neckerLayout, strapLayout, VEST_T } from './body.js';
 
 const sectionOf = (rules) => rules?.section?.id ?? 'grasshopper';
 
@@ -57,6 +57,25 @@ export function placeAll(rules, gender) {
     const { wCm: w, hCm: h, shape } = b.size;
     const art = b.dynamic ? dynKey(b.id) : Array.isArray(b.art) ? null : b.art.file;
     const fit = b.dynamic === 'district' || b.dynamic === 'region'; // 各區圖案比例唔同：喺 w × h 入面置中縮放
+    if (a.part === 'shoulder') {
+      // 深資童軍肩章：套喺雙肩肩帶上（手冊 P.145、P.170）。方頭（圖案左、徽號）近膊頭，圓頭近衣領。
+      // 右膊（-x）：圖案右 = +x（向衣領）、圖案上 = 向後；左膊（+x）係同一款章轉 180°。
+      const S = strapLayout(layout(gender, section));
+      if (!S) throw new Error(`徽章 ${b.id} 要肩帶，但呢個身形冇肩帶`);
+      // 有 choices 就每個有圖案嘅選項各出一對（visible() 按揀咗邊個顯示）
+      const opts = b.choices ? b.choices.filter((c) => c.art).map((c) => ({ choice: c.id, art: c.art.file })) : [{ art }];
+      for (const o of opts) {
+        for (const [k, sx] of [['l', 1], ['r', -1]]) {
+          out.push({
+            key: [b.id, o.choice, k].filter(Boolean).join('-'), id: b.id, mount: 'torso', facing: 'up', shape, w, h,
+            x: sx * (S.outer - 0.3 - w / 2), y: top + S.t, z: 0,
+            rot: sx > 0 ? [Math.PI / 2, Math.PI, 0] : [-Math.PI / 2, 0, 0],
+            art: o.art, ...(o.choice ? { choice: o.choice } : {}), ...(b.needsInvestiture ? { inv: true } : {}),
+          });
+        }
+      }
+      continue;
+    }
     if (a.part === 'torso') {
       const sx = a.side === 'left' ? 1 : -1;
       let x = sx * a.xCm;
@@ -69,7 +88,7 @@ export function placeAll(rules, gender) {
         const flapTop = top - P.top;
         y = a.pocket === 'centre' ? flapTop - P.flap - (P.h - P.flap) / 2 : flapTop + a.gapCm + h / 2;
       }
-      out.push({ key: b.id, id: b.id, mount: 'torso', shape, w, h, x, y, z: B.torso.d / 2, art, fit });
+      out.push({ key: b.id, id: b.id, mount: 'torso', shape, w, h, x, y, z: B.torso.d / 2, art, fit, ...(b.needsInvestiture ? { inv: true } : {}) });
       continue;
     }
     const mount = a.side === 'left' ? 'l' : 'r';
@@ -190,6 +209,7 @@ export function visible(placements, state, { invested, school = false, unavailab
     if ((p.id === 'membership' || p.inv) && !invested) return false; // 世界童軍會員章、童軍小隊章：宣誓後先戴
     if (unavailable.includes(p.id)) return false;
     if (p.id === 'progress') return p.step <= (state.progress || 0);
+    if (p.choice) return state[p.id] === p.choice; // 有選項嘅章（例：深資童軍肩章）
     return !!state[p.id];
   });
 }
