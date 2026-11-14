@@ -772,3 +772,36 @@ a {
   font-size: 14px;
   pointer-events: none;
 }
+
+/* 徽章圖案（官方文件） */
+.badgerow__main {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.badgerow__art {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  flex: none;
+}
+
+.badgerow__art.is-round,
+.card__art img.is-round {
+  border-radius: 50%;
+}
+
+.card__art {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0 4px;
+}
+
+.card__art img {
+  height: 64px;
+  max-width: 100%;
+  object-fit: contain;
+}

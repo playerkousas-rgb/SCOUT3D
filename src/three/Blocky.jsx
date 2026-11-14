@@ -4,6 +4,9 @@
 import { useEffect, useMemo } from 'react';
 import * as THREE from 'three';
 import { layout, PX } from './body.js';
+import { RULES } from '../data/rules.js';
+import { placeAll, visible } from './badgeLayout.js';
+import { useBadgeTextures, TorsoBadges, SleeveBadges } from './Badges.jsx';
 import {
   headFaces, pigtailFaces, neckFaces, torsoFaces, sleeveFaces, skinFaces, handFaces, legFaces, shoeFaces,
   rollFaces, tailCanvas, backTriangleCanvas, plain, material, wogglePaint,
@@ -46,10 +49,10 @@ function Plinth() {
 }
 
 /** 一隻手：膊頭做支點（之後做姿勢用） */
-function Arm({ L, side, painted, faces }) {
+function Arm({ L, side, painted, faces, children }) {
   const { B } = L;
   const s = side === 'l' ? 1 : -1;
-  const sl = [B.upperArm.w + B.sleeve.pad * 2, B.sleeve.len, B.upperArm.d + B.sleeve.pad * 2];
+  const sl = [B.sleeve.w, B.sleeve.len, B.sleeve.d];
   return (
     <group position={[s * L.armX, L.shoulderY, 0]} rotation={[0, 0, s * 0.045]}>
       <Box size={[B.upperArm.w, B.upperArm.h, B.upperArm.d]} faces={faces.upper} painted={painted} position={[0, -B.upperArm.h / 2, 0]} />
@@ -58,19 +61,29 @@ function Arm({ L, side, painted, faces }) {
         <Box size={[B.lowerArm.w, B.lowerArm.h, B.lowerArm.d]} faces={faces.lower} painted={painted} position={[0, -B.lowerArm.h / 2, 0]} />
         <Box size={[B.hand.w, B.hand.h, B.hand.d]} faces={faces.hand} painted={painted} position={[0, -B.lowerArm.h - B.hand.h / 2, 0]} />
       </group>
+      {children}
     </group>
   );
 }
 
-export default function Blocky({ outfit }) {
+export default function Blocky({ outfit, badges = {}, selected = null, onSelect, registry }) {
   const gender = outfit.gender === 'girl' ? 'girl' : 'boy';
   const painted = outfit.finish !== 'unpainted';
   const L = useMemo(() => layout(gender), [gender]);
   const { B } = L;
 
+  // 徽章：位置全部由規則 JSON 計出嚟
+  const all = useMemo(() => placeAll(RULES, gender), [gender]);
+  const textures = useBadgeTextures(useMemo(() => all.map((p) => p.art), [all]));
+  const shown = useMemo(() => visible(all, badges, { invested: outfit.invested }), [all, badges, outfit.invested]);
+  const patchProps = { textures, painted, onSelect, registry };
+  const torsoItems = shown.filter((p) => p.mount === 'torso');
+  const armItems = (side) => shown.filter((p) => p.mount === side);
+  const seamY = L.top - L.shoulderY;
+
   // 身體貼圖（只跟性別變）
   const body = useMemo(() => {
-    const sl = [B.upperArm.w + B.sleeve.pad * 2, B.sleeve.len, B.upperArm.d + B.sleeve.pad * 2];
+    const sl = [B.sleeve.w, B.sleeve.len, B.sleeve.d];
     return {
       head: headFaces(B),
       pigtail: pigtailFaces([4.5, 12, 4.5], PIGTAIL_TIE),
@@ -135,8 +148,16 @@ export default function Blocky({ outfit }) {
         {[1, -1].map((s) => (
           <Box key={s} size={[N.collarT, collarH, N.nw]} faces={white} painted={painted} position={[s * (N.nw / 2 + N.collarT / 2), L.top + collarH / 2, 0]} />
         ))}
-        <Arm L={L} side="l" painted={painted} faces={body.arm} />
-        <Arm L={L} side="r" painted={painted} faces={body.arm} />
+        {['l', 'r'].map((side) => (
+          <Arm key={side} L={L} side={side} painted={painted} faces={body.arm}>
+            {armItems(side).map((p) => (
+              <SleeveBadges key={p.key} items={[p]} side={side} sleeveW={B.sleeve.w} seamY={seamY} selected={selected === p.id} {...patchProps} />
+            ))}
+          </Arm>
+        ))}
+        {torsoItems.map((p) => (
+          <TorsoBadges key={p.key} items={[p]} selected={selected === p.id} {...patchProps} />
+        ))}
         {/* 褲、鞋 */}
         {[1, -1].map((s) => (
           <group key={s}>

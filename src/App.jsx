@@ -1,13 +1,12 @@
 // SCOUT3D 主介面 — v1.0 · © SCOUT SYSTEM
-import { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react';
+import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLang, LangToggle, bi, pick } from './i18n.jsx';
-import { RULES, RULE_ERRORS, sourceLines } from './data/rules.js';
+import { RULES, RULE_ERRORS, badgeById, sourceLines } from './data/rules.js';
 import { NECKER, WOGGLE } from './palette.js';
 import { APP_VERSION } from './version.js';
 
 const Scene = lazy(() => import('./three/Scene.jsx'));
 
-// 第 1 步：人物 + 最基本小童軍服裝（徽章第 3 步先加）
 const DEFAULT_OUTFIT = {
   gender: 'boy',
   finish: 'painted',
@@ -15,6 +14,17 @@ const DEFAULT_OUTFIT = {
   neckerMain: '#e9b425',
   neckerBorder: '#5b3fa0',
   woggle: '#1f4e9c',
+};
+
+// 預設：必須佩戴嘅章 + 旅章、區章（同手冊 P.25 附圖一樣）
+const DEFAULT_BADGES = {
+  membership: true,
+  progress: 2,
+  grasshopperAward: false,
+  troop: true,
+  district: true,
+  meritorious: false,
+  commemorative: false,
 };
 
 function hasWebGL() {
@@ -107,21 +117,142 @@ function Sources({ list }) {
   );
 }
 
-/* ---------- 徽章分頁（第 3 步先做） ---------- */
-function BadgesTab() {
+/* ---------- 徽章圖案 ---------- */
+function ArtLine({ art }) {
   const { lang, t } = useLang();
+  const src = RULES.sources[art.ref];
+  return (
+    <span className="muted">
+      {t(art.example ? 'info.artExample' : 'info.artOfficial')}
+      {lang === 'en' ? ': ' : '：'}
+      {src ? bi(lang, src.zh, src.en) : art.ref}
+      {lang === 'en' ? ', ' : '，'}
+      {t('info.page')} {art.page}
+    </span>
+  );
+}
+
+/* ---------- 徽章資料卡 ---------- */
+function InfoCard({ id, outfit, badges, onClose, onFocus }) {
+  const { lang, t } = useLang();
+  const b = badgeById(id);
+  const arts = Array.isArray(b.art) ? b.art : [b.art];
+  const shown = id === 'membership' ? badges.membership && outfit.invested : id === 'progress' ? badges.progress > 0 : badges[id];
+  const sizeText = `${b.size.wCm} × ${b.size.hCm} cm（${t(b.size.measured ? 'info.sizeMeasured' : 'info.sizeGuess')}）`;
+  return (
+    <section className="card" aria-live="polite">
+      <header className="card__head">
+        <h2 className="card__title">{pick(lang, b, 'name')}</h2>
+        <button type="button" className="iconbtn" onClick={onClose} aria-label={t('info.close')} title={t('info.close')}>
+          ×
+        </button>
+      </header>
+      <div className="card__chips">
+        <StatusChip status={b.status} />
+        <span className="chip chip--plain">{t(b.required ? 'info.required' : 'info.optional')}</span>
+      </div>
+      <div className="card__art">
+        {arts.map((a) => (
+          <img key={a.file} src={a.file} alt={pick(lang, b, 'name')} className={b.size.shape === 'circle' ? 'is-round' : ''} />
+        ))}
+      </div>
+      <ArtLine art={arts[0]} />
+      {!shown && <p className="note">{t('info.hidden')}</p>}
+      <dl className="facts">
+        <dt>{t('info.place')}</dt>
+        <dd>{pick(lang, b, 'place')}</dd>
+        <dt>{t('info.quote')}</dt>
+        <dd>
+          <blockquote>{pick(lang, b, 'quote')}</blockquote>
+        </dd>
+        <dt>{t('info.conditions')}</dt>
+        <dd>{pick(lang, b, 'conditions')}</dd>
+        <dt>{t('info.size')}</dt>
+        <dd>{sizeText}</dd>
+        {b.modelNote && (
+          <>
+            <dt>{t('info.model')}</dt>
+            <dd>{bi(lang, b.modelNote.zh, b.modelNote.en)}</dd>
+          </>
+        )}
+        <dt>{t('info.source')}</dt>
+        <dd>
+          <Sources list={b.sources} />
+        </dd>
+        {b.pendingReason && (
+          <>
+            <dt>{t('info.why')}</dt>
+            <dd className="why">{bi(lang, b.pendingReason.zh, b.pendingReason.en)}</dd>
+          </>
+        )}
+      </dl>
+      <button type="button" className="btn btn--ghost" onClick={onFocus} disabled={!shown}>
+        {t('info.focus')}
+      </button>
+    </section>
+  );
+}
+
+/* ---------- 徽章分頁 ---------- */
+function BadgesTab({ outfit, badges, setBadges, selected, onPick }) {
+  const { lang, t } = useLang();
+  const set = (k, v) => setBadges((b) => ({ ...b, [k]: v }));
   return (
     <div className="tabbody">
-      <p className="note note--strong">{t('badges.later')}</p>
-      <ul className="plainlist">
-        {RULES.badges.map((b) => (
-          <li key={b.id}>
-            <strong>{pick(lang, b, 'name')}</strong>
-            <span className="muted">{pick(lang, b, 'place')}</span>
-            <StatusChip status={b.status} />
-          </li>
-        ))}
+      <p className="note note--strong">{t('badges.tip')}</p>
+      <ul className="badgelist">
+        {RULES.badges.map((b) => {
+          const disabled = b.id === 'membership' && !outfit.invested;
+          const art = Array.isArray(b.art) ? b.art[Math.max(0, Math.min(3, (badges.progress || 1) - 1))] : b.art;
+          return (
+            <li key={b.id} className={`badgerow${selected === b.id ? ' is-sel' : ''}${disabled ? ' is-disabled' : ''}`}>
+              <div className="badgerow__main">
+                <img src={art.file} alt="" className={`badgerow__art${b.size.shape === 'circle' ? ' is-round' : ''}`} />
+                <div>
+                  <button type="button" className="badgerow__name" onClick={() => onPick(b.id)}>
+                    {pick(lang, b, 'name')}
+                  </button>
+                  <div className="badgerow__meta">
+                    <StatusChip status={b.status} />
+                    <span className="chip chip--plain">{t(b.required ? 'info.required' : 'info.optional')}</span>
+                    {art.example && <span className="chip chip--plain">{t('badge.example')}</span>}
+                  </div>
+                </div>
+              </div>
+              {b.id === 'progress' ? (
+                <div className="steps" role="radiogroup" aria-label={t('badge.steps')}>
+                  {[0, 1, 2, 3, 4].map((n) => (
+                    <button
+                      key={n}
+                      type="button"
+                      role="radio"
+                      aria-checked={badges.progress === n}
+                      className={`steps__btn${badges.progress === n ? ' is-on' : ''}`}
+                      onClick={() => set('progress', n)}
+                      title={n === 0 ? t('badge.none') : `${t('badge.steps')} ${n}`}
+                    >
+                      {n === 0 ? t('badge.none') : n}
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <label className="switch switch--compact">
+                  <input
+                    type="checkbox"
+                    checked={!!badges[b.id] && !disabled}
+                    disabled={disabled}
+                    onChange={(e) => set(b.id, e.target.checked)}
+                    aria-label={`${t('badge.show')}：${pick(lang, b, 'name')}`}
+                  />
+                  <span className="switch__track" aria-hidden="true" />
+                </label>
+              )}
+              {disabled && <p className="note">{t('badge.needInvest')}</p>}
+            </li>
+          );
+        })}
       </ul>
+      <p className="note">{bi(lang, RULES.artCredit.zh, RULES.artCredit.en)}</p>
     </div>
   );
 }
@@ -203,6 +334,7 @@ function SourcesTab() {
         ))}
       </ul>
       <p className="note">{t('src.handbookCopy')}</p>
+      <p className="note">{bi(lang, RULES.artCredit.zh, RULES.artCredit.en)}</p>
       <dl className="facts facts--tight">
         <dt>{t('rules.version')}</dt>
         <dd>{RULES.fileVersion}</dd>
@@ -252,7 +384,9 @@ function SourcesTab() {
 export default function App() {
   const { lang, t } = useLang();
   const [outfit, setOutfit] = useState(DEFAULT_OUTFIT);
-  const [tab, setTab] = useState('outfit');
+  const [badges, setBadges] = useState(DEFAULT_BADGES);
+  const [selected, setSelected] = useState(null);
+  const [tab, setTab] = useState('badges');
   const [toast, setToast] = useState('');
   const [busy, setBusy] = useState(false);
   const webgl = useMemo(hasWebGL, []);
@@ -263,6 +397,12 @@ export default function App() {
     const id = setTimeout(() => setToast(''), 2600);
     return () => clearTimeout(id);
   }, [toast]);
+
+  const onPick = useCallback((id) => {
+    setSelected(id);
+    if (id) requestAnimationFrame(() => scene.current?.focus(id));
+  }, []);
+  const onSceneSelect = useCallback((id) => setSelected(id), []);
 
   const shot = async () => {
     const canvas = scene.current?.canvas();
@@ -309,7 +449,7 @@ export default function App() {
         <section className="stage" aria-label={t('app.title')}>
           {webgl ? (
             <Suspense fallback={<div className="stage__msg">{t('loading')}</div>}>
-              <Scene ref={scene} outfit={outfit} />
+              <Scene ref={scene} outfit={outfit} badges={badges} selected={selected} onSelect={onSceneSelect} />
             </Suspense>
           ) : (
             <div className="stage__msg">{t('nowebgl')}</div>
@@ -340,6 +480,15 @@ export default function App() {
         </section>
 
         <aside className="panel">
+          {selected && (
+            <InfoCard
+              id={selected}
+              outfit={outfit}
+              badges={badges}
+              onClose={() => setSelected(null)}
+              onFocus={() => scene.current?.focus(selected)}
+            />
+          )}
           <div className="tabs" role="tablist">
             {tabs.map(([k, label]) => (
               <button
@@ -357,7 +506,7 @@ export default function App() {
             ))}
           </div>
           <div role="tabpanel" id={`pane-${tab}`} aria-labelledby={`tab-${tab}`}>
-            {tab === 'badges' && <BadgesTab />}
+            {tab === 'badges' && <BadgesTab outfit={outfit} badges={badges} setBadges={setBadges} selected={selected} onPick={onPick} />}
             {tab === 'outfit' && <OutfitTab outfit={outfit} setOutfit={setOutfit} />}
             {tab === 'sources' && <SourcesTab />}
           </div>

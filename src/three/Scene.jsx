@@ -1,5 +1,5 @@
 // 3D 場景：燈、相機控制、預設視角 — v1.0 · © SCOUT SYSTEM
-import { Suspense, forwardRef, useImperativeHandle, useRef } from 'react';
+import { Suspense, forwardRef, useImperativeHandle, useMemo, useRef } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls, ContactShadows, useProgress } from '@react-three/drei';
 import * as THREE from 'three';
@@ -31,6 +31,12 @@ const Rig = forwardRef(function Rig(_, ref) {
     view(name) {
       const p = VIEWS[name] ?? VIEWS.front;
       goal.current = { pos: new THREE.Vector3(...p), target: TARGET.clone() };
+    },
+    focus(point, normal) {
+      const target = point.clone();
+      const pos = point.clone().addScaledVector(normal.clone().normalize(), 0.75);
+      pos.y += 0.05;
+      goal.current = { pos, target };
     },
   }));
 
@@ -91,12 +97,28 @@ function Loading() {
   );
 }
 
-const Scene = forwardRef(function Scene({ outfit, onReady }, ref) {
+const Scene = forwardRef(function Scene({ outfit, badges, selected, onSelect, onReady }, ref) {
   const rig = useRef();
   const glRef = useRef();
+  const registry = useMemo(() => new Map(), []);
 
   useImperativeHandle(ref, () => ({
     view: (name) => rig.current?.view(name),
+    /** 鏡頭轉去望住某個章（進步獎章有幾格就攞平均） */
+    focus(id) {
+      const meshes = [...registry.entries()].filter(([k]) => k === id || k.startsWith(`${id}-`)).map(([, m]) => m);
+      if (!meshes.length) return false;
+      const point = new THREE.Vector3();
+      const normal = new THREE.Vector3();
+      const q = new THREE.Quaternion();
+      for (const m of meshes) {
+        point.add(m.getWorldPosition(new THREE.Vector3()));
+        normal.add(new THREE.Vector3(0, 0, 1).applyQuaternion(m.getWorldQuaternion(q)));
+      }
+      point.divideScalar(meshes.length);
+      rig.current?.focus(point, normal);
+      return true;
+    },
     canvas: () => glRef.current?.domElement ?? null,
   }));
 
@@ -113,6 +135,7 @@ const Scene = forwardRef(function Scene({ outfit, onReady }, ref) {
           gl.toneMapping = THREE.ACESFilmicToneMapping;
           onReady?.();
         }}
+        onPointerMissed={() => onSelect?.(null)}
       >
         <color attach="background" args={['#e9edf1']} />
         <hemisphereLight args={['#ffffff', '#9aa3ad', 1.5]} />
@@ -131,7 +154,7 @@ const Scene = forwardRef(function Scene({ outfit, onReady }, ref) {
         <directionalLight position={[-1.6, 2, -2.4]} intensity={1.5} />
         <directionalLight position={[-1.6, 1.2, 1.8]} intensity={0.35} />
         <Suspense fallback={null}>
-          <Blocky outfit={outfit} />
+          <Blocky outfit={outfit} badges={badges} selected={selected} onSelect={onSelect} registry={registry} />
         </Suspense>
         <ContactShadows position={[0, 0.001, 0]} scale={1.8} blur={2.6} opacity={0.4} far={0.5} />
         <Rig ref={rig} />

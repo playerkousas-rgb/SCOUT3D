@@ -8,7 +8,7 @@
 | 概念 | 檔 | 點解唔做 | 日期 |
 |---|---|---|---|
 | 其他支部（v1.0） | [`01-other-sections.md`](01-other-sections.md) | 每個支部要逐個對手冊同核對，先做小童軍 | 2026-11-13 |
-| 官方徽章原圖／AI 仿製 | [`02-official-badge-art.md`](02-official-badge-art.md) | 版權屬香港童軍總會，會誤導 | 2026-11-13 |
+| AI 仿製／自己設計徽章（官方原圖已改用） | [`02-official-badge-art.md`](02-official-badge-art.md) | 會誤導；用戶要求用手冊圖案 | 2026-11-14 |
 | 帳號、網店、相片變公仔、STL、全套徽章庫 | [`03-accounts-shop-export.md`](03-accounts-shop-export.md) | 計劃書 §10 列明 v1 唔做 | 2026-11-13 |
 
 ## 同 SCOPE 嘅關係

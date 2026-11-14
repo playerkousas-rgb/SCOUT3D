@@ -12,7 +12,7 @@ const COMMON = {
   upperArm: { w: 6.5, h: 19, d: 6.5 }, // 頂喺膊頭下 1 cm
   lowerArm: { w: 6, h: 16, d: 6 },
   hand: { w: 5.5, h: 10, d: 4 },
-  sleeve: { len: 11, band: 1.5, pad: 0.6 }, // 短袖由膊頂量起；白袖邊；袖比手臂闊
+  sleeve: { len: 15.5, band: 1.5, w: 7.7, d: 10.5 }, // 短袖由膊頂（肩膊縫線）量起；白袖邊；闊身袖，外側面 10.5 cm 擺得落旅章
   leg: { w: 10, d: 10, y: 5, top: 58, gap: 1 },
   shoe: { w: 10.5, h: 6, d: 17, z: 2 },
 };

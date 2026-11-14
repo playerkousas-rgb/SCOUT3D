@@ -10,9 +10,12 @@ Third-party material:
 - Rule summaries cite the Scout Association of Hong Kong "Uniform Handbook"
   (儀容與制服手冊) and the "Grasshopper Scout Activity Guide (3rd edition)".
   Those documents remain the copyright of the Scout Association of Hong Kong;
-  this project only summarises them with page references.
+  this project summarises them with page references. Badge artwork in
+  public/badges/ is reproduced from those documents (pages listed in
+  src/data/grasshopper_rules_v1.0.json) and remains the copyright of the
+  Scout Association of Hong Kong; it is not covered by this licence.
 - Open-source dependencies (React, three.js, React Three Fiber, drei, Vite)
   are used under their own licences; see package.json and node_modules.
 
 版權所有 © 2026 SCOUT SYSTEM，保留一切權利。未經書面同意，不得複製、修改、
-發佈或轉售本 repo 任何部分。手冊及指引內容版權屬香港童軍總會。
+發佈或轉售本 repo 任何部分。手冊及指引內容，以及 public/badges/ 入面取自手冊及指引嘅徽章圖案，版權屬香港童軍總會。
