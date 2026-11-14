@@ -104,7 +104,25 @@ export const COLOURS = {
   beretBand: '#141414', // 黑色膠邊
   leather: '#4a2f1f', // 皮巾圈
   leatherHi: '#6b4630',
+  // 海童軍／空童軍（手冊 P.32–35；顏色取自綱要 P.13–14 附圖）
+  navy: '#313166', // 深藍色短褲／裙褲
+  navySock: '#2b2b5a', // 深藍色長襪（略深少少，方便同褲分開）
+  seaShirt: '#f7f7f4', // 白色恤衫
+  seaCapTop: '#fbfbfa', // 白頂帽
+  airShirt: '#94afdb', // 淺藍色恤衫
+  airBeret: '#24364f', // 灰藍色軟帽
 };
+
+/**
+ * 童軍支部三款制服嘅配色（手冊 P.30–35；綱要 P.12–14）。徽章同擺位三款一樣，只係帽、恤衫、褲、襪唔同。
+ * hat：'beret' = 軟帽 + 金屬帽章；'sea' = 海童軍白頂帽 + 帽帶
+ */
+export const SCOUT_VARIANTS = {
+  land: { shirt: COLOURS.cubShirt, leg: COLOURS.cubGreen, sock: COLOURS.cubSock, hat: 'beret', beret: COLOURS.beret },
+  sea: { shirt: COLOURS.seaShirt, leg: COLOURS.navy, sock: COLOURS.navySock, hat: 'sea' },
+  air: { shirt: COLOURS.airShirt, leg: COLOURS.navy, sock: COLOURS.navySock, hat: 'beret', beret: COLOURS.airBeret },
+};
+export const scoutVariant = (id) => SCOUT_VARIANTS[id] ?? SCOUT_VARIANTS.land;
 
 /** 計出每個部件嘅大細同位置（cm）。 */
 export function layout(gender, section = 'grasshopper') {

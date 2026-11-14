@@ -22,15 +22,22 @@
       "zh": "以下內容由 AI 助手依文件整理，未經核對人逐項確認；確認後請把每項 status 改為 verified 並填 lastChecked。",
       "en": "Compiled from the documents by an AI assistant and not yet confirmed item by item. After review, set each status to verified and fill lastChecked."
     },
-    "userChecks": []
+    "userChecks": [
+      {
+        "date": "2026-11-14",
+        "item": "patrolDirection",
+        "zh": "小隊章隊色方向：以人望住小隊章嘅面向，圖案左色近背、右色近胸（例：獾 左紫近背、右白近胸）",
+        "en": "Patrol badge colour direction: as seen by a person looking at the badge, the left colour is toward the back and the right toward the chest (e.g. Badger: purple back, white chest)"
+      }
+    ]
   },
   "sources": {
     "UH": {
       "zh": "香港童軍總會《儀容與制服手冊》",
       "en": "SAHK Uniform Handbook (Chinese edition)",
       "edition": {
-        "zh": "網上版（含 2026-01-01 第 04/2026 號通告制服帽修訂）；P.26 未宣誓成員，P.30–31 童軍制服，P.92–95 基本徽章，P.102 童軍帽章，P.110 童軍巾圈，P.112 戴領巾，P.131 童軍小隊章，P.159 優異旅團章，P.169 童軍徽章佩戴圖",
-        "en": "Online edition incl. Circular 04/2026 (1 Jan 2026) cap amendment; p.26 uninvested members, pp.30–31 Scout uniform, pp.92–95 basic badges, p.102 Scout cap badge, p.110 Scout woggle, p.112 wearing the neckerchief, p.131 Scout Patrol Badge, p.159 Meritorious Group Badge, p.169 Scout badge chart"
+        "zh": "網上版（含 2026-01-01 第 04/2026 號通告制服帽修訂）；P.26 未宣誓成員，P.30–31 童軍制服，P.32–33 海童軍制服，P.34–35 空童軍制服，P.92–95 基本徽章，P.98–100 軟帽及海童軍白頂帽，P.102 童軍帽章及海童軍帽帶，P.110 童軍巾圈，P.112 戴領巾，P.131 童軍小隊章，P.159 優異旅團章，P.169 童軍徽章佩戴圖",
+        "en": "Online edition incl. Circular 04/2026 (1 Jan 2026) cap amendment; p.26 uninvested members, pp.30–31 Scout uniform, pp.32–33 Sea Scout uniform, pp.34–35 Air Scout uniform, pp.92–95 basic badges, pp.98–100 berets and the Sea Scout white-top cap, p.102 Scout cap badge and Sea Scout cap tally, p.110 Scout woggle, p.112 wearing the neckerchief, p.131 Scout Patrol Badge, p.159 Meritorious Group Badge, p.169 Scout badge chart"
       },
       "url": "https://www.scout.org.hk/uniformhandbook"
     },
@@ -38,8 +45,8 @@
       "zh": "《童軍支部訓練綱要》",
       "en": "Scout Section Training Scheme",
       "edition": {
-        "zh": "2026 年 6 月 6 日版；P.12 童軍制服及佩戴圖，P.199–202 小隊隊名、隊色及小隊章",
-        "en": "6 June 2026 edition; p.12 Scout uniform and badge chart, pp.199–202 patrol names, colours and badges"
+        "zh": "2026 年 6 月 6 日版；P.12 童軍制服及佩戴圖，P.13 海童軍制服，P.14 空童軍制服，P.199–202 小隊隊名、隊色及小隊章",
+        "en": "6 June 2026 edition; p.12 Scout uniform and badge chart, p.13 Sea Scout uniform, p.14 Air Scout uniform, pp.199–202 patrol names, colours and badges"
       },
       "url": null
     },
@@ -51,6 +58,15 @@
         "en": "Retrieved 2026-11-14"
       },
       "url": "https://www.scout.org.hk/tc/scout-units/regions-districts/index.html"
+    },
+    "PAI": {
+      "zh": "《童軍訓練綱要》附錄：小隊動物圖像（PatrolAnimalImages.pdf）",
+      "en": "Scout Training Scheme appendix: Patrol Animal Images (PatrolAnimalImages.pdf)",
+      "edition": {
+        "zh": "用戶提供嘅網址；模型圖案取自綱要 P.199–202（同一套官方圖案）",
+        "en": "URL provided by the user; the model's artwork is taken from Training Scheme pp.199–202 (the same official set)"
+      },
+      "url": "https://scoutsinfohub.org.hk/ScoutTrainingScheme/pdf-zh/Appendix/PatrolAnimalImages.pdf"
     }
   },
   "garments": [
@@ -234,6 +250,260 @@
         "zh": "旅巾顏色由各旅自定，模型可自選；巾圈畫做啡色皮巾圈（手冊 P.110 相片），冇畫徽號。",
         "en": "Neckerchief colours are set by each Group; pick them in the model. The woggle is drawn as a brown leather woggle (Handbook p.110 photo) without the emblem."
       }
+    }
+  ],
+  "variants": [
+    {
+      "id": "land",
+      "zh": {
+        "name": "童軍",
+        "note": "陸上童軍（手冊 P.30–31；綱要 P.12）。"
+      },
+      "en": {
+        "name": "Scouts",
+        "note": "Land Scouts (Handbook pp.30–31; Training Scheme p.12)."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "30–31"
+        },
+        {
+          "ref": "STS",
+          "page": "12"
+        }
+      ],
+      "garments": []
+    },
+    {
+      "id": "sea",
+      "zh": {
+        "name": "海童軍",
+        "note": "海童軍（手冊 P.32–33；綱要 P.13）：徽章同擺位同童軍一樣（世界童軍會員章、香港章、地域章、區章、旅章、小隊章）；帽、恤衫、褲、襪唔同。"
+      },
+      "en": {
+        "name": "Sea Scouts",
+        "note": "Sea Scouts (Handbook pp.32–33; Training Scheme p.13): the same badges in the same places as Scouts (World Membership, Hong Kong, Region, District, Group and Patrol Badges); the cap, shirt, shorts and socks differ."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "32–33"
+        },
+        {
+          "ref": "STS",
+          "page": "13"
+        }
+      ],
+      "garments": [
+        {
+          "id": "hat",
+          "zh": {
+            "name": "帽",
+            "rule": "海童軍白頂帽（連海童軍帽帶）：帽邊喺眼眉上方約 2 釐米，整頂帽邊同水平線看齊。帽帶戴喺白頂帽白色帽邊下方，繡有「SEA SCOUTS」字眼嘅部份放喺帽前中央；喺帽子左邊中央位置將帽帶尾綁上蝴蝶結，蝴蝶結及裁剪後嘅帽帶尾各長 3 釐米。宣誓後纔可佩戴。"
+          },
+          "en": {
+            "name": "Cap",
+            "rule": "Sea Scout white-top cap with the Sea Scout cap tally: the brim sits about 2 cm above the eyebrows and level. The tally is worn below the white edge of the cap with the “SEA SCOUTS” lettering at the front centre; its ends are tied in a bow at the middle of the left side, the bow and the trimmed tails each 3 cm long. Worn only after investiture."
+          },
+          "sources": [
+            {
+              "ref": "UH",
+              "page": "26, 32–33, 100, 102"
+            },
+            {
+              "ref": "STS",
+              "page": "13"
+            }
+          ],
+          "status": "documented",
+          "modelNote": {
+            "zh": "帽帶圖案取自手冊 P.102 相片（細圖放大）。方塊人嘅白頂帽只係示意形狀；蝴蝶結畫喺穿著者左邊（+x）。",
+            "en": "The tally artwork is from the Handbook p.102 photo (a small image enlarged). The blocky white-top cap is only an indicative shape; the bow is on the wearer's left (+x)."
+          }
+        },
+        {
+          "id": "shirt",
+          "zh": {
+            "name": "恤衫",
+            "rule": "白色、短袖、兩胸袋、無褶、肩帶。"
+          },
+          "en": {
+            "name": "Shirt",
+            "rule": "White, short sleeves, two chest pockets, no pleats, shoulder straps."
+          },
+          "sources": [
+            {
+              "ref": "UH",
+              "page": "32–33"
+            },
+            {
+              "ref": "STS",
+              "page": "13"
+            }
+          ],
+          "status": "documented"
+        },
+        {
+          "id": "shorts",
+          "zh": {
+            "name": "短褲／裙褲",
+            "rule": "男團員：深藍色短褲，兩斜袋、兩後袋、有褶。女團員：深藍色裙褲，側袋、弓字褶。"
+          },
+          "en": {
+            "name": "Shorts / culottes",
+            "rule": "Boys: dark blue shorts, two slanted pockets, two back pockets, pleated. Girls: dark blue culottes, side pockets, box pleat."
+          },
+          "sources": [
+            {
+              "ref": "UH",
+              "page": "26, 32"
+            },
+            {
+              "ref": "STS",
+              "page": "13"
+            }
+          ],
+          "status": "documented"
+        },
+        {
+          "id": "socks",
+          "zh": {
+            "name": "長襪",
+            "rule": "深藍色。"
+          },
+          "en": {
+            "name": "Long socks",
+            "rule": "Dark blue."
+          },
+          "sources": [
+            {
+              "ref": "UH",
+              "page": "32–33"
+            },
+            {
+              "ref": "STS",
+              "page": "13"
+            }
+          ],
+          "status": "documented"
+        }
+      ]
+    },
+    {
+      "id": "air",
+      "zh": {
+        "name": "空童軍",
+        "note": "空童軍（手冊 P.34–35；綱要 P.14）：徽章同擺位同童軍一樣（世界童軍會員章、香港章、地域章、區章、旅章、小隊章）；帽、恤衫、褲、襪唔同。"
+      },
+      "en": {
+        "name": "Air Scouts",
+        "note": "Air Scouts (Handbook pp.34–35; Training Scheme p.14): the same badges in the same places as Scouts (World Membership, Hong Kong, Region, District, Group and Patrol Badges); the beret, shirt, shorts and socks differ."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "34–35"
+        },
+        {
+          "ref": "STS",
+          "page": "14"
+        }
+      ],
+      "garments": [
+        {
+          "id": "hat",
+          "zh": {
+            "name": "帽",
+            "rule": "灰藍色軟帽，連童軍（金屬）帽章：帽章戴喺軟帽黑色膠邊左眼上方約 2 釐米。軟帽戴喺眉毛上約 2 釐米，向右邊拉低。宣誓後纔可佩戴。"
+          },
+          "en": {
+            "name": "Beret",
+            "rule": "Grey-blue beret with the (metal) Scout cap badge, worn on the black band about 2 cm above the left eye. The beret sits about 2 cm above the eyebrows, pulled down to the right. Worn only after investiture."
+          },
+          "sources": [
+            {
+              "ref": "UH",
+              "page": "26, 34–35, 99, 102"
+            },
+            {
+              "ref": "STS",
+              "page": "14"
+            }
+          ],
+          "status": "documented",
+          "modelNote": {
+            "zh": "帽章同童軍一樣（手冊 P.102「童軍、空童軍…佩戴」）。顏色跟綱要 P.14 附圖（深灰藍）；方塊人嘅軟帽只係示意形狀。",
+            "en": "Same cap badge as Scouts (Handbook p.102 “worn by Scouts, Air Scouts…”). The colour follows the Training Scheme p.14 figure (dark grey-blue); the blocky beret is only an indicative shape."
+          }
+        },
+        {
+          "id": "shirt",
+          "zh": {
+            "name": "恤衫",
+            "rule": "淺藍色、短袖、兩胸袋、無褶、肩帶。"
+          },
+          "en": {
+            "name": "Shirt",
+            "rule": "Light blue, short sleeves, two chest pockets, no pleats, shoulder straps."
+          },
+          "sources": [
+            {
+              "ref": "UH",
+              "page": "34–35"
+            },
+            {
+              "ref": "STS",
+              "page": "14"
+            }
+          ],
+          "status": "documented"
+        },
+        {
+          "id": "shorts",
+          "zh": {
+            "name": "短褲／裙褲",
+            "rule": "男團員：深藍色短褲，兩斜袋、兩後袋、有褶。女團員：深藍色裙褲，側袋、弓字褶。"
+          },
+          "en": {
+            "name": "Shorts / culottes",
+            "rule": "Boys: dark blue shorts, two slanted pockets, two back pockets, pleated. Girls: dark blue culottes, side pockets, box pleat."
+          },
+          "sources": [
+            {
+              "ref": "UH",
+              "page": "26, 34"
+            },
+            {
+              "ref": "STS",
+              "page": "14"
+            }
+          ],
+          "status": "documented"
+        },
+        {
+          "id": "socks",
+          "zh": {
+            "name": "長襪",
+            "rule": "深藍色。"
+          },
+          "en": {
+            "name": "Long socks",
+            "rule": "Dark blue."
+          },
+          "sources": [
+            {
+              "ref": "UH",
+              "page": "34–35"
+            },
+            {
+              "ref": "STS",
+              "page": "14"
+            }
+          ],
+          "status": "documented"
+        }
+      ]
     }
   ],
   "badges": [
@@ -546,11 +816,11 @@
       "sources": [
         {
           "ref": "UH",
-          "page": "26, 30, 131, 169"
+          "page": "26, 30, 32, 34, 131, 169"
         },
         {
           "ref": "STS",
-          "page": "12, 199–202"
+          "page": "12–14, 199–202"
         }
       ],
       "status": "documented",
@@ -561,8 +831,8 @@
         "example": true
       },
       "modelNote": {
-        "zh": "手冊冇寫尺寸；模型用 4 × 1.6 cm（綱要 P.200–202 圖案比例；手冊 P.131、P.169 同綱要 P.12 附圖對比旅章約闊 3.6–5.1 cm）。圖案係綱要 P.200–202 嘅官方小隊章（左右兩格隊色），未揀小隊就用 P.200 第一個（獾，紫白）做示例。兩格顏色喺袖上邊個向前，文件冇寫；模型照圖案原樣貼（望住袖外側時第一個隊色喺左手邊）。",
-        "en": "No size in the Handbook; the model uses 4 × 1.6 cm (the proportions of the Training Scheme pp.200–202 artwork; against the Group Badge, the Handbook pp.131, 169 and Training Scheme p.12 figures give about 3.6–5.1 cm wide). The artwork is the official patrol badge from Training Scheme pp.200–202 (two colour blocks); with no patrol picked it shows the first one on p.200 (Badger, purple and white) as an example. The documents don't say which colour faces forward on the sleeve; the model applies the artwork as printed (first colour on the left when looking at the outside of the sleeve)."
+        "zh": "手冊冇寫尺寸；模型用 4 × 1.6 cm（綱要 P.200–202 圖案比例；手冊 P.131、P.169 同綱要 P.12 附圖對比旅章約闊 3.6–5.1 cm）。圖案係綱要 P.200–202 嘅官方小隊章（左右兩格隊色），未揀小隊就用 P.200 第一個（獾，紫白）做示例。隊色方向（用戶確認）：以人望住小隊章嘅面向，圖案左邊嗰格近背、右邊嗰格近胸（例：獾 左紫近背、右白近胸）；模型照呢個方向貼。",
+        "en": "No size in the Handbook; the model uses 4 × 1.6 cm (the proportions of the Training Scheme pp.200–202 artwork; against the Group Badge, the Handbook pp.131, 169 and Training Scheme p.12 figures give about 3.6–5.1 cm wide). The artwork is the official patrol badge from Training Scheme pp.200–202 (two colour blocks); with no patrol picked it shows the first one on p.200 (Badger, purple and white) as an example. Colour direction (confirmed by the user): as seen by a person looking at the badge, the left block is toward the back and the right block toward the chest (e.g. Badger: purple toward the back, white toward the chest); the model follows this."
       }
     },
     {
@@ -628,11 +898,11 @@
       "sources": [
         {
           "ref": "UH",
-          "page": "30"
+          "page": "30, 32, 34"
         },
         {
           "ref": "STS",
-          "page": "12"
+          "page": "12–14"
         }
       ]
     },
@@ -680,7 +950,7 @@
     }
   ],
   "artCredit": {
-    "zh": "徽章圖案取自香港童軍總會《儀容與制服手冊》P.25、P.92–93、P.102、P.159、《童軍支部訓練綱要》P.200–202 及香港童軍總會網頁「地域及區」，版權屬香港童軍總會。旅章係手冊示例圖案；區章、地域章、小隊章可以揀返自己嘅。",
-    "en": "Badge artwork is from the Scout Association of Hong Kong Uniform Handbook (pp.25, 92–93, 102, 159), the Scout Section Training Scheme (pp.200–202) and the SAHK “Regions and Districts” page; copyright the Scout Association of Hong Kong. The Group Badge is the handbook example; pick your own District and Patrol to get the right badges."
+    "zh": "徽章圖案取自香港童軍總會《儀容與制服手冊》P.25、P.92–93、P.102、P.159、《童軍支部訓練綱要》P.200–202 及香港童軍總會網頁「地域及區」，版權屬香港童軍總會。海童軍帽帶取自手冊 P.102。旅章係手冊示例圖案；區章、地域章、小隊章可以揀返自己嘅。",
+    "en": "Badge artwork is from the Scout Association of Hong Kong Uniform Handbook (pp.25, 92–93, 102, 159), the Scout Section Training Scheme (pp.200–202) and the SAHK “Regions and Districts” page; copyright the Scout Association of Hong Kong. The Sea Scout cap tally is from Handbook p.102. The Group Badge is the handbook example; pick your own District and Patrol to get the right badges."
   }
 }

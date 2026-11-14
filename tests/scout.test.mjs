@@ -2,9 +2,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
-import { validateRules } from '../src/data/validate.js';
-import { placeAll, visible, shownReason, sleeveFace } from '../src/three/badgeLayout.js';
-import { layout } from '../src/three/body.js';
+import { validateRules, garmentsFor, variantOf } from '../src/data/validate.js';
+import { placeAll, placeFor, visible, shownReason, sleeveFace, sleevePose } from '../src/three/badgeLayout.js';
+import { layout, SCOUT_VARIANTS, scoutVariant } from '../src/three/body.js';
 import { resolveArt, findPatrol } from '../src/lib/picks.js';
 
 const read = (p) => JSON.parse(readFileSync(new URL(`../${p}`, import.meta.url), 'utf8'));
@@ -115,4 +115,66 @@ test('童軍身形：155 cm，袖夠長擺齊右袖所有章', () => {
   assert.equal(top, B.torso.y + B.torso.h);
   const face = sleeveFace('boy', 'scout');
   assert.ok(face.width >= 9 + 0.5, '袖面要闊過旅章');
+});
+
+test('小隊章隊色方向（用戶確認）：右袖上圖案左色近背、右色近胸', () => {
+  const p = by(placeAll(scout, 'boy'), 'patrol');
+  const pose = sleevePose('r', 10, 0, p);
+  // 圖案右手邊 → +z（胸前）；即係左邊第一個隊色（例：獾嘅紫色）喺背後嗰邊
+  assert.deepEqual(pose.artRight.map((n) => n + 0), [0, 0, 1]);
+  assert.ok(pose.position[0] < 0, '右袖 = 穿著者右 = -x');
+  // 擺位：u 正數 = 近胸（同 badgeLayout 定義一致）
+  assert.equal(sleevePose('r', 10, 0, { u: 2, v: 0 }).position[2], 2);
+  // 規則同用戶確認記錄要寫低
+  assert.match(badge('patrol').modelNote.zh, /左邊嗰格近背、右邊嗰格近胸/);
+  assert.ok(scout.review.userChecks.some((c) => c.item === 'patrolDirection'));
+  assert.equal(scout.sources.PAI.url, 'https://scoutsinfohub.org.hk/ScoutTrainingScheme/pdf-zh/Appendix/PatrolAnimalImages.pdf');
+});
+
+test('童軍支部三款制服：童軍／海童軍／空童軍（手冊 P.30–35；綱要 P.12–14）', () => {
+  assert.deepEqual(scout.variants.map((v) => v.id), ['land', 'sea', 'air']);
+  assert.equal(variantOf(scout, 'nope').id, 'land', '唔識嘅款式返去童軍');
+  assert.deepEqual(garmentsFor(scout, 'land'), scout.garments);
+  const sea = garmentsFor(scout, 'sea');
+  const air = garmentsFor(scout, 'air');
+  // 衣物次序同數目不變；皮帶、皮鞋、領巾三款一樣
+  for (const list of [sea, air]) {
+    assert.deepEqual(list.map((g) => g.id), scout.garments.map((g) => g.id));
+    for (const id of ['belt', 'shoes', 'necker']) assert.equal(by(list, id), by(scout.garments, id));
+  }
+  assert.match(by(sea, 'hat').zh.rule, /海童軍白頂帽/);
+  assert.match(by(sea, 'hat').zh.rule, /左邊中央/);
+  assert.match(by(sea, 'hat').zh.rule, /3 釐米/);
+  assert.match(by(sea, 'shirt').zh.rule, /^白色/);
+  assert.match(by(air, 'hat').zh.rule, /灰藍色軟帽/);
+  assert.match(by(air, 'shirt').zh.rule, /^淺藍色/);
+  for (const list of [sea, air]) {
+    assert.match(by(list, 'shorts').zh.rule, /深藍色短褲.*深藍色裙褲/);
+    assert.equal(by(list, 'socks').zh.rule, '深藍色。');
+  }
+  assert.ok(pub('/badges/sea_scout_cap_tally.png'), '海童軍帽帶圖案（手冊 P.102）');
+});
+
+test('海童軍、空童軍：必備徽章同擺位同童軍完全一樣（包括小隊章）', () => {
+  for (const gender of ['boy', 'girl']) {
+    const base = placeFor(scout, { gender, variant: 'land' });
+    for (const variant of ['sea', 'air']) assert.deepEqual(placeFor(scout, { gender, variant }), base, `${variant}（${gender}）`);
+  }
+});
+
+test('三款制服配色：海童軍白恤衫 + 白頂帽；空童軍淺藍恤衫 + 灰藍軟帽；兩款都係深藍褲襪', () => {
+  assert.equal(scoutVariant('land'), SCOUT_VARIANTS.land);
+  assert.equal(scoutVariant('xyz'), SCOUT_VARIANTS.land);
+  assert.equal(SCOUT_VARIANTS.land.hat, 'beret');
+  assert.equal(SCOUT_VARIANTS.sea.hat, 'sea');
+  assert.equal(SCOUT_VARIANTS.air.hat, 'beret');
+  assert.notEqual(SCOUT_VARIANTS.air.beret, SCOUT_VARIANTS.land.beret);
+  const lum = (hex) => { const n = parseInt(hex.slice(1), 16); return ((n >> 16) & 255) * 0.299 + ((n >> 8) & 255) * 0.587 + (n & 255) * 0.114; };
+  const blueish = (hex) => { const n = parseInt(hex.slice(1), 16); return (n & 255) > ((n >> 16) & 255); };
+  assert.ok(lum(SCOUT_VARIANTS.sea.shirt) > 240, '海童軍恤衫係白色');
+  assert.ok(blueish(SCOUT_VARIANTS.air.shirt) && lum(SCOUT_VARIANTS.air.shirt) > 150, '空童軍恤衫係淺藍色');
+  for (const v of ['sea', 'air']) {
+    assert.ok(blueish(SCOUT_VARIANTS[v].leg) && lum(SCOUT_VARIANTS[v].leg) < 80, `${v} 褲係深藍色`);
+    assert.ok(blueish(SCOUT_VARIANTS[v].sock) && lum(SCOUT_VARIANTS[v].sock) < 80, `${v} 襪係深藍色`);
+  }
 });
