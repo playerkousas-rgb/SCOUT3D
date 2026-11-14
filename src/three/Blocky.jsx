@@ -1,22 +1,23 @@
-// 方塊人（真實比例；小童軍 / 幼童軍）— v1.0 · © SCOUT SYSTEM
+// 方塊人（真實比例；小童軍 / 幼童軍 / 童軍）— v1.0 · © SCOUT SYSTEM
 // 全部由程式畫，唔使下載模型。單位：厘米，整個人縮放 0.01 變米。
 // 人物面向 +z；穿著者左 = +x。
 import { useEffect, useMemo } from 'react';
 import * as THREE from 'three';
 import { layout, neckerLayout, VEST_T, PX } from './body.js';
 import { useTexture } from '@react-three/drei';
-import { SECTIONS, DISTRICTS } from '../data/rules.js';
+import { SECTIONS, DISTRICTS, PATROLS } from '../data/rules.js';
 import { resolveArt } from '../lib/picks.js';
 import { placeAll, placeFor, visible, dynKey } from './badgeLayout.js';
 import { useBadgeTextures, useDynamicTextures, TorsoBadges, SleeveBadges } from './Badges.jsx';
 import {
   headFaces, pigtailFaces, neckFaces, torsoFaces, sleeveFaces, cuffFaces, skinFaces, handFaces, legFaces, shortsFaces, shinFaces,
   shoeFaces, vestFaces, hatFaces, brimFaces, shirtPalette, rollFaces, tailCanvas, backTriangleCanvas, plain, material, wogglePaint,
-  cubTorsoFaces, cubShinFaces, cubCapFaces,
+  cubTorsoFaces, cubShinFaces, cubCapFaces, scoutWogglePaint,
 } from './pixels.js';
 import { COLOURS as C } from './body.js';
 
 const CAP_BADGE = '/badges/cub_cap_badge.png';
+const SCOUT_CAP_BADGE = '/badges/scout_cap_badge.png';
 
 export const BASE_H = 0.045; // 底座高度（米）
 const PIGTAIL_TIE = '#5b3fa0';
@@ -144,14 +145,53 @@ function CubHat({ B, girl, painted }) {
   );
 }
 
+/**
+ * 童軍深綠色軟帽（手冊 P.30、P.98–99、P.102）：黑色膠邊離眉毛約 2 cm；向穿著者右邊（-x）拉低；
+ * 金屬帽章戴喺膠邊、左眼（+x）上方。方塊造型只係示意。
+ */
+function ScoutBeret({ B, painted }) {
+  const h = B.head;
+  const headTop = h.y + h.h;
+  const browY = headTop - 7.5; // pixels.js headFaces：眉毛離頭頂 7.5 cm
+  const bandY = browY + 2 + 1; // 膠邊底離眉 2 cm，膠邊高 2 cm
+  const badgeTex = useTexture(SCOUT_CAP_BADGE);
+  const F = useMemo(() => {
+    const band = [h.w + 0.8, 2, h.d + 0.8];
+    const crown = [h.w + 3.5, 3.6, h.d + 3];
+    return {
+      band, crown,
+      bandF: hatFaces(band, C.beretBand),
+      crownF: hatFaces(crown, C.beret),
+      knob: hatFaces([1.2, 0.8, 1.2], C.beret),
+    };
+  }, [h]);
+  const { band, crown } = F;
+  const eyeX = h.w / 2 - 5.25; // 穿著者左眼（+x）
+  return (
+    <group>
+      <Box size={band} faces={F.bandF} painted={painted} position={[0, bandY, h.z]} />
+      <group position={[-2, bandY + 1 + crown[1] / 2 - 0.2, h.z - 0.5]} rotation={[-0.06, 0, 0.16]}>
+        <Box size={crown} faces={F.crownF} painted={painted} position={[0, 0, 0]} />
+        <Box size={[1.2, 0.8, 1.2]} faces={F.knob} painted={painted} position={[1.5, crown[1] / 2 + 0.4, 0]} />
+      </group>
+      <mesh position={[eyeX, bandY, h.z + band[2] / 2 + 0.08]}>
+        <circleGeometry args={[1.4, 32]} />
+        <meshStandardMaterial map={painted ? badgeTex : null} color={painted ? '#f2f2f2' : '#b4b6b9'} transparent alphaTest={0.3} roughness={0.35} metalness={0.4} polygonOffset polygonOffsetFactor={-2} />
+      </mesh>
+    </group>
+  );
+}
+
 const SHORTS_BOTTOM = 38; // 短褲腳離地（cm，膝頭上面）
-const CUB_SHORTS_BOTTOM = { boy: 47, girl: 45 }; // 幼童軍短褲／裙褲腳離地
-const CUB_SOCK_H = 34; // 長襪到膝頭下
+const BEIGE_SHORTS_BOTTOM = { cub: { boy: 47, girl: 45 }, scout: { boy: 54, girl: 52 } }; // 幼童軍／童軍短褲、裙褲腳離地
+const BEIGE_SOCK_H = { cub: 34, scout: 40 }; // 長襪到膝頭下
 const SOCK_H = { short: 6, long: 25 }; // 襪由腳底量起（短襪過腳眼；長襪到膝頭下）
 
 export default function Blocky({ section = 'grasshopper', outfit, badges = {}, picks = {}, selected = null, onSelect, registry }) {
   const RULES = SECTIONS[section] ?? SECTIONS.grasshopper;
-  const cub = section === 'cub';
+  // 幼童軍同童軍：同款杏色恤衫、草青色短褲／裙褲、深草青色長襪（手冊 P.28、P.30）
+  const cub = section === 'cub' || section === 'scout';
+  const scout = section === 'scout';
   const gender = outfit.gender === 'girl' ? 'girl' : 'boy';
   const painted = outfit.finish !== 'unpainted';
   const L = useMemo(() => layout(gender, section), [gender, section]);
@@ -162,7 +202,7 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
   const vest = !cub && !!outfit.vest;
   const shorts = cub || outfit.legwear === 'shorts';
   const legColour = cub ? C.cubGreen : outfit.legColour ?? '#8a9099';
-  const shortsBottom = cub ? CUB_SHORTS_BOTTOM[gender] : SHORTS_BOTTOM;
+  const shortsBottom = cub ? BEIGE_SHORTS_BOTTOM[section][gender] : SHORTS_BOTTOM;
   const culottes = cub && gender === 'girl';
 
   // 徽章：位置全部由規則 JSON 計出嚟（學校運動上衣、背心會改位）；區章、地域章、優異旅團章圖案跟用戶揀
@@ -170,7 +210,7 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
   const fixed = useBadgeTextures(staticUrls);
   const dynArts = useMemo(() => {
     const o = {};
-    for (const b of RULES.badges) if (b.dynamic) o[dynKey(b.id)] = resolveArt(b, picks, DISTRICTS);
+    for (const b of RULES.badges) if (b.dynamic) o[dynKey(b.id)] = resolveArt(b, picks, DISTRICTS, PATROLS);
     return o;
   }, [RULES, picks]);
   const dyn = useDynamicTextures(dynArts);
@@ -227,11 +267,11 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
       trousers: legFaces([B.leg.w, body.legH, B.leg.d], legColour),
       shorts: shortsFaces(shortsSize, legColour),
       shortsSize,
-      shin: cub ? cubShinFaces(shinSize, CUB_SOCK_H - B.leg.y) : shinFaces(shinSize, SOCK_H[outfit.socks] ?? SOCK_H.short, outfit.sockColour ?? '#ffffff'),
+      shin: cub ? cubShinFaces(shinSize, BEIGE_SOCK_H[section] - B.leg.y) : shinFaces(shinSize, SOCK_H[outfit.socks] ?? SOCK_H.short, outfit.sockColour ?? '#ffffff'),
       shinSize,
       shinH,
     };
-  }, [B, body.legH, legColour, outfit.socks, outfit.sockColour, shortsBottom, culottes, cub]);
+  }, [B, body.legH, legColour, outfit.socks, outfit.sockColour, shortsBottom, culottes, cub, section]);
 
   // 背心
   const t = B.torso, h = B.head;
@@ -253,7 +293,8 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
     };
   }, [L, vest, outfit.neckerMain, outfit.neckerBorder]);
 
-  const wogFaces = useMemo(() => wogglePaint([8, 2.6, 1.2], outfit.woggle), [outfit.woggle]);
+  // 童軍：啡色皮巾圈（手冊 P.110）；其他支部：顏色巾圈
+  const wogFaces = useMemo(() => (scout ? scoutWogglePaint([8, 3, 1.4]) : wogglePaint([8, 2.6, 1.2], outfit.woggle)), [outfit.woggle, scout]);
 
   const collarH = 3.6;
   const hasCollar = top !== 'tee';
@@ -268,7 +309,8 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
             <Box key={s} size={[4.5, 12, 4.5]} faces={body.pigtail} painted={painted} position={[s * (h.w / 2 + 1.6), h.y + 5, -4.5]} rotation={[0.15, 0, s * 0.12]} />
           ))}
         {!cub && outfit.hat && outfit.hat !== 'none' && <Hat B={B} kind={outfit.hat} colour={outfit.hatColour ?? '#1f2f4f'} painted={painted} />}
-        {cub && outfit.hat && outfit.invested && <CubHat B={B} girl={gender === 'girl'} painted={painted} />}
+        {cub && !scout && outfit.hat && outfit.invested && <CubHat B={B} girl={gender === 'girl'} painted={painted} />}
+        {scout && outfit.hat && outfit.invested && <ScoutBeret B={B} painted={painted} />}
         <Box size={[B.neck.w, B.neck.h, B.neck.d]} faces={body.neck} painted={painted} position={[0, B.neck.y + B.neck.h / 2, 0]} />
         {/* 上身 */}
         <Box size={[t.w, t.h, t.d]} faces={shirt.torso} painted={painted} position={[0, t.y + t.h / 2, 0]} />
@@ -319,7 +361,11 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
                 <Plane size={[N.tail.w, N.tail.len]} canvas={N.lowerC} painted={painted} position={[s * N.tail.x, N.tail.top - N.tail.len / 2, N.tailZ(s)]} />
               </group>
             ))}
-            <Box size={[8, 2.6, 1.2]} faces={wogFaces} painted={painted} position={[0, N.wogY, N.front + 1.1]} />
+            {scout ? (
+              <Box size={[8, 3, 1.4]} faces={wogFaces} painted={painted} position={[0, N.wogY, N.front + 1.2]} />
+            ) : (
+              <Box size={[8, 2.6, 1.2]} faces={wogFaces} painted={painted} position={[0, N.wogY, N.front + 1.1]} />
+            )}
             <Plane size={[N.back.w, N.back.h]} canvas={N.backC} painted={painted} position={[0, N.back.top - N.back.h / 2, N.back.z]} rotation={[0, Math.PI, 0]} />
           </group>
         )}

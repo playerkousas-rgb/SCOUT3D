@@ -1,0 +1,512 @@
+{
+  "fileVersion": "v1.0",
+  "copyright": "© SCOUT SYSTEM",
+  "source": {
+    "zh": "《童軍支部訓練綱要》附錄「小隊隊名及隊色」（P.199）及「童軍小隊隊徽及小隊章」（P.200–202）",
+    "en": "Scout Section Training Scheme, appendix “Patrol Names & Colours” (p.199) and “Patrol Animal Images and Badges” (pp.200–202)",
+    "pages": "199–202"
+  },
+  "artCredit": {
+    "zh": "小隊章圖案取自《童軍支部訓練綱要》P.200–202（香港童軍總會）；每個章由原文件向量圖直接轉成細圖，冇改色。",
+    "en": "Patrol badge artwork from the Scout Section Training Scheme pp.200–202 (Scout Association of Hong Kong), rendered straight from the document's vector drawings without recolouring."
+  },
+  "notes": [
+    {
+      "id": "merlin",
+      "zh": "隼（Merlin）隊色：綱要中文印作「藍棘紅」，英文為 Royal Blue and Marron（Maroon）；模型寫作「藍棗紅」，顏色照圖。",
+      "en": "Merlin: the Chinese text prints 藍棘紅 and the English “Royal Blue and Marron” (maroon); the app writes 藍棗紅 and uses the printed colours."
+    },
+    {
+      "id": "woodPigeon",
+      "zh": "斑鳩：P.202 印作「班鳩」，P.199 印作「斑鳩」；模型用「斑鳩」。",
+      "en": "Wood Pigeon: p.202 prints 班鳩 and p.199 prints 斑鳩; the app uses 斑鳩."
+    },
+    {
+      "id": "birdNames",
+      "zh": "P.199 有幾隊中文同名（例如鷹、鷸），模型用 P.200–202 括號內嘅名（例如「鷹（獵鷹）」）分開。",
+      "en": "Several patrols share a Chinese name on p.199 (e.g. 鷹, 鷸); the app uses the bracketed names from pp.200–202 (e.g. 鷹（獵鷹）) to tell them apart."
+    }
+  ],
+  "patrols": [
+    {
+      "id": "badger",
+      "zh": "獾",
+      "en": "Badger",
+      "colours": {
+        "zh": "紫白",
+        "en": "Purple and White"
+      },
+      "hex": [
+        "#815487",
+        "#ffffff"
+      ],
+      "file": "/badges/patrols/badger.png",
+      "page": "200"
+    },
+    {
+      "id": "beaver",
+      "zh": "海狸",
+      "en": "Beaver",
+      "colours": {
+        "zh": "藍黃",
+        "en": "Blue and Yellow"
+      },
+      "hex": [
+        "#33b3e5",
+        "#e3cf41"
+      ],
+      "file": "/badges/patrols/beaver.png",
+      "page": "200"
+    },
+    {
+      "id": "buffalo",
+      "zh": "水牛",
+      "en": "Buffalo",
+      "colours": {
+        "zh": "紅白",
+        "en": "Red and White"
+      },
+      "hex": [
+        "#c23146",
+        "#ffffff"
+      ],
+      "file": "/badges/patrols/buffalo.png",
+      "page": "200"
+    },
+    {
+      "id": "bull",
+      "zh": "牡牛",
+      "en": "Bull",
+      "colours": {
+        "zh": "紅",
+        "en": "Red"
+      },
+      "hex": [
+        "#c23146",
+        "#c23146"
+      ],
+      "file": "/badges/patrols/bull.png",
+      "page": "200"
+    },
+    {
+      "id": "bulldog",
+      "zh": "哈叭狗",
+      "en": "Bulldog",
+      "colours": {
+        "zh": "淺藍棕",
+        "en": "Light Blue and Brown"
+      },
+      "hex": [
+        "#4b859e",
+        "#631f2f"
+      ],
+      "file": "/badges/patrols/bulldog.png",
+      "page": "200"
+    },
+    {
+      "id": "cobra",
+      "zh": "眼鏡蛇",
+      "en": "Cobra",
+      "colours": {
+        "zh": "橙黑",
+        "en": "Orange and Black"
+      },
+      "hex": [
+        "#cb5842",
+        "#231f20"
+      ],
+      "file": "/badges/patrols/cobra.png",
+      "page": "200"
+    },
+    {
+      "id": "cuckoo",
+      "zh": "杜鵑",
+      "en": "Cuckoo",
+      "colours": {
+        "zh": "灰",
+        "en": "Grey"
+      },
+      "hex": [
+        "#6b6b7a",
+        "#6b6b7a"
+      ],
+      "file": "/badges/patrols/cuckoo.png",
+      "page": "200"
+    },
+    {
+      "id": "curlew",
+      "zh": "鷸（麻鷸）",
+      "en": "Curlew",
+      "colours": {
+        "zh": "綠",
+        "en": "Green"
+      },
+      "hex": [
+        "#41714d",
+        "#41714d"
+      ],
+      "file": "/badges/patrols/curlew.png",
+      "page": "200"
+    },
+    {
+      "id": "eagle",
+      "zh": "鷹",
+      "en": "Eagle",
+      "colours": {
+        "zh": "綠黑",
+        "en": "Green and Black"
+      },
+      "hex": [
+        "#41714d",
+        "#231f20"
+      ],
+      "file": "/badges/patrols/eagle.png",
+      "page": "200"
+    },
+    {
+      "id": "falcon",
+      "zh": "鷹（獵鷹）",
+      "en": "Falcon",
+      "colours": {
+        "zh": "紅橙",
+        "en": "Red and Orange"
+      },
+      "hex": [
+        "#c23146",
+        "#cb5842"
+      ],
+      "file": "/badges/patrols/falcon.png",
+      "page": "200"
+    },
+    {
+      "id": "fox",
+      "zh": "狐狸",
+      "en": "Fox",
+      "colours": {
+        "zh": "黃綠",
+        "en": "Yellow and Green"
+      },
+      "hex": [
+        "#e3cf41",
+        "#41714d"
+      ],
+      "file": "/badges/patrols/fox.png",
+      "page": "200"
+    },
+    {
+      "id": "gannet",
+      "zh": "塘鵝",
+      "en": "Gannet",
+      "colours": {
+        "zh": "黃深藍",
+        "en": "Yellow and Navy Blue"
+      },
+      "hex": [
+        "#e3cf41",
+        "#103650"
+      ],
+      "file": "/badges/patrols/gannet.png",
+      "page": "200"
+    },
+    {
+      "id": "hawk",
+      "zh": "鷹（鳶）",
+      "en": "Hawk",
+      "colours": {
+        "zh": "粉紅",
+        "en": "Pink"
+      },
+      "hex": [
+        "#be4661",
+        "#be4661"
+      ],
+      "file": "/badges/patrols/hawk.png",
+      "page": "201"
+    },
+    {
+      "id": "hound",
+      "zh": "獵犬",
+      "en": "Hound",
+      "colours": {
+        "zh": "橙",
+        "en": "Orange"
+      },
+      "hex": [
+        "#cb5842",
+        "#cb5842"
+      ],
+      "file": "/badges/patrols/hound.png",
+      "page": "201"
+    },
+    {
+      "id": "kestrel",
+      "zh": "鷹（茶寧）",
+      "en": "Kestrel",
+      "colours": {
+        "zh": "藍綠",
+        "en": "Royal Blue and Green"
+      },
+      "hex": [
+        "#24408f",
+        "#41714d"
+      ],
+      "file": "/badges/patrols/kestrel.png",
+      "page": "201"
+    },
+    {
+      "id": "kingfisher",
+      "zh": "釣魚郎",
+      "en": "Kingfisher",
+      "colours": {
+        "zh": "天藍",
+        "en": "Kingfisher Blue"
+      },
+      "hex": [
+        "#3d8ec3",
+        "#3d8ec3"
+      ],
+      "file": "/badges/patrols/kingfisher.png",
+      "page": "201"
+    },
+    {
+      "id": "lion",
+      "zh": "獅子",
+      "en": "Lion",
+      "colours": {
+        "zh": "黃紅",
+        "en": "Yellow and Red"
+      },
+      "hex": [
+        "#e3cf41",
+        "#ea2525"
+      ],
+      "file": "/badges/patrols/lion.png",
+      "page": "201"
+    },
+    {
+      "id": "merlin",
+      "zh": "鷹（隼）",
+      "en": "Merlin",
+      "colours": {
+        "zh": "藍棗紅",
+        "en": "Royal Blue and Maroon"
+      },
+      "hex": [
+        "#24408f",
+        "#8e262a"
+      ],
+      "file": "/badges/patrols/merlin.png",
+      "page": "201"
+    },
+    {
+      "id": "otter",
+      "zh": "水獺",
+      "en": "Otter",
+      "colours": {
+        "zh": "棕白",
+        "en": "Brown and White"
+      },
+      "hex": [
+        "#6f3636",
+        "#ffffff"
+      ],
+      "file": "/badges/patrols/otter.png",
+      "page": "201"
+    },
+    {
+      "id": "owl",
+      "zh": "貓頭鷹",
+      "en": "Owl",
+      "colours": {
+        "zh": "藍",
+        "en": "Blue"
+      },
+      "hex": [
+        "#223950",
+        "#223950"
+      ],
+      "file": "/badges/patrols/owl.png",
+      "page": "201"
+    },
+    {
+      "id": "panther",
+      "zh": "豹",
+      "en": "Panther",
+      "colours": {
+        "zh": "黃",
+        "en": "Yellow"
+      },
+      "hex": [
+        "#e3cf41",
+        "#e3cf41"
+      ],
+      "file": "/badges/patrols/panther.png",
+      "page": "201"
+    },
+    {
+      "id": "peewit",
+      "zh": "田鳧",
+      "en": "Peewit",
+      "colours": {
+        "zh": "綠白",
+        "en": "Green and White"
+      },
+      "hex": [
+        "#41714d",
+        "#ffffff"
+      ],
+      "file": "/badges/patrols/peewit.png",
+      "page": "201"
+    },
+    {
+      "id": "raven",
+      "zh": "烏鴉",
+      "en": "Raven",
+      "colours": {
+        "zh": "黑",
+        "en": "Black"
+      },
+      "hex": [
+        "#231f20",
+        "#231f20"
+      ],
+      "file": "/badges/patrols/raven.png",
+      "page": "201"
+    },
+    {
+      "id": "seagull",
+      "zh": "海鷗",
+      "en": "Sea-gull",
+      "colours": {
+        "zh": "淺藍鮮紅",
+        "en": "Light Blue and Scarlet"
+      },
+      "hex": [
+        "#43c5e4",
+        "#ea2525"
+      ],
+      "file": "/badges/patrols/seagull.png",
+      "page": "201"
+    },
+    {
+      "id": "snipe",
+      "zh": "鷸",
+      "en": "Snipe",
+      "colours": {
+        "zh": "深藍鮮紅",
+        "en": "Royal Blue and Scarlet"
+      },
+      "hex": [
+        "#2e3686",
+        "#d2232a"
+      ],
+      "file": "/badges/patrols/snipe.png",
+      "page": "202"
+    },
+    {
+      "id": "squirrel",
+      "zh": "松鼠",
+      "en": "Squirrel",
+      "colours": {
+        "zh": "灰紅",
+        "en": "Grey and Red"
+      },
+      "hex": [
+        "#6b6b7a",
+        "#d2232a"
+      ],
+      "file": "/badges/patrols/squirrel.png",
+      "page": "202"
+    },
+    {
+      "id": "stag",
+      "zh": "牡鹿",
+      "en": "Stag",
+      "colours": {
+        "zh": "紫黑",
+        "en": "Violet and Black"
+      },
+      "hex": [
+        "#6c3f98",
+        "#231f20"
+      ],
+      "file": "/badges/patrols/stag.png",
+      "page": "202"
+    },
+    {
+      "id": "swift",
+      "zh": "燕子",
+      "en": "Swift",
+      "colours": {
+        "zh": "深藍",
+        "en": "Navy Blue"
+      },
+      "hex": [
+        "#2e3686",
+        "#2e3686"
+      ],
+      "file": "/badges/patrols/swift.png",
+      "page": "202"
+    },
+    {
+      "id": "tiger",
+      "zh": "老虎",
+      "en": "Tiger",
+      "colours": {
+        "zh": "紫",
+        "en": "Violet"
+      },
+      "hex": [
+        "#6c3f98",
+        "#6c3f98"
+      ],
+      "file": "/badges/patrols/tiger.png",
+      "page": "202"
+    },
+    {
+      "id": "wolf",
+      "zh": "狼",
+      "en": "Wolf",
+      "colours": {
+        "zh": "黃黑",
+        "en": "Yellow and Black"
+      },
+      "hex": [
+        "#e3cf41",
+        "#231f20"
+      ],
+      "file": "/badges/patrols/wolf.png",
+      "page": "202"
+    },
+    {
+      "id": "wood_pigeon",
+      "zh": "斑鳩",
+      "en": "Wood Pigeon",
+      "colours": {
+        "zh": "藍灰",
+        "en": "Blue and Grey"
+      },
+      "hex": [
+        "#43c5e4",
+        "#6b6b7a"
+      ],
+      "file": "/badges/patrols/wood_pigeon.png",
+      "page": "202"
+    },
+    {
+      "id": "woodpecker",
+      "zh": "啄木鳥",
+      "en": "Woodpecker",
+      "colours": {
+        "zh": "綠紫",
+        "en": "Green and Purple"
+      },
+      "hex": [
+        "#41714d",
+        "#6c3f98"
+      ],
+      "file": "/badges/patrols/woodpecker.png",
+      "page": "202"
+    }
+  ]
+}

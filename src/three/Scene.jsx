@@ -7,8 +7,10 @@ import Blocky from './Blocky.jsx';
 import { useLang } from '../i18n.jsx';
 
 const TARGET = new THREE.Vector3(0, 0.6, 0);
-/** 幼童軍高啲（135 cm vs 117 cm）：望住點同相機一齊升 */
-const LIFT = { grasshopper: 0, cub: 0.09 };
+/** 幼童軍、童軍高啲（135 cm、155 cm vs 117 cm）：望住點同相機一齊升 */
+const LIFT = { grasshopper: 0, cub: 0.09, scout: 0.17 };
+/** 童軍成個人高咗：預設視角企遠少少，先至見到全身 */
+const ZOOM = { grasshopper: 1, cub: 1, scout: 1.15 };
 const DIST = 3.05;
 const EYE = 0.82;
 export const VIEWS = {
@@ -22,17 +24,20 @@ export const VIEWS = {
 const BODY_R = 0.32;
 const BODY_TOP = 1.3;
 const MIN_DIST = 0.45;
-const MAX_DIST = 3.4;
+const MAX_DIST = 3.9;
 
-const Rig = forwardRef(function Rig({ lift = 0 }, ref) {
+const Rig = forwardRef(function Rig({ lift: liftProp = 0, zoom: zoomProp = 1 }, ref) {
   const controls = useRef();
   const goal = useRef(null);
   const { camera } = useThree();
 
   useImperativeHandle(ref, () => ({
-    view(name) {
+    /** opts 由 Scene 直接傳入：Canvas 入面嘅 Rig 比外面遲 render，唔可以靠 props 嘅 lift／zoom */
+    view(name, opts = {}) {
+      const lift = opts.lift ?? liftProp;
+      const zoom = opts.zoom ?? zoomProp;
       const p = VIEWS[name] ?? VIEWS.front;
-      goal.current = { pos: new THREE.Vector3(p[0], p[1] + lift, p[2]), target: TARGET.clone().setY(TARGET.y + lift) };
+      goal.current = { pos: new THREE.Vector3(p[0] * zoom, p[1] + lift, p[2] * zoom), target: TARGET.clone().setY(TARGET.y + lift) };
     },
     focus(point, normal) {
       const target = point.clone();
@@ -61,7 +66,7 @@ const Rig = forwardRef(function Rig({ lift = 0 }, ref) {
     const p = camera.position;
     if (p.y < 0.04) p.y = 0.04;
     const r = Math.hypot(p.x, p.z);
-    if (p.y < BODY_TOP + lift && r < BODY_R) {
+    if (p.y < BODY_TOP + liftProp && r < BODY_R) {
       const k = r < 1e-4 ? 1 : BODY_R / r;
       p.x = r < 1e-4 ? BODY_R : p.x * k;
       p.z *= r < 1e-4 ? 0 : k;
@@ -102,15 +107,16 @@ function Loading() {
 const Scene = forwardRef(function Scene({ section = 'grasshopper', outfit, badges, picks, selected, onSelect, onReady }, ref) {
   const rig = useRef();
   const lift = LIFT[section] ?? 0;
-  // 轉支部：鏡頭返去正面（高度唔同）
+  const zoom = ZOOM[section] ?? 1;
+  // 轉支部：鏡頭返去正面（高度、遠近唔同）
   useEffect(() => {
-    rig.current?.view('front');
-  }, [section]);
+    rig.current?.view('front', { lift, zoom });
+  }, [section, lift, zoom]);
   const glRef = useRef();
   const registry = useMemo(() => new Map(), []);
 
   useImperativeHandle(ref, () => ({
-    view: (name) => rig.current?.view(name),
+    view: (name) => rig.current?.view(name, { lift, zoom }),
     /** 鏡頭轉去望住某個章（進步獎章有幾格就攞平均） */
     focus(id) {
       const meshes = [...registry.entries()].filter(([k]) => k === id || k.startsWith(`${id}-`)).map(([, m]) => m);
@@ -164,7 +170,7 @@ const Scene = forwardRef(function Scene({ section = 'grasshopper', outfit, badge
           <Blocky section={section} outfit={outfit} badges={badges} picks={picks} selected={selected} onSelect={onSelect} registry={registry} />
         </Suspense>
         <ContactShadows position={[0, 0.001, 0]} scale={1.8} blur={2.6} opacity={0.4} far={0.5} />
-        <Rig ref={rig} lift={lift} />
+        <Rig ref={rig} lift={lift} zoom={zoom} />
       </Canvas>
       <Loading />
     </>

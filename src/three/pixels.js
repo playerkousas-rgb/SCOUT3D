@@ -499,6 +499,18 @@ export function wogglePaint(size, colour) {
   }, colour);
 }
 
+/** 童軍巾圈（手冊 P.110 相片）：啡色皮巾圈，前面有壓紋；徽號唔畫 */
+export function scoutWogglePaint(size) {
+  const [w, h] = size;
+  return boxFaces(size, {
+    pz: (g) => {
+      g.rect(0, 0, w, 0.5, C.leatherHi);
+      g.rect(0, h - 0.5, w, 0.5, shade(C.leather, 0.7));
+      g.rect(w / 2 - 1, 0.75, 2, h - 1.5, shade(C.leather, 0.8)); // 壓紋位
+    },
+  }, C.leather);
+}
+
 /* ---------------- 材質 ---------------- */
 const texCache = new WeakMap();
 function texOf(c) {

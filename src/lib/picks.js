@@ -1,4 +1,4 @@
-// 用戶自選嘅徽章圖案：區章／地域章、優異旅團章年份 — v1.0 · © SCOUT SYSTEM
+// 用戶自選嘅徽章圖案：區章／地域章、優異旅團章年份、童軍小隊章 — v1.0 · © SCOUT SYSTEM
 // 純計數（冇 DOM），build 同 node --test 共用。資料（districts_v1.0.json）由外面傳入。
 
 /** 優異旅團章顏色：每 3 年輪一次，1999 = 紅、2000 = 紫、2001 = 藍（手冊 P.159：2016 藍、2017 紅、2018 紫） */
@@ -35,6 +35,11 @@ export function findDistrict(data, id) {
   return null;
 }
 
+/** 搵小隊（patrols_v1.0.json）；搵唔到 = null */
+export function findPatrol(patrols, id) {
+  return patrols?.patrols?.find((p) => p.id === id) ?? null;
+}
+
 /** 全部區（排好次序，方便做選單） */
 export function allDistricts(data) {
   return data.regions.flatMap((region) => region.districts.map((district) => ({ district, region })));
@@ -45,9 +50,10 @@ export function allDistricts(data) {
  * - 普通章：{ kind: 'image', file }
  * - 區章／地域章：揀咗嘅區；未揀 = 手冊示例；冇地域章（例如總會總部屬下）= null（唔顯示）
  * - 優異旅團章：{ kind: 'merit', year, colour, base, digits, text }
- * picks = { districtId, meritYear }
+ * - 童軍小隊章：揀咗嘅小隊（綱要 P.200–202 圖案）；未揀 = 示例（獾）
+ * picks = { districtId, meritYear, patrolId }；patrols = patrols_v1.0.json
  */
-export function resolveArt(badge, picks, data) {
+export function resolveArt(badge, picks, data, patrols = null) {
   const fallback = { kind: 'image', file: Array.isArray(badge.art) ? badge.art[0].file : badge.art.file, example: !!badge.art.example };
   if (badge.dynamic === 'district' || badge.dynamic === 'region') {
     const hit = picks?.districtId ? findDistrict(data, picks.districtId) : null;
@@ -55,6 +61,11 @@ export function resolveArt(badge, picks, data) {
     if (badge.dynamic === 'district') return { kind: 'image', file: hit.district.file, example: false, district: hit.district, region: hit.region };
     if (!hit.region.badge) return null;
     return { kind: 'image', file: hit.region.badge.file, example: false, district: hit.district, region: hit.region };
+  }
+  if (badge.dynamic === 'patrol') {
+    const patrol = picks?.patrolId ? findPatrol(patrols, picks.patrolId) : null;
+    if (!patrol) return fallback;
+    return { kind: 'image', file: patrol.file, example: false, patrol };
   }
   if (badge.dynamic === 'meritorious') {
     const year = Math.trunc(Number(picks?.meritYear));

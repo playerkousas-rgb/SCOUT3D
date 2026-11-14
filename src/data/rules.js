@@ -1,13 +1,15 @@
-// 規則資料入口（小童軍、幼童軍）— v1.0 · © SCOUT SYSTEM
+// 規則資料入口（小童軍、幼童軍、童軍）— v1.0 · © SCOUT SYSTEM
 import GRASSHOPPER from './grasshopper_rules_v1.0.json';
 import CUB from './cub_rules_v1.0.json';
+import SCOUT from './scout_rules_v1.0.json';
 import DISTRICTS from './districts_v1.0.json';
+import PATROLS from './patrols_v1.0.json';
 import { validateRules } from './validate.js';
 
 /** 支部（次序 = 頂部切換掣次序） */
-export const SECTIONS = { grasshopper: GRASSHOPPER, cub: CUB };
+export const SECTIONS = { grasshopper: GRASSHOPPER, cub: CUB, scout: SCOUT };
 export const SECTION_IDS = Object.keys(SECTIONS);
-export { DISTRICTS };
+export { DISTRICTS, PATROLS };
 
 export const RULE_ERRORS = SECTION_IDS.flatMap((id) => validateRules(SECTIONS[id]).map((e) => `${SECTIONS[id].section.zh}：${e}`));
 
