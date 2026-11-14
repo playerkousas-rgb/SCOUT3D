@@ -1,0 +1,1094 @@
+{
+  "fileVersion": "v1.0",
+  "copyright": "© SCOUT SYSTEM",
+  "section": {
+    "id": "rover",
+    "zh": "樂行童軍",
+    "en": "Rover Scouts"
+  },
+  "organisation": {
+    "zh": "香港童軍總會",
+    "en": "Scout Association of Hong Kong"
+  },
+  "review": {
+    "status": "pending",
+    "reviewer": {
+      "zh": "專案負責人（領袖）",
+      "en": "Project owner (leader)"
+    },
+    "lastChecked": null,
+    "compiledOn": "2026-11-14",
+    "note": {
+      "zh": "以下內容由 AI 助手依文件整理，未經核對人逐項確認；確認後請把每項 status 改為 verified 並填 lastChecked。",
+      "en": "Compiled from the documents by an AI assistant and not yet confirmed item by item. After review, set each status to verified and fill lastChecked."
+    },
+    "userChecks": [
+      {
+        "date": "2026-11-14",
+        "item": "epauletteRequired",
+        "zh": "肩章當必備章類處理，要有選項（用戶指示；深資童軍時定落，樂行童軍照用）",
+        "en": "Treat the epaulettes as a required-type badge with selectable options (user instruction from the Venture Scout section, applied to Rover Scouts)"
+      },
+      {
+        "date": "2026-11-14",
+        "item": "sweater",
+        "zh": "制服毛衣係制服一部分，肩章可以戴喺毛衣肩帶上（手冊 P.121–122，用戶指出）",
+        "en": "The uniform jersey is part of the uniform; the epaulettes may go on the jersey’s shoulder straps (Handbook pp.121–122, pointed out by the user)"
+      },
+      {
+        "date": "2026-11-14",
+        "item": "skirtShoes",
+        "zh": "女團員著半截裙時配肉色襪褲、黑色非綁帶中跟皮鞋；著長褲配黑襪、綁帶皮鞋（用戶喺深資童軍提醒；樂行童軍手冊 P.42、P.44、P.46 同綱要 P.11 寫法一樣）",
+        "en": "Girls in the skirt wear flesh-coloured tights and black non-laced medium-heel shoes; with trousers, black socks and laced shoes (user reminder for Venture Scouts; the Rover Scout pages, Handbook pp.42, 44, 46 and Training Scheme p.11, say the same)"
+      }
+    ]
+  },
+  "sources": {
+    "UH": {
+      "zh": "香港童軍總會《儀容與制服手冊》",
+      "en": "SAHK Uniform Handbook (Chinese edition)",
+      "edition": {
+        "zh": "網上版（含 2026-01-01 第 04/2026 號通告制服帽修訂）；P.26 未宣誓成員，P.42–47 樂行童軍／樂行海童軍／樂行空童軍制服，P.49 樂行童軍領帶制服，P.51 女性樂行童軍長褲制服，P.92–95 基本徽章，P.99 軟帽，P.101 海童軍領袖白頂帽，P.102 帽章，P.110 童軍巾圈，P.112 戴領巾，P.113 領帶，P.121–122 制服毛衣，P.145 樂行童軍肩章，P.159 優異旅團章，P.171 樂行童軍徽章佩戴圖",
+        "en": "Online edition incl. Circular 04/2026 (1 Jan 2026) cap amendment; p.26 uninvested members, pp.42–47 Rover / Rover Sea / Rover Air Scout uniforms, p.49 Rover Scout tie uniform, p.51 female Rover Scout trouser uniform, pp.92–95 basic badges, p.99 berets, p.101 Sea Scout leader's white-top caps, p.102 cap badges, p.110 Scout woggle, p.112 wearing the neckerchief, p.113 ties, pp.121–122 uniform jersey, p.145 Rover Scout Epaulettes, p.159 Meritorious Group Badge, p.171 Rover Scout badge chart"
+      },
+      "url": "https://www.scout.org.hk/uniformhandbook"
+    },
+    "RTS": {
+      "zh": "《樂行童軍支部訓練綱要》（中文）",
+      "en": "Rover Scout Section Training Scheme (Chinese)",
+      "edition": {
+        "zh": "2026 年 5 月 19 日版；P.10–11 樂行童軍制服，P.13 進度性獎章考驗程序，P.18 樂行童軍肩章",
+        "en": "19 May 2026 edition; pp.10–11 Rover Scout uniforms, p.13 progress award sequence, p.18 Rover Scout Epaulettes"
+      },
+      "url": null
+    },
+    "WEB": {
+      "zh": "香港童軍總會網頁「地域及區」",
+      "en": "SAHK “Regions and Districts” page",
+      "edition": {
+        "zh": "2026-11-14 擷取",
+        "en": "Retrieved 2026-11-14"
+      },
+      "url": "https://www.scout.org.hk/tc/scout-units/regions-districts/index.html"
+    }
+  },
+  "garments": [
+    {
+      "id": "hat",
+      "zh": {
+        "name": "帽",
+        "rule": "深綠色軟帽，連童軍（金屬）帽章：帽章戴喺軟帽黑色膠邊左眼上方約 2 釐米。軟帽戴喺眉毛上約 2 釐米，向右邊拉低。宣誓後纔可佩戴。"
+      },
+      "en": {
+        "name": "Beret",
+        "rule": "Dark green beret with the (metal) Scout cap badge, worn on the black band about 2 cm above the left eye. The beret sits about 2 cm above the eyebrows, pulled down to the right. Worn only after investiture."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "26, 42–43, 99, 102"
+        },
+        {
+          "ref": "RTS",
+          "page": "10–11"
+        }
+      ],
+      "status": "documented",
+      "modelNote": {
+        "zh": "手冊 P.42、P.102 寫「童軍帽章」；綱要 P.10–11 寫「成員帽章」。模型跟手冊（同深資空童軍嘅做法一樣，待確認）。帽章圖案取自手冊 P.102 相片；方塊人嘅軟帽只係示意形狀。",
+        "en": "Handbook pp.42, 102 say “Scout cap badge”; Training Scheme pp.10–11 says “member’s cap badge”. The model follows the Handbook (as done for Venture Air Scouts; to be confirmed). Cap badge artwork from the Handbook p.102 photo; the blocky beret is only an indicative shape."
+      }
+    },
+    {
+      "id": "shirt",
+      "zh": {
+        "name": "恤衫",
+        "rule": "杏色、短袖、兩胸袋、無褶、肩帶。"
+      },
+      "en": {
+        "name": "Shirt",
+        "rule": "Beige, short sleeves, two chest pockets, no pleats, shoulder straps."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "42–43"
+        },
+        {
+          "ref": "RTS",
+          "page": "10–11"
+        }
+      ],
+      "status": "documented"
+    },
+    {
+      "id": "trousers",
+      "zh": {
+        "name": "長褲／半截裙",
+        "rule": "男團員：草青色長褲，兩斜袋、兩後袋、有褶。女團員：草青色半截裙，側袋、無褶、及膝；或者女性樂行童軍長褲制服（手冊 P.51）：草青色長褲，兩斜袋、兩後袋、有褶。"
+      },
+      "en": {
+        "name": "Trousers / skirt",
+        "rule": "Boys: grass-green trousers, two slanted pockets, two back pockets, pleated. Girls: grass-green skirt, side pockets, no pleats, knee length; or the female Rover Scout trouser uniform (Handbook p.51): grass-green trousers, two slanted pockets, two back pockets, pleated."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "42–43, 51"
+        },
+        {
+          "ref": "RTS",
+          "page": "10–11"
+        }
+      ],
+      "status": "documented",
+      "modelNote": {
+        "zh": "模型預設半截裙，女團員可以喺服裝分頁改長褲。",
+        "en": "The model defaults to the skirt; girls can switch to trousers in the Outfit tab."
+      }
+    },
+    {
+      "id": "belt",
+      "zh": {
+        "name": "皮帶",
+        "rule": "棕色（連童軍徽皮帶扣）。"
+      },
+      "en": {
+        "name": "Belt",
+        "rule": "Brown, with the Scout badge buckle."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "42–43"
+        },
+        {
+          "ref": "RTS",
+          "page": "10–11"
+        }
+      ],
+      "status": "documented",
+      "modelNote": {
+        "zh": "皮帶扣只畫銀色方塊示意。",
+        "en": "The buckle is a plain silver block."
+      }
+    },
+    {
+      "id": "socks",
+      "zh": {
+        "name": "襪",
+        "rule": "男團員：黑色短襪。女團員：肉色、尼龍、無花、襪褲（配半截裙）；長褲制服配黑色襪（手冊 P.51）。"
+      },
+      "en": {
+        "name": "Socks",
+        "rule": "Boys: black short socks. Girls: flesh-coloured plain nylon tights (with the skirt); black socks with the trouser uniform (Handbook p.51)."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "42–43, 51"
+        },
+        {
+          "ref": "RTS",
+          "page": "10–11"
+        }
+      ],
+      "status": "documented"
+    },
+    {
+      "id": "shoes",
+      "zh": {
+        "name": "皮鞋",
+        "rule": "男團員：黑色、無花紋、綁帶。女團員：黑色、無花紋、非綁帶、中跟（配半截裙）；長褲制服配黑色、無花紋、綁帶皮鞋（手冊 P.51）。"
+      },
+      "en": {
+        "name": "Shoes",
+        "rule": "Boys: black, plain, laced. Girls: black, plain, not laced, medium heel (with the skirt); black plain laced shoes with the trouser uniform (Handbook p.51)."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "42–43, 51"
+        },
+        {
+          "ref": "RTS",
+          "page": "10–11"
+        }
+      ],
+      "status": "documented",
+      "modelNote": {
+        "zh": "半截裙配非綁帶中跟皮鞋：鞋面開口見到襪褲、後面畫中跟示意；長褲配綁帶皮鞋。",
+        "en": "With the skirt: non-laced medium-heel shoes, drawn with an open vamp showing the tights and a heel block; with trousers: laced shoes."
+      }
+    },
+    {
+      "id": "necker",
+      "zh": {
+        "name": "領巾",
+        "rule": "旅巾（連童軍巾圈）；或者改戴領帶（領帶制服，手冊 P.49；綱要 P.10–11 制服表亦列領帶）。宣誓後纔可佩戴。著毛衣時領巾放喺毛衣外面（手冊 P.122）。完成木章訓練第 2 階段或以上嘅樂行童軍可以戴「基維爾巾圈」（綱要 P.10–11）。"
+      },
+      "en": {
+        "name": "Neckerchief",
+        "rule": "Group neckerchief with the Scout woggle; or a tie instead (tie uniform, Handbook p.49; the Training Scheme pp.10–11 table also lists the tie). Worn only after investiture. With the jersey the neckerchief goes outside it (Handbook p.122). Rover Scouts who have completed Wood Badge training stage 2 or above may wear the Gilwell woggle (Training Scheme pp.10–11)."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "26, 42, 49, 110, 112, 122"
+        },
+        {
+          "ref": "RTS",
+          "page": "10–11"
+        }
+      ],
+      "status": "documented",
+      "modelNote": {
+        "zh": "旅巾顏色由各旅自定，模型可自選；巾圈畫做啡色皮巾圈（手冊 P.110）。基維爾巾圈（木章訓練）未做。",
+        "en": "Neckerchief colours are set by each Group; pick them in the model. The woggle is drawn as the brown leather Scout woggle (Handbook p.110). The Gilwell woggle (Wood Badge) is not modelled."
+      }
+    },
+    {
+      "id": "tie",
+      "zh": {
+        "name": "領帶（可選，代替旅巾）",
+        "rule": "樂行童軍領帶制服（手冊 P.49）：樂行童軍戴深綠色領帶（手冊 P.113「樂行海童軍及樂行空童軍除外」；綱要 P.10–11）。其餘衣物同徽章同旅巾制服一樣。著毛衣時領帶放喺毛衣同恤衫之間（手冊 P.122）。"
+      },
+      "en": {
+        "name": "Tie (optional, instead of the neckerchief)",
+        "rule": "Rover Scout tie uniform (Handbook p.49): Rover Scouts wear the dark green tie (Handbook p.113, “except Rover Sea and Rover Air Scouts”; Training Scheme pp.10–11). Everything else, including badges, is as the neckerchief uniform. With the jersey the tie goes between the jersey and the shirt (Handbook p.122)."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "49, 113, 122"
+        },
+        {
+          "ref": "RTS",
+          "page": "10–11"
+        }
+      ],
+      "status": "documented",
+      "modelNote": {
+        "zh": "同旅巾一樣，宣誓後先戴（跟深資童軍用戶確認嘅做法，待確認）。",
+        "en": "Like the neckerchief, worn only after investiture (following what the user confirmed for Venture Scouts; to be confirmed)."
+      }
+    },
+    {
+      "id": "sweater",
+      "zh": {
+        "name": "制服毛衣（可選）",
+        "rule": "可因應個人體質或天氣情況穿著深草青色制服毛衣。領巾放喺毛衣外面；毛衣上只可以喺適當位置戴世界童軍會員章、香港章同旅章，同埋喺毛衣雙肩肩帶上戴樂行童軍肩章，其他章唔可以戴喺毛衣上。"
+      },
+      "en": {
+        "name": "Uniform jersey (optional)",
+        "rule": "A dark grass-green uniform jersey may be worn for personal comfort or the weather. The neckerchief goes outside the jersey; only the World Membership Badge, Hong Kong Badge and Group Badge, and the Rover Scout Epaulettes on the jersey’s shoulder straps may be worn on it, in the appropriate places; no other badges."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "121–122"
+        }
+      ],
+      "status": "documented",
+      "modelNote": {
+        "zh": "毛衣畫做長袖、坑紋、圓領（見到恤衫領）、膊頭淺色膊布（手冊 P.121–122 附圖）。徽章「或制服毛衣相同位置」：位置同恤衫一樣，向外移一個毛衣厚度。",
+        "en": "The jersey is drawn long-sleeved and ribbed, with a crew neck (shirt collar showing) and lighter shoulder patches (Handbook pp.121–122 figures). Badges go in “the same position on the uniform jersey”: the shirt positions, moved out by the jersey thickness."
+      }
+    }
+  ],
+  "variants": [
+    {
+      "id": "land",
+      "zh": {
+        "name": "樂行童軍",
+        "note": "樂行童軍（手冊 P.42–43；綱要 P.10–11）。"
+      },
+      "en": {
+        "name": "Rover Scouts",
+        "note": "Rover Scouts (Handbook pp.42–43; Training Scheme pp.10–11)."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "42–43"
+        },
+        {
+          "ref": "RTS",
+          "page": "10–11"
+        }
+      ],
+      "garments": []
+    },
+    {
+      "id": "sea",
+      "zh": {
+        "name": "樂行海童軍",
+        "note": "樂行海童軍（手冊 P.44–45；綱要 P.10–11）：徽章同擺位同樂行童軍一樣（手冊 P.171「包括樂行海童軍及樂行空童軍」）；帽、恤衫、長褲／半截裙唔同。"
+      },
+      "en": {
+        "name": "Rover Sea Scouts",
+        "note": "Rover Sea Scouts (Handbook pp.44–45; Training Scheme pp.10–11): the same badges in the same places as Rover Scouts (Handbook p.171 “including Rover Sea Scouts and Rover Air Scouts”); the cap, shirt and trousers/skirt differ."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "44–45"
+        },
+        {
+          "ref": "RTS",
+          "page": "10–11"
+        }
+      ],
+      "garments": [
+        {
+          "id": "hat",
+          "zh": {
+            "name": "帽",
+            "rule": "男團員：海童軍男領袖白頂帽；女團員：海童軍女領袖白頂帽；都連樂行海童軍帽章。戴時帽邊喺眼眉上方約 2 釐米，整頂帽邊同水平線看齊（手冊 P.101）。宣誓後纔可佩戴。"
+          },
+          "en": {
+            "name": "Cap",
+            "rule": "Boys: Sea Scout male leader's white-top cap; girls: Sea Scout female leader's white-top cap; both with the Rover Sea Scout cap badge. The brim sits about 2 cm above the eyebrows and the whole brim is level (Handbook p.101). Worn only after investiture."
+          },
+          "sources": [
+            {
+              "ref": "UH",
+              "page": "26, 44–45, 101, 102"
+            },
+            {
+              "ref": "RTS",
+              "page": "10–11"
+            }
+          ],
+          "status": "documented",
+          "modelNote": {
+            "zh": "帽章係「深資／樂行海童軍帽章」，同深資海童軍同一個（手冊 P.102）；圖案取自手冊 P.102 相片（細圖放大），按 P.101 附圖放喺帽前黑色帽帶中央。方塊人嘅白頂帽只係示意形狀：男裝白頂較闊、黑色帽舌；女裝白頂細啲、後面向上翹、帽舌短啲。",
+            "en": "The cap badge is the “Venture/Rover Sea Scout cap badge”, the same one Venture Sea Scouts wear (Handbook p.102); artwork from the p.102 photo (a small image enlarged), placed at the front centre of the black band as in the p.101 figure. The blocky caps are only indicative: the men’s cap has a wider white top and a black peak; the women’s has a smaller top tilted up at the back and a shorter peak."
+          }
+        },
+        {
+          "id": "shirt",
+          "zh": {
+            "name": "恤衫",
+            "rule": "白色、短袖、兩胸袋、無褶、肩帶。"
+          },
+          "en": {
+            "name": "Shirt",
+            "rule": "White, short sleeves, two chest pockets, no pleats, shoulder straps."
+          },
+          "sources": [
+            {
+              "ref": "UH",
+              "page": "44–45"
+            },
+            {
+              "ref": "RTS",
+              "page": "10–11"
+            }
+          ],
+          "status": "documented"
+        },
+        {
+          "id": "trousers",
+          "zh": {
+            "name": "長褲／半截裙",
+            "rule": "男團員：深藍色長褲，兩斜袋、兩後袋、有褶。女團員：深藍色半截裙，側袋、無褶、及膝；或者女性長褲制服（手冊 P.51）：深藍色長褲，兩斜袋、兩後袋、有褶。"
+          },
+          "en": {
+            "name": "Trousers / skirt",
+            "rule": "Boys: dark blue trousers, two slanted pockets, two back pockets, pleated. Girls: dark blue skirt, side pockets, no pleats, knee length; or the female trouser uniform (Handbook p.51): dark blue trousers, two slanted pockets, two back pockets, pleated."
+          },
+          "sources": [
+            {
+              "ref": "UH",
+              "page": "44–45, 51"
+            },
+            {
+              "ref": "RTS",
+              "page": "10–11"
+            }
+          ],
+          "status": "documented"
+        },
+        {
+          "id": "tie",
+          "zh": {
+            "name": "領帶（可選，代替旅巾）",
+            "rule": "樂行童軍領帶制服（手冊 P.49）：樂行海童軍戴黑色領帶（手冊 P.113）。其餘衣物同徽章同旅巾制服一樣。著毛衣時領帶放喺毛衣同恤衫之間（手冊 P.122）。"
+          },
+          "en": {
+            "name": "Tie (optional, instead of the neckerchief)",
+            "rule": "Rover Scout tie uniform (Handbook p.49): Rover Sea Scouts wear the black tie (Handbook p.113). Everything else, including badges, is as the neckerchief uniform. With the jersey the tie goes between the jersey and the shirt (Handbook p.122)."
+          },
+          "sources": [
+            {
+              "ref": "UH",
+              "page": "49, 113, 122"
+            },
+            {
+              "ref": "RTS",
+              "page": "10–11"
+            }
+          ],
+          "status": "documented",
+          "modelNote": {
+            "zh": "同旅巾一樣，宣誓後先戴（跟深資童軍用戶確認嘅做法，待確認）。",
+            "en": "Like the neckerchief, worn only after investiture (following what the user confirmed for Venture Scouts; to be confirmed)."
+          }
+        },
+        {
+          "id": "sweater",
+          "zh": {
+            "name": "制服毛衣（可選）",
+            "rule": "可因應個人體質或天氣情況穿著深藍色制服毛衣。領巾放喺毛衣外面；毛衣上只可以喺適當位置戴世界童軍會員章、香港章同旅章，同埋喺毛衣雙肩肩帶上戴樂行童軍肩章，其他章唔可以戴喺毛衣上。"
+          },
+          "en": {
+            "name": "Uniform jersey (optional)",
+            "rule": "A dark blue uniform jersey may be worn for personal comfort or the weather. The neckerchief goes outside the jersey; only the World Membership Badge, Hong Kong Badge and Group Badge, and the Rover Scout Epaulettes on the jersey’s shoulder straps may be worn on it, in the appropriate places; no other badges."
+          },
+          "sources": [
+            {
+              "ref": "UH",
+              "page": "121–122"
+            }
+          ],
+          "status": "documented",
+          "modelNote": {
+            "zh": "手冊 P.121：海童軍／空童軍青少年成員穿深藍色制服毛衣；樂行海童軍、樂行空童軍跟深資海／空童軍（用戶確認）一樣當係，待確認。毛衣畫做長袖、坑紋、圓領（見到恤衫領）、膊頭淺色膊布（手冊 P.121–122 附圖）。徽章「或制服毛衣相同位置」：位置同恤衫一樣，向外移一個毛衣厚度。",
+            "en": "Handbook p.121: Sea/Air Scout youth members wear the dark blue jersey; Rover Sea and Rover Air Scouts are treated the same as Venture Sea/Air Scouts (user confirmed for those), to be confirmed. The jersey is drawn long-sleeved and ribbed, with a crew neck (shirt collar showing) and lighter shoulder patches (Handbook pp.121–122 figures). Badges go in “the same position on the uniform jersey”: the shirt positions, moved out by the jersey thickness."
+          }
+        }
+      ]
+    },
+    {
+      "id": "air",
+      "zh": {
+        "name": "樂行空童軍",
+        "note": "樂行空童軍（手冊 P.46–47；綱要 P.10–11）：徽章同擺位同樂行童軍一樣（手冊 P.171）；帽、恤衫、長褲／半截裙唔同。"
+      },
+      "en": {
+        "name": "Rover Air Scouts",
+        "note": "Rover Air Scouts (Handbook pp.46–47; Training Scheme pp.10–11): the same badges in the same places as Rover Scouts (Handbook p.171); the beret, shirt and trousers/skirt differ."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "46–47"
+        },
+        {
+          "ref": "RTS",
+          "page": "10–11"
+        }
+      ],
+      "garments": [
+        {
+          "id": "hat",
+          "zh": {
+            "name": "帽",
+            "rule": "灰藍色軟帽，連童軍（金屬）帽章：帽章戴喺軟帽黑色膠邊左眼上方約 2 釐米。軟帽戴喺眉毛上約 2 釐米，向右邊拉低。宣誓後纔可佩戴。"
+          },
+          "en": {
+            "name": "Beret",
+            "rule": "Grey-blue beret with the (metal) Scout cap badge, worn on the black band about 2 cm above the left eye. The beret sits about 2 cm above the eyebrows, pulled down to the right. Worn only after investiture."
+          },
+          "sources": [
+            {
+              "ref": "UH",
+              "page": "26, 46–47, 99, 102"
+            },
+            {
+              "ref": "RTS",
+              "page": "10–11"
+            }
+          ],
+          "status": "documented",
+          "modelNote": {
+            "zh": "手冊 P.46、P.102 寫「童軍帽章」；綱要 P.10–11 寫「成員帽章」。模型跟手冊（同深資空童軍嘅做法一樣，待確認）。帽章圖案取自手冊 P.102 相片；方塊人嘅軟帽只係示意形狀。",
+            "en": "Handbook pp.46, 102 say “Scout cap badge”; Training Scheme pp.10–11 says “member’s cap badge”. The model follows the Handbook (as done for Venture Air Scouts; to be confirmed). Cap badge artwork from the Handbook p.102 photo; the blocky beret is only an indicative shape."
+          }
+        },
+        {
+          "id": "shirt",
+          "zh": {
+            "name": "恤衫",
+            "rule": "淺藍色、短袖、兩胸袋、無褶、肩帶。"
+          },
+          "en": {
+            "name": "Shirt",
+            "rule": "Light blue, short sleeves, two chest pockets, no pleats, shoulder straps."
+          },
+          "sources": [
+            {
+              "ref": "UH",
+              "page": "46–47"
+            },
+            {
+              "ref": "RTS",
+              "page": "10–11"
+            }
+          ],
+          "status": "documented"
+        },
+        {
+          "id": "trousers",
+          "zh": {
+            "name": "長褲／半截裙",
+            "rule": "男團員：深藍色長褲，兩斜袋、兩後袋、有褶。女團員：深藍色半截裙，側袋、無褶、及膝；或者女性長褲制服（手冊 P.51）：深藍色長褲，兩斜袋、兩後袋、有褶。"
+          },
+          "en": {
+            "name": "Trousers / skirt",
+            "rule": "Boys: dark blue trousers, two slanted pockets, two back pockets, pleated. Girls: dark blue skirt, side pockets, no pleats, knee length; or the female trouser uniform (Handbook p.51): dark blue trousers, two slanted pockets, two back pockets, pleated."
+          },
+          "sources": [
+            {
+              "ref": "UH",
+              "page": "46–47, 51"
+            },
+            {
+              "ref": "RTS",
+              "page": "10–11"
+            }
+          ],
+          "status": "documented"
+        },
+        {
+          "id": "tie",
+          "zh": {
+            "name": "領帶（可選，代替旅巾）",
+            "rule": "樂行童軍領帶制服（手冊 P.49）：樂行空童軍戴深藍色領帶（手冊 P.113）。其餘衣物同徽章同旅巾制服一樣。著毛衣時領帶放喺毛衣同恤衫之間（手冊 P.122）。"
+          },
+          "en": {
+            "name": "Tie (optional, instead of the neckerchief)",
+            "rule": "Rover Scout tie uniform (Handbook p.49): Rover Air Scouts wear the dark blue tie (Handbook p.113). Everything else, including badges, is as the neckerchief uniform. With the jersey the tie goes between the jersey and the shirt (Handbook p.122)."
+          },
+          "sources": [
+            {
+              "ref": "UH",
+              "page": "49, 113, 122"
+            },
+            {
+              "ref": "RTS",
+              "page": "10–11"
+            }
+          ],
+          "status": "documented",
+          "modelNote": {
+            "zh": "同旅巾一樣，宣誓後先戴（跟深資童軍用戶確認嘅做法，待確認）。",
+            "en": "Like the neckerchief, worn only after investiture (following what the user confirmed for Venture Scouts; to be confirmed)."
+          }
+        },
+        {
+          "id": "sweater",
+          "zh": {
+            "name": "制服毛衣（可選）",
+            "rule": "可因應個人體質或天氣情況穿著深藍色制服毛衣。領巾放喺毛衣外面；毛衣上只可以喺適當位置戴世界童軍會員章、香港章同旅章，同埋喺毛衣雙肩肩帶上戴樂行童軍肩章，其他章唔可以戴喺毛衣上。"
+          },
+          "en": {
+            "name": "Uniform jersey (optional)",
+            "rule": "A dark blue uniform jersey may be worn for personal comfort or the weather. The neckerchief goes outside the jersey; only the World Membership Badge, Hong Kong Badge and Group Badge, and the Rover Scout Epaulettes on the jersey’s shoulder straps may be worn on it, in the appropriate places; no other badges."
+          },
+          "sources": [
+            {
+              "ref": "UH",
+              "page": "121–122"
+            }
+          ],
+          "status": "documented",
+          "modelNote": {
+            "zh": "手冊 P.121：海童軍／空童軍青少年成員穿深藍色制服毛衣；樂行海童軍、樂行空童軍跟深資海／空童軍（用戶確認）一樣當係，待確認。毛衣畫做長袖、坑紋、圓領（見到恤衫領）、膊頭淺色膊布（手冊 P.121–122 附圖）。徽章「或制服毛衣相同位置」：位置同恤衫一樣，向外移一個毛衣厚度。",
+            "en": "Handbook p.121: Sea/Air Scout youth members wear the dark blue jersey; Rover Sea and Rover Air Scouts are treated the same as Venture Sea/Air Scouts (user confirmed for those), to be confirmed. The jersey is drawn long-sleeved and ribbed, with a crew neck (shirt collar showing) and lighter shoulder patches (Handbook pp.121–122 figures). Badges go in “the same position on the uniform jersey”: the shirt positions, moved out by the jersey thickness."
+          }
+        }
+      ]
+    }
+  ],
+  "badges": [
+    {
+      "id": "membership",
+      "required": true,
+      "needsInvestiture": true,
+      "side": "left",
+      "zh": {
+        "name": "世界童軍會員章",
+        "place": "穿著者左胸袋中央。",
+        "quote": "童軍成員佩戴在制服恤衫……左胸袋中央位置，或制服毛衣相同位置。童軍成員宣誓後纔可佩戴。",
+        "conditions": "宣誓後纔可佩戴。"
+      },
+      "en": {
+        "name": "World Membership Badge",
+        "place": "Centre of the wearer's left chest pocket.",
+        "quote": "Worn centred on the left chest pocket of the uniform shirt, or the same position on the uniform sweater. Worn only after investiture.",
+        "conditions": "Worn only after investiture."
+      },
+      "size": {
+        "shape": "circle",
+        "wCm": 4,
+        "hCm": 4,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "side": "left",
+        "pocket": "centre",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "26, 42–47, 92, 171"
+        },
+        {
+          "ref": "RTS",
+          "page": "10–11"
+        }
+      ],
+      "status": "documented",
+      "art": {
+        "file": "/badges/world_membership.png",
+        "ref": "UH",
+        "page": "92",
+        "example": false
+      },
+      "modelNote": {
+        "zh": "手冊冇寫尺寸；模型用直徑 4 cm，按 P.171 附圖同胸袋嘅比例。",
+        "en": "No size in the Handbook; the model uses 4 cm diameter, from its proportion to the pocket in the p.171 figure."
+      },
+      "sweater": true
+    },
+    {
+      "id": "hongKong",
+      "required": true,
+      "side": "left",
+      "zh": {
+        "name": "香港章",
+        "place": "穿著者左胸袋袋蓋上方 3 釐米，置中。",
+        "quote": "幼童軍、童軍及樂行童軍佩戴在制服恤衫左胸袋袋蓋上方三釐米中央位置，或制服毛衣相同位置。",
+        "conditions": "基本徽章。"
+      },
+      "en": {
+        "name": "Hong Kong Badge",
+        "place": "Centred 3 cm above the flap of the wearer's left chest pocket.",
+        "quote": "Cub Scouts, Scouts and Rover Scouts wear it centred 3 cm above the left chest pocket flap of the uniform shirt, or the same position on the sweater.",
+        "conditions": "Basic badge."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 4,
+        "hCm": 5.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "side": "left",
+        "pocket": "aboveFlap",
+        "gapCm": 3,
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "26, 42–47, 93, 171"
+        },
+        {
+          "ref": "RTS",
+          "page": "10–11"
+        }
+      ],
+      "status": "documented",
+      "art": {
+        "file": "/badges/hong_kong_badge.png",
+        "ref": "UH",
+        "page": "93",
+        "example": false
+      },
+      "modelNote": {
+        "zh": "手冊冇寫尺寸；模型用 4 × 5.6 cm（跟 P.93 圖案比例）。",
+        "en": "No size in the Handbook; the model uses 4 × 5.6 cm (the p.93 artwork's proportions)."
+      },
+      "sweater": true
+    },
+    {
+      "id": "troop",
+      "required": true,
+      "side": "right",
+      "zh": {
+        "name": "旅章",
+        "place": "穿著者右袖，肩膊縫線下方 2 釐米，置中。",
+        "quote": "旅成員佩戴在制服恤衫……右袖肩膊位下方二釐米中央位置，或制服毛衣相同位置。",
+        "conditions": "基本徽章；由所屬旅提供。"
+      },
+      "en": {
+        "name": "Group Badge",
+        "place": "Wearer's right sleeve, centred 2 cm below the shoulder seam.",
+        "quote": "Group members wear it centred 2 cm below the shoulder on the right sleeve of the uniform shirt, or the same position on the sweater.",
+        "conditions": "Basic badge; supplied by the Group."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 9,
+        "hCm": 2.2,
+        "measured": true,
+        "ref": "UH",
+        "page": "94"
+      },
+      "anchor": {
+        "part": "sleeve",
+        "side": "right",
+        "fromShoulderCm": 2,
+        "edge": "top",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "26, 42–47, 94, 171"
+        },
+        {
+          "ref": "RTS",
+          "page": "10–11"
+        }
+      ],
+      "status": "documented",
+      "art": {
+        "file": "/badges/handbook_example_troop.png",
+        "ref": "UH",
+        "page": "25",
+        "example": true
+      },
+      "modelNote": {
+        "zh": "手冊 P.94：新成立旅嘅旅章不小過 8.5 × 2 cm、不大過 10.5 × 2.5 cm；模型用 9 × 2.2 cm。圖案係手冊示例（2222 旅），各旅實際圖案唔同。",
+        "en": "Handbook p.94: a new Group's badge is between 8.5 × 2 cm and 10.5 × 2.5 cm; the model uses 9 × 2.2 cm. The artwork is the handbook example (2222th Group); each Group's badge differs."
+      },
+      "sweater": true
+    },
+    {
+      "id": "region",
+      "required": true,
+      "side": "right",
+      "dynamic": "region",
+      "zh": {
+        "name": "地域章",
+        "place": "穿著者右袖，旅章下方 2 釐米；地域章在前（靠穿著者前面），區章在後，兩章相距 1 釐米。",
+        "quote": "區幹部……及旅成員同時佩戴所屬地域章及區章在制服恤衫右袖香港肩章／旅章下方二釐米中央位置；地域章在前，區章在後，兩章相距一釐米。",
+        "conditions": "基本徽章；跟所屬區嘅地域。"
+      },
+      "en": {
+        "name": "Region Badge",
+        "place": "Wearer's right sleeve, 2 cm below the Group Badge; Region Badge in front (toward the wearer's front), District Badge behind, 1 cm apart.",
+        "quote": "Group members wear both the Region and District Badges centred 2 cm below the Group Badge on the right sleeve; Region Badge in front, District Badge behind, 1 cm apart.",
+        "conditions": "Basic badge; the Region of the member's District."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3.8,
+        "hCm": 5,
+        "measured": true,
+        "ref": "UH",
+        "page": "95"
+      },
+      "anchor": {
+        "part": "sleeve",
+        "side": "right",
+        "belowBadge": "troop",
+        "gapCm": 2,
+        "towards": "front",
+        "offsetCm": 2.4,
+        "edge": "top",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "26, 42–47, 95, 171"
+        },
+        {
+          "ref": "RTS",
+          "page": "10–11"
+        }
+      ],
+      "status": "documented",
+      "art": {
+        "file": "/badges/handbook_example_region.png",
+        "ref": "UH",
+        "page": "168",
+        "example": true
+      },
+      "modelNote": {
+        "zh": "圖案跟「區章」揀咗嘅區自動轉做所屬地域；未揀區就用手冊 P.168 示例色塊。總會總部屬下嘅區（例如銀禧區）網頁冇列地域章，模型唔顯示。手冊 P.171 附圖喺旅章同地域／區章中間多咗「樂行童軍急救章」（考獲先有）；呢版只做必備章，所以照 P.95 文字：地域章、區章喺旅章下 2 cm。",
+        "en": "The artwork follows the Region of the District picked under District Badge; with no District picked it uses the Handbook p.168 example block. Districts under AHQ (e.g. Silver Jubilee) have no Region Badge on the web page, so none is shown. The Handbook p.171 figure has the Rover Scout First Aid Badge (earned) between the Group Badge and the Region/District Badges; this version shows required badges only, so it follows the p.95 text: Region and District Badges 2 cm below the Group Badge."
+      },
+      "sweater": false
+    },
+    {
+      "id": "district",
+      "required": true,
+      "side": "right",
+      "dynamic": "district",
+      "zh": {
+        "name": "區章",
+        "place": "穿著者右袖，旅章下方 2 釐米；喺地域章後面，相距 1 釐米。",
+        "quote": "地域章在前，區章在後，兩章相距一釐米。地域章及區章……尺寸是 3.8 釐米（闊）× 5 釐米（高）。",
+        "conditions": "基本徽章；揀返自己所屬嘅區。"
+      },
+      "en": {
+        "name": "District Badge",
+        "place": "Wearer's right sleeve, 2 cm below the Group Badge; behind the Region Badge, 1 cm apart.",
+        "quote": "Region Badge in front, District Badge behind, 1 cm apart. Region and District Badges are 3.8 cm wide × 5 cm high.",
+        "conditions": "Basic badge; pick your own District."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3.8,
+        "hCm": 5,
+        "measured": true,
+        "ref": "UH",
+        "page": "95"
+      },
+      "anchor": {
+        "part": "sleeve",
+        "side": "right",
+        "belowBadge": "troop",
+        "gapCm": 2,
+        "towards": "back",
+        "offsetCm": 2.4,
+        "edge": "top",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "26, 42–47, 95, 171"
+        },
+        {
+          "ref": "RTS",
+          "page": "10–11"
+        }
+      ],
+      "status": "documented",
+      "art": {
+        "file": "/badges/handbook_example_district.png",
+        "ref": "UH",
+        "page": "25",
+        "example": true
+      },
+      "modelNote": {
+        "zh": "可以揀全港所有區（香港童軍總會網頁「地域及區」）；未揀區就用手冊示例色塊。",
+        "en": "Every District can be picked (SAHK “Regions and Districts” page); with none picked it uses the handbook example block."
+      },
+      "sweater": false
+    },
+    {
+      "id": "epaulette",
+      "required": true,
+      "needsInvestiture": true,
+      "side": "both",
+      "zh": {
+        "name": "樂行童軍肩章",
+        "place": "雙肩肩帶上（制服恤衫或制服毛衣）。",
+        "quote": "符合相關資格的深資童軍／樂行童軍可佩戴相關的深資童軍肩章／樂行童軍肩章在制服恤衫或制服毛衣雙肩肩帶上。",
+        "conditions": "樂行童軍進度性訓練第二階段（會員章之後，綱要 P.12–13）：完成總會／地域／區認許嘅樂行童軍啟導班或同等項目，經所屬團長批核及推薦，由樂行童軍區長／助理區總監（樂行童軍）／助理總部總監（樂行童軍）／總部總監（樂行童軍）確認及簽發後纔可佩戴；完成「樂行童軍先修章」嘅成員晉團同獲取會員章後視作已完成（綱要 P.18）。可以喺徽章分頁揀「未考獲」或「已考獲」。"
+      },
+      "en": {
+        "name": "Rover Scout Epaulettes",
+        "place": "On both shoulder straps (uniform shirt or uniform jersey).",
+        "quote": "Qualified Venture Scouts / Rover Scouts may wear the Venture Scout / Rover Scout Epaulettes on both shoulder straps of the uniform shirt or uniform jersey.",
+        "conditions": "Second stage of Rover Scout progressive training, after the Membership Badge (Training Scheme pp.12–13): complete a Rover Scout induction course recognised by Headquarters/Region/District, or an equivalent, be approved and recommended by the Rover Scout Leader, and be confirmed and signed off by the District Rover Scout Commissioner / ADC (Rover Scouts) / AHQC (Rover Scouts) / HQC (Rover Scouts); members with the Rover Scout pre-entry badge count as complete once they join and receive the Membership Badge (Training Scheme p.18). Choose “not yet earned” or “earned” in the Badges tab."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 9,
+        "hCm": 3.8,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "shoulder",
+        "side": "both",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "122, 145, 171"
+        },
+        {
+          "ref": "RTS",
+          "page": "12–13, 18"
+        }
+      ],
+      "status": "documented",
+      "art": {
+        "file": "/badges/rover_epaulette.png",
+        "ref": "UH",
+        "page": "145",
+        "example": false
+      },
+      "modelNote": {
+        "zh": "手冊冇寫尺寸；模型用 9 × 3.8 cm（手冊 P.145 圖案比例，同深資童軍肩章一樣），套喺肩帶上：方角、有徽號同「ROVERS」字嗰頭近膊頭，圓頭近衣領（P.145、P.171 附圖）。圖案取自手冊 P.145（細圖放大）。三款制服都係深綠色肩章（P.171「包括樂行海童軍及樂行空童軍」）。",
+        "en": "No size in the Handbook; the model uses 9 × 3.8 cm (proportions of the Handbook p.145 artwork, same as the Venture Scout Epaulettes), slid onto the shoulder strap with the square end bearing the emblem and “ROVERS” at the shoulder and the rounded end at the collar (pp.145, 171 figures). Artwork from Handbook p.145 (a small image enlarged). All three uniforms use the dark green epaulettes (p.171 “including Rover Sea Scouts and Rover Air Scouts”)."
+      },
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "未考獲（淨肩帶）"
+          },
+          "en": {
+            "name": "Not yet earned (plain straps)"
+          },
+          "art": null
+        },
+        {
+          "id": "rover",
+          "zh": {
+            "name": "樂行童軍肩章"
+          },
+          "en": {
+            "name": "Rover Scout Epaulettes"
+          },
+          "art": {
+            "file": "/badges/rover_epaulette.png",
+            "ref": "UH",
+            "page": "145",
+            "example": false
+          }
+        }
+      ],
+      "default": "rover",
+      "sweater": true
+    },
+    {
+      "id": "meritorious",
+      "required": false,
+      "side": "right",
+      "dynamic": "meritorious",
+      "zh": {
+        "name": "優異旅團章",
+        "place": "穿著者右袖，袖口縫線上方中央，為期一年。",
+        "quote": "佩戴在制服恤衫右袖縫線上方中央位置，為期一年。有紅、紫和粉藍等三種顏色，每年輪流使用。",
+        "conditions": "「優異旅團獎勵計劃」獲獎旅團嘅領袖、教練員及團員；為期一年。"
+      },
+      "en": {
+        "name": "Meritorious Group Badge",
+        "place": "Wearer's right sleeve, centred above the sleeve-hem seam, for one year.",
+        "quote": "Worn centred above the right sleeve seam of the uniform shirt, for one year. Comes in red, purple and light blue, used in turn each year.",
+        "conditions": "Leaders, instructors and members of a Group awarded under the Meritorious Group Scheme; for one year."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 9,
+        "hCm": 2,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "side": "right",
+        "aboveCuffSeamCm": 0.3,
+        "edge": "bottom",
+        "measured": false
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "159, 171"
+        }
+      ],
+      "status": "documented",
+      "art": {
+        "file": "/badges/meritorious_base_blue.png",
+        "ref": "UH",
+        "page": "159",
+        "example": false
+      },
+      "modelNote": {
+        "zh": "手冊冇寫尺寸；模型用 9 × 2 cm（P.159 圖案比例）。可以輸入年份：圖案底色同文字取自 P.159，只換年份數字；顏色每 3 年輪一次（1999 紅、2000 紫、2001 藍……，P.159 2016 藍、2017 紅、2018 紫吻合）。 手冊 P.171 附圖：樂行童軍嘅優異旅團章喺右袖最下、貼近袖口縫線。",
+        "en": "No size in the Handbook; the model uses 9 × 2 cm (p.159 artwork proportions). Type a year: the background and lettering come from p.159 and only the year digits change; the colour cycles every 3 years (1999 red, 2000 purple, 2001 blue…, matching 2016 blue, 2017 red, 2018 purple on p.159). Handbook p.171 figure: for Rover Scouts the Meritorious Group Badge is lowest on the right sleeve, just above the cuff seam."
+      },
+      "sweater": false
+    }
+  ],
+  "notAllowed": [
+    {
+      "id": "activityBadges",
+      "zh": "呢一版只示範制服頁列明嘅基本徽章（世界童軍會員章、香港章、地域章、區章、旅章）、樂行童軍肩章同優異旅團章；樂行童軍急救章、進度性獎章（樂行童軍獎章、貝登堡獎章）、寰宇童軍章、社區參與章、活動徽章等之後再加。",
+      "en": "This version shows only the basic badges on the uniform page (World Membership, Hong Kong, Region, District and Group Badges), the Rover Scout Epaulettes and the Meritorious Group Badge; the Rover Scout First Aid Badge, progress awards (Rover Scout Award, B.-P. Award), the Scouts of the World Award, community involvement and activity badges come later.",
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "42, 44, 46, 171"
+        },
+        {
+          "ref": "RTS",
+          "page": "10–13"
+        }
+      ]
+    },
+    {
+      "id": "noPatrol",
+      "zh": "樂行童軍制服頁冇小隊章（手冊 P.42–47；綱要 P.10–11）。",
+      "en": "There is no Patrol Badge on the Rover Scout uniform page (Handbook pp.42–47; Training Scheme pp.10–11).",
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "42–47"
+        },
+        {
+          "ref": "RTS",
+          "page": "10–11"
+        }
+      ]
+    }
+  ],
+  "uninvested": {
+    "zh": "未宣誓嘅青少年成員（小童軍除外）可穿著全套制服（不需扣上衣領鈕扣）；世界童軍會員章、制服帽同旅巾需待宣誓後纔可佩戴。樂行童軍肩章要考獲會員章、完成啟導班（或同等項目）先可以戴。",
+    "en": "Uninvested youth members (except Grasshoppers) may wear the full uniform (top button undone); the World Membership Badge, uniform cap and neckerchief are worn only after investiture. The Rover Scout Epaulettes come after the Membership Badge and the induction course (or equivalent).",
+    "sources": [
+      {
+        "ref": "UH",
+        "page": "26"
+      },
+      {
+        "ref": "RTS",
+        "page": "18"
+      }
+    ]
+  },
+  "conflicts": [
+    {
+      "id": "regionDistrictFigure",
+      "zh": "地域章／區章：手冊 P.95 文字「地域章在前，區章在後」，P.171 附圖一致；附圖喺旅章下面先有急救章（考獲先有），模型冇急救章，所以照 P.95 喺旅章下 2 cm。",
+      "en": "Region/District: Handbook p.95 says Region in front, District behind, and the p.171 figure agrees; the figure has the (earned) First Aid Badge under the Group Badge, which the model omits, so it follows p.95 — 2 cm below the Group Badge."
+    },
+    {
+      "id": "capBadge",
+      "zh": "帽章：手冊 P.42、P.46、P.102 寫樂行童軍／樂行空童軍戴「童軍帽章」，綱要 P.10–11 寫「成員帽章」。模型跟手冊（同深資空童軍嘅用戶決定一樣），待確認。",
+      "en": "Cap badge: Handbook pp.42, 46, 102 say Rover / Rover Air Scouts wear the “Scout cap badge”; Training Scheme pp.10–11 says “member’s cap badge”. The model follows the Handbook (as the user decided for Venture Air Scouts); to be confirmed."
+    },
+    {
+      "id": "roverSeaAirSweater",
+      "zh": "制服毛衣：手冊 P.121 寫海童軍／空童軍青少年成員穿深藍色；模型當樂行海／空童軍都係（同深資海／空童軍一樣），待確認。",
+      "en": "Uniform jersey: Handbook p.121 says Sea/Air Scout youth members wear dark blue; the model applies this to Rover Sea/Air Scouts (as for Venture Sea/Air Scouts); to be confirmed."
+    },
+    {
+      "id": "tieInvestiture",
+      "zh": "領帶：手冊冇講宣誓前可唔可以戴；模型跟深資童軍（用戶確認）一樣，宣誓後先戴，待確認。",
+      "en": "Tie: the Handbook does not say whether it may be worn before investiture; the model follows the Venture Scout rule (user confirmed): only after investiture; to be confirmed."
+    },
+    {
+      "id": "figure",
+      "zh": "身形：樂行童軍 18–26 歲；模型沿用深資童軍嘅 168 cm 方塊人（擺位全部以 cm 計，同手冊附圖一致）。",
+      "en": "Figure: Rover Scouts are 18–26; the model reuses the 168 cm Venture Scout blocky figure (all placements are in cm and match the handbook figure)."
+    }
+  ],
+  "artCredit": {
+    "zh": "徽章圖案取自香港童軍總會《儀容與制服手冊》P.25、P.92–93、P.102、P.145、P.159 及香港童軍總會網頁「地域及區」，版權屬香港童軍總會。旅章係手冊示例圖案；區章、地域章可以揀返自己嘅。",
+    "en": "Badge artwork is from the Scout Association of Hong Kong Uniform Handbook (pp.25, 92–93, 102, 145, 159) and the SAHK “Regions and Districts” page; copyright the Scout Association of Hong Kong. The Group Badge is the handbook example; pick your own District to get the right badges."
+  }
+}

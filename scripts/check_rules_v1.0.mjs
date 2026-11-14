@@ -5,7 +5,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { validateRules } from '../src/data/validate.js';
 
 export const VERSION = 'v1.0';
-const SECTIONS = ['grasshopper', 'cub', 'scout', 'venture'];
+const SECTIONS = ['grasshopper', 'cub', 'scout', 'venture', 'rover'];
 const read = (p) => JSON.parse(readFileSync(new URL(`../${p}`, import.meta.url), 'utf8'));
 const pub = (file) => existsSync(new URL(`../public${file}`, import.meta.url));
 

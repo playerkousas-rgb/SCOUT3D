@@ -3,7 +3,7 @@
 // 人物面向 +z；穿著者左 = +x。
 import { useEffect, useMemo } from 'react';
 import * as THREE from 'three';
-import { layout, neckerLayout, strapLayout, VEST_T, SWEATER_TOP, PX, scoutVariant, SCOUT_VARIANTS, ventureVariant, ventureLegwear } from './body.js';
+import { layout, neckerLayout, strapLayout, VEST_T, SWEATER_TOP, PX, scoutVariant, SCOUT_VARIANTS, ventureVariant, roverVariant, isSenior, ventureLegwear } from './body.js';
 import { useTexture } from '@react-three/drei';
 import { SECTIONS, DISTRICTS, PATROLS } from '../data/rules.js';
 import { resolveArt } from '../lib/picks.js';
@@ -287,12 +287,13 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
   const RULES = SECTIONS[section] ?? SECTIONS.grasshopper;
   // 幼童軍同童軍：同款杏色恤衫、草青色短褲／裙褲、深草青色長襪（手冊 P.28、P.30）
   // 深資童軍：同樣係恤衫制服（兩胸袋、皮帶），另加肩帶；長褲／半截裙（手冊 P.36–41）
-  const venture = section === 'venture';
+  // 樂行童軍（手冊 P.42–47）同深資童軍一樣：肩帶、長褲／半截裙、領帶
+  const venture = isSenior(section);
   const cub = section === 'cub' || section === 'scout' || venture;
   const scout = section === 'scout';
   const leather = scout || venture; // 啡色皮巾圈（手冊 P.110）
   // 童軍支部制服款式：童軍／海童軍／空童軍（手冊 P.30–35）；幼童軍同陸上童軍同色
-  const U = scout ? scoutVariant(outfit.variant) : venture ? ventureVariant(outfit.variant) : SCOUT_VARIANTS.land;
+  const U = scout ? scoutVariant(outfit.variant) : section === 'rover' ? roverVariant(outfit.variant) : venture ? ventureVariant(outfit.variant) : SCOUT_VARIANTS.land;
   const gender = outfit.gender === 'girl' ? 'girl' : 'boy';
   const painted = outfit.finish !== 'unpainted';
   const L = useMemo(() => layout(gender, section), [gender, section]);
