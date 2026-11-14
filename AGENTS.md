@@ -19,9 +19,9 @@
 ## 本 repo 專屬（SCOUT3D）
 
 - **徽章位置只可以跟文件**：改 [`src/data/grasshopper_rules_v1.0.json`](src/data/grasshopper_rules_v1.0.json)，每項要有 `sources`（文件 + 頁碼）；唔肯定就 `status: "pending"` + `pendingReason`，**唔好估**。`npm run check` 會攔。
-- **左右一律以穿著者本人角度**：3D 座標穿著者左 = `+x`（人物面向 `+z`），見 [`src/three/dims.js`](src/three/dims.js)。
+- **左右一律以穿著者本人角度**：3D 座標穿著者左 = `+x`（人物面向 `+z`），見 [`src/three/body.js`](src/three/body.js)。
 - **未經領袖核對唔可以標 `verified`**；核對人 = 專案負責人（用戶本人），核對完先填 `review.lastChecked`。
-- 徽章圖案全部係 canvas 即場畫嘅**簡化示意圖**，唔好換成官方圖樣或 AI 仿製官方徽章（版權屬香港童軍總會）。
+- 徽章圖案**只可以用官方文件入面嘅圖**（`public/badges/`，每個喺規則 JSON 寫 `art` 來源頁），唔好自己設計或者叫 AI 仿製（用戶 2026-11-14 指示；見 [ADR-0002](docs/adr/0002-blocky-figure-official-badge-art.md)）。圖案版權屬香港童軍總會。
 - `index.html` 由 [`shell/index_v1.0.html`](shell/index_v1.0.html) 產生：改 shell 再跑 `npm run sync`。
 
 ## 可改 / 唔好改

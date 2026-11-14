@@ -2,40 +2,42 @@
 import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLang, LangToggle, bi, pick } from './i18n.jsx';
 import { RULES, RULE_ERRORS, badgeById, sourceLines } from './data/rules.js';
-import { PLAIN, NECKER, WOGGLE, SKIN, HAIR } from './palette.js';
+import { NECKER, WOGGLE, PLAIN } from './palette.js';
+import { shownReason } from './three/badgeLayout.js';
 import { APP_VERSION } from './version.js';
 
 const Scene = lazy(() => import('./three/Scene.jsx'));
 
 const DEFAULT_OUTFIT = {
   gender: 'boy',
-  skin: SKIN[0].id,
-  hair: HAIR.boy,
+  finish: 'painted',
+  invested: true,
+  // 服裝（手冊 P.23–24）：預設同手冊 P.25 附圖一樣 — 橙色活動服、短袖、灰色長褲
   top: 'orange',
   topColour: '#ffffff',
   sleeves: 'short',
-  legwear: 'shorts',
-  legColour: '#1f2f4f',
+  school: false,
+  schoolLayout: 'uh',
+  legwear: 'trousers',
+  legColour: '#8a9099',
+  socks: 'short',
+  sockColour: '#ffffff',
   hat: 'none',
   hatColour: '#1f2f4f',
   vest: false,
   vestColour: '#1f2f4f',
-  socks: 'short',
-  sockColour: '#ffffff',
-  shoeColour: '#2f6db5',
-  invested: true,
-  school: false,
-  neckerMain: '#7b1e2b',
-  neckerBorder: '#e9b425',
-  woggle: '#e9b425',
+  neckerMain: '#e9b425',
+  neckerBorder: '#5b3fa0',
+  woggle: '#1f4e9c',
 };
 
+// 預設：必須佩戴嘅章 + 旅章、區章（同手冊 P.25 附圖一樣）
 const DEFAULT_BADGES = {
   membership: true,
   progress: 2,
   grasshopperAward: false,
   troop: true,
-  district: false,
+  district: true,
   meritorious: false,
   commemorative: false,
 };
@@ -130,12 +132,30 @@ function Sources({ list }) {
   );
 }
 
+/* ---------- 徽章圖案 ---------- */
+function ArtLine({ art }) {
+  const { lang, t } = useLang();
+  const src = RULES.sources[art.ref];
+  return (
+    <span className="muted">
+      {t(art.example ? 'info.artExample' : 'info.artOfficial')}
+      {lang === 'en' ? ': ' : '：'}
+      {src ? bi(lang, src.zh, src.en) : art.ref}
+      {lang === 'en' ? ', ' : '，'}
+      {t('info.page')} {art.page}
+    </span>
+  );
+}
+
 /* ---------- 徽章資料卡 ---------- */
 function InfoCard({ id, outfit, badges, onClose, onFocus }) {
   const { lang, t } = useLang();
   const b = badgeById(id);
-  const school = outfit.school && (id === 'membership' || id === 'progress');
-  const shown = id === 'progress' ? badges.progress > 0 : badges[id];
+  const arts = Array.isArray(b.art) ? b.art : [b.art];
+  const reason = shownReason(RULES, outfit, badges, id);
+  const shown = reason === null;
+  const st = RULES.schoolTop;
+  const onNecker = outfit.school && ['membership', 'progress', 'grasshopperAward'].includes(id);
   const sizeText = `${b.size.wCm} × ${b.size.hCm} cm（${t(b.size.measured ? 'info.sizeMeasured' : 'info.sizeGuess')}）`;
   return (
     <section className="card" aria-live="polite">
@@ -149,30 +169,45 @@ function InfoCard({ id, outfit, badges, onClose, onFocus }) {
         <StatusChip status={b.status} />
         <span className="chip chip--plain">{t(b.required ? 'info.required' : 'info.optional')}</span>
       </div>
-      {!shown && <p className="note">{t('info.hidden')}</p>}
+      <div className="card__art">
+        {arts.map((a) => (
+          <img key={a.file} src={a.file} alt={pick(lang, b, 'name')} className={b.size.shape === 'circle' ? 'is-round' : ''} />
+        ))}
+      </div>
+      <ArtLine art={arts[0]} />
+      {!shown && <p className="note">{t(reason === 'off' ? 'info.hidden' : `badge.why.${reason}`)}</p>}
+      {onNecker && (
+        <div className="note note--warn">
+          <strong>{pick(lang, st, 'name')}</strong>
+          <p>{pick(lang, st, 'place')}</p>
+          <p className="muted">{t(outfit.schoolLayout === 'gsg' ? 'outfit.schoolGSG' : 'outfit.schoolUH')}</p>
+        </div>
+      )}
       <dl className="facts">
         <dt>{t('info.place')}</dt>
-        <dd>{school ? pick(lang, RULES.schoolTop, 'place') : pick(lang, b, 'place')}</dd>
+        <dd>{pick(lang, b, 'place')}</dd>
         <dt>{t('info.quote')}</dt>
         <dd>
-          <blockquote>{school ? pick(lang, RULES.schoolTop, 'quote') : pick(lang, b, 'quote')}</blockquote>
+          <blockquote>{pick(lang, b, 'quote')}</blockquote>
         </dd>
         <dt>{t('info.conditions')}</dt>
         <dd>{pick(lang, b, 'conditions')}</dd>
         <dt>{t('info.size')}</dt>
         <dd>{sizeText}</dd>
+        {b.modelNote && (
+          <>
+            <dt>{t('info.model')}</dt>
+            <dd>{bi(lang, b.modelNote.zh, b.modelNote.en)}</dd>
+          </>
+        )}
         <dt>{t('info.source')}</dt>
         <dd>
-          <Sources list={school ? RULES.schoolTop.sources : b.sources} />
+          <Sources list={b.sources} />
         </dd>
-        {(b.pendingReason || school) && (
+        {b.pendingReason && (
           <>
             <dt>{t('info.why')}</dt>
-            <dd className="why">
-              {school ? bi(lang, RULES.schoolTop.pendingReason.zh, RULES.schoolTop.pendingReason.en) : null}
-              {school && b.pendingReason ? <br /> : null}
-              {b.pendingReason ? bi(lang, b.pendingReason.zh, b.pendingReason.en) : null}
-            </dd>
+            <dd className="why">{bi(lang, b.pendingReason.zh, b.pendingReason.en)}</dd>
           </>
         )}
       </dl>
@@ -189,28 +224,32 @@ function BadgesTab({ outfit, badges, setBadges, selected, onPick }) {
   const set = (k, v) => setBadges((b) => ({ ...b, [k]: v }));
   return (
     <div className="tabbody">
-      <p className="note note--strong">{t('lr.note')}</p>
+      <p className="note note--strong">{t('badges.tip')}</p>
+      {outfit.school && (
+        <p className="note note--warn">
+          {t('badges.schoolOn')}
+          {t(outfit.schoolLayout === 'gsg' ? 'outfit.schoolGSG' : 'outfit.schoolUH')}
+        </p>
+      )}
       <ul className="badgelist">
         {RULES.badges.map((b) => {
-          const schoolOff = outfit.school && !['membership', 'progress'].includes(b.id);
-          const investOff = b.id === 'membership' && !outfit.invested;
-          const disabled = schoolOff || investOff;
-          const note = investOff
-            ? t('badge.needInvest')
-            : schoolOff
-              ? b.id === 'grasshopperAward'
-                ? t('badge.schoolPending')
-                : t('badge.notInSchool')
-              : null;
+          const disabled = b.id === 'membership' && !outfit.invested;
+          const why = shownReason(RULES, outfit, badges, b.id);
+          const whyNote = ['school', 'vest', 'schoolUninvested'].includes(why) ? t(`badge.why.${why}`) : null;
+          const art = Array.isArray(b.art) ? b.art[Math.max(0, Math.min(3, (badges.progress || 1) - 1))] : b.art;
           return (
             <li key={b.id} className={`badgerow${selected === b.id ? ' is-sel' : ''}${disabled ? ' is-disabled' : ''}`}>
               <div className="badgerow__main">
-                <button type="button" className="badgerow__name" onClick={() => onPick(b.id)} disabled={disabled}>
-                  {pick(lang, b, 'name')}
-                </button>
-                <div className="badgerow__meta">
-                  <StatusChip status={b.status} />
-                  <span className="chip chip--plain">{t(b.required ? 'info.required' : 'info.optional')}</span>
+                <img src={art.file} alt="" className={`badgerow__art${b.size.shape === 'circle' ? ' is-round' : ''}`} />
+                <div>
+                  <button type="button" className="badgerow__name" onClick={() => onPick(b.id)}>
+                    {pick(lang, b, 'name')}
+                  </button>
+                  <div className="badgerow__meta">
+                    <StatusChip status={b.status} />
+                    <span className="chip chip--plain">{t(b.required ? 'info.required' : 'info.optional')}</span>
+                    {art.example && <span className="chip chip--plain">{t('badge.example')}</span>}
+                  </div>
                 </div>
               </div>
               {b.id === 'progress' ? (
@@ -241,11 +280,13 @@ function BadgesTab({ outfit, badges, setBadges, selected, onPick }) {
                   <span className="switch__track" aria-hidden="true" />
                 </label>
               )}
-              {note && <p className="note">{note}</p>}
+              {disabled && <p className="note">{t('badge.needInvest')}</p>}
+              {!disabled && whyNote && <p className="note">{whyNote}</p>}
             </li>
           );
         })}
       </ul>
+      <p className="note">{bi(lang, RULES.artCredit.zh, RULES.artCredit.en)}</p>
     </div>
   );
 }
@@ -254,18 +295,29 @@ function BadgesTab({ outfit, badges, setBadges, selected, onPick }) {
 function OutfitTab({ outfit, setOutfit }) {
   const { t } = useLang();
   const set = (k, v) => setOutfit((o) => ({ ...o, [k]: v }));
+  // 學校運動上衣唔係橙色活動服：開學校運動上衣就轉做單色有領；揀返橙色活動服就閂咗佢
+  const setTop = (v) => setOutfit((o) => ({ ...o, top: v, school: v === 'orange' ? false : o.school }));
+  const setSchool = (v) => setOutfit((o) => ({ ...o, school: v, top: v && o.top === 'orange' ? 'polo' : o.top }));
   return (
     <div className="tabbody">
       <Segmented
         label={t('outfit.figure')}
         value={outfit.gender}
-        onChange={(v) => setOutfit((o) => ({ ...o, gender: v, hair: HAIR[v] }))}
+        onChange={(v) => set('gender', v)}
         options={[
           { value: 'boy', label: t('outfit.boy') },
           { value: 'girl', label: t('outfit.girl') },
         ]}
       />
-      <Swatches label={t('outfit.skin')} value={outfit.skin} options={SKIN} onChange={(v) => set('skin', v)} />
+      <Segmented
+        label={t('outfit.finish')}
+        value={outfit.finish}
+        onChange={(v) => set('finish', v)}
+        options={[
+          { value: 'painted', label: t('outfit.painted') },
+          { value: 'unpainted', label: t('outfit.unpainted') },
+        ]}
+      />
       <Switch
         label={t('outfit.invested')}
         checked={outfit.invested}
@@ -275,7 +327,7 @@ function OutfitTab({ outfit, setOutfit }) {
       <Segmented
         label={t('outfit.top')}
         value={outfit.top}
-        onChange={(v) => set('top', v)}
+        onChange={setTop}
         options={[
           { value: 'orange', label: t('outfit.orange') },
           { value: 'polo', label: t('outfit.polo') },
@@ -297,9 +349,20 @@ function OutfitTab({ outfit, setOutfit }) {
       <Switch
         label={t('outfit.school')}
         checked={outfit.school}
-        onChange={(v) => set('school', v)}
+        onChange={setSchool}
         note={outfit.school ? t('outfit.schoolNote') : null}
       />
+      {outfit.school && (
+        <Segmented
+          label={t('outfit.schoolLayout')}
+          value={outfit.schoolLayout}
+          onChange={(v) => set('schoolLayout', v)}
+          options={[
+            { value: 'uh', label: t('outfit.schoolUHShort') },
+            { value: 'gsg', label: t('outfit.schoolGSGShort') },
+          ]}
+        />
+      )}
       <Segmented
         label={t('outfit.legs')}
         value={outfit.legwear}
@@ -319,6 +382,7 @@ function OutfitTab({ outfit, setOutfit }) {
           { value: 'long', label: t('outfit.longSocks') },
         ]}
       />
+      {outfit.legwear === 'trousers' && <p className="note">{t('outfit.socksHidden')}</p>}
       <Segmented
         label={t('outfit.hat')}
         value={outfit.hat}
@@ -332,8 +396,8 @@ function OutfitTab({ outfit, setOutfit }) {
       {outfit.hat !== 'none' && (
         <Swatches label={t('outfit.hatColour')} value={outfit.hatColour} options={PLAIN} onChange={(v) => set('hatColour', v)} />
       )}
-      <Switch label={t('outfit.vest')} checked={outfit.vest} onChange={(v) => set('vest', v)} />
-      {outfit.vest && <Swatches label="" value={outfit.vestColour} options={PLAIN} onChange={(v) => set('vestColour', v)} />}
+      <Switch label={t('outfit.vest')} checked={outfit.vest} onChange={(v) => set('vest', v)} note={outfit.vest ? t('outfit.vestNote') : null} />
+      {outfit.vest && <Swatches label={t('outfit.vestColour')} value={outfit.vestColour} options={PLAIN} onChange={(v) => set('vestColour', v)} />}
       {outfit.invested && (
         <>
           <Swatches
@@ -351,6 +415,7 @@ function OutfitTab({ outfit, setOutfit }) {
           <Swatches label={t('outfit.woggle')} value={outfit.woggle} options={WOGGLE} onChange={(v) => set('woggle', v)} />
         </>
       )}
+      <p className="note">{t('outfit.stepNote')}</p>
     </div>
   );
 }
@@ -376,6 +441,7 @@ function SourcesTab() {
         ))}
       </ul>
       <p className="note">{t('src.handbookCopy')}</p>
+      <p className="note">{bi(lang, RULES.artCredit.zh, RULES.artCredit.en)}</p>
       <dl className="facts facts--tight">
         <dt>{t('rules.version')}</dt>
         <dd>{RULES.fileVersion}</dd>
@@ -443,7 +509,6 @@ export default function App() {
     setSelected(id);
     if (id) requestAnimationFrame(() => scene.current?.focus(id));
   }, []);
-
   const onSceneSelect = useCallback((id) => setSelected(id), []);
 
   const shot = async () => {
@@ -463,8 +528,8 @@ export default function App() {
   };
 
   const tabs = [
-    ['badges', t('tab.badges')],
     ['outfit', t('tab.outfit')],
+    ['badges', t('tab.badges')],
     ['sources', t('tab.sources')],
   ];
 
@@ -510,10 +575,7 @@ export default function App() {
               <button
                 type="button"
                 className="chipbtn"
-                onClick={() => {
-                  setSelected(null);
-                  scene.current?.view('front');
-                }}
+                onClick={() => scene.current?.view('front')}
               >
                 {t('view.reset')}
               </button>
@@ -551,9 +613,7 @@ export default function App() {
             ))}
           </div>
           <div role="tabpanel" id={`pane-${tab}`} aria-labelledby={`tab-${tab}`}>
-            {tab === 'badges' && (
-              <BadgesTab outfit={outfit} badges={badges} setBadges={setBadges} selected={selected} onPick={onPick} />
-            )}
+            {tab === 'badges' && <BadgesTab outfit={outfit} badges={badges} setBadges={setBadges} selected={selected} onPick={onPick} />}
             {tab === 'outfit' && <OutfitTab outfit={outfit} setOutfit={setOutfit} />}
             {tab === 'sources' && <SourcesTab />}
           </div>

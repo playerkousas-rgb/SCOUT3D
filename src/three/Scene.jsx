@@ -1,24 +1,25 @@
-// 3D 場景：燈、相機控制、預設視角、聚焦 — v1.0 · © SCOUT SYSTEM
-import { forwardRef, useImperativeHandle, useMemo, useRef } from 'react';
+// 3D 場景：燈、相機控制、預設視角 — v1.0 · © SCOUT SYSTEM
+import { Suspense, forwardRef, useImperativeHandle, useMemo, useRef } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls, ContactShadows } from '@react-three/drei';
+import { OrbitControls, ContactShadows, useProgress } from '@react-three/drei';
 import * as THREE from 'three';
-import Figure from './Figure.jsx';
-import { RegistryContext, createRegistry } from './registry.js';
+import Blocky from './Blocky.jsx';
+import { useLang } from '../i18n.jsx';
 
-const TARGET = new THREE.Vector3(0, 0.56, 0);
-const DIST = 2.75;
+const TARGET = new THREE.Vector3(0, 0.6, 0);
+const DIST = 3.05;
+const EYE = 0.82;
 export const VIEWS = {
-  front: [0, 0.74, DIST],
-  back: [0, 0.74, -DIST],
-  left: [DIST, 0.74, 0], // 穿著者左 = +x
-  right: [-DIST, 0.74, 0],
+  front: [0, EYE, DIST],
+  back: [0, EYE, -DIST],
+  left: [DIST, EYE, 0], // 穿著者左 = +x
+  right: [-DIST, EYE, 0],
 };
 
 // 防止相機入咗公仔：身體大約係半徑 0.26 嘅圓柱
-const BODY_R = 0.3;
-const BODY_TOP = 1.25;
-const MIN_DIST = 0.5;
+const BODY_R = 0.32;
+const BODY_TOP = 1.3;
+const MIN_DIST = 0.45;
 const MAX_DIST = 3.4;
 
 const Rig = forwardRef(function Rig(_, ref) {
@@ -33,8 +34,8 @@ const Rig = forwardRef(function Rig(_, ref) {
     },
     focus(point, normal) {
       const target = point.clone();
-      const pos = point.clone().addScaledVector(normal.clone().normalize(), 0.95);
-      pos.y += 0.08;
+      const pos = point.clone().addScaledVector(normal.clone().normalize(), 0.75);
+      pos.y += 0.05;
       goal.current = { pos, target };
     },
   }));
@@ -52,7 +53,7 @@ const Rig = forwardRef(function Rig(_, ref) {
     }
     // 目標點限制喺身體附近
     c.target.x = THREE.MathUtils.clamp(c.target.x, -0.32, 0.32);
-    c.target.y = THREE.MathUtils.clamp(c.target.y, 0.1, 1.15);
+    c.target.y = THREE.MathUtils.clamp(c.target.y, 0.1, 1.2);
     c.target.z = THREE.MathUtils.clamp(c.target.z, -0.32, 0.32);
     // 相機唔可以入身體、唔可以去咗地底
     const p = camera.position;
@@ -85,24 +86,36 @@ const Rig = forwardRef(function Rig(_, ref) {
   );
 });
 
+function Loading() {
+  const { active, progress } = useProgress();
+  const { t } = useLang();
+  if (!active) return null;
+  return (
+    <div className="stage__loading" role="status">
+      {t('loading')} {Math.round(progress)}%
+    </div>
+  );
+}
+
 const Scene = forwardRef(function Scene({ outfit, badges, selected, onSelect, onReady }, ref) {
   const rig = useRef();
-  const registry = useMemo(() => createRegistry(), []);
   const glRef = useRef();
+  const registry = useMemo(() => new Map(), []);
 
   useImperativeHandle(ref, () => ({
     view: (name) => rig.current?.view(name),
+    /** 鏡頭轉去望住某個章（進步獎章有幾格就攞平均） */
     focus(id) {
-      // 進步章有 4 格：攞已登記嗰幾格嘅平均位置
-      const getters = [...registry.entries()].filter(([k]) => k === id || k.startsWith(`${id}-`)).map(([, g]) => g());
-      if (!getters.length) return false;
+      const meshes = [...registry.entries()].filter(([k]) => k === id || k.startsWith(`${id}-`)).map(([, m]) => m);
+      if (!meshes.length) return false;
       const point = new THREE.Vector3();
       const normal = new THREE.Vector3();
-      for (const g of getters) {
-        point.add(g.point);
-        normal.add(g.normal);
+      const q = new THREE.Quaternion();
+      for (const m of meshes) {
+        point.add(m.getWorldPosition(new THREE.Vector3()));
+        normal.add(new THREE.Vector3(0, 0, 1).applyQuaternion(m.getWorldQuaternion(q)));
       }
-      point.divideScalar(getters.length);
+      point.divideScalar(meshes.length);
       rig.current?.focus(point, normal);
       return true;
     },
@@ -110,40 +123,44 @@ const Scene = forwardRef(function Scene({ outfit, badges, selected, onSelect, on
   }));
 
   return (
-    <Canvas
-      className="scene"
-      shadows
-      dpr={[1, 2]}
-      camera={{ position: VIEWS.front, fov: 32, near: 0.02, far: 30 }}
-      gl={{ preserveDrawingBuffer: true, antialias: true }}
-      onCreated={({ gl }) => {
-        glRef.current = gl;
-        gl.toneMapping = THREE.ACESFilmicToneMapping;
-        onReady?.();
-      }}
-      onPointerMissed={() => onSelect(null)}
-    >
-      <color attach="background" args={['#eef1f4']} />
-      <hemisphereLight args={['#ffffff', '#b9c2cc', 1.1]} />
-      <directionalLight
-        position={[1.6, 2.6, 2.2]}
-        intensity={1.6}
-        castShadow
-        shadow-mapSize={[1024, 1024]}
-        shadow-camera-left={-0.8}
-        shadow-camera-right={0.8}
-        shadow-camera-top={1.4}
-        shadow-camera-bottom={-0.2}
-        shadow-bias={-0.0004}
-        shadow-normalBias={0.02}
-      />
-      <directionalLight position={[-2, 1.4, -1.6]} intensity={0.55} />
-      <RegistryContext.Provider value={registry}>
-        <Figure outfit={outfit} badges={badges} selected={selected} onSelect={onSelect} />
-      </RegistryContext.Provider>
-      <ContactShadows position={[0, -0.045, 0]} scale={1.6} blur={2.4} opacity={0.35} far={0.4} />
-      <Rig ref={rig} />
-    </Canvas>
+    <>
+      <Canvas
+        className="scene"
+        shadows
+        dpr={[1, 2]}
+        camera={{ position: VIEWS.front, fov: 32, near: 0.02, far: 30 }}
+        gl={{ preserveDrawingBuffer: true, antialias: true }}
+        onCreated={({ gl }) => {
+          glRef.current = gl;
+          gl.toneMapping = THREE.ACESFilmicToneMapping;
+          onReady?.();
+        }}
+        onPointerMissed={() => onSelect?.(null)}
+      >
+        <color attach="background" args={['#e9edf1']} />
+        <hemisphereLight args={['#ffffff', '#9aa3ad', 1.5]} />
+        <directionalLight
+          position={[1.1, 2.4, 3.0]}
+          intensity={2.3}
+          castShadow
+          shadow-mapSize={[2048, 2048]}
+          shadow-camera-left={-0.8}
+          shadow-camera-right={0.8}
+          shadow-camera-top={1.5}
+          shadow-camera-bottom={-0.2}
+          shadow-bias={-0.0004}
+          shadow-normalBias={0.03}
+        />
+        <directionalLight position={[-1.6, 2, -2.4]} intensity={1.5} />
+        <directionalLight position={[-1.6, 1.2, 1.8]} intensity={0.35} />
+        <Suspense fallback={null}>
+          <Blocky outfit={outfit} badges={badges} selected={selected} onSelect={onSelect} registry={registry} />
+        </Suspense>
+        <ContactShadows position={[0, 0.001, 0]} scale={1.8} blur={2.6} opacity={0.4} far={0.5} />
+        <Rig ref={rig} />
+      </Canvas>
+      <Loading />
+    </>
   );
 });
 

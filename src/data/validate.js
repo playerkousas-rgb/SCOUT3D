@@ -67,6 +67,14 @@ export function validateRules(rules) {
     if (!PARTS.has(a.part)) errors.push(`${w}: anchor.part 錯`);
     if (a.side !== b.side) errors.push(`${w}: anchor.side 同「side」唔一致`);
     if (a.belowBadge && !badgeIds.has(a.belowBadge)) errors.push(`${w}: belowBadge 指向不存在嘅章`);
+    if (a.aboveBadge && !badgeIds.has(a.aboveBadge)) errors.push(`${w}: aboveBadge 指向不存在嘅章`);
+    // 圖案一定要來自官方文件（唔可以自己設計）
+    const arts = Array.isArray(b.art) ? b.art : b.art ? [b.art] : [];
+    if (!arts.length) errors.push(`${w}: 冇徽章圖案（art）`);
+    for (const art of arts) {
+      if (!/^\/badges\/[\w-]+\.png$/.test(art.file || '')) errors.push(`${w}: art.file 格式錯`);
+      if (!sources[art.ref] || !art.page) errors.push(`${w}: art 要寫官方文件來源同頁碼`);
+    }
   }
 
   const st = rules.schoolTop;
