@@ -3,7 +3,7 @@
 // 人物面向 +z；穿著者左 = +x。
 import { useEffect, useMemo } from 'react';
 import * as THREE from 'three';
-import { layout, neckerLayout, strapLayout, VEST_T, SWEATER_TOP, PX, scoutVariant, SCOUT_VARIANTS, ventureVariant, roverVariant, isSenior, ventureLegwear } from './body.js';
+import { layout, neckerLayout, strapLayout, VEST_T, SWEATER_TOP, PX, scoutVariant, SCOUT_VARIANTS, ventureVariant, roverVariant, isSenior, ventureLegwear, pumpParts } from './body.js';
 import { useTexture } from '@react-three/drei';
 import { SECTIONS, DISTRICTS, PATROLS } from '../data/rules.js';
 import { resolveArt } from '../lib/picks.js';
@@ -11,7 +11,7 @@ import { placeAll, placeFor, visible, dynKey } from './badgeLayout.js';
 import { useBadgeTextures, useDynamicTextures, TorsoBadges, SleeveBadges } from './Badges.jsx';
 import {
   headFaces, pigtailFaces, neckFaces, torsoFaces, sleeveFaces, cuffFaces, skinFaces, handFaces, legFaces, shortsFaces, shinFaces,
-  shoeFaces, vestFaces, hatFaces, brimFaces, shirtPalette, rollFaces, tailCanvas, backTriangleCanvas, plain, material, wogglePaint,
+  shoeFaces, skirtFaces, vestFaces, hatFaces, brimFaces, shirtPalette, rollFaces, tailCanvas, backTriangleCanvas, plain, material, wogglePaint,
   cubTorsoFaces, cubShinFaces, cubCapFaces, scoutWogglePaint, seaCapFaces, shade, brighten, sweaterFaces, sweaterSleeveFaces, sweaterCuffFaces, tieCanvas,
 } from './pixels.js';
 import { COLOURS as C } from './body.js';
@@ -351,8 +351,15 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
         hand: handFaces([B.hand.w, B.hand.h, B.hand.d]),
       },
       legH,
-      // 黑皮鞋；深資童軍女團員配半截裙 = 非綁帶（鞋帶畫返鞋面色）
-      shoe: cub ? shoeFaces([B.shoe.w, B.shoe.h, B.shoe.d], { colour: C.shoeBlack, sole: C.soleBlack, lace: '#3a3a40', pump: skirt ? C.tights : null }) : shoeFaces([B.shoe.w, B.shoe.h, B.shoe.d]),
+      // 黑皮鞋（綁帶）；深資／樂行女團員配半截裙 = 非綁帶中跟皮鞋，用 pumpParts 砌（下面）
+      shoe: cub ? shoeFaces([B.shoe.w, B.shoe.h, B.shoe.d], { colour: C.shoeBlack, sole: C.soleBlack, lace: '#3a3a40' }) : shoeFaces([B.shoe.w, B.shoe.h, B.shoe.d]),
+      pump: skirt ? pumpParts(B.shoe) : null,
+      pumpF: skirt
+        ? {
+            shoe: [C.shoeBlack, C.shoeBlack, '#2b2b31', C.soleBlack, C.shoeBlack, C.shoeBlack].map((c) => plain(2, 2, c)),
+            tights: [0, 1, 2, 3, 4, 5].map(() => plain(2, 2, C.tights)),
+          }
+        : null,
       sl,
       slLong,
     };
@@ -362,14 +369,14 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
   const shirt = useMemo(() => {
     const cuffSize = [B.lowerArm.w + 1, B.lowerArm.h, B.lowerArm.d + 1.4];
     return {
-      torso: cub ? cubTorsoFaces(B, { legColour, shirt: topColour }) : torsoFaces(B, top, topColour),
+      torso: cub ? cubTorsoFaces(B, { legColour, shirt: topColour, skirt }) : torsoFaces(B, top, topColour),
       sleeve: sleeveFaces(body.sl, B.sleeve.band, top, topColour, false),
       // 著毛衣：長袖同前臂袖改做毛衣（坑紋、膊布、袖口坑紋）
       sleeveLong: sweater ? sweaterSleeveFaces(body.slLong, sweaterColour) : sleeveFaces(body.slLong, B.sleeve.band, top, topColour, true),
       cuff: sweater ? sweaterCuffFaces(cuffSize, sweaterColour) : cuffFaces(cuffSize, top, topColour),
       collar: [1, 1, 1, 1, 1, 1].map(() => plain(2, 2, shirtPalette(top, topColour).collar)),
     };
-  }, [B, body, top, topColour, cub, legColour, sweater, sweaterColour]);
+  }, [B, body, top, topColour, cub, legColour, sweater, sweaterColour, skirt]);
   const armFaces = useMemo(() => ({ ...body.arm, ...shirt }), [body, shirt]);
 
   // 褲、襪
@@ -387,7 +394,7 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
       shinH,
       // 深資童軍半截裙：一件過包住兩隻腳，及膝；下面肉色襪褲
       skirtSize: [L.legX * 2 + B.leg.w + 2.4, B.leg.top - shortsBottom, B.leg.d + 2.4],
-      skirtF: venture ? shortsFaces([L.legX * 2 + B.leg.w + 2.4, B.leg.top - shortsBottom, B.leg.d + 2.4], legColour) : null,
+      skirtF: venture ? skirtFaces([L.legX * 2 + B.leg.w + 2.4, B.leg.top - shortsBottom, B.leg.d + 2.4], legColour) : null,
       tightsF: venture ? [0, 1, 2, 3, 4, 5].map(() => plain(2, 2, C.tights)) : null,
     };
   }, [B, L, body.legH, legColour, outfit.socks, outfit.sockColour, shortsBottom, culottes, cub, venture, section, U.sock]);
@@ -425,7 +432,7 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
   // 肩帶（恤衫色，邊深少少）
   // 肩帶：恤衫色；著毛衣就係毛衣膊布色（手冊 P.122 附圖）
   const strapF = useMemo(
-    () => (strap ? hatFaces([strap.len, strap.t, strap.w], sweater ? brighten(sweaterColour, 1.75) : shirtPalette('cub', topColour).main) : null),
+    () => (strap ? hatFaces([strap.len, strap.boxT, strap.w], sweater ? brighten(sweaterColour, 1.75) : shirtPalette('cub', topColour).main) : null),
     [strap, topColour, sweater, sweaterColour],
   );
 
@@ -449,7 +456,7 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
         {/* 上身 */}
         <Box size={[t.w, t.h, t.d]} faces={shirt.torso} painted={painted} position={[0, t.y + t.h / 2, 0]} />
         {strap &&
-          [1, -1].map((s) => <Box key={`strap${s}`} size={[strap.len, strap.t, strap.w]} faces={strapF} painted={painted} position={[s * strap.cx, strap.y, 0]} />)}
+          [1, -1].map((s) => <Box key={`strap${s}`} size={[strap.len, strap.boxT, strap.w]} faces={strapF} painted={painted} position={[s * strap.cx, strap.boxY, 0]} />)}
         {sweater && <Box size={vestBox} faces={sweaterF} painted={painted} alpha position={[0, t.y - 1 + vestBox[1] / 2, 0]} />}
         {vest && <Box size={vestBox} faces={vestF} painted={painted} alpha position={[0, t.y - 1 + vestBox[1] / 2, 0]} />}
         {/* 企領（有領上衣先有；前面開口） */}
@@ -484,7 +491,15 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
             ) : (
               <Box size={[B.leg.w, body.legH, B.leg.d]} faces={legs.trousers} painted={painted} position={[s * L.legX, (B.leg.y + B.leg.top) / 2, 0]} />
             )}
-            <Box size={[B.shoe.w, B.shoe.h, B.shoe.d]} faces={body.shoe} painted={painted} position={[s * L.legX, B.shoe.h / 2, B.shoe.z]} />
+            {body.pump ? (
+              <group position={[s * L.legX, 0, B.shoe.z]}>
+                {body.pump.map((q) => (
+                  <Box key={q.part} size={q.size} faces={body.pumpF[q.kind]} painted={painted} position={q.pos} rotation={q.rot} />
+                ))}
+              </group>
+            ) : (
+              <Box size={[B.shoe.w, B.shoe.h, B.shoe.d]} faces={body.shoe} painted={painted} position={[s * L.legX, B.shoe.h / 2, B.shoe.z]} />
+            )}
           </group>
         ))}
         {venture && skirt && <Box size={legs.skirtSize} faces={legs.skirtF} painted={painted} position={[0, (shortsBottom + B.leg.top) / 2, 0]} />}

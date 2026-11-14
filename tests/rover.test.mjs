@@ -5,7 +5,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import * as THREE from 'three';
 import { validateRules, garmentsFor, variantOf } from '../src/data/validate.js';
 import { placeAll, placeFor, visible, shownReason, sleeveFace, hasSweater } from '../src/three/badgeLayout.js';
-import { layout, strapLayout, neckerLayout, ROVER_VARIANTS, VENTURE_VARIANTS, roverVariant, isSenior, COLOURS, VEST_T, SWEATER_TOP } from '../src/three/body.js';
+import { layout, strapLayout, neckerLayout, ROVER_VARIANTS, VENTURE_VARIANTS, roverVariant, isSenior, pumpParts, COLOURS, VEST_T, SWEATER_TOP } from '../src/three/body.js';
 
 const read = (p) => JSON.parse(readFileSync(new URL(`../${p}`, import.meta.url), 'utf8'));
 const rover = read('src/data/rover_rules_v1.0.json');
@@ -142,7 +142,7 @@ test('樂行童軍三款制服：深綠色軟帽；海款白頂帽 + 深資／�
   const sea = garmentsFor(rover, 'sea');
   assert.match(sea.find((g) => g.id === 'hat').zh.rule, /樂行海童軍帽章/);
   assert.match(sea.find((g) => g.id === 'shirt').zh.rule, /白色/);
-  assert.ok(rover.conflicts.some((c) => c.id === 'capBadge'), '綱要「成員帽章」同手冊「童軍帽章」唔同：列待確認');
+  assert.ok(rover.review.userChecks.some((u) => u.item === 'capBadge'), '綱要「成員帽章」同手冊「童軍帽章」唔同：用戶確認跟手冊');
 });
 
 test('下身（手冊 P.42–47、P.51；綱要 P.11）：女半截裙配襪褲 + 非綁帶中跟皮鞋；長褲配黑襪 + 綁帶', () => {
@@ -180,5 +180,72 @@ test('制服毛衣（手冊 P.121–122）：只戴會員章、香港章、旅�
   assert.equal(ROVER_VARIANTS.land.sweater, COLOURS.sweaterGreen);
   assert.equal(ROVER_VARIANTS.sea.sweater, COLOURS.sweaterNavy);
   assert.equal(ROVER_VARIANTS.air.sweater, COLOURS.sweaterNavy);
-  assert.ok(rover.conflicts.some((c) => c.id === 'roverSeaAirSweater'), '樂行海／空童軍深藍毛衣：待確認');
+  assert.ok(rover.review.userChecks.some((u) => u.item === 'roverSeaAirSweater'), '樂行海／空童軍深藍毛衣：用戶確認');
+});
+
+test('地域章／區章只得一個（例：銀禧區冇地域章）就放中間（用戶指示）；兩個都有就照手冊並排', () => {
+  for (const r of [rover, venture, read('src/data/scout_rules_v1.0.json'), read('src/data/cub_rules_v1.0.json')]) {
+    const all = placeFor(r, OUTFIT);
+    const st = { ...ALL_ON, patrol: true, epaulette: r.section.id === 'venture' ? 'venture' : 'rover' };
+    const both = visible(all, st, { invested: true });
+    assert.ok(by(both, 'region').u > 0 && by(both, 'district').u < 0, `${r.section.id} 兩個都有：地域章前、區章後`);
+    const noRegion = visible(all, st, { invested: true, unavailable: ['region'] });
+    assert.equal(by(noRegion, 'region'), undefined);
+    assert.equal(by(noRegion, 'district').u, 0, `${r.section.id} 冇地域章：區章放中間`);
+    assert.equal(by(noRegion, 'district').v, by(both, 'district').v, '高度唔變');
+    const offDistrict = visible(all, { ...st, district: false }, { invested: true });
+    assert.equal(by(offDistrict, 'region').u, 0, '只得地域章：都放中間');
+    assert.ok(all.find((p) => p.id === 'district').u < 0, '原本嘅位置資料唔改');
+  }
+});
+
+test('肩帶同肩章去到膊頭（袖頂外邊，用戶指正）', () => {
+  for (const sec of ['venture', 'rover']) {
+    for (const g of ['boy', 'girl']) {
+      const L = layout(g, sec);
+      const S = strapLayout(L);
+      const tip = L.armX + L.B.sleeve.w / 2;
+      assert.ok(S.outer > L.B.torso.w / 2 + 3, '肩帶出咗身邊、蓋住袖頂');
+      assert.ok(S.outer <= tip && S.outer >= tip - 0.5, '肩帶去到膊頭');
+      const eps = placeAll(sec === 'rover' ? rover : venture, g).filter((p) => p.id === 'epaulette');
+      for (const p of eps) assert.ok(Math.abs(p.x) + p.w / 2 >= tip - 1, '肩章方頭貼住膊頭');
+      const SW = strapLayout(L, { sweater: true });
+      assert.ok(Math.abs(SW.boxY - SW.boxT / 2 - L.top) < 1e-9, '著毛衣：肩帶盒由膊頭起，袖頂冇隙');
+      assert.ok(Math.abs(SW.boxY + SW.boxT / 2 - (SW.base + SW.t)) < 1e-9);
+    }
+  }
+});
+
+test('非綁帶中跟皮鞋：方塊砌，腳弓位係空，鞋面見到襪褲（用戶指正）', () => {
+  const B = layout('girl', 'rover').B;
+  const parts = pumpParts(B.shoe);
+  const kinds = new Set(parts.map((p) => p.kind));
+  assert.deepEqual([...kinds].sort(), ['shoe', 'tights']);
+  const heel = parts.find((p) => p.part === 'heel');
+  const fore = parts.find((p) => p.part === 'fore');
+  const arch = parts.find((p) => p.part === 'arch');
+  // 中跟同鞋掌之間：地面上冇未轉角嘅方塊；腳弓斜落去，中間離地
+  const heelFront = heel.pos[2] + heel.size[2] / 2;
+  const foreBack = fore.pos[2] - fore.size[2] / 2;
+  assert.ok(foreBack - heelFront > 8, '腳弓位有成 8 cm 長');
+  const mid = (heelFront + foreBack) / 2;
+  for (const p of parts.filter((q) => !q.rot)) {
+    const z0 = p.pos[2] - p.size[2] / 2, z1 = p.pos[2] + p.size[2] / 2;
+    if (z0 < mid && z1 > mid) assert.ok(p.pos[1] - p.size[1] / 2 > 2, `${p.part} 唔可以塞住腳弓位`);
+  }
+  const archBottomAtMid = arch.pos[1] - arch.size[1] / 2 / Math.cos(arch.rot[0]);
+  assert.ok(archBottomAtMid > 1, '腳弓中間離地（有窿）');
+  assert.ok(arch.rot[0] > 0.1, '腳弓由中跟斜落鞋掌');
+  // 鞋面見到襪褲：腳趾面高過鞋頭黑色
+  const toes = parts.find((p) => p.part === 'toes');
+  assert.ok(toes.pos[1] + toes.size[1] / 2 > fore.size[1] + 1, '腳趾面見到肉色');
+  for (const p of parts) assert.ok(p.pos[1] + p.size[1] / 2 <= B.shoe.h + 0.6, `${p.part} 唔可以高過鞋`);
+});
+
+test('用戶確認：帽章、樂行海／空童軍毛衣、領帶宣誓後先戴、身形；唔再係待確認', () => {
+  for (const id of ['capBadge', 'roverSeaAirSweater', 'tieInvestiture', 'figure']) {
+    assert.ok(!rover.conflicts.some((c) => c.id === id), `${id} 唔再係衝突`);
+    assert.ok(rover.review.userChecks.some((u) => u.item === id), `${id} 記錄喺 userChecks`);
+  }
+  assert.ok(!/待確認|to be confirmed/.test(JSON.stringify(rover)));
 });

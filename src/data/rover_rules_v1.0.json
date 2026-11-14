@@ -40,6 +40,54 @@
         "item": "skirtShoes",
         "zh": "女團員著半截裙時配肉色襪褲、黑色非綁帶中跟皮鞋；著長褲配黑襪、綁帶皮鞋（用戶喺深資童軍提醒；樂行童軍手冊 P.42、P.44、P.46 同綱要 P.11 寫法一樣）",
         "en": "Girls in the skirt wear flesh-coloured tights and black non-laced medium-heel shoes; with trousers, black socks and laced shoes (user reminder for Venture Scouts; the Rover Scout pages, Handbook pp.42, 44, 46 and Training Scheme p.11, say the same)"
+      },
+      {
+        "date": "2026-11-14",
+        "item": "lonePairCentred",
+        "zh": "地域章／區章只得一個（例如銀禧區）就放中間；之後只得一個總會章嘅制服都係（用戶指示）",
+        "en": "If only one of the Region/District Badges is worn (e.g. Silver Jubilee) it is centred; the same later for uniforms with a single HQ badge (user instruction)"
+      },
+      {
+        "date": "2026-11-14",
+        "item": "strapToShoulder",
+        "zh": "肩帶同肩章要一直去到膊頭（袖頂外邊），唔係停喺身邊（用戶指正）",
+        "en": "The shoulder strap and epaulette run all the way to the shoulder point (outer edge of the sleeve top), not stopping at the body edge (user correction)"
+      },
+      {
+        "date": "2026-11-14",
+        "item": "pumpShape",
+        "zh": "非綁帶中跟皮鞋：鞋底腳弓位留空、鞋面見多啲肉色襪褲，唔用轉色表達中跟（用戶指正）",
+        "en": "Non-laced medium-heel shoes: hollow under the arch and more of the tights showing on top, not a colour change for the heel (user correction)"
+      },
+      {
+        "date": "2026-11-14",
+        "item": "skirtNoSeam",
+        "zh": "半截裙中間唔可以有線（會似短褲）（用戶指正）",
+        "en": "No centre line on the skirt (it looks like shorts) (user correction)"
+      },
+      {
+        "date": "2026-11-14",
+        "item": "capBadge",
+        "zh": "帽章跟手冊（童軍帽章），唔跟綱要「成員帽章」（用戶確認）",
+        "en": "Cap badge follows the Handbook (Scout cap badge), not the Training Scheme’s “member’s cap badge” (user confirmed)"
+      },
+      {
+        "date": "2026-11-14",
+        "item": "roverSeaAirSweater",
+        "zh": "樂行海童軍、樂行空童軍穿深藍色制服毛衣（用戶確認）",
+        "en": "Rover Sea and Rover Air Scouts wear the dark blue uniform jersey (user confirmed)"
+      },
+      {
+        "date": "2026-11-14",
+        "item": "tieInvestiture",
+        "zh": "領帶同旅巾一樣，宣誓後先戴（用戶確認）",
+        "en": "The tie, like the neckerchief, is worn only after investiture (user confirmed)"
+      },
+      {
+        "date": "2026-11-14",
+        "item": "figure",
+        "zh": "身形沿用深資童軍 168 cm 方塊人（用戶確認）",
+        "en": "The figure reuses the 168 cm Venture Scout blocky figure (user confirmed)"
       }
     ]
   },
@@ -95,8 +143,8 @@
       ],
       "status": "documented",
       "modelNote": {
-        "zh": "手冊 P.42、P.102 寫「童軍帽章」；綱要 P.10–11 寫「成員帽章」。模型跟手冊（同深資空童軍嘅做法一樣，待確認）。帽章圖案取自手冊 P.102 相片；方塊人嘅軟帽只係示意形狀。",
-        "en": "Handbook pp.42, 102 say “Scout cap badge”; Training Scheme pp.10–11 says “member’s cap badge”. The model follows the Handbook (as done for Venture Air Scouts; to be confirmed). Cap badge artwork from the Handbook p.102 photo; the blocky beret is only an indicative shape."
+        "zh": "手冊 P.42、P.102 寫「童軍帽章」；綱要 P.10–11 寫「成員帽章」。模型跟手冊（用戶確認）。帽章圖案取自手冊 P.102 相片；方塊人嘅軟帽只係示意形狀。",
+        "en": "Handbook pp.42, 102 say “Scout cap badge”; Training Scheme pp.10–11 says “member’s cap badge”. The model follows the Handbook (user confirmed). Cap badge artwork from the Handbook p.102 photo; the blocky beret is only an indicative shape."
       }
     },
     {
@@ -143,8 +191,8 @@
       ],
       "status": "documented",
       "modelNote": {
-        "zh": "模型預設半截裙，女團員可以喺服裝分頁改長褲。",
-        "en": "The model defaults to the skirt; girls can switch to trousers in the Outfit tab."
+        "zh": "模型預設半截裙（一件過，中間冇線），女團員可以喺服裝分頁改長褲。",
+        "en": "The model defaults to the skirt (one piece, no centre line); girls can switch to trousers in the Outfit tab."
       }
     },
     {
@@ -217,8 +265,8 @@
       ],
       "status": "documented",
       "modelNote": {
-        "zh": "半截裙配非綁帶中跟皮鞋：鞋面開口見到襪褲、後面畫中跟示意；長褲配綁帶皮鞋。",
-        "en": "With the skirt: non-laced medium-heel shoes, drawn with an open vamp showing the tights and a heel block; with trousers: laced shoes."
+        "zh": "半截裙配非綁帶中跟皮鞋：用方塊砌，後面一舊中跟、前面鞋掌貼地，中間腳弓位係空；鞋面開口大，見到肉色襪褲，黑色只係鞋邊同鞋頭（用戶指正）。長褲配綁帶皮鞋。",
+        "en": "With the skirt: non-laced medium-heel shoes built from blocks — a heel block at the back, the sole on the ground at the front and a hollow under the arch; a wide opening shows the flesh-coloured tights, with black only round the edge and toe (user correction). With trousers: laced shoes."
       }
     },
     {
@@ -269,8 +317,8 @@
       ],
       "status": "documented",
       "modelNote": {
-        "zh": "同旅巾一樣，宣誓後先戴（跟深資童軍用戶確認嘅做法，待確認）。",
-        "en": "Like the neckerchief, worn only after investiture (following what the user confirmed for Venture Scouts; to be confirmed)."
+        "zh": "同旅巾一樣，宣誓後先戴（用戶確認）。",
+        "en": "Like the neckerchief, worn only after investiture (user confirmed)."
       }
     },
     {
@@ -432,8 +480,8 @@
           ],
           "status": "documented",
           "modelNote": {
-            "zh": "同旅巾一樣，宣誓後先戴（跟深資童軍用戶確認嘅做法，待確認）。",
-            "en": "Like the neckerchief, worn only after investiture (following what the user confirmed for Venture Scouts; to be confirmed)."
+            "zh": "同旅巾一樣，宣誓後先戴（用戶確認）。",
+            "en": "Like the neckerchief, worn only after investiture (user confirmed)."
           }
         },
         {
@@ -454,8 +502,8 @@
           ],
           "status": "documented",
           "modelNote": {
-            "zh": "手冊 P.121：海童軍／空童軍青少年成員穿深藍色制服毛衣；樂行海童軍、樂行空童軍跟深資海／空童軍（用戶確認）一樣當係，待確認。毛衣畫做長袖、坑紋、圓領（見到恤衫領）、膊頭淺色膊布（手冊 P.121–122 附圖）。徽章「或制服毛衣相同位置」：位置同恤衫一樣，向外移一個毛衣厚度。",
-            "en": "Handbook p.121: Sea/Air Scout youth members wear the dark blue jersey; Rover Sea and Rover Air Scouts are treated the same as Venture Sea/Air Scouts (user confirmed for those), to be confirmed. The jersey is drawn long-sleeved and ribbed, with a crew neck (shirt collar showing) and lighter shoulder patches (Handbook pp.121–122 figures). Badges go in “the same position on the uniform jersey”: the shirt positions, moved out by the jersey thickness."
+            "zh": "手冊 P.121：海童軍／空童軍青少年成員穿深藍色制服毛衣；樂行海童軍、樂行空童軍都係（用戶確認）。毛衣畫做長袖、坑紋、圓領（見到恤衫領）、膊頭淺色膊布（手冊 P.121–122 附圖）。徽章「或制服毛衣相同位置」：位置同恤衫一樣，向外移一個毛衣厚度。",
+            "en": "Handbook p.121: Sea/Air Scout youth members wear the dark blue jersey; Rover Sea and Rover Air Scouts are included (user confirmed). The jersey is drawn long-sleeved and ribbed, with a crew neck (shirt collar showing) and lighter shoulder patches (Handbook pp.121–122 figures). Badges go in “the same position on the uniform jersey”: the shirt positions, moved out by the jersey thickness."
           }
         }
       ]
@@ -503,8 +551,8 @@
           ],
           "status": "documented",
           "modelNote": {
-            "zh": "手冊 P.46、P.102 寫「童軍帽章」；綱要 P.10–11 寫「成員帽章」。模型跟手冊（同深資空童軍嘅做法一樣，待確認）。帽章圖案取自手冊 P.102 相片；方塊人嘅軟帽只係示意形狀。",
-            "en": "Handbook pp.46, 102 say “Scout cap badge”; Training Scheme pp.10–11 says “member’s cap badge”. The model follows the Handbook (as done for Venture Air Scouts; to be confirmed). Cap badge artwork from the Handbook p.102 photo; the blocky beret is only an indicative shape."
+            "zh": "手冊 P.46、P.102 寫「童軍帽章」；綱要 P.10–11 寫「成員帽章」。模型跟手冊（用戶確認）。帽章圖案取自手冊 P.102 相片；方塊人嘅軟帽只係示意形狀。",
+            "en": "Handbook pp.46, 102 say “Scout cap badge”; Training Scheme pp.10–11 says “member’s cap badge”. The model follows the Handbook (user confirmed). Cap badge artwork from the Handbook p.102 photo; the blocky beret is only an indicative shape."
           }
         },
         {
@@ -573,8 +621,8 @@
           ],
           "status": "documented",
           "modelNote": {
-            "zh": "同旅巾一樣，宣誓後先戴（跟深資童軍用戶確認嘅做法，待確認）。",
-            "en": "Like the neckerchief, worn only after investiture (following what the user confirmed for Venture Scouts; to be confirmed)."
+            "zh": "同旅巾一樣，宣誓後先戴（用戶確認）。",
+            "en": "Like the neckerchief, worn only after investiture (user confirmed)."
           }
         },
         {
@@ -595,8 +643,8 @@
           ],
           "status": "documented",
           "modelNote": {
-            "zh": "手冊 P.121：海童軍／空童軍青少年成員穿深藍色制服毛衣；樂行海童軍、樂行空童軍跟深資海／空童軍（用戶確認）一樣當係，待確認。毛衣畫做長袖、坑紋、圓領（見到恤衫領）、膊頭淺色膊布（手冊 P.121–122 附圖）。徽章「或制服毛衣相同位置」：位置同恤衫一樣，向外移一個毛衣厚度。",
-            "en": "Handbook p.121: Sea/Air Scout youth members wear the dark blue jersey; Rover Sea and Rover Air Scouts are treated the same as Venture Sea/Air Scouts (user confirmed for those), to be confirmed. The jersey is drawn long-sleeved and ribbed, with a crew neck (shirt collar showing) and lighter shoulder patches (Handbook pp.121–122 figures). Badges go in “the same position on the uniform jersey”: the shirt positions, moved out by the jersey thickness."
+            "zh": "手冊 P.121：海童軍／空童軍青少年成員穿深藍色制服毛衣；樂行海童軍、樂行空童軍都係（用戶確認）。毛衣畫做長袖、坑紋、圓領（見到恤衫領）、膊頭淺色膊布（手冊 P.121–122 附圖）。徽章「或制服毛衣相同位置」：位置同恤衫一樣，向外移一個毛衣厚度。",
+            "en": "Handbook p.121: Sea/Air Scout youth members wear the dark blue jersey; Rover Sea and Rover Air Scouts are included (user confirmed). The jersey is drawn long-sleeved and ribbed, with a crew neck (shirt collar showing) and lighter shoulder patches (Handbook pp.121–122 figures). Badges go in “the same position on the uniform jersey”: the shirt positions, moved out by the jersey thickness."
           }
         }
       ]
@@ -818,8 +866,8 @@
         "example": true
       },
       "modelNote": {
-        "zh": "圖案跟「區章」揀咗嘅區自動轉做所屬地域；未揀區就用手冊 P.168 示例色塊。總會總部屬下嘅區（例如銀禧區）網頁冇列地域章，模型唔顯示。手冊 P.171 附圖喺旅章同地域／區章中間多咗「樂行童軍急救章」（考獲先有）；呢版只做必備章，所以照 P.95 文字：地域章、區章喺旅章下 2 cm。",
-        "en": "The artwork follows the Region of the District picked under District Badge; with no District picked it uses the Handbook p.168 example block. Districts under AHQ (e.g. Silver Jubilee) have no Region Badge on the web page, so none is shown. The Handbook p.171 figure has the Rover Scout First Aid Badge (earned) between the Group Badge and the Region/District Badges; this version shows required badges only, so it follows the p.95 text: Region and District Badges 2 cm below the Group Badge."
+        "zh": "圖案跟「區章」揀咗嘅區自動轉做所屬地域；未揀區就用手冊 P.168 示例色塊。總會總部屬下嘅區（例如銀禧區）網頁冇列地域章，模型唔顯示。手冊 P.171 附圖喺旅章同地域／區章中間多咗「樂行童軍急救章」（考獲先有）；呢版只做必備章，所以照 P.95 文字：地域章、區章喺旅章下 2 cm。只得一個（例如總會總部屬下嘅銀禧區冇地域章，或者熄咗其中一個）就放喺旅章下面中間（用戶指示）。",
+        "en": "The artwork follows the Region of the District picked under District Badge; with no District picked it uses the Handbook p.168 example block. Districts under AHQ (e.g. Silver Jubilee) have no Region Badge on the web page, so none is shown. The Handbook p.171 figure has the Rover Scout First Aid Badge (earned) between the Group Badge and the Region/District Badges; this version shows required badges only, so it follows the p.95 text: Region and District Badges 2 cm below the Group Badge. When only one of the pair is worn (e.g. Silver Jubilee District under AHQ has no Region Badge, or one is switched off) it goes centred below the Group Badge (user instruction)."
       },
       "sweater": false
     },
@@ -876,8 +924,8 @@
         "example": true
       },
       "modelNote": {
-        "zh": "可以揀全港所有區（香港童軍總會網頁「地域及區」）；未揀區就用手冊示例色塊。",
-        "en": "Every District can be picked (SAHK “Regions and Districts” page); with none picked it uses the handbook example block."
+        "zh": "可以揀全港所有區（香港童軍總會網頁「地域及區」）；未揀區就用手冊示例色塊。只得一個（例如總會總部屬下嘅銀禧區冇地域章，或者熄咗其中一個）就放喺旅章下面中間（用戶指示）。",
+        "en": "Every District can be picked (SAHK “Regions and Districts” page); with none picked it uses the handbook example block. When only one of the pair is worn (e.g. Silver Jubilee District under AHQ has no Region Badge, or one is switched off) it goes centred below the Group Badge (user instruction)."
       },
       "sweater": false
     },
@@ -929,8 +977,8 @@
         "example": false
       },
       "modelNote": {
-        "zh": "手冊冇寫尺寸；模型用 9 × 3.8 cm（手冊 P.145 圖案比例，同深資童軍肩章一樣），套喺肩帶上：方角、有徽號同「ROVERS」字嗰頭近膊頭，圓頭近衣領（P.145、P.171 附圖）。圖案取自手冊 P.145（細圖放大）。三款制服都係深綠色肩章（P.171「包括樂行海童軍及樂行空童軍」）。",
-        "en": "No size in the Handbook; the model uses 9 × 3.8 cm (proportions of the Handbook p.145 artwork, same as the Venture Scout Epaulettes), slid onto the shoulder strap with the square end bearing the emblem and “ROVERS” at the shoulder and the rounded end at the collar (pp.145, 171 figures). Artwork from Handbook p.145 (a small image enlarged). All three uniforms use the dark green epaulettes (p.171 “including Rover Sea Scouts and Rover Air Scouts”)."
+        "zh": "手冊冇寫尺寸；模型用 9 × 3.8 cm（手冊 P.145 圖案比例，同深資童軍肩章一樣），套喺肩帶上：肩帶由衣領一直去到膊頭（袖頂外邊，用戶指正）；肩章方角、有徽號同「ROVERS」字嗰頭近膊頭，圓頭近衣領（P.145、P.171 附圖）。圖案取自手冊 P.145（細圖放大）。三款制服都係深綠色肩章（P.171「包括樂行海童軍及樂行空童軍」）。",
+        "en": "No size in the Handbook; the model uses 9 × 3.8 cm (proportions of the Handbook p.145 artwork, same as the Venture Scout Epaulettes), the strap runs from the collar all the way to the shoulder point (outer edge of the sleeve top, user correction); slid onto the strap with the square end bearing the emblem and “ROVERS” at the shoulder and the rounded end at the collar (pp.145, 171 figures). Artwork from Handbook p.145 (a small image enlarged). All three uniforms use the dark green epaulettes (p.171 “including Rover Sea Scouts and Rover Air Scouts”)."
       },
       "choices": [
         {
@@ -1065,26 +1113,6 @@
       "id": "regionDistrictFigure",
       "zh": "地域章／區章：手冊 P.95 文字「地域章在前，區章在後」，P.171 附圖一致；附圖喺旅章下面先有急救章（考獲先有），模型冇急救章，所以照 P.95 喺旅章下 2 cm。",
       "en": "Region/District: Handbook p.95 says Region in front, District behind, and the p.171 figure agrees; the figure has the (earned) First Aid Badge under the Group Badge, which the model omits, so it follows p.95 — 2 cm below the Group Badge."
-    },
-    {
-      "id": "capBadge",
-      "zh": "帽章：手冊 P.42、P.46、P.102 寫樂行童軍／樂行空童軍戴「童軍帽章」，綱要 P.10–11 寫「成員帽章」。模型跟手冊（同深資空童軍嘅用戶決定一樣），待確認。",
-      "en": "Cap badge: Handbook pp.42, 46, 102 say Rover / Rover Air Scouts wear the “Scout cap badge”; Training Scheme pp.10–11 says “member’s cap badge”. The model follows the Handbook (as the user decided for Venture Air Scouts); to be confirmed."
-    },
-    {
-      "id": "roverSeaAirSweater",
-      "zh": "制服毛衣：手冊 P.121 寫海童軍／空童軍青少年成員穿深藍色；模型當樂行海／空童軍都係（同深資海／空童軍一樣），待確認。",
-      "en": "Uniform jersey: Handbook p.121 says Sea/Air Scout youth members wear dark blue; the model applies this to Rover Sea/Air Scouts (as for Venture Sea/Air Scouts); to be confirmed."
-    },
-    {
-      "id": "tieInvestiture",
-      "zh": "領帶：手冊冇講宣誓前可唔可以戴；模型跟深資童軍（用戶確認）一樣，宣誓後先戴，待確認。",
-      "en": "Tie: the Handbook does not say whether it may be worn before investiture; the model follows the Venture Scout rule (user confirmed): only after investiture; to be confirmed."
-    },
-    {
-      "id": "figure",
-      "zh": "身形：樂行童軍 18–26 歲；模型沿用深資童軍嘅 168 cm 方塊人（擺位全部以 cm 計，同手冊附圖一致）。",
-      "en": "Figure: Rover Scouts are 18–26; the model reuses the 168 cm Venture Scout blocky figure (all placements are in cm and match the handbook figure)."
     }
   ],
   "artCredit": {

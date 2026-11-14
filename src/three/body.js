@@ -213,10 +213,50 @@ export function strapLayout(L, { sweater = false } = {}) {
   const { B, top } = L;
   const S = B.strap;
   if (!S) return null;
-  const outer = B.torso.w / 2 + (sweater ? VEST_T : 0); // 膊頭邊
+  const outer = shoulderTip(L); // 膊頭（袖頂外邊）：肩帶一直去到膊頭（用戶指正）
   const inner = B.neck.w / 2 + 1.75; // 衣領外圍
   const base = top + (sweater ? SWEATER_TOP : 0);
-  return { w: S.w, t: S.t, outer, inner, len: outer - inner, base, y: base + S.t / 2, cx: (outer + inner) / 2 };
+  // 著毛衣：肩帶面高過膊頭 SWEATER_TOP；盒向下加厚到膊頭，袖頂上面唔會有隙
+  const t = S.t + (base - top);
+  return { w: S.w, t: S.t, outer, inner, len: outer - inner, base, y: base + S.t / 2, cx: (outer + inner) / 2, boxT: t, boxY: top + t / 2 };
+}
+
+/** 膊頭：袖頂外邊離中線幾遠（cm）；留 0.3 cm 唔好出咗袖邊 */
+export const shoulderTip = (L) => L.armX + L.B.sleeve.w / 2 - 0.3;
+
+/**
+ * 非綁帶中跟皮鞋（深資／樂行女團員配半截裙）：用幾舊方塊砌，唔係淨係轉色（用戶指正）。
+ * - 後面一舊中跟，前面鞋掌貼地；中間腳弓位係空（側面望到個窿）。
+ * - 鞋面開口大：腳面同腳趾見到肉色襪褲，黑色只係鞋邊同鞋頭一圈。
+ * 回傳 [{ part, kind: 'shoe'|'tights', size, pos, rot }]，pos 以鞋中心（z = 0）計，y = 離地。
+ */
+export function pumpParts({ w, h, d }) {
+  const zb = -d / 2, zf = d / 2;
+  const fw = w - 1.6; // 隻腳（襪褲）窄過鞋
+  const heelTop = h * 0.6; // 中跟高
+  const heelD = d * 0.16;
+  const heelFront = zb + 0.3 + heelD;
+  const foreLen = d * 0.36; // 鞋掌（貼地）
+  const foreZ = zf - foreLen;
+  const vampTop = h * 0.48; // 鞋頭黑色去到幾高
+  const toeTop = h * 0.67; // 腳趾面
+  const counterTop = h * 0.92; // 後踭鞋身
+  // 腳弓：由中跟頂斜落去鞋掌（中線兩端）
+  const archT = 2;
+  const [z0, y0, z1, y1] = [heelFront, heelTop - 0.5, foreZ, 1.2];
+  const ang = Math.atan2(y0 - y1, z1 - z0); // rotation.x 正 = 前面向下
+  const len = Math.hypot(z1 - z0, y0 - y1) + 1;
+  const cz = (z0 + z1) / 2, cy = (y0 + y1) / 2;
+  const up = archT / 2 + 1.3; // 腳面（襪褲）喺腳弓上面
+  return [
+    { part: 'heel', kind: 'shoe', size: [w * 0.5, heelTop, heelD], pos: [0, heelTop / 2, zb + 0.3 + heelD / 2] },
+    { part: 'counter', kind: 'shoe', size: [w, counterTop - heelTop + 0.4, d * 0.3], pos: [0, (heelTop - 0.4 + counterTop) / 2, zb + d * 0.15] },
+    { part: 'arch', kind: 'shoe', size: [w, archT, len], pos: [0, cy, cz], rot: [ang, 0, 0] },
+    { part: 'fore', kind: 'shoe', size: [w, vampTop, foreLen], pos: [0, vampTop / 2, foreZ + foreLen / 2] },
+    { part: 'ankle', kind: 'tights', size: [fw, h - heelTop + 0.4, d * 0.34], pos: [0, (heelTop - 0.4 + h) / 2, zb + 0.5 + d * 0.17] },
+    { part: 'instep', kind: 'tights', size: [fw, 2.6, len - 1], pos: [0, cy + up * Math.cos(ang), cz + up * Math.sin(ang)], rot: [ang, 0, 0] },
+    { part: 'toes', kind: 'tights', size: [fw, toeTop - 1.6, foreLen - 1], pos: [0, (1.6 + toeTop) / 2, foreZ + (foreLen - 1) / 2] },
+  ];
 }
 
 /** 計出每個部件嘅大細同位置（cm）。 */

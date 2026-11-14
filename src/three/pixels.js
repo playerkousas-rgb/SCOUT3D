@@ -235,7 +235,14 @@ export function sleeveFaces(size, band, top = 'orange', colour = C.shirt, long =
     }
     g.rect(0, h - cuff, ww, cuff, P.trim);
   };
-  return boxFaces([w, h, d], { px: f(d), nx: f(d), pz: f(w), nz: f(w), py: () => {}, ny: (g) => g.fill(long ? P.main : P.trim) }, P.main);
+  // 恤衫肩帶（幼童軍、童軍、深資、樂行）由衣領一直去到膊頭：袖頂都要畫埋（用戶指正）
+  const strap = top === 'cub'
+    ? (g) => {
+        g.rect(0, d / 2 - 2, w, 4, P.dark);
+        g.rect(0, d / 2 - 1.6, w, 3.2, shade(P.main, 1.02));
+      }
+    : () => {};
+  return boxFaces([w, h, d], { px: f(d), nx: f(d), pz: f(w), nz: f(w), py: strap, ny: (g) => g.fill(long ? P.main : P.trim) }, P.main);
 }
 
 /** 長袖下截（前臂），手腕有袖口 */
@@ -329,6 +336,14 @@ export function shortsFaces(size, colour) {
   return boxFaces(size, { px: f(d), nx: f(d), pz: (g) => { f(w)(g); g.rect(w / 2 - 0.25, 0, 0.5, h - 1.5, dark); }, nz: f(w), ny: (g) => g.fill(dark) }, colour);
 }
 
+/** 半截裙（深資／樂行女團員）：一件過、冇中線（有中線會似短褲，用戶指正）；只畫裙腳摺邊 */
+export function skirtFaces(size, colour) {
+  const [w, h, d] = size;
+  const dark = shade(colour, 0.82);
+  const hem = (ww) => (g) => g.rect(0, h - 1.5, ww, 1.5, dark);
+  return boxFaces(size, { px: hem(d), nx: hem(d), pz: hem(w), nz: hem(w), ny: (g) => g.fill(dark) }, colour);
+}
+
 /** 小腿：皮膚 + 襪（sockH = 襪由腳底量起幾高，cm） */
 export function shinFaces(size, sockH, sockColour) {
   const [w, h, d] = size;
@@ -341,23 +356,18 @@ export function shinFaces(size, sockH, sockColour) {
   return boxFaces(size, { px: f(d), nx: f(d), pz: f(w), nz: f(w), ny: (g) => g.fill(sockColour) }, C.skin);
 }
 
-export function shoeFaces(size, { colour = C.shoe, sole: soleC = C.sole, lace = C.lace, pump = null } = {}) {
+export function shoeFaces(size, { colour = C.shoe, sole: soleC = C.sole, lace = C.lace } = {}) {
   const [w, h, d] = size;
   const sole = (ww) => (g) => g.rect(0, h - 1.5, ww, 1.5, soleC);
-  // pump = 襪褲色：非綁帶中跟皮鞋（深資童軍女團員配半截裙，手冊 P.36）— 鞋面開口見到襪褲、後面中跟
-  // 側面 u 方向：+x 面由前（+z）到後；-x 面由後到前
-  const heelC = '#3c3c44'; // 中跟（淺少少，同鞋身分得開）
-  const heel = (back) => (g) => { sole(d)(g); g.rect(back ? d - 4 : 0, h - 3.5, 4, 3.5, heelC); };
+  // 非綁帶中跟皮鞋（深資／樂行女團員配半截裙）唔用呢個：Blocky 用 body.js pumpParts() 砌
   return boxFaces(
     size,
     {
-      px: pump ? heel(true) : sole(d),
-      nx: pump ? heel(false) : sole(d),
+      px: sole(d),
+      nx: sole(d),
       pz: sole(w),
-      nz: pump ? (g) => g.rect(0, h - 3.5, w, 3.5, heelC) : sole(w),
-      py: pump
-        ? (g) => g.shape((x, y) => ((x - w / 2) / (w * 0.32)) ** 2 + ((y - d * 0.52) / (d * 0.2)) ** 2 < 1, pump)
-        : (g) => { for (let i = 0; i < 4; i++) g.rect(w / 2 - 2, d * 0.45 + i * 1.5, 4, 0.5, lace); },
+      nz: sole(w),
+      py: (g) => { for (let i = 0; i < 4; i++) g.rect(w / 2 - 2, d * 0.45 + i * 1.5, 4, 0.5, lace); },
       ny: (g) => g.fill(soleC),
     },
     colour,
@@ -379,7 +389,7 @@ function drawCollar(g, cx, nw, fill, outline) {
  * 幼童軍恤衫（塞入褲）：杏色、兩胸袋、肩帶、門襟鈕；
  * 上身方塊最底嗰截畫做短褲 + 棕色皮帶（belt = 皮帶中心離衫腳幾高，cm）。
  */
-export function cubTorsoFaces(B, { legColour = C.cubGreen, shirt = C.cubShirt } = {}) {
+export function cubTorsoFaces(B, { legColour = C.cubGreen, shirt = C.cubShirt, skirt = false } = {}) {
   const { w, h, d } = B.torso;
   const P = shirtPalette('cub', shirt);
   const nw = B.neck.w, cx = w / 2;
@@ -393,7 +403,7 @@ export function cubTorsoFaces(B, { legColour = C.cubGreen, shirt = C.cubShirt } 
     if (front) {
       g.rect(cx - 2.5, beltMid - 2, 5, 4, C.buckle); // 皮帶扣（示意）
       g.rect(cx - 1.8, beltMid - 1.3, 3.6, 2.6, shade(C.buckle, 0.82));
-      g.rect(cx - 0.25, beltMid + beltH / 2, 0.5, h, shade(legColour, 0.85)); // 褲頭中線
+      if (!skirt) g.rect(cx - 0.25, beltMid + beltH / 2, 0.5, h, shade(legColour, 0.85)); // 褲頭中線（半截裙冇）
     } else {
       for (const x of [ww * 0.2, ww * 0.8]) g.rect(x - 0.5, beltMid - beltH / 2, 1, beltH, shade(C.belt, 0.8)); // 褲耳
     }
@@ -435,7 +445,8 @@ export function cubTorsoFaces(B, { legColour = C.cubGreen, shirt = C.cubShirt } 
           const x0 = sx < 0 ? 0 : cx + nw / 2 + 2.5;
           const len = cx - nw / 2 - 2.5;
           g.rect(x0, d / 2 - 2, len, 4, P.dark);
-          g.rect(x0 + 0.3, d / 2 - 1.6, len - 0.6, 3.2, shade(P.main, 1.02));
+          // 膊頭嗰頭唔畫邊：肩帶繼續去到袖頂（膊頭）
+          g.rect(sx < 0 ? x0 : x0 + 0.3, d / 2 - 1.6, len - 0.3, 3.2, shade(P.main, 1.02));
           g.rect(sx < 0 ? x0 + len - 2 : x0 + 1, d / 2 - 0.6, 1.2, 1.2, '#d9d2bf');
         }
       },
