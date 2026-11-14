@@ -2,7 +2,8 @@
 import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLang, LangToggle, bi, pick } from './i18n.jsx';
 import { RULES, RULE_ERRORS, badgeById, sourceLines } from './data/rules.js';
-import { NECKER, WOGGLE } from './palette.js';
+import { NECKER, WOGGLE, PLAIN } from './palette.js';
+import { shownReason } from './three/badgeLayout.js';
 import { APP_VERSION } from './version.js';
 
 const Scene = lazy(() => import('./three/Scene.jsx'));
@@ -11,6 +12,20 @@ const DEFAULT_OUTFIT = {
   gender: 'boy',
   finish: 'painted',
   invested: true,
+  // 服裝（手冊 P.23–24）：預設同手冊 P.25 附圖一樣 — 橙色活動服、短袖、灰色長褲
+  top: 'orange',
+  topColour: '#ffffff',
+  sleeves: 'short',
+  school: false,
+  schoolLayout: 'uh',
+  legwear: 'trousers',
+  legColour: '#8a9099',
+  socks: 'short',
+  sockColour: '#ffffff',
+  hat: 'none',
+  hatColour: '#1f2f4f',
+  vest: false,
+  vestColour: '#1f2f4f',
   neckerMain: '#e9b425',
   neckerBorder: '#5b3fa0',
   woggle: '#1f4e9c',
@@ -137,7 +152,10 @@ function InfoCard({ id, outfit, badges, onClose, onFocus }) {
   const { lang, t } = useLang();
   const b = badgeById(id);
   const arts = Array.isArray(b.art) ? b.art : [b.art];
-  const shown = id === 'membership' ? badges.membership && outfit.invested : id === 'progress' ? badges.progress > 0 : badges[id];
+  const reason = shownReason(RULES, outfit, badges, id);
+  const shown = reason === null;
+  const st = RULES.schoolTop;
+  const onNecker = outfit.school && ['membership', 'progress', 'grasshopperAward'].includes(id);
   const sizeText = `${b.size.wCm} × ${b.size.hCm} cm（${t(b.size.measured ? 'info.sizeMeasured' : 'info.sizeGuess')}）`;
   return (
     <section className="card" aria-live="polite">
@@ -157,7 +175,14 @@ function InfoCard({ id, outfit, badges, onClose, onFocus }) {
         ))}
       </div>
       <ArtLine art={arts[0]} />
-      {!shown && <p className="note">{t('info.hidden')}</p>}
+      {!shown && <p className="note">{t(reason === 'off' ? 'info.hidden' : `badge.why.${reason}`)}</p>}
+      {onNecker && (
+        <div className="note note--warn">
+          <strong>{pick(lang, st, 'name')}</strong>
+          <p>{pick(lang, st, 'place')}</p>
+          <p className="muted">{t(outfit.schoolLayout === 'gsg' ? 'outfit.schoolGSG' : 'outfit.schoolUH')}</p>
+        </div>
+      )}
       <dl className="facts">
         <dt>{t('info.place')}</dt>
         <dd>{pick(lang, b, 'place')}</dd>
@@ -200,9 +225,17 @@ function BadgesTab({ outfit, badges, setBadges, selected, onPick }) {
   return (
     <div className="tabbody">
       <p className="note note--strong">{t('badges.tip')}</p>
+      {outfit.school && (
+        <p className="note note--warn">
+          {t('badges.schoolOn')}
+          {t(outfit.schoolLayout === 'gsg' ? 'outfit.schoolGSG' : 'outfit.schoolUH')}
+        </p>
+      )}
       <ul className="badgelist">
         {RULES.badges.map((b) => {
           const disabled = b.id === 'membership' && !outfit.invested;
+          const why = shownReason(RULES, outfit, badges, b.id);
+          const whyNote = ['school', 'vest', 'schoolUninvested'].includes(why) ? t(`badge.why.${why}`) : null;
           const art = Array.isArray(b.art) ? b.art[Math.max(0, Math.min(3, (badges.progress || 1) - 1))] : b.art;
           return (
             <li key={b.id} className={`badgerow${selected === b.id ? ' is-sel' : ''}${disabled ? ' is-disabled' : ''}`}>
@@ -248,6 +281,7 @@ function BadgesTab({ outfit, badges, setBadges, selected, onPick }) {
                 </label>
               )}
               {disabled && <p className="note">{t('badge.needInvest')}</p>}
+              {!disabled && whyNote && <p className="note">{whyNote}</p>}
             </li>
           );
         })}
@@ -261,6 +295,9 @@ function BadgesTab({ outfit, badges, setBadges, selected, onPick }) {
 function OutfitTab({ outfit, setOutfit }) {
   const { t } = useLang();
   const set = (k, v) => setOutfit((o) => ({ ...o, [k]: v }));
+  // 學校運動上衣唔係橙色活動服：開學校運動上衣就轉做單色有領；揀返橙色活動服就閂咗佢
+  const setTop = (v) => setOutfit((o) => ({ ...o, top: v, school: v === 'orange' ? false : o.school }));
+  const setSchool = (v) => setOutfit((o) => ({ ...o, school: v, top: v && o.top === 'orange' ? 'polo' : o.top }));
   return (
     <div className="tabbody">
       <Segmented
@@ -281,16 +318,86 @@ function OutfitTab({ outfit, setOutfit }) {
           { value: 'unpainted', label: t('outfit.unpainted') },
         ]}
       />
-      <div className="field">
-        <span className="field__label">{t('outfit.wearing')}</span>
-        <p className="note">{t('outfit.wearingDesc')}</p>
-      </div>
       <Switch
         label={t('outfit.invested')}
         checked={outfit.invested}
         onChange={(v) => set('invested', v)}
         note={outfit.invested ? null : t('outfit.investedNote')}
       />
+      <Segmented
+        label={t('outfit.top')}
+        value={outfit.top}
+        onChange={setTop}
+        options={[
+          { value: 'orange', label: t('outfit.orange') },
+          { value: 'polo', label: t('outfit.polo') },
+          { value: 'tee', label: t('outfit.tee') },
+        ]}
+      />
+      {outfit.top !== 'orange' && (
+        <Swatches label={t('outfit.topColour')} value={outfit.topColour} options={PLAIN} onChange={(v) => set('topColour', v)} />
+      )}
+      <Segmented
+        label={t('outfit.sleeves')}
+        value={outfit.sleeves}
+        onChange={(v) => set('sleeves', v)}
+        options={[
+          { value: 'short', label: t('outfit.short') },
+          { value: 'long', label: t('outfit.long') },
+        ]}
+      />
+      <Switch
+        label={t('outfit.school')}
+        checked={outfit.school}
+        onChange={setSchool}
+        note={outfit.school ? t('outfit.schoolNote') : null}
+      />
+      {outfit.school && (
+        <Segmented
+          label={t('outfit.schoolLayout')}
+          value={outfit.schoolLayout}
+          onChange={(v) => set('schoolLayout', v)}
+          options={[
+            { value: 'uh', label: t('outfit.schoolUHShort') },
+            { value: 'gsg', label: t('outfit.schoolGSGShort') },
+          ]}
+        />
+      )}
+      <Segmented
+        label={t('outfit.legs')}
+        value={outfit.legwear}
+        onChange={(v) => set('legwear', v)}
+        options={[
+          { value: 'shorts', label: t('outfit.shorts') },
+          { value: 'trousers', label: t('outfit.trousers') },
+        ]}
+      />
+      <Swatches label={t('outfit.legColour')} value={outfit.legColour} options={PLAIN} onChange={(v) => set('legColour', v)} />
+      <Segmented
+        label={t('outfit.socks')}
+        value={outfit.socks}
+        onChange={(v) => set('socks', v)}
+        options={[
+          { value: 'short', label: t('outfit.shortSocks') },
+          { value: 'long', label: t('outfit.longSocks') },
+        ]}
+      />
+      {outfit.legwear === 'trousers' && <p className="note">{t('outfit.socksHidden')}</p>}
+      <Segmented
+        label={t('outfit.hat')}
+        value={outfit.hat}
+        onChange={(v) => set('hat', v)}
+        options={[
+          { value: 'none', label: t('outfit.noHat') },
+          { value: 'bucket', label: t('outfit.bucket') },
+          { value: 'cap', label: t('outfit.cap') },
+        ]}
+      />
+      {outfit.hat !== 'none' && (
+        <Swatches label={t('outfit.hatColour')} value={outfit.hatColour} options={PLAIN} onChange={(v) => set('hatColour', v)} />
+      )}
+      <Switch label={t('outfit.vest')} checked={outfit.vest} onChange={(v) => set('vest', v)} note={outfit.vest ? t('outfit.vestNote') : null} />
+      {outfit.vest && <Swatches label={t('outfit.vestColour')} value={outfit.vestColour} options={PLAIN} onChange={(v) => set('vestColour', v)} />}
       {outfit.invested && (
         <>
           <Swatches

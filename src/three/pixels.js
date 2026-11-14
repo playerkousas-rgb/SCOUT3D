@@ -143,45 +143,139 @@ export const neckFaces = (B) => {
   return boxFaces([w, h, d], { px: shade(d), nx: shade(d), pz: shade(w), nz: shade(w), py: (g) => g.fill(C.skin), ny: (g) => g.fill(C.skin) });
 };
 
-/* ---------------- 上身（橙色活動服） ---------------- */
-export function torsoFaces(B) {
+/* ---------------- 顏色工具 ---------------- */
+/** 將 #rrggbb 調暗（f < 1）或者調光（f > 1） */
+export function shade(hex, f) {
+  const n = parseInt(hex.slice(1), 16);
+  const ch = (v) => Math.max(0, Math.min(255, Math.round(f < 1 ? v * f : v + (255 - v) * (f - 1))));
+  const r = ch((n >> 16) & 255), g = ch((n >> 8) & 255), b = ch(n & 255);
+  return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`;
+}
+
+/** 上衣配色：orange = 橙色活動服（白領、白袖邊）；polo / tee = 單色 */
+export function shirtPalette(top, colour) {
+  if (top === 'orange') return { main: C.shirt, dark: C.shirtShade, trim: C.trim, collar: C.trim };
+  const dark = shade(colour, colour === '#ffffff' ? 0.86 : 0.8);
+  return { main: colour, dark, trim: dark, collar: shade(colour, colour === '#ffffff' ? 0.95 : 0.92) };
+}
+
+/* ---------------- 上身 ---------------- */
+/** top：'orange' 橙色活動服（翻領）／'polo' 單色有領／'tee' 單色圓領 */
+export function torsoFaces(B, top = 'orange', colour = C.shirt) {
   const { w, h, d } = B.torso;
+  const P = shirtPalette(top, colour);
   const nw = B.neck.w, cx = w / 2;
-  const hem = (ww) => (g) => g.rect(0, h - 1, ww, 1, C.shirtShade);
+  const hem = (ww) => (g) => g.rect(0, h - 1, ww, 1, P.dark);
+  const collarFlaps = (g, fill) => {
+    // 兩片尖領
+    const inside = (x, y, grow = 0) => {
+      const dx = Math.abs(x - cx);
+      return y < 6 + grow && dx > 0.4 - grow && dx < nw / 2 + 3.5 + grow - y * 0.3 && dx > (y - 0.5) * 0.5 - grow;
+    };
+    if (top !== 'orange') g.shape((x, y) => inside(x, y, 0.5), P.dark);
+    g.shape((x, y) => inside(x, y), fill);
+  };
+  const front = (g) => {
+    hem(w)(g);
+    if (top === 'tee') {
+      // 圓領：坑紋領邊，中間見到頸
+      g.shape((x, y) => Math.hypot((x - cx) / (nw / 2 + 1.2), y / 2.6) < 1, P.dark);
+      g.shape((x, y) => Math.hypot((x - cx) / (nw / 2 + 0.3), y / 1.7) < 1, C.skin);
+      return;
+    }
+    g.rect(cx - 0.25, 4, 0.5, top === 'polo' ? 9 : 7, P.dark); // 門襟
+    if (top === 'polo') {
+      g.rect(cx - 1, 4, 2, 9, P.collar);
+      g.rect(cx - 1, 4, 0.5, 9, P.dark);
+      g.rect(cx + 0.5, 4, 0.5, 9, P.dark);
+      g.rect(cx - 0.25, 7, 0.5, 0.5, '#d8d8d8');
+      g.rect(cx - 0.25, 10.5, 0.5, 0.5, '#d8d8d8');
+    }
+    collarFlaps(g, P.collar);
+  };
   return boxFaces(
     [w, h, d],
     {
-      pz: (g) => {
-        hem(w)(g);
-        // 前襟（短門襟）
-        g.rect(cx - 0.25, 4, 0.5, 7, C.shirtShade);
-        // 白色翻領：兩片尖領
-        g.shape((x, y) => {
-          const dx = Math.abs(x - cx);
-          return y < 6 && dx > 0.4 && dx < nw / 2 + 3.5 - y * 0.3 && dx > (y - 0.5) * 0.5;
-        }, C.trim);
-      },
+      pz: front,
       nz: (g) => {
         hem(w)(g);
-        g.rect(cx - nw / 2 - 2, 0, nw + 4, 1.5, C.trim);
+        if (top === 'tee') g.rect(cx - nw / 2 - 1, 0, nw + 2, 1, P.dark);
+        else g.rect(cx - nw / 2 - 2, 0, nw + 4, 1.5, P.collar);
       },
-      px: (g) => { hem(d)(g); g.rect(0, 0, d, 0.5, C.shirtShade); },
-      nx: (g) => { hem(d)(g); g.rect(0, 0, d, 0.5, C.shirtShade); },
+      px: (g) => { hem(d)(g); g.rect(0, 0, d, 0.5, P.dark); },
+      nx: (g) => { hem(d)(g); g.rect(0, 0, d, 0.5, P.dark); },
       py: (g) => {
-        // 膊頭：領圈白色
-        g.shape((x, y) => Math.abs(x - cx) < nw / 2 + 2 && Math.abs(y - d / 2) < B.neck.d / 2 + 2, C.trim);
+        // 膊頭：領圈
+        g.shape((x, y) => Math.abs(x - cx) < nw / 2 + (top === 'tee' ? 1 : 2) && Math.abs(y - d / 2) < B.neck.d / 2 + (top === 'tee' ? 1 : 2), top === 'tee' ? P.dark : P.collar);
       },
-      ny: (g) => g.fill(C.shirtShade),
+      ny: (g) => g.fill(P.dark),
     },
-    C.shirt,
+    P.main,
   );
 }
 
-/** 短袖：橙色，袖口白邊 */
-export function sleeveFaces(size, band) {
+/** 上袖：短袖 = 袖口邊；長袖 = 冇邊（下面接下袖） */
+export function sleeveFaces(size, band, top = 'orange', colour = C.shirt, long = false) {
   const [w, h, d] = size;
-  const f = (ww) => (g) => g.rect(0, h - band, ww, band, C.trim);
-  return boxFaces([w, h, d], { px: f(d), nx: f(d), pz: f(w), nz: f(w), py: () => {}, ny: (g) => g.fill(C.trim) }, C.shirt);
+  const P = shirtPalette(top, colour);
+  const cuff = top === 'orange' ? band : 0.75;
+  const f = (ww) => (g) => { if (!long) g.rect(0, h - cuff, ww, cuff, P.trim); };
+  return boxFaces([w, h, d], { px: f(d), nx: f(d), pz: f(w), nz: f(w), py: () => {}, ny: (g) => g.fill(long ? P.main : P.trim) }, P.main);
+}
+
+/** 長袖下截（前臂），手腕有袖口 */
+export function cuffFaces(size, top = 'orange', colour = C.shirt) {
+  const [w, h, d] = size;
+  const P = shirtPalette(top, colour);
+  const cuff = top === 'orange' ? 1.5 : 1;
+  const f = (ww) => (g) => g.rect(0, h - cuff, ww, cuff, P.trim);
+  return boxFaces(size, { px: f(d), nx: f(d), pz: f(w), nz: f(w), ny: (g) => g.fill(P.trim) }, P.main);
+}
+
+/** 背心（風褸式，拉鏈 + V 領）：前面同頂面嘅領口係透明，要用 alpha 材質 */
+export function vestFaces(size, colour, neck) {
+  const [w, h, d] = size;
+  const dark = shade(colour, colour === '#ffffff' ? 0.86 : 0.78);
+  const cx = w / 2;
+  const vDepth = 15;
+  const hem = (ww) => (g) => g.rect(0, h - 1.5, ww, 1.5, dark);
+  return boxFaces(size, {
+    pz: (g) => {
+      hem(w)(g);
+      g.rect(cx - 0.25, vDepth, 0.5, h - vDepth, '#c9ccd1'); // 拉鏈
+      g.rect(cx - 0.6, vDepth, 1.2, 0.8, '#c9ccd1');
+      g.rect(2, h - 11, 6, 0.5, dark); // 袋口
+      g.rect(w - 8, h - 11, 6, 0.5, dark);
+      g.shape((x, y) => { const e = (neck / 2 + 3) * (1 - y / vDepth) - Math.abs(x - cx); return y < vDepth && e > -1 && e <= 0; }, dark);
+      g.clear((x, y) => y < vDepth && Math.abs(x - cx) < (neck / 2 + 3) * (1 - y / vDepth));
+    },
+    nz: (g) => { hem(w)(g); g.rect(cx - neck / 2 - 2.5, 0, neck + 5, 1.5, dark); },
+    px: (g) => hem(d)(g),
+    nx: (g) => hem(d)(g),
+    py: (g) => g.clear((x, y) => Math.abs(x - cx) < neck / 2 + 2.5 && (Math.abs(y - d / 2) < neck / 2 + 2.5 || y > d / 2)),
+    ny: (g) => g.fill(dark),
+  }, colour);
+}
+
+/* ---------------- 帽 ---------------- */
+export function hatFaces(size, colour, { band = 0 } = {}) {
+  const [w, h, d] = size;
+  const dark = shade(colour, colour === '#ffffff' ? 0.86 : 0.78);
+  const side = (ww) => (g) => {
+    if (band) g.rect(0, h - band, ww, band, dark);
+    g.rect(ww / 2 - 0.25, 0, 0.5, h - band, dark); // 車線
+  };
+  return boxFaces(size, {
+    px: side(d), nx: side(d), pz: side(w), nz: side(w),
+    py: (g) => { g.rect(w / 2 - 0.25, 0, 0.5, d, dark); g.rect(0, d / 2 - 0.25, w, 0.5, dark); },
+    ny: (g) => g.fill(dark),
+  }, colour);
+}
+
+/** 帽邊／帽舌：上面主色，底面深色 */
+export function brimFaces(size, colour) {
+  const dark = shade(colour, colour === '#ffffff' ? 0.86 : 0.75);
+  return boxFaces(size, { ny: (g) => g.fill(dark), py: (g) => { const [w, , d] = size; g.rect(0, 0, w, 0.5, dark); g.rect(0, d - 0.5, w, 0.5, dark); } }, colour);
 }
 
 export const skinFaces = (size) => boxFaces(size, {}, C.skin);
@@ -193,14 +287,33 @@ export function handFaces(size) {
   return boxFaces(size, { px: fingers, nx: fingers, pz: (g) => g.rect(0, 2, 1, 4, C.skinShade) }, C.skin);
 }
 
-/* ---------------- 褲、鞋 ---------------- */
-export function legFaces(size) {
+/* ---------------- 褲、襪、鞋 ---------------- */
+/** 長褲：成條腳 */
+export function legFaces(size, colour = C.trousers) {
   const [w, h, d] = size;
+  const dark = shade(colour, colour === '#ffffff' ? 0.86 : 0.86);
+  const f = (ww) => (g) => g.rect(0, h - 2, ww, 2, dark); // 褲腳收口
+  return boxFaces(size, { px: f(d), nx: f(d), pz: (g) => { f(w)(g); g.rect(w / 2 - 0.25, 0, 0.5, h - 2, dark); }, nz: f(w) }, colour);
+}
+
+/** 短褲：褲腳摺邊 */
+export function shortsFaces(size, colour) {
+  const [w, h, d] = size;
+  const dark = shade(colour, colour === '#ffffff' ? 0.86 : 0.82);
+  const f = (ww) => (g) => g.rect(0, h - 1.5, ww, 1.5, dark);
+  return boxFaces(size, { px: f(d), nx: f(d), pz: (g) => { f(w)(g); g.rect(w / 2 - 0.25, 0, 0.5, h - 1.5, dark); }, nz: f(w), ny: (g) => g.fill(dark) }, colour);
+}
+
+/** 小腿：皮膚 + 襪（sockH = 襪由腳底量起幾高，cm） */
+export function shinFaces(size, sockH, sockColour) {
+  const [w, h, d] = size;
+  const rib = shade(sockColour, 0.88);
   const f = (ww) => (g) => {
-    g.rect(0, h - 2, ww, 2, C.trousersShade); // 褲腳收口
-    g.shape((x, y) => y > h - 2 && Math.floor(x * PX) % 2 === 0, C.trousers);
+    g.rect(0, h - sockH, ww, sockH, sockColour);
+    g.rect(0, h - sockH, ww, 1.5, rib); // 襪口坑紋
+    g.shape((x, y) => y > h - sockH && y < h - sockH + 1.5 && Math.floor(x * PX) % 2 === 0, sockColour);
   };
-  return boxFaces(size, { px: f(d), nx: f(d), pz: (g) => { f(w)(g); g.rect(w / 2 - 0.25, 0, 0.5, h - 2, C.trousersShade); }, nz: f(w) }, C.trousers);
+  return boxFaces(size, { px: f(d), nx: f(d), pz: f(w), nz: f(w), ny: (g) => g.fill(sockColour) }, C.skin);
 }
 
 export function shoeFaces(size) {
@@ -293,6 +406,7 @@ export function greyOf(c) {
 }
 
 export function material(c, { painted = true, alpha = false, double = false } = {}) {
+  // alpha：透明位（例如背心領口）要 alphaTest，唔係會見到黑色
   return new THREE.MeshStandardMaterial({
     map: texOf(painted ? c : greyOf(c)),
     roughness: painted ? 0.85 : 0.6,

@@ -81,10 +81,14 @@ function Patch({ p, tex, painted, selected, onSelect, registry }) {
   );
 }
 
-/** 上身嘅章（喺人物 group 入面，單位 cm） */
+/** 上身嘅章（喺人物 group 入面，單位 cm）；facing = 'back' 嘅（領巾尖）向後 */
 export function TorsoBadges({ items, textures, ...rest }) {
   return items.map((p) => (
-    <group key={p.key} position={[p.x, p.y, p.z + EPS]}>
+    <group
+      key={p.key}
+      position={[p.x, p.y, p.facing === 'back' ? p.z - EPS * 2 : p.z + EPS]}
+      rotation={p.facing === 'back' ? [0, Math.PI, 0] : undefined}
+    >
       <Patch p={p} tex={textures[p.art]} {...rest} />
     </group>
   ));

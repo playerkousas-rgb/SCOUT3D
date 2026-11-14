@@ -86,3 +86,75 @@ test('每個徽章圖案檔都存在，而且有官方文件來源', () => {
     }
   }
 });
+
+/* ---------- 學校運動上衣、背心 ---------- */
+import { placeSchool, placeFor, shownReason } from '../src/three/badgeLayout.js';
+import { neckerLayout } from '../src/three/body.js';
+
+/** 點 (x, y) 喺倒三角（頂闊 w、高 h、尖喺 y = 0）入面 */
+const inTri = (x, y, w, h) => y >= 0 && y <= h && Math.abs(x) <= (w / 2) * (y / h) + 1e-9;
+/** 圓形離三角兩條斜邊夠唔夠遠 */
+const circleInTri = (x, y, r, w, h) => {
+  const k = w / 2 / h; // |x| = k y
+  return [1, -1].every((s) => (k * y - s * x) / Math.hypot(1, k) >= r - 1e-9) && y - r >= 0 && y + r <= h;
+};
+const overlap = (a, b) => Math.abs(a.x - b.x) < (a.w + b.w) / 2 - 1e-9 && Math.abs(a.y - b.y) < (a.h + b.h) / 2 - 1e-9;
+
+for (const gender of ['boy', 'girl']) {
+  for (const vest of [false, true]) {
+    const N = neckerLayout(layout(gender), { vest });
+    const tip = N.back.top - N.back.h;
+
+    test(`${gender}${vest ? '＋背心' : ''}：學校運動上衣（手冊 P.24）— 團員章喺領巾尖，進步章喺巾尾末端`, () => {
+      const all = placeSchool(rules, gender, 'uh', { vest });
+      const m = all.find((p) => p.id === 'membership');
+      assert.equal(m.facing, 'back');
+      assert.ok(circleInTri(m.x, m.y - tip, m.w / 2, N.back.w, N.back.h), '團員章出咗領巾尖');
+      assert.ok(!all.some((p) => p.id === 'grasshopperAward'), '手冊冇小草蜢獎章');
+      const s = (n) => all.find((p) => p.key === `progress-${n}`);
+      for (const n of [1, 2, 3, 4]) assert.equal(s(n).facing, 'front');
+      // 人看的角度：望住穿著者，左邊巾尾（穿著者右，-x）放紅、藍
+      assert.ok(s(1).x < 0 && s(3).x < 0 && s(2).x > 0 && s(4).x > 0);
+      near(s(3).y - s(1).y, 2, '紅藍相連');
+      const tailBottom = N.tail.top - N.tail.len;
+      for (const n of [1, 2, 3, 4]) {
+        const p = s(n);
+        assert.ok(Math.abs(Math.abs(p.x) - N.tail.x) + p.w / 2 <= N.tail.w / 2 + 1e-9, `progress-${n} 闊過巾尾`);
+        assert.ok(p.y - p.h / 2 >= tailBottom + N.tail.tip, `progress-${n} 落咗巾尾尖`);
+      }
+      assert.ok(!overlap(s(1), s(2)) && !overlap(s(3), s(4)));
+    });
+
+    test(`${gender}${vest ? '＋背心' : ''}：學校運動上衣（指引 P.9 附圖）— 全部喺領巾尖，唔疊、唔出界`, () => {
+      const all = placeSchool(rules, gender, 'gsg', { vest });
+      assert.equal(all.length, 6);
+      for (const p of all) {
+        assert.equal(p.facing, 'back');
+        const y = p.y - tip;
+        if (p.shape === 'circle') assert.ok(circleInTri(p.x, y, p.w / 2, N.back.w, N.back.h), `${p.key} 出咗領巾尖`);
+        else
+          for (const [dx, dy] of [[-1, -1], [1, -1], [-1, 1], [1, 1]])
+            assert.ok(inTri(p.x + (dx * p.w) / 2, y + (dy * p.h) / 2, N.back.w, N.back.h), `${p.key} 出咗領巾尖`);
+      }
+      for (let i = 0; i < all.length; i++) for (let j = i + 1; j < all.length; j++) assert.ok(!overlap(all[i], all[j]), `${all[i].key} 同 ${all[j].key} 疊埋`);
+      // 附圖（企喺後面望）：團員章左、小草蜢獎章右；藍喺最左、綠喺最右；紅喺團員章下面
+      const g = (k) => all.find((p) => p.key === k);
+      assert.ok(g('membership').x > 0 && g('grasshopperAward').x < 0, '後面望：左邊 = 穿著者左（+x）');
+      assert.ok(g('progress-3').x > g('membership').x && g('progress-4').x < g('grasshopperAward').x);
+      near(g('progress-1').x, g('membership').x, '紅喺團員章下面');
+      assert.ok(g('progress-1').y < g('membership').y);
+    });
+  }
+}
+
+test('背心：團員章移去背心面，紀念章俾背心遮住', () => {
+  const base = { gender: 'boy', invested: true };
+  const a = placeFor(rules, base).find((p) => p.id === 'membership');
+  const b = placeFor(rules, { ...base, vest: true }).find((p) => p.id === 'membership');
+  assert.ok(b.z > a.z);
+  assert.equal(shownReason(rules, { ...base, vest: true }, { commemorative: true }, 'commemorative'), 'vest');
+  assert.equal(shownReason(rules, { ...base, school: true }, { troop: true }, 'troop'), 'school');
+  assert.equal(shownReason(rules, { ...base, school: true, invested: false }, { progress: 2 }, 'progress'), 'schoolUninvested');
+  assert.equal(shownReason(rules, { ...base, invested: false }, { membership: true }, 'membership'), 'uninvested');
+  assert.equal(shownReason(rules, base, { membership: true }, 'membership'), null);
+});

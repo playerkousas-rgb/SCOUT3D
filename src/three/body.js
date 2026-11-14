@@ -53,3 +53,35 @@ export function layout(gender) {
   const legX = B.leg.w / 2 + B.leg.gap / 2;
   return { B, top, armX, shoulderY, elbowY, wristY, legX };
 }
+
+/** 背心厚度（cm）：背心比件衫每邊大幾多 */
+export const VEST_T = 0.9;
+
+/**
+ * 旅巾尺寸同位置（cm）。徽章（學校運動上衣）同 3D 都用呢度，唔好喺第二度再抄數字。
+ * front / backZ 跟有冇背心變（旅巾戴喺背心外面）。
+ */
+export function neckerLayout(L, { vest = false } = {}) {
+  const { B, top } = L;
+  const nw = B.neck.w;
+  const collarT = 1.75;
+  const rollT = 2.2;
+  const rollH = 2.4;
+  const inner = nw + collarT * 2; // 衣領外圍 = 旅巾內圍
+  const outer = inner + rollT * 2;
+  const front = B.torso.d / 2 + (vest ? VEST_T : 0); // 胸口表面 z
+  const wogY = top - 7.5;
+  const a = [outer / 2 - rollT / 2, top + 0.4];
+  const b = [1.3, wogY];
+  const tail = { w: 5.2, len: 19, tip: 4, x: 1.7, top: wogY + 1 };
+  const back = { w: 22, h: 16, top, z: -(B.torso.d / 2 + (vest ? VEST_T : 0) + 0.2) };
+  return {
+    nw, collarT, rollT, rollH, inner, outer, front, wogY, a, b,
+    len: Math.hypot(a[0] - b[0], a[1] - b[1]),
+    ang: Math.atan2(a[0] - b[0], a[1] - b[1]),
+    tail,
+    back,
+    /** 巾尾面 z：穿著者左條（s = +1）喺前面少少 */
+    tailZ: (s) => front + 0.3 + (s > 0 ? 0.1 : 0),
+  };
+}

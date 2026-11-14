@@ -30,7 +30,9 @@ test('文件列明嘅尺寸同距離', () => {
 });
 
 test('未確認嘅項目一定標「待確認」', () => {
-  assert.equal(badge('progress').status, 'pending');
+  // 進步獎章左右睇法：用戶 2026-11-14 確認（手冊插圖 = 衣服除下後望住袖外側），所以唔再係待確認
+  assert.equal(badge('progress').status, 'documented');
+  assert.ok(rules.review.userChecks.some((c) => c.item === 'progress' && c.date === '2026-11-14'));
   assert.equal(badge('grasshopperAward').status, 'pending');
   assert.equal(rules.schoolTop.status, 'pending');
   assert.equal(rules.review.status, 'pending');
@@ -40,10 +42,11 @@ test('未確認嘅項目一定標「待確認」', () => {
 
 test('冇來源、冇頁碼、待確認冇原因都會被攔', () => {
   const bad = structuredClone(rules);
-  bad.badges[0].sources = [];
-  bad.badges[1].pendingReason = null;
-  bad.badges[2].sources[0].page = '';
-  bad.badges[3].side = 'viewer-left';
+  const at = (id) => bad.badges.find((b) => b.id === id);
+  at('membership').sources = [];
+  at('grasshopperAward').pendingReason = null;
+  at('progress').sources[0].page = '';
+  at('troop').side = 'viewer-left';
   const errors = validateRules(bad);
   assert.ok(errors.some((e) => e.includes('冇來源')));
   assert.ok(errors.some((e) => e.includes('pendingReason')));

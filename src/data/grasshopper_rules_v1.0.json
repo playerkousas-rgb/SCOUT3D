@@ -21,7 +21,15 @@
     "note": {
       "zh": "以下內容由 AI 助手依文件整理，未經核對人逐項確認；確認後請把每項 status 改為 verified 並填 lastChecked。",
       "en": "Compiled from the documents by an AI assistant and not yet confirmed item by item. After review, set each status to verified and fill lastChecked."
-    }
+    },
+    "userChecks": [
+      {
+        "date": "2026-11-14",
+        "item": "progress",
+        "zh": "進步獎章左右以衣服除下後、望住左袖外側嘅角度（手冊插圖睇法）",
+        "en": "Progress Award left/right follows the view of the outside of the left sleeve with the shirt taken off (as in the handbook figures)"
+      }
+    ]
   },
   "sources": {
     "UH": {
@@ -346,11 +354,7 @@
           "page": "P.11–12"
         }
       ],
-      "status": "pending",
-      "pendingReason": {
-        "zh": "「左下／右下」未寫明係看圖者定穿著者角度；模型以望住左袖外側嘅角度擺（紅色靠穿著者前方）。「縫線上方」未寫距離；手冊附圖幾乎貼住袖口，模型留 0.3 cm。",
-        "en": "The guide does not say whether bottom-left/right is from the viewer or the wearer; the model uses the view of someone looking at the outside of the left sleeve (red toward the wearer's front). No gap above the seam is given; the handbook figure shows them almost touching the cuff, so the model leaves 0.3 cm."
-      },
+      "status": "documented",
       "art": [
         {
           "file": "/badges/grasshopper_progress1_red.png",
@@ -376,7 +380,11 @@
           "page": "P.11",
           "example": false
         }
-      ]
+      ],
+      "modelNote": {
+        "zh": "「左下／右下」係衣服除下後、望住左袖外側嘅角度（即手冊插圖嘅睇法），所以紅、藍靠穿著者前方（用戶 2026-11-14 確認）。「縫線上方」冇寫距離；手冊 P.25 附圖幾乎貼住白袖口，模型留 0.3 cm。長袖上衣戴喺同一位置。",
+        "en": "Bottom-left/right is as seen looking at the outside of the left sleeve with the shirt taken off (how the handbook figures are drawn), so red and blue sit toward the wearer's front (confirmed by the user, 2026-11-14). No gap above the seam is given; the handbook p.25 figure shows them almost on the white cuff, so the model leaves 0.3 cm. Same position on long sleeves."
+      }
     },
     {
       "id": "grasshopperAward",
@@ -645,13 +653,13 @@
     "status": "pending",
     "zh": {
       "name": "學校運動上衣（未能縫章）",
-      "place": "團員章戴在領巾尖（背後）中央；進步章依左袖排列，戴在前面巾尾的左、右末端。",
+      "place": "兩種排法（模型可以揀）：①《儀容與制服手冊》P.24：團員章戴喺領巾尖中央；進步章依左袖排列，戴喺前面巾尾左、右末端。②《小童軍活動指引》第三版 P.9 附圖：團員章同小草蜢獎章並排喺領巾尖，藍、綠進步獎章喺兩邊，紅、啡喺下面。",
       "quote": "假若穿著學校運動上衣而又未能在其上縫徽章的話，可選擇佩戴小童軍團員章在領巾尖中央位置，進步章依左手袖排列位置佩戴在巾尾的左、右末端位置。",
       "otherSource": "第三版指引：可將小童軍團員章、小草蜢獎章及進步獎章佩戴於旅巾上（未寫小草蜢獎章位置）。"
     },
     "en": {
       "name": "School sports top (badges cannot be sewn on)",
-      "place": "Membership Badge centred on the neckerchief point (at the back); Progress Awards on the left and right ends of the front tails, following the left-sleeve order.",
+      "place": "Two layouts (choose in the model): (1) Uniform Handbook p.24: Membership Badge centred on the neckerchief point; Progress Awards on the left and right ends of the front tails, following the left-sleeve order. (2) Activity Guide 3rd ed. P.9 figure: Membership Badge and Grasshopper Award side by side at the point, blue and green Progress Awards at either side, red and brown below.",
       "quote": "If wearing a school sports top that badges cannot be sewn onto, the Membership Badge may be worn centred on the neckerchief point, and Progress Awards on the left and right ends of the tails following the left-sleeve order.",
       "otherSource": "3rd-edition guide: Membership Badge, Grasshopper Award and Progress Awards may be worn on the neckerchief (Grasshopper Award position not given)."
     },
@@ -666,8 +674,8 @@
       }
     ],
     "pendingReason": {
-      "zh": "「巾尾左、右末端」如何排四枚章未有圖示；模型每條巾尾放兩枚（紅、藍在穿著者左邊巾尾），待確認。",
-      "en": "No figure shows how four badges go on the tail ends; the model puts two on each tail (red and blue on the wearer's left tail). Unconfirmed."
+      "zh": "手冊冇圖示四枚進步章點樣分喺兩條巾尾；模型照「人看的角度」：望住穿著者時左邊巾尾（穿著者右）放紅、藍，右邊巾尾放啡、綠，紅、啡喺末端。指引附圖冇尺寸，模型用章嘅實際尺寸按附圖排位。兩份文件排法唔同，請以所屬旅團指示為準。",
+      "en": "The Handbook has no figure for splitting four Progress Awards across the two tails; the model uses the viewer's view: the tail on the viewer's left (wearer's right) carries red and blue, the other brown and green, with red and brown at the ends. The guide's figure has no measurements; the model uses the real badge sizes in the figure's arrangement. The two documents differ; follow your Group's instruction."
     }
   },
   "notAllowed": [
