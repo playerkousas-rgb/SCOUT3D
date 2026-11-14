@@ -145,7 +145,8 @@ test('深資童軍下身：男長褲；女預設半截裙 + 襪褲，可以改�
   assert.ok(tr.sources.some((s) => s.ref === 'UH' && s.page.includes('50–51')), '女性長褲制服跟手冊 P.50–51');
   // 用戶已確認／指出嘅項目唔再係衝突
   for (const id of ['girlTrousers', 'tie', 'airCapBadge']) assert.ok(!venture.conflicts.some((c) => c.id === id), `${id} 已解決`);
-  for (const id of ['girlTrousers', 'tieUniform', 'airCapBadge', 'sweater']) assert.ok(venture.review.userChecks.some((u) => u.item === id), `${id} 記錄喺 userChecks`);
+  for (const id of ['tieInvestiture', 'ventureSeaAirSweater']) assert.ok(!venture.conflicts.some((c) => c.id === id), `${id} 用戶已確認`);
+  for (const id of ['girlTrousers', 'tieUniform', 'airCapBadge', 'sweater', 'tieInvestiture', 'ventureSeaAirSweater', 'skirtShoes']) assert.ok(venture.review.userChecks.some((u) => u.item === id), `${id} 記錄喺 userChecks`);
 });
 
 test('領帶制服（手冊 P.48、P.113）：深資童軍棗紅、深資海童軍黑、深資空童軍深藍', () => {

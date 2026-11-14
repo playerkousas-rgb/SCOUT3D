@@ -52,6 +52,24 @@
         "item": "sweater",
         "zh": "制服毛衣係制服一部分，深資童軍肩章可以戴喺毛衣肩帶上（手冊 P.121–122，用戶指出）",
         "en": "The uniform jersey is part of the uniform; the Venture Scout Epaulettes may go on the jersey’s shoulder straps (Handbook pp.121–122, pointed out by the user)"
+      },
+      {
+        "date": "2026-11-14",
+        "item": "ventureSeaAirSweater",
+        "zh": "深資海童軍、深資空童軍穿深藍色制服毛衣（用戶確認）",
+        "en": "Venture Sea and Venture Air Scouts wear the dark blue uniform jersey (user confirmed)"
+      },
+      {
+        "date": "2026-11-14",
+        "item": "tieInvestiture",
+        "zh": "領帶同旅巾一樣，宣誓後先戴（用戶確認）",
+        "en": "The tie, like the neckerchief, is worn only after investiture (user confirmed)"
+      },
+      {
+        "date": "2026-11-14",
+        "item": "skirtShoes",
+        "zh": "深資女團員著半截裙時配肉色襪褲、黑色非綁帶中跟皮鞋；著長褲配黑襪、綁帶皮鞋（用戶提醒）",
+        "en": "Venture girls in the skirt wear flesh-coloured tights and black non-laced medium-heel shoes; with trousers, black socks and laced shoes (user reminder)"
       }
     ]
   },
@@ -229,8 +247,8 @@
       ],
       "status": "documented",
       "modelNote": {
-        "zh": "方塊人冇畫鞋跟。",
-        "en": "The blocky figure has no heels."
+        "zh": "半截裙配非綁帶中跟皮鞋：鞋面開口見到襪褲、後面畫中跟示意；長褲配綁帶皮鞋。",
+        "en": "With the skirt: non-laced medium-heel shoes, drawn with an open vamp showing the tights and a heel block; with trousers: laced shoes."
       }
     },
     {
@@ -281,8 +299,8 @@
       ],
       "status": "documented",
       "modelNote": {
-        "zh": "手冊冇講領帶幾時用、未宣誓可唔可以戴；模型當同旅巾一樣，宣誓後先顯示（待確認）。",
-        "en": "The Handbook does not say when the tie is worn or whether uninvested members may wear it; the model treats it like the neckerchief and shows it only after investiture (to be confirmed)."
+        "zh": "同旅巾一樣，宣誓後先戴（用戶確認）。",
+        "en": "Like the neckerchief, worn only after investiture (user confirmed)."
       }
     },
     {
@@ -444,8 +462,8 @@
           ],
           "status": "documented",
           "modelNote": {
-            "zh": "手冊冇講領帶幾時用、未宣誓可唔可以戴；模型當同旅巾一樣，宣誓後先顯示（待確認）。",
-            "en": "The Handbook does not say when the tie is worn or whether uninvested members may wear it; the model treats it like the neckerchief and shows it only after investiture (to be confirmed)."
+            "zh": "同旅巾一樣，宣誓後先戴（用戶確認）。",
+            "en": "Like the neckerchief, worn only after investiture (user confirmed)."
           }
         },
         {
@@ -466,8 +484,8 @@
           ],
           "status": "documented",
           "modelNote": {
-            "zh": "手冊 P.121：海童軍／空童軍青少年成員穿深藍色制服毛衣；模型當深資海童軍、深資空童軍都係（待確認）。毛衣畫做長袖、坑紋、圓領（見到恤衫領）、膊頭淺色膊布（手冊 P.121–122 附圖）。徽章「或制服毛衣相同位置」：位置同恤衫一樣，向外移一個毛衣厚度。",
-            "en": "Handbook p.121: Sea/Air Scout youth members wear the dark blue jersey; the model treats Venture Sea and Venture Air Scouts as included (to be confirmed). The jersey is drawn long-sleeved and ribbed, with a crew neck (shirt collar showing) and lighter shoulder patches (Handbook pp.121–122 figures). Badges go in “the same position on the uniform jersey”: the shirt positions, moved out by the jersey thickness."
+            "zh": "手冊 P.121：海童軍／空童軍青少年成員穿深藍色制服毛衣；深資海童軍、深資空童軍都係（用戶確認）。毛衣畫做長袖、坑紋、圓領（見到恤衫領）、膊頭淺色膊布（手冊 P.121–122 附圖）。徽章「或制服毛衣相同位置」：位置同恤衫一樣，向外移一個毛衣厚度。",
+            "en": "Handbook p.121: Sea/Air Scout youth members wear the dark blue jersey; Venture Sea and Venture Air Scouts are included (user confirmed). The jersey is drawn long-sleeved and ribbed, with a crew neck (shirt collar showing) and lighter shoulder patches (Handbook pp.121–122 figures). Badges go in “the same position on the uniform jersey”: the shirt positions, moved out by the jersey thickness."
           }
         }
       ]
@@ -585,8 +603,8 @@
           ],
           "status": "documented",
           "modelNote": {
-            "zh": "手冊冇講領帶幾時用、未宣誓可唔可以戴；模型當同旅巾一樣，宣誓後先顯示（待確認）。",
-            "en": "The Handbook does not say when the tie is worn or whether uninvested members may wear it; the model treats it like the neckerchief and shows it only after investiture (to be confirmed)."
+            "zh": "同旅巾一樣，宣誓後先戴（用戶確認）。",
+            "en": "Like the neckerchief, worn only after investiture (user confirmed)."
           }
         },
         {
@@ -607,8 +625,8 @@
           ],
           "status": "documented",
           "modelNote": {
-            "zh": "手冊 P.121：海童軍／空童軍青少年成員穿深藍色制服毛衣；模型當深資海童軍、深資空童軍都係（待確認）。毛衣畫做長袖、坑紋、圓領（見到恤衫領）、膊頭淺色膊布（手冊 P.121–122 附圖）。徽章「或制服毛衣相同位置」：位置同恤衫一樣，向外移一個毛衣厚度。",
-            "en": "Handbook p.121: Sea/Air Scout youth members wear the dark blue jersey; the model treats Venture Sea and Venture Air Scouts as included (to be confirmed). The jersey is drawn long-sleeved and ribbed, with a crew neck (shirt collar showing) and lighter shoulder patches (Handbook pp.121–122 figures). Badges go in “the same position on the uniform jersey”: the shirt positions, moved out by the jersey thickness."
+            "zh": "手冊 P.121：海童軍／空童軍青少年成員穿深藍色制服毛衣；深資海童軍、深資空童軍都係（用戶確認）。毛衣畫做長袖、坑紋、圓領（見到恤衫領）、膊頭淺色膊布（手冊 P.121–122 附圖）。徽章「或制服毛衣相同位置」：位置同恤衫一樣，向外移一個毛衣厚度。",
+            "en": "Handbook p.121: Sea/Air Scout youth members wear the dark blue jersey; Venture Sea and Venture Air Scouts are included (user confirmed). The jersey is drawn long-sleeved and ribbed, with a crew neck (shirt collar showing) and lighter shoulder patches (Handbook pp.121–122 figures). Badges go in “the same position on the uniform jersey”: the shirt positions, moved out by the jersey thickness."
           }
         }
       ]
@@ -1077,16 +1095,6 @@
       "id": "regionDistrictFigure",
       "zh": "地域章／區章：手冊 P.95 文字「地域章在前，區章在後」，P.170 附圖一致；附圖喺旅章下面先有急救章（考獲先有），模型冇急救章，所以照 P.95 喺旅章下 2 cm。",
       "en": "Region/District: Handbook p.95 says Region in front, District behind, and the p.170 figure agrees; the figure has the (earned) First Aid Badge under the Group Badge, which the model omits, so it follows p.95 — 2 cm below the Group Badge."
-    },
-    {
-      "id": "tieInvestiture",
-      "zh": "領帶：手冊冇講未宣誓可唔可以戴；模型當同旅巾一樣，宣誓後先顯示（待確認）。",
-      "en": "Tie: the Handbook does not say whether uninvested members may wear it; the model treats it like the neckerchief and shows it only after investiture (to be confirmed)."
-    },
-    {
-      "id": "ventureSeaAirSweater",
-      "zh": "深資海童軍、深資空童軍毛衣顏色：手冊 P.121 寫「海童軍／空童軍青少年成員」穿深藍色；模型當包括深資海／空童軍（待確認）。",
-      "en": "Venture Sea / Air Scout jersey colour: Handbook p.121 says Sea/Air Scout youth members wear dark blue; the model assumes this includes Venture Sea/Air Scouts (to be confirmed)."
     }
   ],
   "artCredit": {

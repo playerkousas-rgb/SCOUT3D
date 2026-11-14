@@ -341,17 +341,23 @@ export function shinFaces(size, sockH, sockColour) {
   return boxFaces(size, { px: f(d), nx: f(d), pz: f(w), nz: f(w), ny: (g) => g.fill(sockColour) }, C.skin);
 }
 
-export function shoeFaces(size, { colour = C.shoe, sole: soleC = C.sole, lace = C.lace } = {}) {
+export function shoeFaces(size, { colour = C.shoe, sole: soleC = C.sole, lace = C.lace, pump = null } = {}) {
   const [w, h, d] = size;
   const sole = (ww) => (g) => g.rect(0, h - 1.5, ww, 1.5, soleC);
+  // pump = 襪褲色：非綁帶中跟皮鞋（深資童軍女團員配半截裙，手冊 P.36）— 鞋面開口見到襪褲、後面中跟
+  // 側面 u 方向：+x 面由前（+z）到後；-x 面由後到前
+  const heelC = '#3c3c44'; // 中跟（淺少少，同鞋身分得開）
+  const heel = (back) => (g) => { sole(d)(g); g.rect(back ? d - 4 : 0, h - 3.5, 4, 3.5, heelC); };
   return boxFaces(
     size,
     {
-      px: sole(d),
-      nx: sole(d),
+      px: pump ? heel(true) : sole(d),
+      nx: pump ? heel(false) : sole(d),
       pz: sole(w),
-      nz: sole(w),
-      py: (g) => { for (let i = 0; i < 4; i++) g.rect(w / 2 - 2, d * 0.45 + i * 1.5, 4, 0.5, lace); },
+      nz: pump ? (g) => g.rect(0, h - 3.5, w, 3.5, heelC) : sole(w),
+      py: pump
+        ? (g) => g.shape((x, y) => ((x - w / 2) / (w * 0.32)) ** 2 + ((y - d * 0.52) / (d * 0.2)) ** 2 < 1, pump)
+        : (g) => { for (let i = 0; i < 4; i++) g.rect(w / 2 - 2, d * 0.45 + i * 1.5, 4, 0.5, lace); },
       ny: (g) => g.fill(soleC),
     },
     colour,

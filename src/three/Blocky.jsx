@@ -351,7 +351,7 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
       },
       legH,
       // 黑皮鞋；深資童軍女團員配半截裙 = 非綁帶（鞋帶畫返鞋面色）
-      shoe: cub ? shoeFaces([B.shoe.w, B.shoe.h, B.shoe.d], { colour: C.shoeBlack, sole: C.soleBlack, lace: skirt ? C.shoeBlack : '#3a3a40' }) : shoeFaces([B.shoe.w, B.shoe.h, B.shoe.d]),
+      shoe: cub ? shoeFaces([B.shoe.w, B.shoe.h, B.shoe.d], { colour: C.shoeBlack, sole: C.soleBlack, lace: '#3a3a40', pump: skirt ? C.tights : null }) : shoeFaces([B.shoe.w, B.shoe.h, B.shoe.d]),
       sl,
       slLong,
     };
