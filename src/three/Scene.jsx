@@ -3,7 +3,7 @@ import { Suspense, forwardRef, useImperativeHandle, useRef } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls, ContactShadows, useProgress } from '@react-three/drei';
 import * as THREE from 'three';
-import Mini from './Mini.jsx';
+import Blocky from './Blocky.jsx';
 import { useLang } from '../i18n.jsx';
 
 const TARGET = new THREE.Vector3(0, 0.6, 0);
@@ -115,10 +115,10 @@ const Scene = forwardRef(function Scene({ outfit, onReady }, ref) {
         }}
       >
         <color attach="background" args={['#e9edf1']} />
-        <hemisphereLight args={['#ffffff', '#9aa3ad', 1.25]} />
+        <hemisphereLight args={['#ffffff', '#9aa3ad', 1.5]} />
         <directionalLight
-          position={[1.4, 2.8, 2.4]}
-          intensity={2.1}
+          position={[1.1, 2.4, 3.0]}
+          intensity={2.3}
           castShadow
           shadow-mapSize={[2048, 2048]}
           shadow-camera-left={-0.8}
@@ -128,10 +128,10 @@ const Scene = forwardRef(function Scene({ outfit, onReady }, ref) {
           shadow-bias={-0.0004}
           shadow-normalBias={0.03}
         />
-        <directionalLight position={[-2, 1.8, -2]} intensity={0.9} />
+        <directionalLight position={[-1.6, 2, -2.4]} intensity={1.5} />
         <directionalLight position={[-1.6, 1.2, 1.8]} intensity={0.35} />
         <Suspense fallback={null}>
-          <Mini outfit={outfit} />
+          <Blocky outfit={outfit} />
         </Suspense>
         <ContactShadows position={[0, 0.001, 0]} scale={1.8} blur={2.6} opacity={0.4} far={0.5} />
         <Rig ref={rig} />
