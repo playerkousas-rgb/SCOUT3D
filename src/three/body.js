@@ -97,7 +97,27 @@ export const VENTURE_BODY = {
 /** 樂行童軍（18–26 歲）：沿用深資童軍 168 cm 方塊人（擺位以 cm 計；手冊 P.171 同 P.170 附圖擺位一樣） */
 export const ROVER_BODY = VENTURE_BODY;
 
-export const BODIES = { grasshopper: BODY, cub: CUB_BODY, scout: SCOUT_BODY, venture: VENTURE_BODY, rover: ROVER_BODY };
+/** 數字乘 k（保留 1 位小數）；keep 入面嘅鍵唔變（例如肩帶闊、袖口邊、cm 單位嘅細節） */
+function scaleDims(obj, k, keep = new Set()) {
+  if (typeof obj === 'number') return Math.round(obj * k * 10) / 10;
+  if (!obj || typeof obj !== 'object') return obj;
+  return Object.fromEntries(Object.entries(obj).map(([key, v]) => [key, keep.has(key) ? v : scaleDims(v, k, keep)]));
+}
+
+/**
+ * 成年成員（用戶揀）：男 172 cm、女 160 cm，由深資童軍 168 cm 方塊人按比例放大／縮細。
+ * 肩帶（闊 4.4、厚 0.5）同袖口邊唔跟比例（衣物細節唔會因為人高咗而變闊）。
+ * shortsBottom：編號 5 短褲腳約喺膝頭中間上 10 cm（手冊 P.88）；longSockTop：長襪到膝頭下。
+ */
+const KEEP = new Set(['strap', 'band', 'gap', 'z']);
+const LEADER_MALE = { ...scaleDims(VENTURE, 172 / 168, KEEP), height: 172, shortsBottom: 59, longSockTop: 45 };
+const LEADER_FEMALE = { ...scaleDims(VENTURE, 160 / 168, KEEP), height: 160 };
+export const LEADER_BODY = {
+  boy: { ...LEADER_MALE, torso: { ...LEADER_MALE.torso, w: 35 }, hair: 'short' },
+  girl: { ...LEADER_FEMALE, torso: { ...LEADER_FEMALE.torso, w: 31.5 }, hair: 'pigtails' },
+};
+
+export const BODIES = { grasshopper: BODY, cub: CUB_BODY, scout: SCOUT_BODY, venture: VENTURE_BODY, rover: ROVER_BODY, leader: LEADER_BODY };
 
 export const COLOURS = {
   skin: '#f1c6a2',
@@ -155,6 +175,14 @@ export const COLOURS = {
   tieBlack: '#16161a',
   tieNavy: '#262a55',
   tieGreen: '#1f4a2c', // 深綠色（樂行童軍、成年成員）
+  // 成年成員（手冊 P.100、P.108–109、P.111、P.115）
+  hardHat: '#1d4329', // 深綠色金邊硬帽
+  gold: '#d8b23a', // 金邊
+  assocNecker: '#1f4a2c', // 會巾：深綠色
+  gilwellNecker: '#b59870', // 基維爾領巾：淺啡色（卡其）
+  gilwellWoggle: '#7a4524', // 基維爾巾圈（土耳其結）
+  woodBead: '#8a5a33', // 木章木珠
+  thong: '#5a3a22', // 皮繩
 };
 
 /**
@@ -190,8 +218,41 @@ export const ROVER_VARIANTS = {
   air: { ...VENTURE_VARIANTS.air },
 };
 export const roverVariant = (id) => ROVER_VARIANTS[id] ?? ROVER_VARIANTS.land;
-/** 深資／樂行童軍（長褲／半截裙、肩帶、領帶） */
-export const isSenior = (section) => section === 'venture' || section === 'rover';
+
+/**
+ * 成年成員三款制服（手冊 P.64–81）：陸上 = 杏色恤衫、草青色、深綠色軟帽／金邊硬帽、深綠色領帶；
+ * 海童軍領袖 = 白恤衫、深藍色、海童軍男／女領袖白頂帽、黑色領帶；空童軍領袖 = 淺藍色恤衫、深藍色、灰藍色軟帽、深藍色領帶。
+ * sock = 編號 5 長襪（陸上深草青色；海／空深藍色）。
+ */
+export const LEADER_VARIANTS = {
+  land: { shirt: COLOURS.cubShirt, leg: COLOURS.cubGreen, sock: COLOURS.cubSock, hat: 'beret', beret: COLOURS.beret, sweater: COLOURS.sweaterGreen, tie: COLOURS.tieGreen },
+  sea: { shirt: COLOURS.seaShirt, leg: COLOURS.navy, sock: COLOURS.navySock, hat: 'seaLeader', sweater: COLOURS.sweaterNavy, tie: COLOURS.tieBlack },
+  air: { shirt: COLOURS.airShirt, leg: COLOURS.navy, sock: COLOURS.navySock, hat: 'beret', beret: COLOURS.ventureAirBeret, sweater: COLOURS.sweaterNavy, tie: COLOURS.tieNavy },
+};
+export const leaderVariant = (id) => LEADER_VARIANTS[id] ?? LEADER_VARIANTS.land;
+
+/** 深資／樂行童軍、成年成員（長褲／半截裙、肩帶、領帶） */
+export const isSenior = (section) => section === 'venture' || section === 'rover' || section === 'leader';
+
+/**
+ * 成年成員制服編號（手冊 P.53–56）：3 常規、4 領帶、5 男短褲、6 女長褲。
+ * 編號 5 只係男、編號 6 只係女：轉人物時自動改做對應嗰套（5 ↔ 6）。
+ */
+export function leaderUniform(gender, id) {
+  const girl = gender === 'girl';
+  if (id === 'u5' && girl) return 'u6';
+  if (id === 'u6' && !girl) return 'u5';
+  return ['u3', 'u4', 'u5', 'u6'].includes(id) ? id : 'u3';
+}
+
+/**
+ * 成年成員下身：編號 3、4 女 = 半截裙 + 肉色襪褲 + 非綁帶中跟皮鞋；編號 5 = 短褲 + 長襪；其餘長褲 + 黑短襪 + 綁帶皮鞋。
+ */
+export function leaderLegwear(gender, uniform) {
+  const u = leaderUniform(gender, uniform);
+  const skirt = gender === 'girl' && (u === 'u3' || u === 'u4');
+  return { uniform: u, skirt, shorts: u === 'u5', tie: u === 'u4', laced: !skirt, sock: skirt ? COLOURS.tights : COLOURS.blackSock };
+}
 
 /**
  * 深資童軍下身（手冊 P.36；綱要 P.15）：男 = 長褲 + 黑短襪 + 綁帶皮鞋；

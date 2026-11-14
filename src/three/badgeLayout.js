@@ -51,12 +51,41 @@ export function placeAll(rules, gender, { sweater = false } = {}) {
   const box = {}; // 每個章喺袖上面佔嘅 v 範圍：{ top, bottom }
 
   // 先擺唔靠其他章嘅，再擺「喺某個章下面／上面」嘅
-  const order = [...rules.badges].sort((a, b) => !!(a.anchor.belowBadge || a.anchor.aboveBadge) - !!(b.anchor.belowBadge || b.anchor.aboveBadge));
+  const dep = (a) => !!(a.belowBadge || a.aboveBadge || a.onBadge);
+  const order = [...rules.badges].sort((a, b) => dep(a.anchor) - dep(b.anchor));
+  const onStrap = {}; // 職級肩章喺肩帶上嘅位置（「R」字樣別針跟住佢）
   for (const b of order) {
     const a = b.anchor;
     const { wCm: w, hCm: h, shape } = b.size;
     const art = b.dynamic ? dynKey(b.id) : Array.isArray(b.art) ? null : b.art.file;
     const fit = b.dynamic === 'district' || b.dynamic === 'region'; // 各區圖案比例唔同：喺 w × h 入面置中縮放
+    const extra = { ...(b.needsInvestiture ? { inv: true } : {}), ...(b.levels ? { levels: b.levels } : {}) };
+    if (a.part === 'shoulder' && (a.upTowards === 'collar' || a.onBadge)) {
+      // 成年成員職級肩章（手冊 P.106、P.172）：套喺肩帶膊頭嗰頭、緊貼肩帶末端；徽號向衣領（圖案上 = 向衣領）。
+      // 闊（w）橫跨肩帶，高（h）沿肩帶。「R」字樣別針（P.105）喺肩章徽號下面，即係近膊頭嗰半。
+      // 轉角次序 YXZ：先 X 轉 -90°（平放、圖案上 = 向後），再 Y 轉 ±90°（圖案上 = 向衣領）。
+      const S = strapLayout(layout(gender, section), { sweater });
+      if (!S) throw new Error(`徽章 ${b.id} 要肩帶，但呢個身形冇肩帶`);
+      for (const [k, sx] of [['l', 1], ['r', -1]]) {
+        let x;
+        let y = S.base + S.t;
+        if (a.onBadge) {
+          const host = onStrap[`${a.onBadge}-${k}`];
+          if (!host) throw new Error(`徽章 ${b.id} 要先有 ${a.onBadge}`);
+          x = host.x + sx * a.alongCm; // 向膊頭
+          y = host.y + 0.04;
+        } else {
+          x = sx * (S.outer - 0.3 - h / 2);
+          onStrap[`${b.id}-${k}`] = { x, y };
+        }
+        out.push({
+          key: `${b.id}-${k}`, id: b.id, mount: 'torso', facing: 'up', shape, w, h, x, y, z: 0,
+          rot: [-Math.PI / 2, (sx * Math.PI) / 2, 0, 'YXZ'],
+          art, ...extra, ...(a.onBadge ? { requires: a.onBadge } : {}),
+        });
+      }
+      continue;
+    }
     if (a.part === 'shoulder') {
       // 深資童軍肩章：套喺雙肩肩帶上（手冊 P.145、P.170）。方頭（圖案左、徽號）近膊頭，圓頭近衣領。
       // 右膊（-x）：圖案右 = +x（向衣領）、圖案上 = 向後；左膊（+x）係同一款章轉 180°。
@@ -88,7 +117,7 @@ export function placeAll(rules, gender, { sweater = false } = {}) {
         const flapTop = top - P.top;
         y = a.pocket === 'centre' ? flapTop - P.flap - (P.h - P.flap) / 2 : flapTop + a.gapCm + h / 2;
       }
-      out.push({ key: b.id, id: b.id, mount: 'torso', shape, w, h, x, y, z: B.torso.d / 2, art, fit, ...(b.needsInvestiture ? { inv: true } : {}) });
+      out.push({ key: b.id, id: b.id, mount: 'torso', shape, w, h, x, y, z: B.torso.d / 2, art, fit, ...extra });
       continue;
     }
     const mount = a.side === 'left' ? 'l' : 'r';
@@ -122,7 +151,7 @@ export function placeAll(rules, gender, { sweater = false } = {}) {
     else if (a.aboveCuffSeamCm != null) t = face.cuffSeam - a.aboveCuffSeamCm - h;
     else throw new Error(`徽章 ${b.id} 冇袖上位置`);
     box[b.id] = { top: t, bottom: t + h };
-    out.push({ key: b.id, id: b.id, mount, shape, w, h, u, v: t + h / 2, art, fit, ...(b.needsInvestiture ? { inv: true } : {}) });
+    out.push({ key: b.id, id: b.id, mount, shape, w, h, u, v: t + h / 2, art, fit, ...extra });
   }
   return out;
 }
@@ -210,19 +239,28 @@ export function placeFor(rules, outfit) {
 /** 呢個支部有冇制服毛衣（規則 JSON 有 sweater 衣物） */
 export const hasSweater = (rules) => (rules.garments || []).some((g) => g.id === 'sweater');
 
+/** 成年成員：呢個章喺呢個單位層級戴唔戴（冇 levels = 全部層級都戴；冇揀層級 = 唔篩） */
+export const levelOk = (p, level) => !p.levels || !level || p.levels.includes(level);
+
 /**
  * 按開關揀返要顯示嘅章。
  * unavailable = 而家冇圖案嘅章（例如揀咗總會總部屬下嘅區，冇地域章）
+ * level = 成年成員單位層級（旅／區／地域／總部）：香港肩章／旅章、總會總部章／地域章／區章跟層級（手冊 P.94–95）
  */
-export function visible(placements, state, { invested, school = false, unavailable = [] }) {
+export function visible(placements, state, { invested, school = false, unavailable = [], level = null }) {
   if (school && !invested) return []; // 未宣誓冇旅巾，冇地方戴
-  const shown = placements.filter((p) => {
+  const on = (p) => {
     if ((p.id === 'membership' || p.inv) && !invested) return false; // 世界童軍會員章、童軍小隊章：宣誓後先戴
     if (unavailable.includes(p.id)) return false;
+    if (!levelOk(p, level)) return false;
     if (p.id === 'progress') return p.step <= (state.progress || 0);
     if (p.choice) return state[p.id] === p.choice; // 有選項嘅章（例：深資童軍肩章）
     return !!state[p.id];
-  });
+  };
+  const first = placements.filter(on);
+  // 跟住另一個章嘅（「R」字樣別針喺職級肩章上）：嗰個章冇顯示就唔顯示
+  const ids = new Set(first.map((p) => p.id));
+  const shown = first.filter((p) => !p.requires || ids.has(p.requires));
   return centreLonePair(placements, shown);
 }
 
@@ -242,12 +280,15 @@ export function centreLonePair(placements, shown) {
 }
 
 /** 某個章喺而家嘅服裝會唔會顯示，同埋點解唔顯示 */
-export function shownReason(rules, outfit, state, id, { unavailable = [] } = {}) {
+export function shownReason(rules, outfit, state, id, { unavailable = [], level = null } = {}) {
   const all = placeFor(rules, outfit);
   if (!all.some((p) => p.id === id)) return outfit.school ? 'school' : outfit.sweater && hasSweater(rules) ? 'sweater' : 'vest';
-  if (visible(all, state, { invested: outfit.invested, school: outfit.school, unavailable }).some((p) => p.id === id)) return null;
+  if (visible(all, state, { invested: outfit.invested, school: outfit.school, unavailable, level }).some((p) => p.id === id)) return null;
   if (outfit.school && !outfit.invested) return 'schoolUninvested';
   if ((id === 'membership' || all.some((p) => p.id === id && p.inv)) && !outfit.invested) return 'uninvested';
+  if (all.some((p) => p.id === id && !levelOk(p, level))) return 'level';
   if (unavailable.includes(id)) return 'noArt';
+  const req = all.find((p) => p.id === id && p.requires);
+  if (req && state[id]) return 'needsHost';
   return 'off';
 }

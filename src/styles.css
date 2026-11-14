@@ -929,3 +929,37 @@ a {
   max-width: 100%;
   object-fit: contain;
 }
+
+/* ---------- 成年成員（v1.0 領袖制服）：停用嘅選項、職級資料、六個支部掣 ---------- */
+.seg__btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.picker--leader .select {
+  width: 100%;
+}
+
+.rankline {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.rankline__cap {
+  width: 22px;
+  height: auto;
+  flex: none;
+}
+
+@media (max-width: 599px) {
+  .sectionswitch {
+    flex-wrap: wrap;
+  }
+
+  .sectionswitch .seg__btn {
+    flex: 1 1 30%;
+  }
+}

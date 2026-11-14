@@ -3,16 +3,17 @@
 // 人物面向 +z；穿著者左 = +x。
 import { useEffect, useMemo } from 'react';
 import * as THREE from 'three';
-import { layout, neckerLayout, strapLayout, VEST_T, SWEATER_TOP, PX, scoutVariant, SCOUT_VARIANTS, ventureVariant, roverVariant, isSenior, ventureLegwear, pumpParts } from './body.js';
+import { layout, neckerLayout, strapLayout, VEST_T, SWEATER_TOP, PX, scoutVariant, SCOUT_VARIANTS, ventureVariant, roverVariant, leaderVariant, isSenior, ventureLegwear, leaderLegwear, pumpParts } from './body.js';
 import { useTexture } from '@react-three/drei';
 import { SECTIONS, DISTRICTS, PATROLS } from '../data/rules.js';
-import { resolveArt } from '../lib/picks.js';
+import { resolveArt, rankCap, leaderNeckwear } from '../lib/picks.js';
 import { placeAll, placeFor, visible, dynKey } from './badgeLayout.js';
 import { useBadgeTextures, useDynamicTextures, TorsoBadges, SleeveBadges } from './Badges.jsx';
 import {
   headFaces, pigtailFaces, neckFaces, torsoFaces, sleeveFaces, cuffFaces, skinFaces, handFaces, legFaces, shortsFaces, shinFaces,
   shoeFaces, skirtFaces, vestFaces, hatFaces, brimFaces, shirtPalette, rollFaces, tailCanvas, backTriangleCanvas, plain, material, wogglePaint,
   cubTorsoFaces, cubShinFaces, cubCapFaces, scoutWogglePaint, seaCapFaces, shade, brighten, sweaterFaces, sweaterSleeveFaces, sweaterCuffFaces, tieCanvas,
+  gilwellWogglePaint, hardHatFaces,
 } from './pixels.js';
 import { COLOURS as C } from './body.js';
 
@@ -20,6 +21,9 @@ const CAP_BADGE = '/badges/cub_cap_badge.png';
 const SCOUT_CAP_BADGE = '/badges/scout_cap_badge.png';
 const SEA_TALLY = '/badges/sea_scout_cap_tally.png';
 const VENTURE_SEA_CAP_BADGE = '/badges/venture_sea_cap_badge.png';
+const SEA_LEADER_CAP_BADGE = '/badges/leader/sea_leader_cap_badge.png'; // 海童軍領袖帽章（手冊 P.105）
+const HK_BADGE = '/badges/hong_kong_badge.png'; // 會巾領巾尖嘅香港章（手冊 P.108）
+const GILWELL_TARTAN = '/badges/leader/gilwell_tartan.png'; // 基維爾領巾尖格仔布（手冊 P.109）
 
 export const BASE_H = 0.045; // 底座高度（米）
 const PIGTAIL_TIE = '#5b3fa0';
@@ -151,12 +155,12 @@ function CubHat({ B, girl, painted }) {
  * 童軍深綠色軟帽（手冊 P.30、P.98–99、P.102）：黑色膠邊離眉毛約 2 cm；向穿著者右邊（-x）拉低；
  * 金屬帽章戴喺膠邊、左眼（+x）上方。方塊造型只係示意。
  */
-function ScoutBeret({ B, painted, colour = C.beret }) {
+function ScoutBeret({ B, painted, colour = C.beret, cap = null }) {
   const h = B.head;
   const headTop = h.y + h.h;
   const browY = headTop - 7.5; // pixels.js headFaces：眉毛離頭頂 7.5 cm
   const bandY = browY + 2 + 1; // 膠邊底離眉 2 cm，膠邊高 2 cm
-  const badgeTex = useTexture(SCOUT_CAP_BADGE);
+  const badgeTex = useTexture(cap?.file ?? SCOUT_CAP_BADGE);
   const F = useMemo(() => {
     const band = [h.w + 0.8, 2, h.d + 0.8];
     const crown = [h.w + 3.5, 3.6, h.d + 3];
@@ -176,10 +180,52 @@ function ScoutBeret({ B, painted, colour = C.beret }) {
         <Box size={crown} faces={F.crownF} painted={painted} position={[0, 0, 0]} />
         <Box size={[1.2, 0.8, 1.2]} faces={F.knob} painted={painted} position={[1.5, crown[1] / 2 + 0.4, 0]} />
       </group>
-      <mesh position={[eyeX, bandY, h.z + band[2] / 2 + 0.08]}>
-        <circleGeometry args={[1.4, 32]} />
-        <meshStandardMaterial map={painted ? badgeTex : null} color={painted ? '#f2f2f2' : '#b4b6b9'} transparent alphaTest={0.3} roughness={0.35} metalness={0.4} polygonOffset polygonOffsetFactor={-2} />
+      {cap ? (
+        <RankCapBadge tex={badgeTex} painted={painted} position={[eyeX, bandY - 1.2, h.z + crown[2] / 2 + 0.75]} />
+      ) : (
+        <mesh position={[eyeX, bandY, h.z + band[2] / 2 + 0.08]}>
+          <circleGeometry args={[1.4, 32]} />
+          <meshStandardMaterial map={painted ? badgeTex : null} color={painted ? '#f2f2f2' : '#b4b6b9'} transparent alphaTest={0.3} roughness={0.35} metalness={0.4} polygonOffset polygonOffsetFactor={-2} />
+        </mesh>
+      )}
+    </group>
+  );
+}
+
+/**
+ * 職級帽章（手冊 P.103–105）：銀色帽章上面有一束顏色帽纓（顏色跟職級）。
+ * position = 帽章底部中間；闊 2.6 cm，高跟圖案比例（約 4.5 cm）。
+ */
+function RankCapBadge({ tex, painted, position, rotation }) {
+  const w = 2.6;
+  const img = tex?.image;
+  const hgt = img?.width ? (w * img.height) / img.width : w * 1.74;
+  return (
+    <group position={position} rotation={rotation}>
+      <mesh position={[0, hgt / 2, 0]}>
+        <planeGeometry args={[w, hgt]} />
+        <meshStandardMaterial map={painted ? tex : null} color={painted ? '#ffffff' : '#b4b6b9'} transparent alphaTest={0.35} roughness={0.5} metalness={0.15} side={THREE.DoubleSide} polygonOffset polygonOffsetFactor={-2} />
       </mesh>
+    </group>
+  );
+}
+
+/**
+ * 深綠色金邊硬帽（女性成年成員編號 3、4；手冊 P.100、P.105）：帽邊離眼眉約 4 cm；
+ * 職級帽章戴喺硬帽右方（穿著者右 = -x），同右耳成一直線。方塊造型只係示意。
+ */
+function HardHat({ B, painted, cap }) {
+  const h = B.head;
+  const headTop = h.y + h.h;
+  const browY = headTop - 7.5;
+  const base = browY + 4;
+  const size = useMemo(() => [h.w + 1.2, 7, h.d + 1.2], [h]);
+  const faces = useMemo(() => hardHatFaces(size), [size]);
+  const tex = useTexture(cap.file);
+  return (
+    <group position={[0, base + size[1] / 2, h.z]}>
+      <Box size={size} faces={faces} painted={painted} position={[0, 0, 0]} />
+      <RankCapBadge tex={tex} painted={painted} position={[-(size[0] / 2 + 0.08), -size[1] / 2 + 0.9, 0.5]} rotation={[0, -Math.PI / 2, 0]} />
     </group>
   );
 }
@@ -242,13 +288,13 @@ function SeaCap({ B, painted }) {
  * 海童軍男／女領袖白頂帽（深資海童軍戴；手冊 P.38–39、P.101、P.102）：帽邊喺眼眉上方約 2 cm、同水平線看齊；
  * 深資海童軍帽章喺帽前黑色帽帶中央。男裝白頂闊、黑帽舌；女裝白頂細、後面向上翹、帽舌短。方塊造型只係示意。
  */
-function SeaLeaderCap({ B, girl, painted }) {
+function SeaLeaderCap({ B, girl, painted, badge = VENTURE_SEA_CAP_BADGE }) {
   const h = B.head;
   const headTop = h.y + h.h;
   const browY = headTop - 7.5;
   const bandH = girl ? 2.6 : 3.4;
   const bandY = browY + 2 + bandH / 2;
-  const badgeTex = useTexture(VENTURE_SEA_CAP_BADGE);
+  const badgeTex = useTexture(badge);
   const F = useMemo(() => {
     const band = [h.w + 0.8, bandH, h.d + 0.8];
     const top = girl ? [h.w + 1.6, 2.2, h.d + 1.2] : [h.w + 6, 1.6, h.d + 6];
@@ -278,6 +324,50 @@ function SeaLeaderCap({ B, girl, painted }) {
   );
 }
 
+/** 基維爾巾圈（土耳其結）大細：細過皮巾圈、厚啲 */
+const GILWELL_WOG = [5.2, 4, 2.6];
+
+/** 領巾尖嘅圖案（會巾：香港章；基維爾領巾：格仔布），貼喺背後三角，面向後 */
+function TipDecal({ file, w, h, painted, position }) {
+  const tex = useTexture(file);
+  return (
+    <mesh position={position} rotation={[0, Math.PI, 0]}>
+      <planeGeometry args={[w, h]} />
+      <meshStandardMaterial map={painted ? tex : null} color={painted ? '#ffffff' : '#9a9da1'} roughness={0.85} polygonOffset polygonOffsetFactor={-3} />
+    </mesh>
+  );
+}
+
+/**
+ * 木章（手冊 P.115–117）：皮繩連木珠。皮繩由頸兩邊（top）落到胸前（end），木珠喺 end 下面吊住；
+ * 兩邊分木珠（2 顆 = 每邊 1 顆；3 顆 = 左 2 右 1；4 顆 = 每邊 2 顆）。頸後嗰段藏喺領巾下面，唔使畫。
+ */
+function WoodBadge({ top, end, beads, painted }) {
+  const F = useMemo(
+    () => ({ thong: [0, 1, 2, 3, 4, 5].map(() => plain(1, 1, C.thong)), bead: hatFaces([1.2, 3, 1.2], C.woodBead) }),
+    [],
+  );
+  const perSide = { 1: Math.ceil(beads / 2), [-1]: Math.floor(beads / 2) };
+  return (
+    <group>
+      {[1, -1].map((s) => {
+        const dx = s * (top.x - end.x);
+        const dy = top.y - end.y;
+        const len = Math.hypot(dx, dy);
+        const n = perSide[s];
+        return (
+          <group key={s}>
+            <Box size={[0.5, len, 0.4]} faces={F.thong} painted={painted} position={[s * (top.x + end.x) / 2, (top.y + end.y) / 2, (top.z + end.z) / 2]} rotation={[0, 0, Math.atan2(-dx, dy)]} />
+            {Array.from({ length: n }, (_, i) => (
+              <Box key={i} size={[1.2, 3, 1.2]} faces={F.bead} painted={painted} position={[s * end.x + (i - (n - 1) / 2) * 1.4, end.y - 1.7, end.z + 0.3]} />
+            ))}
+          </group>
+        );
+      })}
+    </group>
+  );
+}
+
 const SHORTS_BOTTOM = 38; // 短褲腳離地（cm，膝頭上面）
 const BEIGE_SHORTS_BOTTOM = { cub: { boy: 47, girl: 45 }, scout: { boy: 54, girl: 52 } }; // 幼童軍／童軍短褲、裙褲腳離地
 const BEIGE_SOCK_H = { cub: 34, scout: 40 }; // 長襪到膝頭下
@@ -289,31 +379,59 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
   // 深資童軍：同樣係恤衫制服（兩胸袋、皮帶），另加肩帶；長褲／半截裙（手冊 P.36–41）
   // 樂行童軍（手冊 P.42–47）同深資童軍一樣：肩帶、長褲／半截裙、領帶
   const venture = isSenior(section);
+  // 成年成員（手冊 P.52–81）：同深資／樂行童軍一樣有肩帶；制服編號決定領巾／領帶、褲／裙／短褲
+  const leader = section === 'leader';
   const cub = section === 'cub' || section === 'scout' || venture;
   const scout = section === 'scout';
   const leather = scout || venture; // 啡色皮巾圈（手冊 P.110）
   // 童軍支部制服款式：童軍／海童軍／空童軍（手冊 P.30–35）；幼童軍同陸上童軍同色
-  const U = scout ? scoutVariant(outfit.variant) : section === 'rover' ? roverVariant(outfit.variant) : venture ? ventureVariant(outfit.variant) : SCOUT_VARIANTS.land;
+  const U = scout
+    ? scoutVariant(outfit.variant)
+    : leader
+    ? leaderVariant(outfit.variant)
+    : section === 'rover'
+    ? roverVariant(outfit.variant)
+    : venture
+    ? ventureVariant(outfit.variant)
+    : SCOUT_VARIANTS.land;
+  // 成年成員一律當已宣誓（冇未宣誓狀態）
+  const invested = leader ? true : outfit.invested;
   const gender = outfit.gender === 'girl' ? 'girl' : 'boy';
   const painted = outfit.finish !== 'unpainted';
   const L = useMemo(() => layout(gender, section), [gender, section]);
-  const VL = venture ? ventureLegwear(gender, outfit.ventureLegwear) : null;
+  const VL = leader ? leaderLegwear(gender, outfit.uniform) : venture ? ventureLegwear(gender, outfit.ventureLegwear) : null;
   // 制服毛衣（手冊 P.121–122）：幼童軍、童軍、深資童軍；深草青色，海／空童軍深藍色
   const sweater = cub && !!outfit.sweater;
   const sweaterColour = U.sweater ?? C.sweaterGreen;
   // 深資童軍領帶（手冊 P.48、P.113）：代替旅巾；宣誓後先戴（同旅巾一樣，待確認）
-  const tie = venture && outfit.neckwear === 'tie';
+  const tie = leader ? VL.tie : venture && outfit.neckwear === 'tie';
   const strap = useMemo(() => (venture ? strapLayout(L, { sweater }) : null), [venture, L, sweater]);
   const { B } = L;
   const top = cub ? 'cub' : outfit.top ?? 'orange';
   const topColour = cub ? U.shirt : outfit.topColour ?? '#ffffff';
   const long = (!cub && outfit.sleeves === 'long') || (cub && !!outfit.sweater);
   const vest = !cub && !!outfit.vest;
-  const shorts = venture ? false : cub || outfit.legwear === 'shorts';
+  const shorts = leader ? VL.shorts : venture ? false : cub || outfit.legwear === 'shorts';
   const legColour = cub ? U.leg : outfit.legColour ?? '#8a9099';
-  const shortsBottom = venture ? B.skirtBottom : cub ? BEIGE_SHORTS_BOTTOM[section][gender] : SHORTS_BOTTOM;
+  const shortsBottom = leader && VL.shorts ? B.shortsBottom : venture ? B.skirtBottom : cub ? BEIGE_SHORTS_BOTTOM[section][gender] : SHORTS_BOTTOM;
   const culottes = cub && !venture && gender === 'girl';
   const skirt = !!VL?.skirt;
+
+  // 成年成員帽（手冊 P.97–105）：海童軍領袖 = 白頂帽 + 海童軍領袖帽章；女（陸上、編號 3／4）= 金邊硬帽或軟帽；
+  // 其餘軟帽（陸上深綠色、深資童軍領袖棗紅色、空童軍領袖灰藍色）+ 職級帽章
+  const landLeader = leader && !['sea', 'air'].includes(outfit.variant);
+  const hatInfo = useMemo(() => {
+    if (!leader) return { kind: 'none' };
+    if (U.hat === 'seaLeader') return { kind: 'sea' };
+    const cap = rankCap(RULES, picks.rank);
+    // 硬帽：女、陸上、編號 3／4（半截裙）；教練員唔戴硬帽（手冊 P.100）
+    if (landLeader && skirt && outfit.hatStyle !== 'beret' && picks.rank !== 'instructor') return { kind: 'hardHat', cap };
+    return { kind: 'beret', colour: landLeader && outfit.ventureLeader ? C.maroon : U.beret, cap };
+  }, [leader, U, RULES, picks.rank, landLeader, skirt, outfit.hatStyle, outfit.ventureLeader]);
+  // 成年成員領巾、巾圈、木章
+  const LN = useMemo(() => (leader ? leaderNeckwear(RULES, outfit, picks) : null), [leader, RULES, outfit, picks]);
+  const neckerMain = LN ? (LN.necker === 'association' ? C.assocNecker : LN.necker === 'gilwell' ? C.gilwellNecker : outfit.neckerMain) : outfit.neckerMain;
+  const neckerBorder = LN ? (LN.necker === 'association' ? C.assocNecker : LN.necker === 'gilwell' ? C.gilwellNecker : outfit.neckerBorder) : outfit.neckerBorder;
 
   // 徽章：位置全部由規則 JSON 計出嚟（學校運動上衣、背心會改位）；區章、地域章、優異旅團章圖案跟用戶揀
   const staticUrls = useMemo(() => placeAll(RULES, gender).map((p) => p.art).filter((a) => a && !a.startsWith('dyn:')), [RULES, gender]);
@@ -328,8 +446,8 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
   const unavailable = useMemo(() => RULES.badges.filter((b) => b.dynamic && !dynArts[dynKey(b.id)]).map((b) => b.id), [RULES, dynArts]);
   const all = useMemo(() => placeFor(RULES, outfit), [RULES, outfit]);
   const shown = useMemo(
-    () => visible(all, badges, { invested: outfit.invested, school: outfit.school, unavailable }),
-    [all, badges, outfit.invested, outfit.school, unavailable],
+    () => visible(all, badges, { invested, school: outfit.school, unavailable, level: leader ? picks.level : null }),
+    [all, badges, invested, outfit.school, unavailable, leader, picks.level],
   );
   const patchProps = { textures, painted, onSelect, registry };
   const torsoItems = shown.filter((p) => p.mount === 'torso');
@@ -389,7 +507,7 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
       trousers: legFaces([B.leg.w, body.legH, B.leg.d], legColour),
       shorts: shortsFaces(shortsSize, legColour),
       shortsSize,
-      shin: cub ? cubShinFaces(shinSize, BEIGE_SOCK_H[section] - B.leg.y, U.sock) : shinFaces(shinSize, SOCK_H[outfit.socks] ?? SOCK_H.short, outfit.sockColour ?? '#ffffff'),
+      shin: cub ? cubShinFaces(shinSize, (B.longSockTop ?? BEIGE_SOCK_H[section]) - B.leg.y, U.sock) : shinFaces(shinSize, SOCK_H[outfit.socks] ?? SOCK_H.short, outfit.sockColour ?? '#ffffff'),
       shinSize,
       shinH,
       // 深資童軍半截裙：一件過包住兩隻腳，及膝；下面肉色襪褲
@@ -418,17 +536,31 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
     return {
       ...G,
       roll: {
-        back: rollFaces([G.outer, G.rollH, G.rollT], outfit.neckerMain, outfit.neckerBorder),
-        side: rollFaces([G.rollT, G.rollH, G.inner + G.rollT + 1.2], outfit.neckerMain, outfit.neckerBorder),
+        back: rollFaces([G.outer, G.rollH, G.rollT], neckerMain, neckerBorder),
+        side: rollFaces([G.rollT, G.rollH, G.inner + G.rollT + 1.2], neckerMain, neckerBorder),
       },
-      upperC: tailCanvas(G.tail.w, G.len + 1, outfit.neckerMain, outfit.neckerBorder, 0),
-      lowerC: tailCanvas(G.tail.w, G.tail.len, outfit.neckerMain, outfit.neckerBorder, G.tail.tip),
-      backC: backTriangleCanvas(G.back.w, G.back.h, outfit.neckerMain, outfit.neckerBorder),
+      upperC: tailCanvas(G.tail.w, G.len + 1, neckerMain, neckerBorder, 0),
+      lowerC: tailCanvas(G.tail.w, G.tail.len, neckerMain, neckerBorder, G.tail.tip),
+      backC: backTriangleCanvas(G.back.w, G.back.h, neckerMain, neckerBorder),
     };
-  }, [L, vest, sweater, outfit.neckerMain, outfit.neckerBorder]);
+  }, [L, vest, sweater, neckerMain, neckerBorder]);
 
   // 童軍：啡色皮巾圈（手冊 P.110）；其他支部：顏色巾圈
-  const wogFaces = useMemo(() => (leather ? scoutWogglePaint([8, 3, 1.4]) : wogglePaint([8, 2.6, 1.2], outfit.woggle)), [outfit.woggle, leather]);
+  const gilwellWog = !!LN?.gilwellWoggle;
+  const wogFaces = useMemo(
+    () => (gilwellWog ? gilwellWogglePaint(GILWELL_WOG, { trainer: LN.trainer }) : leather ? scoutWogglePaint([8, 3, 1.4]) : wogglePaint([8, 2.6, 1.2], outfit.woggle)),
+    [outfit.woggle, leather, gilwellWog, LN?.trainer], // eslint-disable-line react-hooks/exhaustive-deps
+  );
+  // 木章（手冊 P.116–117）：皮繩由頸兩邊落到胸前，木珠掛喺領巾（或者領帶）前面
+  const wood = useMemo(() => {
+    if (!LN?.woodBadge || !invested) return null;
+    const N0 = neckerLayout(L);
+    const top = tie
+      ? { x: B.neck.w / 2 + 1.9, y: L.top + 0.2, z: B.torso.d / 2 + 0.7 } // 領帶：皮繩由衣領兩邊落（唔好穿入身）
+      : { x: N0.outer / 2 - 0.8, y: L.top + N0.rollH - 0.2, z: N0.front + 0.6 };
+    const end = tie ? { x: 4.6, y: L.top - 13, z: B.torso.d / 2 + 0.7 } : { x: 5.4, y: N0.wogY - 4, z: N0.front + 0.9 };
+    return { top, end, beads: LN.beads };
+  }, [LN, invested, L, B, tie]);
   // 肩帶（恤衫色，邊深少少）
   // 肩帶：恤衫色；著毛衣就係毛衣膊布色（手冊 P.122 附圖）
   const strapF = useMemo(
@@ -451,7 +583,10 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
         {!cub && outfit.hat && outfit.hat !== 'none' && <Hat B={B} kind={outfit.hat} colour={outfit.hatColour ?? '#1f2f4f'} painted={painted} />}
         {section === 'cub' && outfit.hat && outfit.invested && <CubHat B={B} girl={gender === 'girl'} painted={painted} />}
         {scout && outfit.hat && outfit.invested && (U.hat === 'sea' ? <SeaCap B={B} painted={painted} /> : <ScoutBeret B={B} painted={painted} colour={U.beret} />)}
-        {venture && outfit.hat && outfit.invested && (U.hat === 'seaLeader' ? <SeaLeaderCap B={B} girl={gender === 'girl'} painted={painted} /> : <ScoutBeret B={B} painted={painted} colour={U.beret} />)}
+        {venture && !leader && outfit.hat && outfit.invested && (U.hat === 'seaLeader' ? <SeaLeaderCap B={B} girl={gender === 'girl'} painted={painted} /> : <ScoutBeret B={B} painted={painted} colour={U.beret} />)}
+        {leader && outfit.hat && hatInfo.kind === 'sea' && <SeaLeaderCap B={B} girl={gender === 'girl'} painted={painted} badge={SEA_LEADER_CAP_BADGE} />}
+        {leader && outfit.hat && hatInfo.kind === 'hardHat' && hatInfo.cap && <HardHat B={B} painted={painted} cap={hatInfo.cap} />}
+        {leader && outfit.hat && hatInfo.kind === 'beret' && <ScoutBeret B={B} painted={painted} colour={hatInfo.colour} cap={hatInfo.cap} />}
         <Box size={[B.neck.w, B.neck.h, B.neck.d]} faces={body.neck} painted={painted} position={[0, B.neck.y + B.neck.h / 2, 0]} />
         {/* 上身 */}
         <Box size={[t.w, t.h, t.d]} faces={shirt.torso} painted={painted} position={[0, t.y + t.h / 2, 0]} />
@@ -504,14 +639,14 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
         ))}
         {venture && skirt && <Box size={legs.skirtSize} faces={legs.skirtF} painted={painted} position={[0, (shortsBottom + B.leg.top) / 2, 0]} />}
         {/* 旅巾 + 巾圈（宣誓後先戴；戴喺衣領／背心外面） */}
-        {outfit.invested && tie && (
+        {invested && tie && (
           <group>
             <Box size={[3, 2.6, 1.4]} faces={tieF.knot} painted={painted} position={[0, L.top + SWEATER_TOP + 1.4, B.neck.d / 2 + 0.9]} />
             <Plane size={[6.4, tieF.len]} canvas={tieF.blade} painted={painted} position={[0, L.top - tieF.len / 2, t.d / 2 + 0.12]} />
             <Box size={[3, 0.5, t.d / 2 - B.neck.d / 2]} faces={tieF.knot} painted={painted} position={[0, L.top + 0.25, (t.d / 2 + B.neck.d / 2) / 2 + 0.2]} />
           </group>
         )}
-        {outfit.invested && !tie && (
+        {invested && !tie && (
           <group>
             <Box size={[N.outer, N.rollH, N.rollT]} faces={N.roll.back} painted={painted} position={[0, L.top + N.rollH / 2, -(N.inner / 2 + N.rollT / 2)]} />
             {[1, -1].map((s) => (
@@ -523,14 +658,23 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
                 <Plane size={[N.tail.w, N.tail.len]} canvas={N.lowerC} painted={painted} position={[s * N.tail.x, N.tail.top - N.tail.len / 2, N.tailZ(s)]} />
               </group>
             ))}
-            {leather ? (
+            {gilwellWog ? (
+              <Box size={GILWELL_WOG} faces={wogFaces} painted={painted} position={[0, N.wogY, N.front + 1.5]} />
+            ) : leather ? (
               <Box size={[8, 3, 1.4]} faces={wogFaces} painted={painted} position={[0, N.wogY, N.front + 1.2]} />
             ) : (
               <Box size={[8, 2.6, 1.2]} faces={wogFaces} painted={painted} position={[0, N.wogY, N.front + 1.1]} />
             )}
             <Plane size={[N.back.w, N.back.h]} canvas={N.backC} painted={painted} position={[0, N.back.top - N.back.h / 2, N.back.z]} rotation={[0, Math.PI, 0]} />
+            {LN?.necker === 'association' && (
+              <TipDecal file={HK_BADGE} w={3} h={4.2} painted={painted} position={[0, N.back.top - N.back.h + 2.6 + 2.1, N.back.z - 0.05]} />
+            )}
+            {LN?.necker === 'gilwell' && (
+              <TipDecal file={GILWELL_TARTAN} w={3} h={2} painted={painted} position={[0, N.back.top - N.back.h + 2.4 + 1, N.back.z - 0.05]} />
+            )}
           </group>
         )}
+        {wood && <WoodBadge {...wood} painted={painted} />}
       </group>
     </group>
   );

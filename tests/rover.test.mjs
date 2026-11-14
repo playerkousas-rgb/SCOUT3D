@@ -16,15 +16,15 @@ const badge = (id) => rover.badges.find((b) => b.id === id);
 const ALL_ON = { membership: true, hongKong: true, troop: true, region: true, district: true, meritorious: true, epaulette: 'rover' };
 const OUTFIT = { gender: 'boy', invested: true };
 
-test('樂行童軍規則資料通過驗證，喺支部切換最後一個', () => {
+test('樂行童軍規則資料通過驗證，喺支部切換排喺成年成員前面', () => {
   assert.deepEqual(validateRules(rover), []);
   assert.equal(rover.section.id, 'rover');
   assert.equal(rover.fileVersion, 'v1.0');
   // rules.js 用 vite 嘅 JSON import，node 直接 import 唔到：睇原始碼
   const src = readFileSync(new URL('../src/data/rules.js', import.meta.url), 'utf8');
   assert.match(src, /import ROVER from '\.\/rover_rules_v1\.0\.json'/);
-  assert.match(src, /venture: VENTURE, rover: ROVER \}/, '樂行童軍喺切換掣最後');
-  assert.match(readFileSync(new URL('../scripts/check_rules_v1.0.mjs', import.meta.url), 'utf8'), /'venture', 'rover'\]/);
+  assert.match(src, /venture: VENTURE, rover: ROVER, leader: LEADER \}/, '樂行童軍喺成年成員前面');
+  assert.match(readFileSync(new URL('../scripts/check_rules_v1.0.mjs', import.meta.url), 'utf8'), /'venture', 'rover', 'leader'\]/);
   assert.equal(rover.section.zh, '樂行童軍');
   assert.ok(isSenior('rover') && isSenior('venture') && !isSenior('scout'));
 });
