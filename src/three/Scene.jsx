@@ -8,9 +8,9 @@ import { useLang } from '../i18n.jsx';
 
 const TARGET = new THREE.Vector3(0, 0.6, 0);
 /** 幼童軍、童軍、深資童軍高啲（135、155、168 cm vs 117 cm）：望住點同相機一齊升 */
-const LIFT = { grasshopper: 0, cub: 0.09, scout: 0.17, venture: 0.23 };
+const LIFT = { grasshopper: 0, cub: 0.09, scout: 0.17, venture: 0.23, rover: 0.23 };
 /** 童軍、深資童軍成個人高咗：預設視角企遠少少，先至見到全身 */
-const ZOOM = { grasshopper: 1, cub: 1, scout: 1.15, venture: 1.24 };
+const ZOOM = { grasshopper: 1, cub: 1, scout: 1.15, venture: 1.24, rover: 1.24 };
 const DIST = 3.05;
 const EYE = 0.82;
 export const VIEWS = {

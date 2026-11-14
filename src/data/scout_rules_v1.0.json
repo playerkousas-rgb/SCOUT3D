@@ -28,6 +28,12 @@
         "item": "patrolDirection",
         "zh": "小隊章隊色方向：以人望住小隊章嘅面向，圖案左色近背、右色近胸（例：獾 左紫近背、右白近胸）",
         "en": "Patrol badge colour direction: as seen by a person looking at the badge, the left colour is toward the back and the right toward the chest (e.g. Badger: purple back, white chest)"
+      },
+      {
+        "date": "2026-11-14",
+        "item": "lonePairCentred",
+        "zh": "地域章／區章只得一個（例如銀禧區）就放中間；之後只得一個總會章嘅制服都係（用戶指示）",
+        "en": "If only one of the Region/District Badges is worn (e.g. Silver Jubilee) it is centred; the same later for uniforms with a single HQ badge (user instruction)"
       }
     ]
   },
@@ -788,8 +794,8 @@
         "example": true
       },
       "modelNote": {
-        "zh": "圖案跟「區章」揀咗嘅區自動轉做所屬地域；未揀區就用手冊 P.168 示例色塊。總會總部屬下嘅區（例如銀禧區）網頁冇列地域章，模型唔顯示。手冊 P.169 同綱要 P.12 附圖都係前面（望住右袖時右手邊）地域章、後面區章，同 P.95 文字一致。",
-        "en": "The artwork follows the Region of the District picked under District Badge; with no District picked it uses the Handbook p.168 example block. Districts under AHQ (e.g. Silver Jubilee) have no Region Badge on the web page, so none is shown. The Handbook p.169 and Training Scheme p.12 figures both put the Region Badge in front (right-hand side when looking at the right sleeve) and the District Badge behind, matching the p.95 text."
+        "zh": "圖案跟「區章」揀咗嘅區自動轉做所屬地域；未揀區就用手冊 P.168 示例色塊。總會總部屬下嘅區（例如銀禧區）網頁冇列地域章，模型唔顯示。手冊 P.169 同綱要 P.12 附圖都係前面（望住右袖時右手邊）地域章、後面區章，同 P.95 文字一致。只得一個（例如總會總部屬下嘅銀禧區冇地域章，或者熄咗其中一個）就放喺旅章下面中間（用戶指示）。",
+        "en": "The artwork follows the Region of the District picked under District Badge; with no District picked it uses the Handbook p.168 example block. Districts under AHQ (e.g. Silver Jubilee) have no Region Badge on the web page, so none is shown. The Handbook p.169 and Training Scheme p.12 figures both put the Region Badge in front (right-hand side when looking at the right sleeve) and the District Badge behind, matching the p.95 text. When only one of the pair is worn (e.g. Silver Jubilee District under AHQ has no Region Badge, or one is switched off) it goes centred below the Group Badge (user instruction)."
       },
       "sweater": false
     },
@@ -846,8 +852,8 @@
         "example": true
       },
       "modelNote": {
-        "zh": "可以揀全港所有區（香港童軍總會網頁「地域及區」）；未揀區就用手冊示例色塊。",
-        "en": "Every District can be picked (SAHK “Regions and Districts” page); with none picked it uses the handbook example block."
+        "zh": "可以揀全港所有區（香港童軍總會網頁「地域及區」）；未揀區就用手冊示例色塊。只得一個（例如總會總部屬下嘅銀禧區冇地域章，或者熄咗其中一個）就放喺旅章下面中間（用戶指示）。",
+        "en": "Every District can be picked (SAHK “Regions and Districts” page); with none picked it uses the handbook example block. When only one of the pair is worn (e.g. Silver Jubilee District under AHQ has no Region Badge, or one is switched off) it goes centred below the Group Badge (user instruction)."
       },
       "sweater": false
     },

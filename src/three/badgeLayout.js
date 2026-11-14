@@ -216,13 +216,29 @@ export const hasSweater = (rules) => (rules.garments || []).some((g) => g.id ===
  */
 export function visible(placements, state, { invested, school = false, unavailable = [] }) {
   if (school && !invested) return []; // 未宣誓冇旅巾，冇地方戴
-  return placements.filter((p) => {
+  const shown = placements.filter((p) => {
     if ((p.id === 'membership' || p.inv) && !invested) return false; // 世界童軍會員章、童軍小隊章：宣誓後先戴
     if (unavailable.includes(p.id)) return false;
     if (p.id === 'progress') return p.step <= (state.progress || 0);
     if (p.choice) return state[p.id] === p.choice; // 有選項嘅章（例：深資童軍肩章）
     return !!state[p.id];
   });
+  return centreLonePair(placements, shown);
+}
+
+/** 袖上並排嘅一對章（地域章喺前、區章喺後，手冊 P.95） */
+export const SIDE_BY_SIDE = ['region', 'district'];
+
+/**
+ * 並排嘅一對章只得一個顯示（例：總會總部屬下嘅銀禧區冇地域章，或者熄咗其中一個）→ 嗰個章放返中間（用戶指示）。
+ * 之後總會幹部制服只得一個總會章都係咁。只改袖章（u = 0），高度唔變。
+ */
+export function centreLonePair(placements, shown) {
+  const pair = (list) => list.filter((p) => SIDE_BY_SIDE.includes(p.id) && p.mount !== 'torso');
+  if (pair(placements).length < 2) return shown;
+  const lone = pair(shown);
+  if (lone.length !== 1) return shown;
+  return shown.map((p) => (p === lone[0] ? { ...p, u: 0, centred: true } : p));
 }
 
 /** 某個章喺而家嘅服裝會唔會顯示，同埋點解唔顯示 */
