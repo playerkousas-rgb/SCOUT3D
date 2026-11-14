@@ -1,43 +1,20 @@
 // SCOUT3D 主介面 — v1.0 · © SCOUT SYSTEM
-import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react';
 import { useLang, LangToggle, bi, pick } from './i18n.jsx';
-import { RULES, RULE_ERRORS, badgeById, sourceLines } from './data/rules.js';
-import { PLAIN, NECKER, WOGGLE, SKIN, HAIR } from './palette.js';
+import { RULES, RULE_ERRORS, sourceLines } from './data/rules.js';
+import { NECKER, WOGGLE } from './palette.js';
 import { APP_VERSION } from './version.js';
 
 const Scene = lazy(() => import('./three/Scene.jsx'));
 
+// 第 1 步：人物 + 最基本小童軍服裝（徽章第 3 步先加）
 const DEFAULT_OUTFIT = {
   gender: 'boy',
-  skin: SKIN[0].id,
-  hair: HAIR.boy,
-  top: 'orange',
-  topColour: '#ffffff',
-  sleeves: 'short',
-  legwear: 'shorts',
-  legColour: '#1f2f4f',
-  hat: 'none',
-  hatColour: '#1f2f4f',
-  vest: false,
-  vestColour: '#1f2f4f',
-  socks: 'short',
-  sockColour: '#ffffff',
-  shoeColour: '#2f6db5',
+  finish: 'painted',
   invested: true,
-  school: false,
-  neckerMain: '#7b1e2b',
-  neckerBorder: '#e9b425',
-  woggle: '#e9b425',
-};
-
-const DEFAULT_BADGES = {
-  membership: true,
-  progress: 2,
-  grasshopperAward: false,
-  troop: true,
-  district: false,
-  meritorious: false,
-  commemorative: false,
+  neckerMain: '#e9b425',
+  neckerBorder: '#5b3fa0',
+  woggle: '#1f4e9c',
 };
 
 function hasWebGL() {
@@ -130,121 +107,20 @@ function Sources({ list }) {
   );
 }
 
-/* ---------- 徽章資料卡 ---------- */
-function InfoCard({ id, outfit, badges, onClose, onFocus }) {
+/* ---------- 徽章分頁（第 3 步先做） ---------- */
+function BadgesTab() {
   const { lang, t } = useLang();
-  const b = badgeById(id);
-  const school = outfit.school && (id === 'membership' || id === 'progress');
-  const shown = id === 'progress' ? badges.progress > 0 : badges[id];
-  const sizeText = `${b.size.wCm} × ${b.size.hCm} cm（${t(b.size.measured ? 'info.sizeMeasured' : 'info.sizeGuess')}）`;
-  return (
-    <section className="card" aria-live="polite">
-      <header className="card__head">
-        <h2 className="card__title">{pick(lang, b, 'name')}</h2>
-        <button type="button" className="iconbtn" onClick={onClose} aria-label={t('info.close')} title={t('info.close')}>
-          ×
-        </button>
-      </header>
-      <div className="card__chips">
-        <StatusChip status={b.status} />
-        <span className="chip chip--plain">{t(b.required ? 'info.required' : 'info.optional')}</span>
-      </div>
-      {!shown && <p className="note">{t('info.hidden')}</p>}
-      <dl className="facts">
-        <dt>{t('info.place')}</dt>
-        <dd>{school ? pick(lang, RULES.schoolTop, 'place') : pick(lang, b, 'place')}</dd>
-        <dt>{t('info.quote')}</dt>
-        <dd>
-          <blockquote>{school ? pick(lang, RULES.schoolTop, 'quote') : pick(lang, b, 'quote')}</blockquote>
-        </dd>
-        <dt>{t('info.conditions')}</dt>
-        <dd>{pick(lang, b, 'conditions')}</dd>
-        <dt>{t('info.size')}</dt>
-        <dd>{sizeText}</dd>
-        <dt>{t('info.source')}</dt>
-        <dd>
-          <Sources list={school ? RULES.schoolTop.sources : b.sources} />
-        </dd>
-        {(b.pendingReason || school) && (
-          <>
-            <dt>{t('info.why')}</dt>
-            <dd className="why">
-              {school ? bi(lang, RULES.schoolTop.pendingReason.zh, RULES.schoolTop.pendingReason.en) : null}
-              {school && b.pendingReason ? <br /> : null}
-              {b.pendingReason ? bi(lang, b.pendingReason.zh, b.pendingReason.en) : null}
-            </dd>
-          </>
-        )}
-      </dl>
-      <button type="button" className="btn btn--ghost" onClick={onFocus} disabled={!shown}>
-        {t('info.focus')}
-      </button>
-    </section>
-  );
-}
-
-/* ---------- 徽章分頁 ---------- */
-function BadgesTab({ outfit, badges, setBadges, selected, onPick }) {
-  const { lang, t } = useLang();
-  const set = (k, v) => setBadges((b) => ({ ...b, [k]: v }));
   return (
     <div className="tabbody">
-      <p className="note note--strong">{t('lr.note')}</p>
-      <ul className="badgelist">
-        {RULES.badges.map((b) => {
-          const schoolOff = outfit.school && !['membership', 'progress'].includes(b.id);
-          const investOff = b.id === 'membership' && !outfit.invested;
-          const disabled = schoolOff || investOff;
-          const note = investOff
-            ? t('badge.needInvest')
-            : schoolOff
-              ? b.id === 'grasshopperAward'
-                ? t('badge.schoolPending')
-                : t('badge.notInSchool')
-              : null;
-          return (
-            <li key={b.id} className={`badgerow${selected === b.id ? ' is-sel' : ''}${disabled ? ' is-disabled' : ''}`}>
-              <div className="badgerow__main">
-                <button type="button" className="badgerow__name" onClick={() => onPick(b.id)} disabled={disabled}>
-                  {pick(lang, b, 'name')}
-                </button>
-                <div className="badgerow__meta">
-                  <StatusChip status={b.status} />
-                  <span className="chip chip--plain">{t(b.required ? 'info.required' : 'info.optional')}</span>
-                </div>
-              </div>
-              {b.id === 'progress' ? (
-                <div className="steps" role="radiogroup" aria-label={t('badge.steps')}>
-                  {[0, 1, 2, 3, 4].map((n) => (
-                    <button
-                      key={n}
-                      type="button"
-                      role="radio"
-                      aria-checked={badges.progress === n}
-                      className={`steps__btn${badges.progress === n ? ' is-on' : ''}`}
-                      onClick={() => set('progress', n)}
-                      title={n === 0 ? t('badge.none') : `${t('badge.steps')} ${n}`}
-                    >
-                      {n === 0 ? t('badge.none') : n}
-                    </button>
-                  ))}
-                </div>
-              ) : (
-                <label className="switch switch--compact">
-                  <input
-                    type="checkbox"
-                    checked={!!badges[b.id] && !disabled}
-                    disabled={disabled}
-                    onChange={(e) => set(b.id, e.target.checked)}
-                    aria-label={`${t('badge.show')}：${pick(lang, b, 'name')}`}
-                  />
-                  <span className="switch__track" aria-hidden="true" />
-                </label>
-              )}
-              {note && <p className="note">{note}</p>}
-            </li>
-          );
-        })}
+      <p className="note note--strong">{t('badges.later')}</p>
+      <ul className="plainlist">
+        {RULES.badges.map((b) => (
+          <li key={b.id}>
+            <strong>{pick(lang, b, 'name')}</strong>
+            <span className="muted">{pick(lang, b, 'place')}</span>
+            <StatusChip status={b.status} />
+          </li>
+        ))}
       </ul>
     </div>
   );
@@ -259,81 +135,31 @@ function OutfitTab({ outfit, setOutfit }) {
       <Segmented
         label={t('outfit.figure')}
         value={outfit.gender}
-        onChange={(v) => setOutfit((o) => ({ ...o, gender: v, hair: HAIR[v] }))}
+        onChange={(v) => set('gender', v)}
         options={[
           { value: 'boy', label: t('outfit.boy') },
           { value: 'girl', label: t('outfit.girl') },
         ]}
       />
-      <Swatches label={t('outfit.skin')} value={outfit.skin} options={SKIN} onChange={(v) => set('skin', v)} />
+      <Segmented
+        label={t('outfit.finish')}
+        value={outfit.finish}
+        onChange={(v) => set('finish', v)}
+        options={[
+          { value: 'painted', label: t('outfit.painted') },
+          { value: 'unpainted', label: t('outfit.unpainted') },
+        ]}
+      />
+      <div className="field">
+        <span className="field__label">{t('outfit.wearing')}</span>
+        <p className="note">{t('outfit.wearingDesc')}</p>
+      </div>
       <Switch
         label={t('outfit.invested')}
         checked={outfit.invested}
         onChange={(v) => set('invested', v)}
         note={outfit.invested ? null : t('outfit.investedNote')}
       />
-      <Segmented
-        label={t('outfit.top')}
-        value={outfit.top}
-        onChange={(v) => set('top', v)}
-        options={[
-          { value: 'orange', label: t('outfit.orange') },
-          { value: 'polo', label: t('outfit.polo') },
-          { value: 'tee', label: t('outfit.tee') },
-        ]}
-      />
-      {outfit.top !== 'orange' && (
-        <Swatches label={t('outfit.topColour')} value={outfit.topColour} options={PLAIN} onChange={(v) => set('topColour', v)} />
-      )}
-      <Segmented
-        label={t('outfit.sleeves')}
-        value={outfit.sleeves}
-        onChange={(v) => set('sleeves', v)}
-        options={[
-          { value: 'short', label: t('outfit.short') },
-          { value: 'long', label: t('outfit.long') },
-        ]}
-      />
-      <Switch
-        label={t('outfit.school')}
-        checked={outfit.school}
-        onChange={(v) => set('school', v)}
-        note={outfit.school ? t('outfit.schoolNote') : null}
-      />
-      <Segmented
-        label={t('outfit.legs')}
-        value={outfit.legwear}
-        onChange={(v) => set('legwear', v)}
-        options={[
-          { value: 'shorts', label: t('outfit.shorts') },
-          { value: 'trousers', label: t('outfit.trousers') },
-        ]}
-      />
-      <Swatches label={t('outfit.legColour')} value={outfit.legColour} options={PLAIN} onChange={(v) => set('legColour', v)} />
-      <Segmented
-        label={t('outfit.socks')}
-        value={outfit.socks}
-        onChange={(v) => set('socks', v)}
-        options={[
-          { value: 'short', label: t('outfit.shortSocks') },
-          { value: 'long', label: t('outfit.longSocks') },
-        ]}
-      />
-      <Segmented
-        label={t('outfit.hat')}
-        value={outfit.hat}
-        onChange={(v) => set('hat', v)}
-        options={[
-          { value: 'none', label: t('outfit.noHat') },
-          { value: 'bucket', label: t('outfit.bucket') },
-          { value: 'cap', label: t('outfit.cap') },
-        ]}
-      />
-      {outfit.hat !== 'none' && (
-        <Swatches label={t('outfit.hatColour')} value={outfit.hatColour} options={PLAIN} onChange={(v) => set('hatColour', v)} />
-      )}
-      <Switch label={t('outfit.vest')} checked={outfit.vest} onChange={(v) => set('vest', v)} />
-      {outfit.vest && <Swatches label="" value={outfit.vestColour} options={PLAIN} onChange={(v) => set('vestColour', v)} />}
       {outfit.invested && (
         <>
           <Swatches
@@ -351,6 +177,7 @@ function OutfitTab({ outfit, setOutfit }) {
           <Swatches label={t('outfit.woggle')} value={outfit.woggle} options={WOGGLE} onChange={(v) => set('woggle', v)} />
         </>
       )}
+      <p className="note">{t('outfit.stepNote')}</p>
     </div>
   );
 }
@@ -425,9 +252,7 @@ function SourcesTab() {
 export default function App() {
   const { lang, t } = useLang();
   const [outfit, setOutfit] = useState(DEFAULT_OUTFIT);
-  const [badges, setBadges] = useState(DEFAULT_BADGES);
-  const [selected, setSelected] = useState(null);
-  const [tab, setTab] = useState('badges');
+  const [tab, setTab] = useState('outfit');
   const [toast, setToast] = useState('');
   const [busy, setBusy] = useState(false);
   const webgl = useMemo(hasWebGL, []);
@@ -438,13 +263,6 @@ export default function App() {
     const id = setTimeout(() => setToast(''), 2600);
     return () => clearTimeout(id);
   }, [toast]);
-
-  const onPick = useCallback((id) => {
-    setSelected(id);
-    if (id) requestAnimationFrame(() => scene.current?.focus(id));
-  }, []);
-
-  const onSceneSelect = useCallback((id) => setSelected(id), []);
 
   const shot = async () => {
     const canvas = scene.current?.canvas();
@@ -463,8 +281,8 @@ export default function App() {
   };
 
   const tabs = [
-    ['badges', t('tab.badges')],
     ['outfit', t('tab.outfit')],
+    ['badges', t('tab.badges')],
     ['sources', t('tab.sources')],
   ];
 
@@ -491,7 +309,7 @@ export default function App() {
         <section className="stage" aria-label={t('app.title')}>
           {webgl ? (
             <Suspense fallback={<div className="stage__msg">{t('loading')}</div>}>
-              <Scene ref={scene} outfit={outfit} badges={badges} selected={selected} onSelect={onSceneSelect} />
+              <Scene ref={scene} outfit={outfit} />
             </Suspense>
           ) : (
             <div className="stage__msg">{t('nowebgl')}</div>
@@ -510,10 +328,7 @@ export default function App() {
               <button
                 type="button"
                 className="chipbtn"
-                onClick={() => {
-                  setSelected(null);
-                  scene.current?.view('front');
-                }}
+                onClick={() => scene.current?.view('front')}
               >
                 {t('view.reset')}
               </button>
@@ -525,15 +340,6 @@ export default function App() {
         </section>
 
         <aside className="panel">
-          {selected && (
-            <InfoCard
-              id={selected}
-              outfit={outfit}
-              badges={badges}
-              onClose={() => setSelected(null)}
-              onFocus={() => scene.current?.focus(selected)}
-            />
-          )}
           <div className="tabs" role="tablist">
             {tabs.map(([k, label]) => (
               <button
@@ -551,9 +357,7 @@ export default function App() {
             ))}
           </div>
           <div role="tabpanel" id={`pane-${tab}`} aria-labelledby={`tab-${tab}`}>
-            {tab === 'badges' && (
-              <BadgesTab outfit={outfit} badges={badges} setBadges={setBadges} selected={selected} onPick={onPick} />
-            )}
+            {tab === 'badges' && <BadgesTab />}
             {tab === 'outfit' && <OutfitTab outfit={outfit} setOutfit={setOutfit} />}
             {tab === 'sources' && <SourcesTab />}
           </div>

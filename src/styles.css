@@ -759,3 +759,16 @@ a {
     transition: none;
   }
 }
+
+/* 3D 模型載入中 — v1.0 */
+.stage__loading {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  font-size: 14px;
+  pointer-events: none;
+}
