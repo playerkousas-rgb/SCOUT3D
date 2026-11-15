@@ -3,7 +3,7 @@
 // 人物面向 +z；穿著者左 = +x。
 import { useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
-import { layout, neckerLayout, strapLayout, dressLayout, lanyardPoints, VEST_T, SWEATER_TOP, PX, scoutVariant, SCOUT_VARIANTS, ventureVariant, roverVariant, leaderVariant, isSenior, ventureLegwear, leaderLegwear, pumpParts } from './body.js';
+import { layout, neckerLayout, strapLayout, dressLayout, lanyardPoints, lanyardBackPoints, VEST_T, SWEATER_TOP, PX, scoutVariant, SCOUT_VARIANTS, ventureVariant, roverVariant, leaderVariant, isSenior, ventureLegwear, leaderLegwear, pumpParts } from './body.js';
 import { useTexture } from '@react-three/drei';
 import { SECTIONS, DISTRICTS, PATROLS } from '../data/rules.js';
 import { resolveArt, rankCap, leaderNeckwear, messCapOf } from '../lib/picks.js';
@@ -480,17 +480,18 @@ function FrontDecal({ file, size, painted, position }) {
 
 /**
  * 嘉許笛繩（手冊 P.184、P.188–189）：由左肩**職級肩章下面**穿出（v19 用戶指正＋相片），兜過膊頭、沿袖窿前面吊落到胸袋下面，
- * 再兜返上左胸袋口（笛子由胸袋口右方放入，唔畫）；晚禮服小型笛繩幼一半、去到左襟領。
- * points = 繩經過嘅點（cm，3D），colours = 一條或兩條繩嘅顏色。每段用四元數由 +Y 轉去段嘅方向。可以撳嚟揀。
+ * 再兜返上左胸袋口（笛子由胸袋口右方放入，唔畫）；後面一段（v20）由肩章下面向後、沿袖窿後面落到腋下同前面接埋，成個圈套住左膊。
+ * 晚禮服小型笛繩幼一半、去到左襟領。
+ * paths = [前面一段, 後面一段]，每段係繩經過嘅點（cm，3D）；colours = 一條或兩條繩嘅顏色。每段用四元數由 +Y 轉去段嘅方向。可以撳嚟揀。
  */
-function Lanyard({ p, points, colours, thick, painted, selected, onSelect, registry }) {
+function Lanyard({ p, paths, colours, thick, painted, selected, onSelect, registry }) {
   const ref = useRef();
   useEffect(() => {
     if (!registry || !ref.current) return undefined;
     registry.set(p.key, ref.current);
     return () => registry.delete(p.key);
   }, [registry, p.key]);
-  const segs = useMemo(() => lanyardSegments(points, thick, colours.length), [points, thick, colours.length]);
+  const segs = useMemo(() => paths.flatMap((pts) => lanyardSegments(pts, thick, colours.length)), [paths, thick, colours.length]);
   return (
     <group
       onClick={(e) => {
@@ -632,8 +633,9 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
       .map((p) => {
         const z = p.z + 0.3;
         const thick = p.mini ? 0.3 : 0.55;
-        const points = lanyardPoints({ L, strap, D: p.mini ? D : null, z, thick, slideX: slide?.x });
-        return { p, points, colours: LANYARD_COLOURS[p.choice] ?? LANYARD_COLOURS.commendation, thick };
+        const args = { L, strap, D: p.mini ? D : null, z, thick, slideX: slide?.x };
+        const paths = [lanyardPoints(args), lanyardBackPoints(args)]; // 前面一段＋後面一段（套住左膊嘅圈）
+        return { p, paths, colours: LANYARD_COLOURS[p.choice] ?? LANYARD_COLOURS.commendation, thick };
       });
   }, [all, shown, strap, D, L]);
 
@@ -797,7 +799,7 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
         {D?.fleur && [1, -1].map((s) => <FrontDecal key={`fleur${s}`} file={LAPEL_FLEUR} size={D.fleur.size} painted={painted} position={[s * D.fleur.x, D.fleur.y, D.front + 0.08]} />)}
         {leader && VL.bowTie && <BowTie y={L.top + SWEATER_TOP + 1.6} z={B.neck.d / 2 + 0.7} girl={gender === 'girl'} painted={painted} />}
         {lanyards.map((q) => (
-          <Lanyard key={q.p.key} p={q.p} points={q.points} colours={q.colours} thick={q.thick} painted={painted} selected={selected === q.p.id} onSelect={onSelect} registry={registry} />
+          <Lanyard key={q.p.key} p={q.p} paths={q.paths} colours={q.colours} thick={q.thick} painted={painted} selected={selected === q.p.id} onSelect={onSelect} registry={registry} />
         ))}
         {vest && <Box size={vestBox} faces={vestF} painted={painted} alpha position={[0, t.y - 1 + vestBox[1] / 2, 0]} />}
         {/* 企領（有領上衣先有；前面開口） */}
