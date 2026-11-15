@@ -25,7 +25,8 @@ test('童軍規則資料通過驗證', () => {
 test('呢版只有制服頁徽章（手冊 P.30：會員章、香港章、地域章、區章、旅章、小隊章）+ 優異旅團章', () => {
   // v22：加咗模範童軍肩帶（非基本章，group: 'extra'，手冊 P.158）
   assert.deepEqual(scout.badges.filter((b) => !b.group).map((b) => b.id).sort(), ['district', 'hongKong', 'membership', 'meritorious', 'patrol', 'region', 'troop']);
-  assert.deepEqual(scout.badges.filter((b) => b.group).map((b) => b.id), ['modelScout']);
+  // v23：隊長／副隊長／團隊長章、服務年星（手冊 P.129–132；綱要 P.12）
+  assert.deepEqual(scout.badges.filter((b) => b.group).map((b) => b.id), ['modelScout', 'leaderBar', 'serviceStar', 'serviceStarCub', 'serviceStarGrasshopper']);
   for (const id of ['membership', 'hongKong', 'troop', 'region', 'district', 'patrol']) assert.equal(badge(id).required, true, `${id} 係必備`);
   assert.equal(badge('meritorious').required, false);
 });

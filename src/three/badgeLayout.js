@@ -132,8 +132,9 @@ export function placeAll(rules, gender, { sweater = false, uniform = null, occas
         let start;
         if (def.fromShoulderCm != null) start = def.fromShoulderCm;
         else if (def.belowBadge && box[def.belowBadge]) start = box[def.belowBadge].bottom;
+        else if (def.honeycomb) start = 0; // v23 六角形活動徽章：由袖口縫線上面排起（arrangeSlot）
         else continue; // 嗰個章唔戴喺呢套制服
-        geo = { kind: 'sleeve', start, frontSign: def.side === 'right' ? 1 : -1, maxW: face.width - 1 };
+        geo = { kind: 'sleeve', start, frontSign: def.side === 'right' ? 1 : -1, maxW: face.width - 1, cuffSeam: face.cuffSeam };
       }
       const opts = b.choices ? withArt.map((c) => ({ choice: c.id, art: c.art, layer: c.layer ?? a.layer, rank: c.rank ?? a.rank })) : [{ art: b.art, layer: a.layer, rank: a.rank }];
       for (const o of opts) {
@@ -260,13 +261,18 @@ export function placeAll(rules, gender, { sweater = false, uniform = null, occas
         const P = B.pocket;
         if (!P) throw new Error(`徽章 ${b.id} 要胸袋，但呢個身形冇胸袋`);
         x = sx * P.x;
+        // v23 bottom：袋身底上面 gapCm（隊長章喺會員章下面，手冊 P.132、綱要 P.7／P.12 附圖）
         // flapInnerCm：袋蓋近中線嗰邊（例：民政及青年事務局局長嘉許「左胸袋袋蓋右方」，手冊 P.198）
         if (a.flapInnerCm != null) x = sx * (P.x - P.w / 2 + a.flapInnerCm);
         const flapTop = top - P.top;
-        y = a.pocket === 'centre' ? flapTop - P.flap - (P.h - P.flap) / 2 : a.pocket === 'flap' ? flapTop - P.flap / 2 : flapTop + a.gapCm + h / 2;
+        y = a.pocket === 'centre' ? flapTop - P.flap - (P.h - P.flap) / 2 : a.pocket === 'flap' ? flapTop - P.flap / 2 : a.pocket === 'bottom' ? flapTop - P.h + a.gapCm : flapTop + a.gapCm + h / 2;
       }
       for (const o of artOpts(b, art)) {
-        out.push({ key: [b.id, o.choice].filter(Boolean).join('-'), id: b.id, ...(o.choice ? { choice: o.choice } : {}), mount: 'torso', shape, w, h, x, y, z: B.torso.d / 2 + (a.flapInnerCm != null ? 0.05 : 0), art: o.art, fit: fit || !!b.fit, ...extra });
+        // fitArt（v23）：每個選項按相片比例縮入 w × h（例：副隊長章扁啲、隊長章高啲）；pocket bottom 就由底邊計起
+        const px = a.fitArt && b.choices?.find((c) => c.id === o.choice)?.art?.px;
+        const { w: w2, h: h2 } = px ? fitPx(px, w, h) : { w, h };
+        const y2 = a.pocket === 'bottom' ? y + h2 / 2 : y;
+        out.push({ key: [b.id, o.choice].filter(Boolean).join('-'), id: b.id, ...(o.choice ? { choice: o.choice } : {}), mount: 'torso', shape, w: w2, h: h2, x, y: y2, z: B.torso.d / 2 + (a.flapInnerCm != null ? 0.05 : 0), art: o.art, fit: fit || !!b.fit, ...extra });
       }
       continue;
     }
@@ -313,7 +319,10 @@ export function placeAll(rules, gender, { sweater = false, uniform = null, occas
     else if (a.aboveCuffSeamCm != null) t = face.cuffSeam - a.aboveCuffSeamCm - h;
     else throw new Error(`徽章 ${b.id} 冇袖上位置`);
     box[b.id] = { top: t, bottom: t + h };
-    out.push({ key: b.id, id: b.id, mount, shape, w, h, u, v: t + h / 2, art, fit: fit || !!b.fit, ...extra });
+    // v23：有選項嘅袖章（例：幼童軍核心範疇章初級／中級／高級）每個有圖案嘅選項各出一個，位置一樣
+    for (const o of b.choices ? artOpts(b, art) : [{ art }]) {
+      out.push({ key: [b.id, o.choice].filter(Boolean).join('-'), id: b.id, ...(o.choice ? { choice: o.choice } : {}), mount, shape, w, h, u, v: t + h / 2, art: o.art, fit: fit || !!b.fit, ...extra });
+    }
   }
   // 同一個章兩個位置：第二個 key 加 '-2'（React key、聚焦用）
   const seen = new Set();
@@ -432,7 +441,8 @@ export const levelOk = (p, level) => !p.levels || !level || p.levels.includes(le
 /** 某個章揀咗（有選項嘅章唔係「冇」） */
 const isOn = (state, id) => !!state[id] && state[id] !== 'none';
 /** 俾另一個獎勵取代（例：獲頒長期服務獎章之後唔再戴服務段章，手冊 P.189） */
-export const hiddenBy = (p, state) => (p.hiddenBy || []).find((id) => isOn(state, id)) ?? null;
+// v23：'id:choice' = 嗰個章揀咗某個選項先取代（例：團隊長唔戴小隊章，綱要 P.12）
+export const hiddenBy = (p, state) => (p.hiddenBy || []).find((x) => (x.includes(':') ? state[x.split(':')[0]] === x.split(':')[1] : isOn(state, x))) ?? null;
 /** 同另一個獎勵一齊戴時只限某幾個選項（例：特殊貢獻星章只可以同第十次嘅徽章一齊戴，手冊 P.183） */
 export const limited = (p, state) => !!(p.limitWhen && p.choice && isOn(state, p.limitWhen.badge) && !p.limitWhen.choices.includes(p.choice));
 
@@ -502,6 +512,26 @@ export function arrangeSlot(items, others) {
       }
       prevTop = top;
     });
+  } else if (def.honeycomb) {
+    // v23 幼童軍活動徽章（綱要 P.7 附圖）：六角形（尖頂）由袖口縫線上面排起，一行 rows[0] 個、上一行 rows[1] 個……咬合排列；
+    // 每行按格位由前面排起（格位固定，唔會疊埋），行與行相距 ¾ 高 + spacing
+    const H = def.honeycomb;
+    const s = H.spacingCm ?? GAP0;
+    const all = byLayer.flatMap((x) => x.list);
+    const cap = Math.max(...H.rows);
+    const k = Math.min(1, geo.maxW / (cap * all[0].w + (cap - 1) * s));
+    let i = 0;
+    for (let r = 0; i < all.length; r++) {
+      const c = H.rows[r % H.rows.length];
+      for (let j = 0; j < c && i < all.length; j++, i++) {
+        const p0 = all[i];
+        const w = Math.round(p0.w * k * 100) / 100;
+        const h = Math.round(p0.h * k * 100) / 100;
+        const off = ((c - 1) / 2 - j) * (w + s); // + = 近前面
+        const v = geo.cuffSeam - H.aboveCuffSeamCm - h / 2 - r * (0.75 * h + s);
+        kept.push({ ...p0, w, h, u: geo.frontSign * off + 0, v: Math.round(v * 100) / 100 });
+      }
+    }
   } else {
     let prev = geo.start;
     byLayer.forEach(({ L, list }, i) => {
@@ -629,7 +659,7 @@ export function shownReason(rules, outfit, state, id, { unavailable = [], level 
   if (unavailable.includes(id)) return 'noArt';
   const mine = all.filter((p) => p.id === id && (!p.choice || p.choice === state[id]));
   const hider = mine.map((p) => hiddenBy(p, state)).find(Boolean);
-  if (hider) return hider === 'longService' ? 'replaced' : `replaced_${hider}`;
+  if (hider) return hider === 'longService' ? 'replaced' : `replaced_${hider.split(':')[0]}`;
   if (mine.some((p) => limited(p, state))) return 'limited';
   const req = all.find((p) => p.id === id && p.requires);
   if (req && state[id]) return req.requires.startsWith('stage') ? 'needsStage' : 'needsHost'; // v22：金帶要先有段章

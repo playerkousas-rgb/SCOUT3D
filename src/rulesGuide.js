@@ -17,7 +17,7 @@ export const RULES_GUIDE = {
     { title: 'rules.g.invest', items: ['outfit.investedNoteCub'] },
     { title: 'rules.g.hat', items: ['outfit.cubHatNote'] },
     { title: 'rules.g.sweater', items: ['outfit.sweaterNoteGreen'] },
-    { title: 'rules.g.badges', items: ['badges.tipCub', ...SCOUT_BADGES] },
+    { title: 'rules.g.badges', items: ['badges.tipCub', ...SCOUT_BADGES, 'badges.extraNoteCub', 'badges.activityNote', 'badge.why.replaced_peace'] },
   ],
   scout: [
     {
@@ -49,7 +49,7 @@ export const RULES_GUIDE = {
         { k: 'outfit.sweaterNoteNavy', v: ['sea', 'air'] },
       ],
     },
-    { title: 'rules.g.badges', items: ['badges.tipScout', ...SCOUT_BADGES, 'badges.extraNoteScout'] },
+    { title: 'rules.g.badges', items: ['badges.tipScout', ...SCOUT_BADGES, 'badges.extraNoteScout', 'badge.why.replaced_leaderBar'] },
   ],
   venture: [
     {

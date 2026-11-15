@@ -54,8 +54,8 @@
       "zh": "香港童軍總會《儀容與制服手冊》",
       "en": "SAHK Uniform Handbook (Chinese edition)",
       "edition": {
-        "zh": "網上版（含 2026-01-01 第 04/2026 號通告制服帽修訂）；P.26 未宣誓成員，P.30–31 童軍制服，P.32–33 海童軍制服，P.34–35 空童軍制服，P.92–95 基本徽章，P.98–100 軟帽及海童軍白頂帽，P.102 童軍帽章及海童軍帽帶，P.110 童軍巾圈，P.112 戴領巾，P.121–122 制服毛衣，P.131 童軍小隊章，P.159 優異旅團章，P.169 童軍徽章佩戴圖",
-        "en": "Online edition incl. Circular 04/2026 (1 Jan 2026) cap amendment; p.26 uninvested members, pp.30–31 Scout uniform, pp.32–33 Sea Scout uniform, pp.34–35 Air Scout uniform, pp.92–95 basic badges, pp.98–100 berets and the Sea Scout white-top cap, p.102 Scout cap badge and Sea Scout cap tally, p.110 Scout woggle, p.112 wearing the neckerchief, pp.121–122 uniform jersey, p.131 Scout Patrol Badge, p.159 Meritorious Group Badge, p.169 Scout badge chart"
+        "zh": "網上版（含 2026-01-01 第 04/2026 號通告制服帽修訂）；P.26 未宣誓成員，P.30–31 童軍制服，P.32–33 海童軍制服，P.34–35 空童軍制服，P.92–95 基本徽章，P.98–100 軟帽及海童軍白頂帽，P.102 童軍帽章及海童軍帽帶，P.110 童軍巾圈，P.112 戴領巾，P.121–122 制服毛衣，P.131 童軍小隊章，P.159 優異旅團章，P.169 童軍徽章佩戴圖，P.129–130 服務年星，P.132 童軍隊長章",
+        "en": "Online edition incl. Circular 04/2026 (1 Jan 2026) cap amendment; p.26 uninvested members, pp.30–31 Scout uniform, pp.32–33 Sea Scout uniform, pp.34–35 Air Scout uniform, pp.92–95 basic badges, pp.98–100 berets and the Sea Scout white-top cap, p.102 Scout cap badge and Sea Scout cap tally, p.110 Scout woggle, p.112 wearing the neckerchief, pp.121–122 uniform jersey, p.131 Scout Patrol Badge, p.159 Meritorious Group Badge, p.169 Scout badge chart, pp.129–130 Service Stars, p.132 Scout Patrol Leader badges"
       },
       "url": "https://www.scout.org.hk/uniformhandbook"
     },
@@ -924,7 +924,10 @@
         "zh": "手冊冇寫尺寸；模型用 4 × 1.6 cm（綱要 P.200–202 圖案比例；手冊 P.131、P.169 同綱要 P.12 附圖對比旅章約闊 3.6–5.1 cm）。圖案係綱要 P.200–202 嘅官方小隊章（左右兩格隊色），未揀小隊就用 P.200 第一個（獾，紫白）做示例。隊色方向（用戶確認）：以人望住小隊章嘅面向，圖案左邊嗰格近背、右邊嗰格近胸（例：獾 左紫近背、右白近胸）；模型照呢個方向貼。",
         "en": "No size in the Handbook; the model uses 4 × 1.6 cm (the proportions of the Training Scheme pp.200–202 artwork; against the Group Badge, the Handbook pp.131, 169 and Training Scheme p.12 figures give about 3.6–5.1 cm wide). The artwork is the official patrol badge from Training Scheme pp.200–202 (two colour blocks); with no patrol picked it shows the first one on p.200 (Badger, purple and white) as an example. Colour direction (confirmed by the user): as seen by a person looking at the badge, the left block is toward the back and the right block toward the chest (e.g. Badger: purple toward the back, white toward the chest); the model follows this."
       },
-      "sweater": false
+      "sweater": false,
+      "hiddenBy": [
+        "leaderBar:troopLeader"
+      ]
     },
     {
       "id": "meritorious",
@@ -1066,13 +1069,574 @@
         "en": "The lanyard is a 3D cord: dark green and gold twisted, with a tassel at the end (p.158 photo); the menu thumbnail is the p.158 photo. It follows the same route as the commendation lanyard but on the right shoulder (mirrored): out from under the right shoulder strap at the shoulder end, over the front of the sleeve top, down the front of the armhole to below the pocket, then up to the inner side of the right pocket flap; a back strand runs down the back of the armhole to the armpit, so the cord loops round the right shoulder. The Scout model has no shoulder straps drawn, so the cord simply passes over the shoulder."
       },
       "sweater": false
+    },
+    {
+      "id": "leaderBar",
+      "required": false,
+      "side": "left",
+      "group": "extra",
+      "zh": {
+        "name": "隊長／副隊長／團隊長章",
+        "place": "穿著者左胸袋、會員章下面（綱要 P.12 附圖）。",
+        "quote": "童軍副隊長／隊長／團隊長佩戴相關隊長章在制服恤衫左胸袋世界童軍會員章下方位置（手冊 P.132；綱要 P.12 附圖）。",
+        "conditions": "由團長委任；副隊長一條黃色橫紋（每邊）、隊長兩條、團隊長三條（手冊 P.132）。"
+      },
+      "en": {
+        "name": "Patrol Leader / Assistant / Troop Leader Badge",
+        "place": "Wearer's left chest pocket, below the Membership Badge (Training Scheme p.12 figure).",
+        "quote": "Assistant Patrol Leaders, Patrol Leaders and Troop Leaders wear the badge on the left chest pocket below the World Membership Badge (Handbook p.132; Training Scheme p.12 figure).",
+        "conditions": "Appointed by the Scouter; one yellow bar each side for an assistant, two for a leader, three for a Troop Leader (Handbook p.132)."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 4.5,
+        "hCm": 1.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "pocket": "bottom",
+        "gapCm": 0.4,
+        "fitArt": true,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "132"
+        },
+        {
+          "ref": "STS",
+          "page": "12"
+        }
+      ],
+      "status": "verified",
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "assistant",
+          "zh": {
+            "name": "副隊長章"
+          },
+          "en": {
+            "name": "Assistant Patrol Leader"
+          },
+          "art": {
+            "file": "/badges/extra/leader_bar_assistant.png",
+            "ref": "UH",
+            "page": "132",
+            "example": false,
+            "px": [
+              240,
+              53
+            ]
+          }
+        },
+        {
+          "id": "leader",
+          "zh": {
+            "name": "隊長章"
+          },
+          "en": {
+            "name": "Patrol Leader"
+          },
+          "art": {
+            "file": "/badges/extra/leader_bar_patrol.png",
+            "ref": "UH",
+            "page": "132",
+            "example": false,
+            "px": [
+              240,
+              83
+            ]
+          }
+        },
+        {
+          "id": "troopLeader",
+          "zh": {
+            "name": "團隊長章"
+          },
+          "en": {
+            "name": "Troop Leader"
+          },
+          "art": {
+            "file": "/badges/extra/leader_bar_senior.png",
+            "ref": "UH",
+            "page": "132",
+            "example": false,
+            "px": [
+              240,
+              84
+            ]
+          }
+        }
+      ],
+      "default": "none",
+      "art": {
+        "file": "/badges/extra/leader_bar_assistant.png",
+        "ref": "UH",
+        "page": "132",
+        "example": false,
+        "px": [
+          240,
+          53
+        ]
+      },
+      "modelNote": {
+        "zh": "圖案取自手冊 P.132；冇寫尺寸，模型闊 4.5 cm，喺胸袋底上面 0.4 cm。",
+        "en": "Artwork from Handbook p.132; no size given, the model is 4.5 cm wide, 0.4 cm above the pocket bottom."
+      },
+      "needsInvestiture": true,
+      "sweater": false
+    },
+    {
+      "id": "serviceStar",
+      "required": false,
+      "side": "left",
+      "group": "extra",
+      "zh": {
+        "name": "服務年星",
+        "place": "穿著者左胸袋袋蓋上方（緊貼袋蓋）中央；有以前支部嘅服務年星就並排，童軍嗰枚喺最內側（近中線）（手冊 P.130；綱要 P.12 附圖）。",
+        "quote": "各青少年成員在宣誓後服務滿一年者，可在制服上佩戴繡有「1」字的服務年星，兩年則可佩戴繡有「2」字的服務年星，餘此類推。童軍：綠色，數目字分別有「1」至「5」。只可佩戴在該支部獲取最高年份的一枚服務年星。",
+        "conditions": "宣誓後每服務滿一年；只戴最高年份嗰枚。"
+      },
+      "en": {
+        "name": "Service Star",
+        "place": "Centred on top of the wearer's left pocket flap; with earlier-section stars they sit side by side, the Scout star innermost (Handbook p.130; Training Scheme p.12 figure).",
+        "quote": "A youth member who has served a full year after investiture wears the star with “1”, two years “2”, and so on. Scouts: green, numbers 1 to 5. Only the highest star of the section is worn.",
+        "conditions": "One per full year of service after investiture; highest only."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 1.5,
+        "hCm": 1.5,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "slot": "pocketL",
+        "layer": "stars",
+        "rank": 1,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "129–130"
+        },
+        {
+          "ref": "STS",
+          "page": "12"
+        }
+      ],
+      "status": "verified",
+      "default": "none",
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "one",
+          "zh": {
+            "name": "1 年"
+          },
+          "en": {
+            "name": "1 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_scout_1.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "two",
+          "zh": {
+            "name": "2 年"
+          },
+          "en": {
+            "name": "2 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_scout_2.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "three",
+          "zh": {
+            "name": "3 年"
+          },
+          "en": {
+            "name": "3 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_scout_3.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "four",
+          "zh": {
+            "name": "4 年"
+          },
+          "en": {
+            "name": "4 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_scout_4.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "five",
+          "zh": {
+            "name": "5 年"
+          },
+          "en": {
+            "name": "5 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_scout_5.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        }
+      ],
+      "art": {
+        "file": "/badges/extra/service_star_scout_1.png",
+        "ref": "UH",
+        "page": "129",
+        "example": false,
+        "px": [
+          96,
+          96
+        ]
+      },
+      "modelNote": {
+        "zh": "綠底白星跟手冊 P.129 樣式，數字按揀咗嘅年份；手冊冇寫尺寸，模型用 1.5 cm。",
+        "en": "Green with a white star as in the Handbook p.129 sample, numbered for the chosen year; no size given, the model uses 1.5 cm."
+      },
+      "sweater": false,
+      "needsInvestiture": true
+    },
+    {
+      "id": "serviceStarCub",
+      "required": false,
+      "side": "left",
+      "group": "extra",
+      "zh": {
+        "name": "幼童軍服務年星（以前支部）",
+        "place": "穿著者左胸袋袋蓋上方，同童軍服務年星並排；由內側（近中線）至外側按支部由高至低（手冊 P.130 附圖）。",
+        "quote": "任何童軍在晉團後（例如由小童軍晉團為幼童軍，或由童軍晉團為深資童軍），仍可佩戴以前的服務年星，直至轉任為成年成員。各支部服務年星按次序由左至右並排佩戴在制服恤衫左胸袋袋蓋上方中央位置。幼童軍：黃色，數目字分別有「1」至「4」。",
+        "conditions": "喺幼童軍支部宣誓後服務滿一年先有；每個支部只戴最高年份嗰枚。"
+      },
+      "en": {
+        "name": "Cub Scout Service Star (earlier section)",
+        "place": "Above the wearer's left pocket flap, beside the Scout Service Star; sections run from the inner side (nearest the centre) outwards, newest first (Handbook p.130 figure).",
+        "quote": "After moving up (e.g. Grasshopper to Cub Scout, or Scout to Venture Scout) a member may still wear earlier service stars until becoming an adult member. Each section's star is worn side by side, in order from left to right, centred on top of the left pocket flap. Cub Scout: yellow, numbers 1 to 4.",
+        "conditions": "One per full year of service in that section; highest of each section only."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 1.5,
+        "hCm": 1.5,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "slot": "pocketL",
+        "layer": "stars",
+        "rank": 2,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "129–130"
+        }
+      ],
+      "status": "verified",
+      "default": "none",
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "one",
+          "zh": {
+            "name": "1 年"
+          },
+          "en": {
+            "name": "1 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_cub_1.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "two",
+          "zh": {
+            "name": "2 年"
+          },
+          "en": {
+            "name": "2 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_cub_2.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "three",
+          "zh": {
+            "name": "3 年"
+          },
+          "en": {
+            "name": "3 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_cub_3.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "four",
+          "zh": {
+            "name": "4 年"
+          },
+          "en": {
+            "name": "4 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_cub_4.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        }
+      ],
+      "art": {
+        "file": "/badges/extra/service_star_cub_1.png",
+        "ref": "UH",
+        "page": "129",
+        "example": false,
+        "px": [
+          96,
+          96
+        ]
+      },
+      "sweater": false,
+      "needsInvestiture": true
+    },
+    {
+      "id": "serviceStarGrasshopper",
+      "required": false,
+      "side": "left",
+      "group": "extra",
+      "zh": {
+        "name": "小童軍服務年星（以前支部）",
+        "place": "穿著者左胸袋袋蓋上方，同童軍服務年星並排；由內側（近中線）至外側按支部由高至低（手冊 P.130 附圖）。",
+        "quote": "任何童軍在晉團後（例如由小童軍晉團為幼童軍，或由童軍晉團為深資童軍），仍可佩戴以前的服務年星，直至轉任為成年成員。各支部服務年星按次序由左至右並排佩戴在制服恤衫左胸袋袋蓋上方中央位置。小童軍：橙色，數目字分別有「1」至「3」。",
+        "conditions": "喺小童軍支部宣誓後服務滿一年先有；每個支部只戴最高年份嗰枚。小童軍服務年星要晉升幼童軍後先可以戴。"
+      },
+      "en": {
+        "name": "Grasshopper Service Star (earlier section)",
+        "place": "Above the wearer's left pocket flap, beside the Scout Service Star; sections run from the inner side (nearest the centre) outwards, newest first (Handbook p.130 figure).",
+        "quote": "After moving up (e.g. Grasshopper to Cub Scout, or Scout to Venture Scout) a member may still wear earlier service stars until becoming an adult member. Each section's star is worn side by side, in order from left to right, centred on top of the left pocket flap. Grasshopper: orange, numbers 1 to 3.",
+        "conditions": "One per full year of service in that section; highest of each section only. Grasshopper stars may only be worn after moving up to Cub Scouts."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 1.5,
+        "hCm": 1.5,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "slot": "pocketL",
+        "layer": "stars",
+        "rank": 3,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "129–130"
+        }
+      ],
+      "status": "verified",
+      "default": "none",
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "one",
+          "zh": {
+            "name": "1 年"
+          },
+          "en": {
+            "name": "1 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_grasshopper_1.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "two",
+          "zh": {
+            "name": "2 年"
+          },
+          "en": {
+            "name": "2 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_grasshopper_2.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "three",
+          "zh": {
+            "name": "3 年"
+          },
+          "en": {
+            "name": "3 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_grasshopper_3.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        }
+      ],
+      "art": {
+        "file": "/badges/extra/service_star_grasshopper_1.png",
+        "ref": "UH",
+        "page": "129",
+        "example": false,
+        "px": [
+          96,
+          96
+        ]
+      },
+      "sweater": false,
+      "needsInvestiture": true
     }
   ],
   "notAllowed": [
     {
       "id": "activityBadges",
-      "zh": "呢一版只示範制服頁列明嘅基本徽章（世界童軍會員章、香港章、地域章、區章、旅章、小隊章）同優異旅團章；進度性獎章、專科徽章、隊長章等之後再加。",
-      "en": "This version shows only the basic badges on the uniform page (World Membership, Hong Kong, Region, District, Group and Patrol Badges) and the Meritorious Group Badge; progress awards, proficiency badges, Patrol Leader stripes and others come later.",
+      "zh": "呢一版示範制服頁列明嘅基本徽章（世界童軍會員章、香港章、地域章、區章、旅章、小隊章）、優異旅團章、模範童軍肩帶、隊長／副隊長／團隊長章同服務年星；進度性獎章、專科徽章等之後再加。",
+      "en": "This version shows the basic badges on the uniform page (World Membership, Hong Kong, Region, District, Group and Patrol Badges), the Meritorious Group Badge, the Model Scout lanyard, the Patrol Leader / Assistant / Troop Leader badges and Service Stars; progress awards, proficiency badges and others come later.",
       "sources": [
         {
           "ref": "UH",
@@ -1130,5 +1694,32 @@
   "artCredit": {
     "zh": "徽章圖案取自香港童軍總會《儀容與制服手冊》P.25、P.92–93、P.102、P.159、《童軍支部訓練綱要》P.200–202 及香港童軍總會網頁「地域及區」，版權屬香港童軍總會。海童軍帽帶取自手冊 P.102。旅章係手冊示例圖案；區章、地域章、小隊章可以揀返自己嘅。",
     "en": "Badge artwork is from the Scout Association of Hong Kong Uniform Handbook (pp.25, 92–93, 102, 159), the Scout Section Training Scheme (pp.200–202) and the SAHK “Regions and Districts” page; copyright the Scout Association of Hong Kong. The Sea Scout cap tally is from Handbook p.102. The Group Badge is the handbook example; pick your own District and Patrol to get the right badges."
+  },
+  "slots": {
+    "pocketL": {
+      "part": "torso",
+      "side": "left",
+      "layers": [
+        {
+          "id": "stars",
+          "gapCm": 0,
+          "max": 3,
+          "spacingCm": 0.1,
+          "from": "inner"
+        }
+      ],
+      "zh": "穿著者左胸袋袋蓋上方（緊貼袋蓋）：服務年星；有以前支部嘅服務年星就並排喺外側（手冊 P.130；綱要 P.12 附圖）。",
+      "en": "On top of the wearer's left pocket flap: the Service Star, with earlier-section stars beside it towards the outside (Handbook p.130; Training Scheme p.12 figure).",
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "129–130"
+        },
+        {
+          "ref": "STS",
+          "page": "12"
+        }
+      ]
+    }
   }
 }

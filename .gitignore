@@ -49,3 +49,6 @@ Thumbs.db
 *_local_*
 *_injected*
 *.keyed.html
+
+# ---- Arena 工作區（截圖、參考圖）----
+.arena/

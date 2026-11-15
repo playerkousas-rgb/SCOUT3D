@@ -142,8 +142,10 @@ const DEFAULT_BADGES = {
   commemorative: false,
 };
 // 「其他獎章及徽章」說明（每個支部跟唔同文件）
-const EXTRA_NOTE = { leader: 'badges.extraNoteLeader', rover: 'badges.extraNoteRover', venture: 'badges.extraNoteVenture', scout: 'badges.extraNoteScout' };
-const DEFAULT_BADGE_STATES = { grasshopper: DEFAULT_BADGES, cub: CUB_BADGES, scout: SCOUT_BADGES, venture: VENTURE_BADGES, rover: ROVER_BADGES, leader: LEADER_BADGES };
+const EXTRA_NOTE = { cub: 'badges.extraNoteCub', leader: 'badges.extraNoteLeader', rover: 'badges.extraNoteRover', venture: 'badges.extraNoteVenture', scout: 'badges.extraNoteScout' };
+// v23：幼童軍非基本章（有選項嘅）用規則 JSON 嘅 default（冇）；開關式（活動徽章、先修章……）預設熄
+const CUB_DEFAULTS = { ...CUB_BADGES, ...Object.fromEntries(SECTIONS.cub.badges.filter((b) => b.choices).map((b) => [b.id, b.default])) };
+const DEFAULT_BADGE_STATES = { grasshopper: DEFAULT_BADGES, cub: CUB_DEFAULTS, scout: SCOUT_BADGES, venture: VENTURE_BADGES, rover: ROVER_BADGES, leader: LEADER_BADGES };
 /** 成年成員：單位層級（只喺 leader 用，其他支部唔篩） */
 const levelOf = (section, picks) => (section === 'leader' ? picks.level : null);
 
@@ -729,6 +731,8 @@ function BadgesTab({ rules, section, outfit, setOutfit, badges, setBadges, picks
   const awards = rules.badges.filter((b) => applies(b) && b.group === 'awards');
   // v21：其他獎章及徽章（樂行童軍非基本章；成年成員獎章領袖標誌、公教章、飛行章等）
   const extras = rules.badges.filter((b) => applies(b) && b.group === 'extra');
+  // v23：幼童軍活動徽章（綱要 P.25–67）：數目多，用細格仔揀
+  const activity = rules.badges.filter((b) => applies(b) && b.group === 'activity');
   const row = (b) => <BadgeRow key={b.id} b={b} rules={rules} section={section} outfit={outfit} badges={badges} set={set} picks={picks} setPicks={setPicks} unavailable={unavailable} selected={selected} onPick={onPick} />;
   return (
     <div className="tabbody">
@@ -741,6 +745,7 @@ function BadgesTab({ rules, section, outfit, setOutfit, badges, setBadges, picks
           <ul className="badgelist">{extras.map(row)}</ul>
         </details>
       )}
+      {activity.length > 0 && <ActivityGrid rules={rules} list={activity} badges={badges} set={set} />}
       {awards.length > 0 && (
         <details className="awards" open={awards.some((b) => badges[b.id] && badges[b.id] !== 'none')}>
           <summary className="h3">{t(uid === 'u2' ? 'badges.awardsMini' : 'badges.awards')}</summary>
@@ -763,6 +768,62 @@ function BadgesTab({ rules, section, outfit, setOutfit, badges, setBadges, picks
         </details>
       )}
     </div>
+  );
+}
+
+/**
+ * v23 幼童軍活動徽章（綱要 P.25–67）：按學習範疇分組嘅細格仔；撳一下開／熄，
+ * 三級制度章（音樂、射箭……）撳一下就初級 → 中級 → 高級 → 冇。
+ */
+function ActivityGrid({ rules, list, badges, set }) {
+  const { lang, t } = useLang();
+  const on = (b) => !!badges[b.id] && badges[b.id] !== 'none';
+  const n = list.filter(on).length;
+  const max = rules.slots?.activityL?.layers?.[0]?.max;
+  const next = (b) => {
+    if (!b.choices) return set(b.id, !badges[b.id]);
+    const ids = b.choices.map((c) => c.id);
+    const i = ids.indexOf(badges[b.id] ?? b.default);
+    set(b.id, ids[(i + 1) % ids.length]);
+  };
+  return (
+    <details className="awards extras" open={n > 0}>
+      <summary className="h3">{t('badges.activity')}</summary>
+      <p className="occasion__note">{t('badges.activityNote')}</p>
+      <p className="muted">{t('badges.activityCount').replace('{n}', n).replace('{max}', max)}</p>
+      {(rules.areas || []).map((a) => {
+        const items = list.filter((b) => b.area === a.id);
+        if (!items.length) return null;
+        return (
+          <div key={a.id} className="actgrid__area">
+            <div className="actgrid__title">{pick(lang, a)}</div>
+            <ul className="actgrid">
+              {items.map((b) => {
+                const c = b.choices?.find((x) => x.id === badges[b.id]);
+                const file = (c?.art ?? b.art).file;
+                const level = c?.art ? pick(lang, c, 'name') : null;
+                const name = pick(lang, b, 'name');
+                return (
+                  <li key={b.id}>
+                    <button
+                      type="button"
+                      className={`actgrid__btn${on(b) ? ' is-on' : ''}`}
+                      aria-pressed={on(b)}
+                      title={b.choices ? `${name}：${level ?? t('badge.none')}` : name}
+                      onClick={() => next(b)}
+                    >
+                      <img src={file} alt="" />
+                      <span className="actgrid__name">{name}</span>
+                      {b.choices && <span className="actgrid__level">{level ?? t('badge.none')}</span>}
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        );
+      })}
+    </details>
   );
 }
 

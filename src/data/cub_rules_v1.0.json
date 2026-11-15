@@ -42,8 +42,8 @@
       "zh": "香港童軍總會《儀容與制服手冊》",
       "en": "SAHK Uniform Handbook (Chinese edition)",
       "edition": {
-        "zh": "網上版（含 2026-01-01 第 04/2026 號通告制服帽修訂）；P.26–29 幼童軍制服，P.92–95 基本徽章，P.98 幼童軍帽，P.121–122 制服毛衣，P.159 優異旅團章，P.168 幼童軍徽章佩戴圖",
-        "en": "Online edition incl. Circular 04/2026 (1 Jan 2026) cap amendment; pp.26–29 Cub uniform, pp.92–95 basic badges, p.98 Cub caps, pp.121–122 uniform jersey, p.159 Meritorious Group Badge, p.168 Cub badge chart"
+        "zh": "網上版（含 2026-01-01 第 04/2026 號通告制服帽修訂）；P.26–29 幼童軍制服，P.92–95 基本徽章，P.98 幼童軍帽，P.121–122 制服毛衣，P.159 優異旅團章，P.168 幼童軍徽章佩戴圖，P.129–130 服務年星，P.132 幼童軍隊長章，P.138 公教章，P.155 和平使者章，P.163–164 紀念章",
+        "en": "Online edition incl. Circular 04/2026 (1 Jan 2026) cap amendment; pp.26–29 Cub uniform, pp.92–95 basic badges, p.98 Cub caps, pp.121–122 uniform jersey, p.159 Meritorious Group Badge, p.168 Cub badge chart, pp.129–130 Service Stars, p.132 Cub Scout Sixer badges, p.138 Catholic Badge, p.155 Messengers of Peace, pp.163–164 Commemorative Badges"
       },
       "url": "https://www.scout.org.hk/uniformhandbook"
     },
@@ -51,8 +51,8 @@
       "zh": "《幼童軍支部訓練綱要》",
       "en": "Cub Scout Section Training Scheme",
       "edition": {
-        "zh": "2026 年 8 月 9 日版；第 6–7 頁制服及「制服標誌及徽章佩戴」圖",
-        "en": "9 August 2026 edition; pp.6–7 uniform and badge chart"
+        "zh": "2026 年 8 月 9 日版；P.6–7 制服及「制服標誌及徽章佩戴」圖，P.8 訓練範疇，P.13–22 會員章及進度性獎章（核心範疇章），P.25–67 幼童軍活動徽章，P.68 宗教章，P.70 童軍先修章，P.72 隊長／副隊長章",
+        "en": "9 August 2026 edition; pp.6–7 uniform and badge chart, p.8 training areas, pp.13–22 Membership Badge and progress awards (core area badges), pp.25–67 Cub Scout activity badges, p.68 Religious Badge, p.70 Scout Link Badge, p.72 Sixer / Second badges"
       },
       "url": null
     },
@@ -320,7 +320,10 @@
         "zh": "手冊冇寫尺寸；模型用直徑 4 cm，按 P.93 附圖同胸袋嘅比例。",
         "en": "No size in the Handbook; the model uses 4 cm diameter, from its proportion to the pocket in the p.93 figure."
       },
-      "sweater": true
+      "sweater": true,
+      "hiddenBy": [
+        "peace"
+      ]
     },
     {
       "id": "hongKong",
@@ -601,17 +604,4667 @@
         "en": "No size in the Handbook; the model uses 9 × 2 cm (p.159 artwork proportions). Type a year: the background and lettering come from p.159 and only the year digits change; the colour cycles every 3 years (1999 red, 2000 purple, 2001 blue…, matching 2016 blue, 2017 red, 2018 purple on p.159)."
       },
       "sweater": false
+    },
+    {
+      "id": "progressAward",
+      "required": false,
+      "side": "right",
+      "group": "extra",
+      "zh": {
+        "name": "進度性獎章",
+        "place": "穿著者右胸袋中央（綱要 P.7 附圖）。",
+        "quote": "進度性獎章：幼童軍體驗章、幼童軍歷奇章、幼童軍高級歷奇章、金紫荊獎章（綱要 P.7 附圖，佩戴喺右胸袋）。各進度性獎章應按階段完成。",
+        "conditions": "考獲會員章後按階段考取（綱要 P.9、P.14–22）；只戴最新考獲嗰個。"
+      },
+      "en": {
+        "name": "Progress Award",
+        "place": "Centre of the wearer's right chest pocket (Training Scheme p.7 figure).",
+        "quote": "Progress awards: Cub Scout Discovery, Adventure, Advanced Adventure and Golden Bauhinia Awards (Training Scheme p.7 figure, worn on the right pocket). They are taken stage by stage.",
+        "conditions": "Taken in stages after the Membership Badge (Training Scheme pp.9, 14–22); only the latest one is worn."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 4,
+        "hCm": 4,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "pocket": "centre",
+        "side": "right",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "9, 14–22"
+        }
+      ],
+      "status": "verified",
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "experience",
+          "zh": {
+            "name": "幼童軍體驗章"
+          },
+          "en": {
+            "name": "Cub Scout Discovery Award"
+          },
+          "art": {
+            "file": "/badges/cub/progress_experience.png",
+            "ref": "CTS",
+            "page": "14",
+            "example": false,
+            "px": [
+              128,
+              128
+            ]
+          }
+        },
+        {
+          "id": "adventure",
+          "zh": {
+            "name": "幼童軍歷奇章"
+          },
+          "en": {
+            "name": "Cub Scout Adventure Award"
+          },
+          "art": {
+            "file": "/badges/cub/progress_adventure.png",
+            "ref": "CTS",
+            "page": "16",
+            "example": false,
+            "px": [
+              128,
+              128
+            ]
+          }
+        },
+        {
+          "id": "advanced",
+          "zh": {
+            "name": "幼童軍高級歷奇章"
+          },
+          "en": {
+            "name": "Cub Scout Advanced Adventure Award"
+          },
+          "art": {
+            "file": "/badges/cub/progress_advanced.png",
+            "ref": "CTS",
+            "page": "18",
+            "example": false,
+            "px": [
+              128,
+              128
+            ]
+          }
+        },
+        {
+          "id": "bauhinia",
+          "zh": {
+            "name": "金紫荊獎章"
+          },
+          "en": {
+            "name": "Golden Bauhinia Award"
+          },
+          "art": {
+            "file": "/badges/cub/progress_bauhinia.png",
+            "ref": "CTS",
+            "page": "20",
+            "example": false,
+            "px": [
+              128,
+              128
+            ]
+          }
+        }
+      ],
+      "default": "none",
+      "art": {
+        "file": "/badges/cub/progress_experience.png",
+        "ref": "CTS",
+        "page": "14",
+        "example": false,
+        "px": [
+          128,
+          128
+        ]
+      },
+      "modelNote": {
+        "zh": "圖案取自綱要 P.14、16、18、20；綱要冇寫尺寸，模型用 4 × 4 cm（按 P.7 附圖同胸袋嘅比例）。",
+        "en": "Artwork from Training Scheme pp.14, 16, 18, 20; no size given, the model uses 4 × 4 cm (from its proportion to the pocket in the p.7 figure)."
+      },
+      "sweater": false
+    },
+    {
+      "id": "coreSkills",
+      "required": false,
+      "side": "left",
+      "group": "extra",
+      "zh": {
+        "name": "童軍技能章（核心範疇章）",
+        "place": "穿著者左袖上方，四個核心範疇章排成菱形，童軍技能章（綠色）喺最上面（綱要 P.7 附圖）。",
+        "quote": "核心範疇章：童軍技能章（綠色）、關己愛人章（紅色）、國家與社區章（黃色）、童軍家庭章（紫色）；初級（銅邊）／中級（銀邊）／高級（金邊）。完成每項「核心範疇」，則可獲發該階段指定的「核心範疇」章。",
+        "conditions": "歷奇章階段完成核心範疇得初級、高級歷奇章階段得中級、金紫荊獎章階段得高級（綱要 P.8、P.16–22）；只戴最高級嗰個。"
+      },
+      "en": {
+        "name": "Scout Skills Badge (core area badge)",
+        "place": "Upper wearer's left sleeve; the four core area badges form a diamond, the Scout Skills Badge at the top (Training Scheme p.7 figure).",
+        "quote": "Core area badges: Scout Skills (green), Caring (red), Nation and Community (yellow), Scout Family (purple); junior (bronze edge) / intermediate (silver edge) / senior (gold edge). Each completed core area earns that stage's core area badge.",
+        "conditions": "Junior at the Adventure stage, intermediate at the Advanced Adventure stage, senior at the Golden Bauhinia stage (Training Scheme pp.8, 16–22); only the highest is worn."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.32,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "fromShoulderCm": 2,
+        "edge": "top",
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "8, 16–22"
+        }
+      ],
+      "status": "verified",
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "bronze",
+          "zh": {
+            "name": "初級（銅邊）"
+          },
+          "en": {
+            "name": "Junior (bronze edge)"
+          },
+          "art": {
+            "file": "/badges/cub/core_skills_bronze.png",
+            "ref": "CTS",
+            "page": "16",
+            "example": false,
+            "px": [
+              86,
+              96
+            ]
+          }
+        },
+        {
+          "id": "silver",
+          "zh": {
+            "name": "中級（銀邊）"
+          },
+          "en": {
+            "name": "Intermediate (silver edge)"
+          },
+          "art": {
+            "file": "/badges/cub/core_skills_silver.png",
+            "ref": "CTS",
+            "page": "18",
+            "example": false,
+            "px": [
+              86,
+              96
+            ]
+          }
+        },
+        {
+          "id": "gold",
+          "zh": {
+            "name": "高級（金邊）"
+          },
+          "en": {
+            "name": "Senior (gold edge)"
+          },
+          "art": {
+            "file": "/badges/cub/core_skills_gold.png",
+            "ref": "CTS",
+            "page": "20",
+            "example": false,
+            "px": [
+              86,
+              96
+            ]
+          }
+        }
+      ],
+      "default": "none",
+      "art": {
+        "file": "/badges/cub/core_skills_bronze.png",
+        "ref": "CTS",
+        "page": "16",
+        "example": false,
+        "px": [
+          86,
+          96
+        ]
+      },
+      "modelNote": {
+        "zh": "圖案取自綱要 P.16–22；綱要冇寫尺寸，模型用 2.3 × 2.6 cm 六角形，菱形位置固定（冇考獲嘅位留空）。",
+        "en": "Artwork from Training Scheme pp.16–22; no size given, the model uses a 2.3 × 2.6 cm hexagon in fixed diamond positions (empty when not earned)."
+      },
+      "sweater": false
+    },
+    {
+      "id": "coreCaring",
+      "required": false,
+      "side": "left",
+      "group": "extra",
+      "zh": {
+        "name": "關己愛人章（核心範疇章）",
+        "place": "穿著者左袖上方，四個核心範疇章排成菱形，關己愛人章（紅色）喺中間前面（綱要 P.7 附圖）。",
+        "quote": "核心範疇章：童軍技能章（綠色）、關己愛人章（紅色）、國家與社區章（黃色）、童軍家庭章（紫色）；初級（銅邊）／中級（銀邊）／高級（金邊）。完成每項「核心範疇」，則可獲發該階段指定的「核心範疇」章。",
+        "conditions": "歷奇章階段完成核心範疇得初級、高級歷奇章階段得中級、金紫荊獎章階段得高級（綱要 P.8、P.16–22）；只戴最高級嗰個。"
+      },
+      "en": {
+        "name": "Caring Badge (core area badge)",
+        "place": "Upper wearer's left sleeve; the four core area badges form a diamond, the Caring Badge at the middle, front (Training Scheme p.7 figure).",
+        "quote": "Core area badges: Scout Skills (green), Caring (red), Nation and Community (yellow), Scout Family (purple); junior (bronze edge) / intermediate (silver edge) / senior (gold edge). Each completed core area earns that stage's core area badge.",
+        "conditions": "Junior at the Adventure stage, intermediate at the Advanced Adventure stage, senior at the Golden Bauhinia stage (Training Scheme pp.8, 16–22); only the highest is worn."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.32,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "fromShoulderCm": 4.07,
+        "edge": "top",
+        "towards": "front",
+        "offsetCm": 1.22,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "8, 16–22"
+        }
+      ],
+      "status": "verified",
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "bronze",
+          "zh": {
+            "name": "初級（銅邊）"
+          },
+          "en": {
+            "name": "Junior (bronze edge)"
+          },
+          "art": {
+            "file": "/badges/cub/core_caring_bronze.png",
+            "ref": "CTS",
+            "page": "16",
+            "example": false,
+            "px": [
+              86,
+              96
+            ]
+          }
+        },
+        {
+          "id": "silver",
+          "zh": {
+            "name": "中級（銀邊）"
+          },
+          "en": {
+            "name": "Intermediate (silver edge)"
+          },
+          "art": {
+            "file": "/badges/cub/core_caring_silver.png",
+            "ref": "CTS",
+            "page": "18",
+            "example": false,
+            "px": [
+              86,
+              96
+            ]
+          }
+        },
+        {
+          "id": "gold",
+          "zh": {
+            "name": "高級（金邊）"
+          },
+          "en": {
+            "name": "Senior (gold edge)"
+          },
+          "art": {
+            "file": "/badges/cub/core_caring_gold.png",
+            "ref": "CTS",
+            "page": "21",
+            "example": false,
+            "px": [
+              86,
+              96
+            ]
+          }
+        }
+      ],
+      "default": "none",
+      "art": {
+        "file": "/badges/cub/core_caring_bronze.png",
+        "ref": "CTS",
+        "page": "16",
+        "example": false,
+        "px": [
+          86,
+          96
+        ]
+      },
+      "modelNote": {
+        "zh": "圖案取自綱要 P.16–22；綱要冇寫尺寸，模型用 2.3 × 2.6 cm 六角形，菱形位置固定（冇考獲嘅位留空）。",
+        "en": "Artwork from Training Scheme pp.16–22; no size given, the model uses a 2.3 × 2.6 cm hexagon in fixed diamond positions (empty when not earned)."
+      },
+      "sweater": false
+    },
+    {
+      "id": "coreCommunity",
+      "required": false,
+      "side": "left",
+      "group": "extra",
+      "zh": {
+        "name": "國家與社區章（核心範疇章）",
+        "place": "穿著者左袖上方，四個核心範疇章排成菱形，國家與社區章（黃色）喺中間後面（綱要 P.7 附圖）。",
+        "quote": "核心範疇章：童軍技能章（綠色）、關己愛人章（紅色）、國家與社區章（黃色）、童軍家庭章（紫色）；初級（銅邊）／中級（銀邊）／高級（金邊）。完成每項「核心範疇」，則可獲發該階段指定的「核心範疇」章。",
+        "conditions": "歷奇章階段完成核心範疇得初級、高級歷奇章階段得中級、金紫荊獎章階段得高級（綱要 P.8、P.16–22）；只戴最高級嗰個。"
+      },
+      "en": {
+        "name": "Nation and Community Badge (core area badge)",
+        "place": "Upper wearer's left sleeve; the four core area badges form a diamond, the Nation and Community Badge at the middle, back (Training Scheme p.7 figure).",
+        "quote": "Core area badges: Scout Skills (green), Caring (red), Nation and Community (yellow), Scout Family (purple); junior (bronze edge) / intermediate (silver edge) / senior (gold edge). Each completed core area earns that stage's core area badge.",
+        "conditions": "Junior at the Adventure stage, intermediate at the Advanced Adventure stage, senior at the Golden Bauhinia stage (Training Scheme pp.8, 16–22); only the highest is worn."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.32,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "fromShoulderCm": 4.07,
+        "edge": "top",
+        "towards": "back",
+        "offsetCm": 1.22,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "8, 16–22"
+        }
+      ],
+      "status": "verified",
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "bronze",
+          "zh": {
+            "name": "初級（銅邊）"
+          },
+          "en": {
+            "name": "Junior (bronze edge)"
+          },
+          "art": {
+            "file": "/badges/cub/core_community_bronze.png",
+            "ref": "CTS",
+            "page": "17",
+            "example": false,
+            "px": [
+              86,
+              96
+            ]
+          }
+        },
+        {
+          "id": "silver",
+          "zh": {
+            "name": "中級（銀邊）"
+          },
+          "en": {
+            "name": "Intermediate (silver edge)"
+          },
+          "art": {
+            "file": "/badges/cub/core_community_silver.png",
+            "ref": "CTS",
+            "page": "19",
+            "example": false,
+            "px": [
+              86,
+              96
+            ]
+          }
+        },
+        {
+          "id": "gold",
+          "zh": {
+            "name": "高級（金邊）"
+          },
+          "en": {
+            "name": "Senior (gold edge)"
+          },
+          "art": {
+            "file": "/badges/cub/core_community_gold.png",
+            "ref": "CTS",
+            "page": "21",
+            "example": false,
+            "px": [
+              86,
+              96
+            ]
+          }
+        }
+      ],
+      "default": "none",
+      "art": {
+        "file": "/badges/cub/core_community_bronze.png",
+        "ref": "CTS",
+        "page": "17",
+        "example": false,
+        "px": [
+          86,
+          96
+        ]
+      },
+      "modelNote": {
+        "zh": "圖案取自綱要 P.16–22；綱要冇寫尺寸，模型用 2.3 × 2.6 cm 六角形，菱形位置固定（冇考獲嘅位留空）。",
+        "en": "Artwork from Training Scheme pp.16–22; no size given, the model uses a 2.3 × 2.6 cm hexagon in fixed diamond positions (empty when not earned)."
+      },
+      "sweater": false
+    },
+    {
+      "id": "coreFamily",
+      "required": false,
+      "side": "left",
+      "group": "extra",
+      "zh": {
+        "name": "童軍家庭章（核心範疇章）",
+        "place": "穿著者左袖上方，四個核心範疇章排成菱形，童軍家庭章（紫色）喺最下面（綱要 P.7 附圖）。",
+        "quote": "核心範疇章：童軍技能章（綠色）、關己愛人章（紅色）、國家與社區章（黃色）、童軍家庭章（紫色）；初級（銅邊）／中級（銀邊）／高級（金邊）。完成每項「核心範疇」，則可獲發該階段指定的「核心範疇」章。",
+        "conditions": "歷奇章階段完成核心範疇得初級、高級歷奇章階段得中級、金紫荊獎章階段得高級（綱要 P.8、P.16–22）；只戴最高級嗰個。"
+      },
+      "en": {
+        "name": "Scout Family Badge (core area badge)",
+        "place": "Upper wearer's left sleeve; the four core area badges form a diamond, the Scout Family Badge at the bottom (Training Scheme p.7 figure).",
+        "quote": "Core area badges: Scout Skills (green), Caring (red), Nation and Community (yellow), Scout Family (purple); junior (bronze edge) / intermediate (silver edge) / senior (gold edge). Each completed core area earns that stage's core area badge.",
+        "conditions": "Junior at the Adventure stage, intermediate at the Advanced Adventure stage, senior at the Golden Bauhinia stage (Training Scheme pp.8, 16–22); only the highest is worn."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.32,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "fromShoulderCm": 6.14,
+        "edge": "top",
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "8, 16–22"
+        }
+      ],
+      "status": "verified",
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "bronze",
+          "zh": {
+            "name": "初級（銅邊）"
+          },
+          "en": {
+            "name": "Junior (bronze edge)"
+          },
+          "art": {
+            "file": "/badges/cub/core_family_bronze.png",
+            "ref": "CTS",
+            "page": "17",
+            "example": false,
+            "px": [
+              86,
+              96
+            ]
+          }
+        },
+        {
+          "id": "silver",
+          "zh": {
+            "name": "中級（銀邊）"
+          },
+          "en": {
+            "name": "Intermediate (silver edge)"
+          },
+          "art": {
+            "file": "/badges/cub/core_family_silver.png",
+            "ref": "CTS",
+            "page": "19",
+            "example": false,
+            "px": [
+              86,
+              96
+            ]
+          }
+        },
+        {
+          "id": "gold",
+          "zh": {
+            "name": "高級（金邊）"
+          },
+          "en": {
+            "name": "Senior (gold edge)"
+          },
+          "art": {
+            "file": "/badges/cub/core_family_gold.png",
+            "ref": "CTS",
+            "page": "22",
+            "example": false,
+            "px": [
+              86,
+              96
+            ]
+          }
+        }
+      ],
+      "default": "none",
+      "art": {
+        "file": "/badges/cub/core_family_bronze.png",
+        "ref": "CTS",
+        "page": "17",
+        "example": false,
+        "px": [
+          86,
+          96
+        ]
+      },
+      "modelNote": {
+        "zh": "圖案取自綱要 P.16–22；綱要冇寫尺寸，模型用 2.3 × 2.6 cm 六角形，菱形位置固定（冇考獲嘅位留空）。",
+        "en": "Artwork from Training Scheme pp.16–22; no size given, the model uses a 2.3 × 2.6 cm hexagon in fixed diamond positions (empty when not earned)."
+      },
+      "sweater": false
+    },
+    {
+      "id": "scoutLink",
+      "required": false,
+      "side": "right",
+      "group": "extra",
+      "zh": {
+        "name": "童軍先修章",
+        "place": "穿著者右胸袋袋蓋上方，緊貼袋蓋（綱要 P.7 附圖）。",
+        "quote": "幼童軍成員考獲童軍先修章後，即可佩戴於制服上，直至成為童軍後一年。",
+        "conditions": "完成童軍先修章要求（認識童軍支部、參與兩次童軍團集會、新體驗）。"
+      },
+      "en": {
+        "name": "Scout Link Badge",
+        "place": "On top of the wearer's right pocket flap (Training Scheme p.7 figure).",
+        "quote": "Once earned, the Scout Link Badge may be worn on the uniform until one year after becoming a Scout.",
+        "conditions": "Complete the Scout Link requirements (learn about the Scout Section, attend two Scout Troop meetings, a new experience)."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.4,
+        "hCm": 1.55,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "slot": "pocketR",
+        "layer": "flap",
+        "rank": 1,
+        "side": "right",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "70"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/cub/scout_link.png",
+        "ref": "CTS",
+        "page": "70",
+        "example": false,
+        "px": [
+          96,
+          62
+        ]
+      },
+      "modelNote": {
+        "zh": "圖案取自綱要 P.70；綱要冇寫尺寸，模型用約 2.4 × 1.55 cm（按 P.7 附圖比例）。",
+        "en": "Artwork from Training Scheme p.70; no size given, the model uses about 2.4 × 1.55 cm (from the p.7 figure)."
+      },
+      "sweater": false
+    },
+    {
+      "id": "faith",
+      "required": false,
+      "side": "right",
+      "group": "extra",
+      "zh": {
+        "name": "幼童軍宗教章／公教章",
+        "place": "穿著者右胸袋袋蓋上方（綱要 P.7 附圖；手冊 P.139：袋蓋上方 3 cm）；同紀念章並排時喺內側。",
+        "quote": "青少年成員佩戴所屬支部的宗教章或取得最高段數的公教章在制服恤衫右胸袋袋蓋上方三釐米中央位置。假若與和平使者章／紀念章一起佩戴，兩章並行排列，宗教章／公教章在其左方位置（內側）。不可同時佩戴宗教章與公教章。",
+        "conditions": "宗教章：完成其中一項宗教課程（綱要 P.68–69）；公教章：已領洗嘅天主教成員，只戴最高段數。兩樣只可以揀一樣。"
+      },
+      "en": {
+        "name": "Cub Scout Religious Badge / Catholic Badge",
+        "place": "Above the wearer's right pocket flap (Training Scheme p.7 figure; Handbook p.139: 3 cm above the flap); inner side when worn with the Commemorative Badge.",
+        "quote": "Youth members wear their section's Religious Badge, or the Catholic Badge of the highest stage, centred 3 cm above the right pocket flap. With the Messengers of Peace / Commemorative Badge the two sit side by side, the Religious/Catholic Badge on the left (inner side). The Religious and Catholic Badges may not be worn together.",
+        "conditions": "Religious Badge: complete one of the religious courses (Training Scheme pp.68–69); Catholic Badge: baptised Catholics, highest stage only. Only one of the two."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3,
+        "hCm": 4,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "slot": "pocketR",
+        "layer": "upper",
+        "rank": 1,
+        "side": "right",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "68"
+        },
+        {
+          "ref": "UH",
+          "page": "138–139"
+        }
+      ],
+      "status": "verified",
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "religious",
+          "zh": {
+            "name": "幼童軍宗教章"
+          },
+          "en": {
+            "name": "Cub Scout Religious Badge"
+          },
+          "art": {
+            "file": "/badges/cub/cub_religious.png",
+            "ref": "CTS",
+            "page": "68",
+            "example": false,
+            "px": [
+              96,
+              128
+            ]
+          }
+        },
+        {
+          "id": "catholicOne",
+          "zh": {
+            "name": "公教章第 1 段"
+          },
+          "en": {
+            "name": "Catholic Badge stage 1"
+          },
+          "art": {
+            "file": "/badges/extra/catholic1.png",
+            "ref": "UH",
+            "page": "138",
+            "example": false,
+            "px": [
+              200,
+              198
+            ]
+          }
+        },
+        {
+          "id": "catholicTwo",
+          "zh": {
+            "name": "公教章第 2 段"
+          },
+          "en": {
+            "name": "Catholic Badge stage 2"
+          },
+          "art": {
+            "file": "/badges/extra/catholic2.png",
+            "ref": "UH",
+            "page": "138",
+            "example": false,
+            "px": [
+              200,
+              200
+            ]
+          }
+        },
+        {
+          "id": "catholicThree",
+          "zh": {
+            "name": "公教章第 3 段"
+          },
+          "en": {
+            "name": "Catholic Badge stage 3"
+          },
+          "art": {
+            "file": "/badges/extra/catholic3.png",
+            "ref": "UH",
+            "page": "138",
+            "example": false,
+            "px": [
+              198,
+              200
+            ]
+          }
+        },
+        {
+          "id": "catholicFour",
+          "zh": {
+            "name": "公教章第 4 段"
+          },
+          "en": {
+            "name": "Catholic Badge stage 4"
+          },
+          "art": {
+            "file": "/badges/extra/catholic4.png",
+            "ref": "UH",
+            "page": "138",
+            "example": false,
+            "px": [
+              200,
+              199
+            ]
+          }
+        }
+      ],
+      "default": "none",
+      "art": {
+        "file": "/badges/cub/cub_religious.png",
+        "ref": "CTS",
+        "page": "68",
+        "example": false,
+        "px": [
+          96,
+          128
+        ]
+      },
+      "modelNote": {
+        "zh": "宗教章圖案取自綱要 P.68（橢圓形）；公教章四段取自手冊 P.138。模型用 3 × 4 cm 框。",
+        "en": "Religious Badge artwork from Training Scheme p.68 (oval); the four Catholic Badge stages from Handbook p.138. The model uses a 3 × 4 cm box."
+      },
+      "sweater": false
+    },
+    {
+      "id": "commemorative",
+      "required": false,
+      "side": "right",
+      "group": "extra",
+      "zh": {
+        "name": "紀念章",
+        "place": "穿著者右胸袋袋蓋上方（綱要 P.7 附圖；手冊 P.163：袋蓋上方 3 cm）；同宗教章／公教章並排時喺外側。",
+        "quote": "紀念章佩戴在制服恤衫右胸袋袋蓋上方三釐米中央位置。假若與其他標誌或徽章一起佩戴，兩章並行排列，紀念章在其右方位置。紀念章最大尺寸以七釐米（闊）× 七釐米（高）為限。",
+        "conditions": "只限已獲批准、喺指定期間內佩戴；同一時間只戴一個。"
+      },
+      "en": {
+        "name": "Commemorative Badge",
+        "place": "Above the wearer's right pocket flap (Training Scheme p.7 figure; Handbook p.163: 3 cm above the flap); outer side when worn with the Religious/Catholic Badge.",
+        "quote": "Worn centred 3 cm above the right pocket flap. With another emblem or badge the two sit side by side, the Commemorative Badge on the right. At most 7 cm wide × 7 cm high.",
+        "conditions": "Approved badges only, within the set period; one at a time."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 5,
+        "hCm": 5,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "slot": "pocketR",
+        "layer": "upper",
+        "rank": 2,
+        "side": "right",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "UH",
+          "page": "163–164"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/handbook_example_commemorative.png",
+        "ref": "UH",
+        "page": "25",
+        "example": true,
+        "px": [
+          128,
+          129
+        ]
+      },
+      "modelNote": {
+        "zh": "圖案係手冊示例色塊，每個紀念章唔同；模型用 5 × 5 cm（上限 7 × 7 cm）。",
+        "en": "The artwork is the handbook's example block; each badge differs. The model uses 5 × 5 cm (limit 7 × 7 cm)."
+      },
+      "sweater": false
+    },
+    {
+      "id": "peace",
+      "required": false,
+      "side": "left",
+      "group": "extra",
+      "zh": {
+        "name": "和平使者章（結合世界童軍會員章）",
+        "place": "穿著者左胸袋中央，代替世界童軍會員章（綱要 P.7 附圖「會員章／和平使者章」）。",
+        "quote": "會員章／和平使者章（綱要 P.7 附圖，同一位置）。童軍成員在參加已於「世界童軍組織」網站註冊及總會核准的和平使者計劃活動後，可佩戴在制服上。由活動首天起，可佩戴十二個月。",
+        "conditions": "參加已註冊同核准嘅和平使者計劃活動；可戴 12 個月（再完成另一項可額外 12 個月）。"
+      },
+      "en": {
+        "name": "Messengers of Peace Badge (combined with the World Membership Badge)",
+        "place": "Centre of the wearer's left chest pocket, in place of the World Membership Badge (Training Scheme p.7 figure “Membership Badge / Messengers of Peace Badge”).",
+        "quote": "Membership Badge / Messengers of Peace Badge (Training Scheme p.7 figure, same position). Members who take part in a Messengers of Peace project registered on the WOSM website and approved by the Association may wear it, for twelve months from the first day.",
+        "conditions": "Registered and approved Messengers of Peace project; 12 months (another 12 after a further project)."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 4,
+        "hCm": 5.03,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "pocket": "centre",
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "UH",
+          "page": "155"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/extra/peace.png",
+        "ref": "UH",
+        "page": "155",
+        "example": false,
+        "px": [
+          159,
+          200
+        ]
+      },
+      "modelNote": {
+        "zh": "手冊 P.155 寫喺右胸袋袋蓋上方；綱要 P.7 附圖將佢同會員章放喺同一位置（左胸袋中央），幼童軍跟綱要。開咗就唔再另外戴世界童軍會員章。",
+        "en": "Handbook p.155 puts it above the right pocket flap; the Training Scheme p.7 figure gives it the Membership Badge position (centre of the left pocket), and Cub Scouts follow the scheme. When on, the separate World Membership Badge is not worn."
+      },
+      "sweater": false,
+      "fit": true
+    },
+    {
+      "id": "serviceStar",
+      "required": false,
+      "side": "left",
+      "group": "extra",
+      "zh": {
+        "name": "服務年星",
+        "place": "穿著者左胸袋袋蓋上方（緊貼袋蓋）中央；有小童軍服務年星就並排，幼童軍嗰枚喺內側（近中線）（手冊 P.130；綱要 P.7 附圖）。",
+        "quote": "各青少年成員在宣誓後服務滿一年者，可在制服上佩戴繡有「1」字的服務年星，兩年則可佩戴繡有「2」字的服務年星，餘此類推。幼童軍：黃色，數目字分別有「1」至「4」。只可佩戴在該支部獲取最高年份的一枚服務年星。",
+        "conditions": "宣誓後每服務滿一年；只戴最高年份嗰枚。"
+      },
+      "en": {
+        "name": "Service Star",
+        "place": "Centred on top of the wearer's left pocket flap; with a Grasshopper Service Star they sit side by side, the Cub Scout star on the inner side (Handbook p.130; Training Scheme p.7 figure).",
+        "quote": "A youth member who has served a full year after investiture wears the star with “1”, two years “2”, and so on. Cub Scouts: yellow, numbers 1 to 4. Only the highest star of the section is worn.",
+        "conditions": "One per full year of service after investiture; highest only."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 1.5,
+        "hCm": 1.5,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "slot": "pocketL",
+        "layer": "stars",
+        "rank": 1,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "129–130"
+        },
+        {
+          "ref": "CTS",
+          "page": "7"
+        }
+      ],
+      "status": "verified",
+      "default": "none",
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "one",
+          "zh": {
+            "name": "1 年"
+          },
+          "en": {
+            "name": "1 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_cub_1.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "two",
+          "zh": {
+            "name": "2 年"
+          },
+          "en": {
+            "name": "2 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_cub_2.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "three",
+          "zh": {
+            "name": "3 年"
+          },
+          "en": {
+            "name": "3 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_cub_3.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "four",
+          "zh": {
+            "name": "4 年"
+          },
+          "en": {
+            "name": "4 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_cub_4.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        }
+      ],
+      "art": {
+        "file": "/badges/extra/service_star_cub_1.png",
+        "ref": "UH",
+        "page": "129",
+        "example": false,
+        "px": [
+          96,
+          96
+        ]
+      },
+      "modelNote": {
+        "zh": "黃底白星跟手冊 P.129 樣式，數字按揀咗嘅年份；手冊冇寫尺寸，模型用 1.5 cm。",
+        "en": "Yellow with a white star as in the Handbook p.129 sample, numbered for the chosen year; no size given, the model uses 1.5 cm."
+      },
+      "sweater": false,
+      "needsInvestiture": true
+    },
+    {
+      "id": "serviceStarGrasshopper",
+      "required": false,
+      "side": "left",
+      "group": "extra",
+      "zh": {
+        "name": "小童軍服務年星（以前支部）",
+        "place": "穿著者左胸袋袋蓋上方，同幼童軍服務年星並排；由內側（近中線）至外側按支部由高至低（手冊 P.130 附圖）。",
+        "quote": "任何童軍在晉團後（例如由小童軍晉團為幼童軍，或由童軍晉團為深資童軍），仍可佩戴以前的服務年星，直至轉任為成年成員。各支部服務年星按次序由左至右並排佩戴在制服恤衫左胸袋袋蓋上方中央位置。小童軍：橙色，數目字分別有「1」至「3」。",
+        "conditions": "喺小童軍支部宣誓後服務滿一年先有；每個支部只戴最高年份嗰枚。小童軍服務年星要晉升幼童軍後先可以戴。"
+      },
+      "en": {
+        "name": "Grasshopper Service Star (earlier section)",
+        "place": "Above the wearer's left pocket flap, beside the Cub Scout Service Star; sections run from the inner side (nearest the centre) outwards, newest first (Handbook p.130 figure).",
+        "quote": "After moving up (e.g. Grasshopper to Cub Scout, or Scout to Venture Scout) a member may still wear earlier service stars until becoming an adult member. Each section's star is worn side by side, in order from left to right, centred on top of the left pocket flap. Grasshopper: orange, numbers 1 to 3.",
+        "conditions": "One per full year of service in that section; highest of each section only. Grasshopper stars may only be worn after moving up to Cub Scouts."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 1.5,
+        "hCm": 1.5,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "slot": "pocketL",
+        "layer": "stars",
+        "rank": 2,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "129–130"
+        }
+      ],
+      "status": "verified",
+      "default": "none",
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "one",
+          "zh": {
+            "name": "1 年"
+          },
+          "en": {
+            "name": "1 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_grasshopper_1.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "two",
+          "zh": {
+            "name": "2 年"
+          },
+          "en": {
+            "name": "2 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_grasshopper_2.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "three",
+          "zh": {
+            "name": "3 年"
+          },
+          "en": {
+            "name": "3 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_grasshopper_3.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        }
+      ],
+      "art": {
+        "file": "/badges/extra/service_star_grasshopper_1.png",
+        "ref": "UH",
+        "page": "129",
+        "example": false,
+        "px": [
+          96,
+          96
+        ]
+      },
+      "modelNote": {
+        "zh": "橙底白星跟手冊 P.129 樣式；小童軍服務年星要晉升幼童軍後先可以戴（手冊 P.130）。",
+        "en": "Orange with a white star as in the Handbook p.129 sample; worn only after moving up to Cub Scouts (Handbook p.130)."
+      },
+      "sweater": false,
+      "needsInvestiture": true
+    },
+    {
+      "id": "leaderBar",
+      "required": false,
+      "side": "left",
+      "group": "extra",
+      "zh": {
+        "name": "隊長／副隊長章",
+        "place": "穿著者左胸袋、會員章下面（綱要 P.7 附圖）。",
+        "quote": "幼童軍副隊長／隊長佩戴相關隊長章在制服恤衫右袖縫線上方三釐米中央位置（手冊 P.132）；2026 年 8 月版綱要 P.7 附圖改為左胸袋會員章下面。",
+        "conditions": "由團長委任；副隊長一條黃色橫紋（每邊）、隊長兩條（手冊 P.132）。"
+      },
+      "en": {
+        "name": "Sixer / Second Badge",
+        "place": "Wearer's left chest pocket, below the Membership Badge (Training Scheme p.7 figure).",
+        "quote": "Cub Scout Seconds and Sixers wear the badge centred 3 cm above the right sleeve seam (Handbook p.132); the August 2026 Training Scheme p.7 figure moves it below the Membership Badge on the left pocket.",
+        "conditions": "Appointed by the Scouter; one yellow bar each side for an assistant, two for a leader (Handbook p.132)."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 4.5,
+        "hCm": 1.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "pocket": "bottom",
+        "gapCm": 0.4,
+        "fitArt": true,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "132"
+        },
+        {
+          "ref": "CTS",
+          "page": "7"
+        }
+      ],
+      "status": "verified",
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "second",
+          "zh": {
+            "name": "副隊長章"
+          },
+          "en": {
+            "name": "Second"
+          },
+          "art": {
+            "file": "/badges/extra/leader_bar_assistant.png",
+            "ref": "UH",
+            "page": "132",
+            "example": false,
+            "px": [
+              240,
+              53
+            ]
+          }
+        },
+        {
+          "id": "sixer",
+          "zh": {
+            "name": "隊長章"
+          },
+          "en": {
+            "name": "Sixer"
+          },
+          "art": {
+            "file": "/badges/extra/leader_bar_patrol.png",
+            "ref": "UH",
+            "page": "132",
+            "example": false,
+            "px": [
+              240,
+              83
+            ]
+          }
+        }
+      ],
+      "default": "none",
+      "art": {
+        "file": "/badges/extra/leader_bar_assistant.png",
+        "ref": "UH",
+        "page": "132",
+        "example": false,
+        "px": [
+          240,
+          53
+        ]
+      },
+      "modelNote": {
+        "zh": "手冊 P.132 寫喺右袖縫線上方 3 cm；2026 年 8 月版綱要 P.7 附圖改喺左胸袋會員章下面——綱要較新，幼童軍跟綱要（用戶指示：綱要同手冊唔同就跟綱要）。圖案取自手冊 P.132；冇寫尺寸，模型闊 4.5 cm。",
+        "en": "Handbook p.132 puts it 3 cm above the right sleeve seam; the August 2026 Training Scheme p.7 figure moves it below the Membership Badge on the left pocket. The scheme is newer, so it is followed (user instruction: where they differ the Training Scheme wins). Artwork from Handbook p.132; no size given, the model is 4.5 cm wide."
+      },
+      "needsInvestiture": true,
+      "sweater": false
+    },
+    {
+      "id": "earthTribe",
+      "required": false,
+      "side": "right",
+      "group": "extra",
+      "zh": {
+        "name": "地球部落徽章",
+        "place": "穿著者右袖、地域章／區章下面一行；世界童軍組織系列同「積極公民」獎章系列最多合共四個（綱要 P.7 附圖）。",
+        "quote": "地球部落計劃 – 走塑達人章、自然守護者章、日光善用者章（綱要 P.52）。",
+        "conditions": "完成地球部落任何一項挑戰；應同最少一個挑戰徽章一齊戴。"
+      },
+      "en": {
+        "name": "Earth Tribe Badge",
+        "place": "Wearer's right sleeve, in the row below the Region/District Badges; WOSM and Active Citizen series at most four in total (Training Scheme p.7 figure).",
+        "quote": "Earth Tribe – Plastic Tide Turners, Nature Champions and Scouts Go Solar (Training Scheme p.52).",
+        "conditions": "Complete any Earth Tribe challenge; wear with at least one challenge badge."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.2,
+        "hCm": 2.2,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "sleeveR",
+        "layer": "row",
+        "rank": 1,
+        "side": "right",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "52"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/extra/earth_tribe.png",
+        "ref": "CTS",
+        "page": "52",
+        "example": false,
+        "px": [
+          200,
+          200
+        ]
+      },
+      "sweater": false,
+      "modelNote": {
+        "zh": "綱要冇寫尺寸；幼童軍袖短，模型用直徑 2.2 cm，令四個章同優異旅團章都放得落（綱要 P.7 附圖次序）。",
+        "en": "No size given; the Cub Scout sleeve is short, so the model uses 2.2 cm so that four badges and the Meritorious Group Badge all fit (Training Scheme p.7 figure order)."
+      }
+    },
+    {
+      "id": "plasticTide",
+      "required": false,
+      "side": "right",
+      "group": "extra",
+      "zh": {
+        "name": "走塑達人挑戰徽章",
+        "place": "穿著者右袖、地域章／區章下面一行；世界童軍組織系列同「積極公民」獎章系列最多合共四個（綱要 P.7 附圖）。",
+        "quote": "地球部落計劃 – 走塑達人章、自然守護者章、日光善用者章（綱要 P.52）。",
+        "conditions": "完成走塑達人挑戰（地球部落）。"
+      },
+      "en": {
+        "name": "Plastic Tide Turners Challenge Badge",
+        "place": "Wearer's right sleeve, in the row below the Region/District Badges; WOSM and Active Citizen series at most four in total (Training Scheme p.7 figure).",
+        "quote": "Earth Tribe – Plastic Tide Turners, Nature Champions and Scouts Go Solar (Training Scheme p.52).",
+        "conditions": "Complete the Plastic Tide Turners Challenge (Earth Tribe)."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.2,
+        "hCm": 2.2,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "sleeveR",
+        "layer": "row",
+        "rank": 2,
+        "side": "right",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "52"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/extra/plastic_tide.png",
+        "ref": "CTS",
+        "page": "52",
+        "example": false,
+        "px": [
+          200,
+          200
+        ]
+      },
+      "sweater": false,
+      "modelNote": {
+        "zh": "綱要冇寫尺寸；幼童軍袖短，模型用直徑 2.2 cm，令四個章同優異旅團章都放得落（綱要 P.7 附圖次序）。",
+        "en": "No size given; the Cub Scout sleeve is short, so the model uses 2.2 cm so that four badges and the Meritorious Group Badge all fit (Training Scheme p.7 figure order)."
+      }
+    },
+    {
+      "id": "natureChampions",
+      "required": false,
+      "side": "right",
+      "group": "extra",
+      "zh": {
+        "name": "自然守護者挑戰徽章",
+        "place": "穿著者右袖、地域章／區章下面一行；世界童軍組織系列同「積極公民」獎章系列最多合共四個（綱要 P.7 附圖）。",
+        "quote": "地球部落計劃 – 走塑達人章、自然守護者章、日光善用者章（綱要 P.52）。",
+        "conditions": "完成自然守護者挑戰（地球部落）。"
+      },
+      "en": {
+        "name": "Champions for Nature Challenge Badge",
+        "place": "Wearer's right sleeve, in the row below the Region/District Badges; WOSM and Active Citizen series at most four in total (Training Scheme p.7 figure).",
+        "quote": "Earth Tribe – Plastic Tide Turners, Nature Champions and Scouts Go Solar (Training Scheme p.52).",
+        "conditions": "Complete the Champions for Nature Challenge (Earth Tribe)."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.2,
+        "hCm": 2.2,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "sleeveR",
+        "layer": "row",
+        "rank": 3,
+        "side": "right",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "52"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/extra/nature_champions.png",
+        "ref": "CTS",
+        "page": "52",
+        "example": false,
+        "px": [
+          200,
+          200
+        ]
+      },
+      "sweater": false,
+      "modelNote": {
+        "zh": "綱要冇寫尺寸；幼童軍袖短，模型用直徑 2.2 cm，令四個章同優異旅團章都放得落（綱要 P.7 附圖次序）。",
+        "en": "No size given; the Cub Scout sleeve is short, so the model uses 2.2 cm so that four badges and the Meritorious Group Badge all fit (Training Scheme p.7 figure order)."
+      }
+    },
+    {
+      "id": "goSolar",
+      "required": false,
+      "side": "right",
+      "group": "extra",
+      "zh": {
+        "name": "日光善用者挑戰徽章",
+        "place": "穿著者右袖、地域章／區章下面一行；世界童軍組織系列同「積極公民」獎章系列最多合共四個（綱要 P.7 附圖）。",
+        "quote": "地球部落計劃 – 走塑達人章、自然守護者章、日光善用者章（綱要 P.52）。",
+        "conditions": "完成日光善用者挑戰（地球部落）。"
+      },
+      "en": {
+        "name": "Scouts Go Solar Challenge Badge",
+        "place": "Wearer's right sleeve, in the row below the Region/District Badges; WOSM and Active Citizen series at most four in total (Training Scheme p.7 figure).",
+        "quote": "Earth Tribe – Plastic Tide Turners, Nature Champions and Scouts Go Solar (Training Scheme p.52).",
+        "conditions": "Complete the Scouts Go Solar Challenge (Earth Tribe)."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.2,
+        "hCm": 2.2,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "sleeveR",
+        "layer": "row",
+        "rank": 4,
+        "side": "right",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "52"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/extra/go_solar.png",
+        "ref": "CTS",
+        "page": "52",
+        "example": false,
+        "px": [
+          200,
+          200
+        ]
+      },
+      "sweater": false,
+      "modelNote": {
+        "zh": "綱要冇寫尺寸；幼童軍袖短，模型用直徑 2.2 cm，令四個章同優異旅團章都放得落（綱要 P.7 附圖次序）。",
+        "en": "No size given; the Cub Scout sleeve is short, so the model uses 2.2 cm so that four badges and the Meritorious Group Badge all fit (Training Scheme p.7 figure order)."
+      }
+    },
+    {
+      "id": "citizenScam",
+      "required": false,
+      "side": "right",
+      "group": "extra",
+      "zh": {
+        "name": "防騙先鋒章",
+        "place": "穿著者右袖、地域章／區章下面一行；世界童軍組織系列同「積極公民」獎章系列最多合共四個（綱要 P.7 附圖）。",
+        "quote": "「積極公民」獎章系列 – 防騙先鋒章、禁毒章、保護兒童章、社區應急先鋒章、環保先鋒章、機電先鋒章（綱要 P.35）。",
+        "conditions": "「積極公民」獎章系列。"
+      },
+      "en": {
+        "name": "Anti-Scam Pioneer Badge",
+        "place": "Wearer's right sleeve, in the row below the Region/District Badges; WOSM and Active Citizen series at most four in total (Training Scheme p.7 figure).",
+        "quote": "Active Citizen series – Anti-Scam Pioneer, Anti-Drug, Child Protection, Community Emergency Pioneer, Green Pioneer and E&M Pioneer (Training Scheme p.35).",
+        "conditions": "Active Citizen series."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.2,
+        "hCm": 2.2,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "sleeveR",
+        "layer": "row",
+        "rank": 5,
+        "side": "right",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "35"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/extra/citizen_scam.png",
+        "ref": "CTS",
+        "page": "35",
+        "example": false,
+        "px": [
+          200,
+          200
+        ]
+      },
+      "sweater": false,
+      "modelNote": {
+        "zh": "綱要冇寫尺寸；幼童軍袖短，模型用直徑 2.2 cm，令四個章同優異旅團章都放得落（綱要 P.7 附圖次序）。",
+        "en": "No size given; the Cub Scout sleeve is short, so the model uses 2.2 cm so that four badges and the Meritorious Group Badge all fit (Training Scheme p.7 figure order)."
+      }
+    },
+    {
+      "id": "citizenDrug",
+      "required": false,
+      "side": "right",
+      "group": "extra",
+      "zh": {
+        "name": "禁毒章",
+        "place": "穿著者右袖、地域章／區章下面一行；世界童軍組織系列同「積極公民」獎章系列最多合共四個（綱要 P.7 附圖）。",
+        "quote": "「積極公民」獎章系列 – 防騙先鋒章、禁毒章、保護兒童章、社區應急先鋒章、環保先鋒章、機電先鋒章（綱要 P.35）。",
+        "conditions": "「積極公民」獎章系列。"
+      },
+      "en": {
+        "name": "Anti-Drug Badge",
+        "place": "Wearer's right sleeve, in the row below the Region/District Badges; WOSM and Active Citizen series at most four in total (Training Scheme p.7 figure).",
+        "quote": "Active Citizen series – Anti-Scam Pioneer, Anti-Drug, Child Protection, Community Emergency Pioneer, Green Pioneer and E&M Pioneer (Training Scheme p.35).",
+        "conditions": "Active Citizen series."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.2,
+        "hCm": 2.2,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "sleeveR",
+        "layer": "row",
+        "rank": 6,
+        "side": "right",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "35"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/extra/citizen_drug.png",
+        "ref": "CTS",
+        "page": "35",
+        "example": false,
+        "px": [
+          196,
+          200
+        ]
+      },
+      "sweater": false,
+      "modelNote": {
+        "zh": "綱要冇寫尺寸；幼童軍袖短，模型用直徑 2.2 cm，令四個章同優異旅團章都放得落（綱要 P.7 附圖次序）。",
+        "en": "No size given; the Cub Scout sleeve is short, so the model uses 2.2 cm so that four badges and the Meritorious Group Badge all fit (Training Scheme p.7 figure order)."
+      }
+    },
+    {
+      "id": "citizenChild",
+      "required": false,
+      "side": "right",
+      "group": "extra",
+      "zh": {
+        "name": "保護兒童章",
+        "place": "穿著者右袖、地域章／區章下面一行；世界童軍組織系列同「積極公民」獎章系列最多合共四個（綱要 P.7 附圖）。",
+        "quote": "「積極公民」獎章系列 – 防騙先鋒章、禁毒章、保護兒童章、社區應急先鋒章、環保先鋒章、機電先鋒章（綱要 P.35）。",
+        "conditions": "「積極公民」獎章系列。"
+      },
+      "en": {
+        "name": "Child Protection Badge",
+        "place": "Wearer's right sleeve, in the row below the Region/District Badges; WOSM and Active Citizen series at most four in total (Training Scheme p.7 figure).",
+        "quote": "Active Citizen series – Anti-Scam Pioneer, Anti-Drug, Child Protection, Community Emergency Pioneer, Green Pioneer and E&M Pioneer (Training Scheme p.35).",
+        "conditions": "Active Citizen series."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.2,
+        "hCm": 2.2,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "sleeveR",
+        "layer": "row",
+        "rank": 7,
+        "side": "right",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "35"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/extra/citizen_child.png",
+        "ref": "CTS",
+        "page": "35",
+        "example": false,
+        "px": [
+          200,
+          200
+        ]
+      },
+      "sweater": false,
+      "modelNote": {
+        "zh": "綱要冇寫尺寸；幼童軍袖短，模型用直徑 2.2 cm，令四個章同優異旅團章都放得落（綱要 P.7 附圖次序）。",
+        "en": "No size given; the Cub Scout sleeve is short, so the model uses 2.2 cm so that four badges and the Meritorious Group Badge all fit (Training Scheme p.7 figure order)."
+      }
+    },
+    {
+      "id": "citizenEmergency",
+      "required": false,
+      "side": "right",
+      "group": "extra",
+      "zh": {
+        "name": "社區應急先鋒章",
+        "place": "穿著者右袖、地域章／區章下面一行；世界童軍組織系列同「積極公民」獎章系列最多合共四個（綱要 P.7 附圖）。",
+        "quote": "「積極公民」獎章系列 – 防騙先鋒章、禁毒章、保護兒童章、社區應急先鋒章、環保先鋒章、機電先鋒章（綱要 P.35）。",
+        "conditions": "「積極公民」獎章系列。"
+      },
+      "en": {
+        "name": "Community Emergency Pioneer Badge",
+        "place": "Wearer's right sleeve, in the row below the Region/District Badges; WOSM and Active Citizen series at most four in total (Training Scheme p.7 figure).",
+        "quote": "Active Citizen series – Anti-Scam Pioneer, Anti-Drug, Child Protection, Community Emergency Pioneer, Green Pioneer and E&M Pioneer (Training Scheme p.35).",
+        "conditions": "Active Citizen series."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.2,
+        "hCm": 2.2,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "sleeveR",
+        "layer": "row",
+        "rank": 8,
+        "side": "right",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "35"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/extra/citizen_emergency.png",
+        "ref": "CTS",
+        "page": "35",
+        "example": false,
+        "px": [
+          198,
+          200
+        ]
+      },
+      "sweater": false,
+      "modelNote": {
+        "zh": "綱要冇寫尺寸；幼童軍袖短，模型用直徑 2.2 cm，令四個章同優異旅團章都放得落（綱要 P.7 附圖次序）。",
+        "en": "No size given; the Cub Scout sleeve is short, so the model uses 2.2 cm so that four badges and the Meritorious Group Badge all fit (Training Scheme p.7 figure order)."
+      }
+    },
+    {
+      "id": "citizenGreen",
+      "required": false,
+      "side": "right",
+      "group": "extra",
+      "zh": {
+        "name": "環保先鋒章",
+        "place": "穿著者右袖、地域章／區章下面一行；世界童軍組織系列同「積極公民」獎章系列最多合共四個（綱要 P.7 附圖）。",
+        "quote": "「積極公民」獎章系列 – 防騙先鋒章、禁毒章、保護兒童章、社區應急先鋒章、環保先鋒章、機電先鋒章（綱要 P.35）。",
+        "conditions": "「積極公民」獎章系列。"
+      },
+      "en": {
+        "name": "Green Pioneer Badge",
+        "place": "Wearer's right sleeve, in the row below the Region/District Badges; WOSM and Active Citizen series at most four in total (Training Scheme p.7 figure).",
+        "quote": "Active Citizen series – Anti-Scam Pioneer, Anti-Drug, Child Protection, Community Emergency Pioneer, Green Pioneer and E&M Pioneer (Training Scheme p.35).",
+        "conditions": "Active Citizen series."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.2,
+        "hCm": 2.2,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "sleeveR",
+        "layer": "row",
+        "rank": 9,
+        "side": "right",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "35"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/extra/citizen_green.png",
+        "ref": "CTS",
+        "page": "35",
+        "example": false,
+        "px": [
+          200,
+          199
+        ]
+      },
+      "sweater": false,
+      "modelNote": {
+        "zh": "綱要冇寫尺寸；幼童軍袖短，模型用直徑 2.2 cm，令四個章同優異旅團章都放得落（綱要 P.7 附圖次序）。",
+        "en": "No size given; the Cub Scout sleeve is short, so the model uses 2.2 cm so that four badges and the Meritorious Group Badge all fit (Training Scheme p.7 figure order)."
+      }
+    },
+    {
+      "id": "citizenEm",
+      "required": false,
+      "side": "right",
+      "group": "extra",
+      "zh": {
+        "name": "機電先鋒章",
+        "place": "穿著者右袖、地域章／區章下面一行；世界童軍組織系列同「積極公民」獎章系列最多合共四個（綱要 P.7 附圖）。",
+        "quote": "「積極公民」獎章系列 – 防騙先鋒章、禁毒章、保護兒童章、社區應急先鋒章、環保先鋒章、機電先鋒章（綱要 P.35）。",
+        "conditions": "「積極公民」獎章系列。"
+      },
+      "en": {
+        "name": "E&M Pioneer Badge",
+        "place": "Wearer's right sleeve, in the row below the Region/District Badges; WOSM and Active Citizen series at most four in total (Training Scheme p.7 figure).",
+        "quote": "Active Citizen series – Anti-Scam Pioneer, Anti-Drug, Child Protection, Community Emergency Pioneer, Green Pioneer and E&M Pioneer (Training Scheme p.35).",
+        "conditions": "Active Citizen series."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.2,
+        "hCm": 2.2,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "sleeveR",
+        "layer": "row",
+        "rank": 10,
+        "side": "right",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "35"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/cub/citizen_eme.png",
+        "ref": "CTS",
+        "page": "35",
+        "example": false,
+        "px": [
+          128,
+          127
+        ]
+      },
+      "sweater": false,
+      "modelNote": {
+        "zh": "綱要冇寫尺寸；幼童軍袖短，模型用直徑 2.2 cm，令四個章同優異旅團章都放得落（綱要 P.7 附圖次序）。",
+        "en": "No size given; the Cub Scout sleeve is short, so the model uses 2.2 cm so that four badges and the Meritorious Group Badge all fit (Training Scheme p.7 figure order)."
+      }
+    },
+    {
+      "id": "citizenNsa",
+      "required": false,
+      "side": "right",
+      "group": "extra",
+      "zh": {
+        "name": "國家安全大使章",
+        "place": "穿著者右袖、地域章／區章下面一行；世界童軍組織系列同「積極公民」獎章系列最多合共四個（綱要 P.7 附圖）。",
+        "quote": "「積極公民」獎章系列 – 國家安全大使章（綱要 P.37）。",
+        "conditions": "「積極公民」獎章系列。"
+      },
+      "en": {
+        "name": "National Security Ambassador Badge",
+        "place": "Wearer's right sleeve, in the row below the Region/District Badges; WOSM and Active Citizen series at most four in total (Training Scheme p.7 figure).",
+        "quote": "Active Citizen series – National Security Ambassador (Training Scheme p.37).",
+        "conditions": "Active Citizen series."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.2,
+        "hCm": 2.2,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "sleeveR",
+        "layer": "row",
+        "rank": 11,
+        "side": "right",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "37"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/cub/citizen_nsa.png",
+        "ref": "CTS",
+        "page": "37",
+        "example": false,
+        "px": [
+          128,
+          128
+        ]
+      },
+      "sweater": false,
+      "modelNote": {
+        "zh": "綱要冇寫尺寸；幼童軍袖短，模型用直徑 2.2 cm，令四個章同優異旅團章都放得落（綱要 P.7 附圖次序）。",
+        "en": "No size given; the Cub Scout sleeve is short, so the model uses 2.2 cm so that four badges and the Meritorious Group Badge all fit (Training Scheme p.7 figure order)."
+      }
+    },
+    {
+      "id": "actCamper",
+      "required": false,
+      "side": "left",
+      "group": "activity",
+      "zh": {
+        "name": "露營章",
+        "place": "穿著者左袖下方，六角形活動徽章由袖口縫線上面排起，一行四個、上一行三個（綱要 P.7 附圖）。",
+        "quote": "幼童軍活動徽章 – 童軍技能：露營章（綱要 P.27）。",
+        "conditions": "完成綱要 P.27 露營章嘅要求。"
+      },
+      "en": {
+        "name": "Camper Badge",
+        "place": "Lower wearer's left sleeve; the hexagonal activity badges sit just above the cuff seam, four in a row with three above (Training Scheme p.7 figure).",
+        "quote": "Cub Scout activity badge – Scout Skills: Camper (Training Scheme p.27).",
+        "conditions": "Complete the Camper requirements on Training Scheme p.27."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.32,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "activityL",
+        "layer": "hex",
+        "rank": 1,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "27"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/cub/act_camper.png",
+        "ref": "CTS",
+        "page": "27",
+        "example": false,
+        "px": [
+          86,
+          96
+        ]
+      },
+      "area": "skills",
+      "sweater": false
+    },
+    {
+      "id": "actExplorer",
+      "required": false,
+      "side": "left",
+      "group": "activity",
+      "zh": {
+        "name": "探險章",
+        "place": "穿著者左袖下方，六角形活動徽章由袖口縫線上面排起，一行四個、上一行三個（綱要 P.7 附圖）。",
+        "quote": "幼童軍活動徽章 – 童軍技能：探險章（綱要 P.28）。",
+        "conditions": "完成綱要 P.28 探險章嘅要求。"
+      },
+      "en": {
+        "name": "Explorer Badge",
+        "place": "Lower wearer's left sleeve; the hexagonal activity badges sit just above the cuff seam, four in a row with three above (Training Scheme p.7 figure).",
+        "quote": "Cub Scout activity badge – Scout Skills: Explorer (Training Scheme p.28).",
+        "conditions": "Complete the Explorer requirements on Training Scheme p.28."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.32,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "activityL",
+        "layer": "hex",
+        "rank": 2,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "28"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/cub/act_explorer.png",
+        "ref": "CTS",
+        "page": "28",
+        "example": false,
+        "px": [
+          86,
+          96
+        ]
+      },
+      "area": "skills",
+      "sweater": false
+    },
+    {
+      "id": "actAnimal",
+      "required": false,
+      "side": "left",
+      "group": "activity",
+      "zh": {
+        "name": "愛護動物章",
+        "place": "穿著者左袖下方，六角形活動徽章由袖口縫線上面排起，一行四個、上一行三個（綱要 P.7 附圖）。",
+        "quote": "幼童軍活動徽章 – 關己愛人：愛護動物章（綱要 P.29）。",
+        "conditions": "完成綱要 P.29 愛護動物章嘅要求。"
+      },
+      "en": {
+        "name": "Animal Friend Badge",
+        "place": "Lower wearer's left sleeve; the hexagonal activity badges sit just above the cuff seam, four in a row with three above (Training Scheme p.7 figure).",
+        "quote": "Cub Scout activity badge – Caring: Animal Friend (Training Scheme p.29).",
+        "conditions": "Complete the Animal Friend requirements on Training Scheme p.29."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.32,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "activityL",
+        "layer": "hex",
+        "rank": 3,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "29"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/cub/act_animal.png",
+        "ref": "CTS",
+        "page": "29",
+        "example": false,
+        "px": [
+          86,
+          96
+        ]
+      },
+      "area": "caring",
+      "sweater": false
+    },
+    {
+      "id": "actInclusion",
+      "required": false,
+      "side": "left",
+      "group": "activity",
+      "zh": {
+        "name": "共融章",
+        "place": "穿著者左袖下方，六角形活動徽章由袖口縫線上面排起，一行四個、上一行三個（綱要 P.7 附圖）。",
+        "quote": "幼童軍活動徽章 – 關己愛人：共融章（綱要 P.30）。",
+        "conditions": "完成綱要 P.30 共融章嘅要求。"
+      },
+      "en": {
+        "name": "Inclusion Badge",
+        "place": "Lower wearer's left sleeve; the hexagonal activity badges sit just above the cuff seam, four in a row with three above (Training Scheme p.7 figure).",
+        "quote": "Cub Scout activity badge – Caring: Inclusion (Training Scheme p.30).",
+        "conditions": "Complete the Inclusion requirements on Training Scheme p.30."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.32,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "activityL",
+        "layer": "hex",
+        "rank": 4,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "30"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/cub/act_inclusion.png",
+        "ref": "CTS",
+        "page": "30",
+        "example": false,
+        "px": [
+          86,
+          96
+        ]
+      },
+      "area": "caring",
+      "sweater": false
+    },
+    {
+      "id": "actFirstAid",
+      "required": false,
+      "side": "left",
+      "group": "activity",
+      "zh": {
+        "name": "急救章",
+        "place": "穿著者左袖下方，六角形活動徽章由袖口縫線上面排起，一行四個、上一行三個（綱要 P.7 附圖）。",
+        "quote": "幼童軍活動徽章 – 關己愛人：急救章（綱要 P.31）。",
+        "conditions": "完成綱要 P.31 急救章嘅要求。"
+      },
+      "en": {
+        "name": "First Aid Badge",
+        "place": "Lower wearer's left sleeve; the hexagonal activity badges sit just above the cuff seam, four in a row with three above (Training Scheme p.7 figure).",
+        "quote": "Cub Scout activity badge – Caring: First Aid (Training Scheme p.31).",
+        "conditions": "Complete the First Aid requirements on Training Scheme p.31."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.32,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "activityL",
+        "layer": "hex",
+        "rank": 5,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "31"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/cub/act_firstAid.png",
+        "ref": "CTS",
+        "page": "31",
+        "example": false,
+        "px": [
+          86,
+          96
+        ]
+      },
+      "area": "caring",
+      "sweater": false
+    },
+    {
+      "id": "actHomeHelp",
+      "required": false,
+      "side": "left",
+      "group": "activity",
+      "zh": {
+        "name": "家務章",
+        "place": "穿著者左袖下方，六角形活動徽章由袖口縫線上面排起，一行四個、上一行三個（綱要 P.7 附圖）。",
+        "quote": "幼童軍活動徽章 – 關己愛人：家務章（綱要 P.32）。",
+        "conditions": "完成綱要 P.32 家務章嘅要求。"
+      },
+      "en": {
+        "name": "Home Help Badge",
+        "place": "Lower wearer's left sleeve; the hexagonal activity badges sit just above the cuff seam, four in a row with three above (Training Scheme p.7 figure).",
+        "quote": "Cub Scout activity badge – Caring: Home Help (Training Scheme p.32).",
+        "conditions": "Complete the Home Help requirements on Training Scheme p.32."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.32,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "activityL",
+        "layer": "hex",
+        "rank": 6,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "32"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/cub/act_homeHelp.png",
+        "ref": "CTS",
+        "page": "32",
+        "example": false,
+        "px": [
+          86,
+          96
+        ]
+      },
+      "area": "caring",
+      "sweater": false
+    },
+    {
+      "id": "actRoadSafety",
+      "required": false,
+      "side": "left",
+      "group": "activity",
+      "zh": {
+        "name": "道路安全章",
+        "place": "穿著者左袖下方，六角形活動徽章由袖口縫線上面排起，一行四個、上一行三個（綱要 P.7 附圖）。",
+        "quote": "幼童軍活動徽章 – 關己愛人：道路安全章（綱要 P.33）。",
+        "conditions": "完成綱要 P.33 道路安全章嘅要求。"
+      },
+      "en": {
+        "name": "Road Safety Badge",
+        "place": "Lower wearer's left sleeve; the hexagonal activity badges sit just above the cuff seam, four in a row with three above (Training Scheme p.7 figure).",
+        "quote": "Cub Scout activity badge – Caring: Road Safety (Training Scheme p.33).",
+        "conditions": "Complete the Road Safety requirements on Training Scheme p.33."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.32,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "activityL",
+        "layer": "hex",
+        "rank": 7,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "33"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/cub/act_roadSafety.png",
+        "ref": "CTS",
+        "page": "33",
+        "example": false,
+        "px": [
+          86,
+          96
+        ]
+      },
+      "area": "caring",
+      "sweater": false
+    },
+    {
+      "id": "actWaterSafety",
+      "required": false,
+      "side": "left",
+      "group": "activity",
+      "zh": {
+        "name": "水上安全章",
+        "place": "穿著者左袖下方，六角形活動徽章由袖口縫線上面排起，一行四個、上一行三個（綱要 P.7 附圖）。",
+        "quote": "幼童軍活動徽章 – 關己愛人：水上安全章（綱要 P.34）。",
+        "conditions": "完成綱要 P.34 水上安全章嘅要求。"
+      },
+      "en": {
+        "name": "Water Safety Badge",
+        "place": "Lower wearer's left sleeve; the hexagonal activity badges sit just above the cuff seam, four in a row with three above (Training Scheme p.7 figure).",
+        "quote": "Cub Scout activity badge – Caring: Water Safety (Training Scheme p.34).",
+        "conditions": "Complete the Water Safety requirements on Training Scheme p.34."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.32,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "activityL",
+        "layer": "hex",
+        "rank": 8,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "34"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/cub/act_waterSafety.png",
+        "ref": "CTS",
+        "page": "34",
+        "example": false,
+        "px": [
+          86,
+          96
+        ]
+      },
+      "area": "caring",
+      "sweater": false
+    },
+    {
+      "id": "actHkHistory",
+      "required": false,
+      "side": "left",
+      "group": "activity",
+      "zh": {
+        "name": "香港歷史章",
+        "place": "穿著者左袖下方，六角形活動徽章由袖口縫線上面排起，一行四個、上一行三個（綱要 P.7 附圖）。",
+        "quote": "幼童軍活動徽章 – 國家與社區：香港歷史章（綱要 P.36）。",
+        "conditions": "完成綱要 P.36 香港歷史章嘅要求。"
+      },
+      "en": {
+        "name": "Hong Kong History Badge",
+        "place": "Lower wearer's left sleeve; the hexagonal activity badges sit just above the cuff seam, four in a row with three above (Training Scheme p.7 figure).",
+        "quote": "Cub Scout activity badge – Nation and Community: Hong Kong History (Training Scheme p.36).",
+        "conditions": "Complete the Hong Kong History requirements on Training Scheme p.36."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.32,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "activityL",
+        "layer": "hex",
+        "rank": 9,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "36"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/cub/act_hkHistory.png",
+        "ref": "CTS",
+        "page": "36",
+        "example": false,
+        "px": [
+          86,
+          96
+        ]
+      },
+      "area": "community",
+      "sweater": false
+    },
+    {
+      "id": "actArt",
+      "required": false,
+      "side": "left",
+      "group": "activity",
+      "zh": {
+        "name": "藝術章",
+        "place": "穿著者左袖下方，六角形活動徽章由袖口縫線上面排起，一行四個、上一行三個（綱要 P.7 附圖）。",
+        "quote": "幼童軍活動徽章 – 多元創藝：藝術章（綱要 P.38）。",
+        "conditions": "完成綱要 P.38 藝術章嘅要求。"
+      },
+      "en": {
+        "name": "Artist Badge",
+        "place": "Lower wearer's left sleeve; the hexagonal activity badges sit just above the cuff seam, four in a row with three above (Training Scheme p.7 figure).",
+        "quote": "Cub Scout activity badge – Creative Arts: Artist (Training Scheme p.38).",
+        "conditions": "Complete the Artist requirements on Training Scheme p.38."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.32,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "activityL",
+        "layer": "hex",
+        "rank": 10,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "38"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/cub/act_art.png",
+        "ref": "CTS",
+        "page": "38",
+        "example": false,
+        "px": [
+          86,
+          96
+        ]
+      },
+      "area": "arts",
+      "sweater": false
+    },
+    {
+      "id": "actHandicraft",
+      "required": false,
+      "side": "left",
+      "group": "activity",
+      "zh": {
+        "name": "手藝章",
+        "place": "穿著者左袖下方，六角形活動徽章由袖口縫線上面排起，一行四個、上一行三個（綱要 P.7 附圖）。",
+        "quote": "幼童軍活動徽章 – 多元創藝：手藝章（綱要 P.39）。",
+        "conditions": "完成綱要 P.39 手藝章嘅要求。"
+      },
+      "en": {
+        "name": "Handicraft Badge",
+        "place": "Lower wearer's left sleeve; the hexagonal activity badges sit just above the cuff seam, four in a row with three above (Training Scheme p.7 figure).",
+        "quote": "Cub Scout activity badge – Creative Arts: Handicraft (Training Scheme p.39).",
+        "conditions": "Complete the Handicraft requirements on Training Scheme p.39."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.32,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "activityL",
+        "layer": "hex",
+        "rank": 11,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "39"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/cub/act_handicraft.png",
+        "ref": "CTS",
+        "page": "39",
+        "example": false,
+        "px": [
+          86,
+          96
+        ]
+      },
+      "area": "arts",
+      "sweater": false
+    },
+    {
+      "id": "actEntertainer",
+      "required": false,
+      "side": "left",
+      "group": "activity",
+      "zh": {
+        "name": "娛樂章",
+        "place": "穿著者左袖下方，六角形活動徽章由袖口縫線上面排起，一行四個、上一行三個（綱要 P.7 附圖）。",
+        "quote": "幼童軍活動徽章 – 多元創藝：娛樂章（綱要 P.40）。",
+        "conditions": "完成綱要 P.40 娛樂章嘅要求。"
+      },
+      "en": {
+        "name": "Entertainer Badge",
+        "place": "Lower wearer's left sleeve; the hexagonal activity badges sit just above the cuff seam, four in a row with three above (Training Scheme p.7 figure).",
+        "quote": "Cub Scout activity badge – Creative Arts: Entertainer (Training Scheme p.40).",
+        "conditions": "Complete the Entertainer requirements on Training Scheme p.40."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.32,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "activityL",
+        "layer": "hex",
+        "rank": 12,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "40"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/cub/act_entertainer.png",
+        "ref": "CTS",
+        "page": "40",
+        "example": false,
+        "px": [
+          86,
+          96
+        ]
+      },
+      "area": "arts",
+      "sweater": false
+    },
+    {
+      "id": "actIt",
+      "required": false,
+      "side": "left",
+      "group": "activity",
+      "zh": {
+        "name": "資訊科技章",
+        "place": "穿著者左袖下方，六角形活動徽章由袖口縫線上面排起，一行四個、上一行三個（綱要 P.7 附圖）。",
+        "quote": "幼童軍活動徽章 – 多元創藝：資訊科技章（綱要 P.41）。",
+        "conditions": "完成綱要 P.41 資訊科技章嘅要求。"
+      },
+      "en": {
+        "name": "Information Technology Badge",
+        "place": "Lower wearer's left sleeve; the hexagonal activity badges sit just above the cuff seam, four in a row with three above (Training Scheme p.7 figure).",
+        "quote": "Cub Scout activity badge – Creative Arts: Information Technology (Training Scheme p.41).",
+        "conditions": "Complete the Information Technology requirements on Training Scheme p.41."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.32,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "activityL",
+        "layer": "hex",
+        "rank": 13,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "41"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/cub/act_it.png",
+        "ref": "CTS",
+        "page": "41",
+        "example": false,
+        "px": [
+          86,
+          96
+        ]
+      },
+      "area": "arts",
+      "sweater": false
+    },
+    {
+      "id": "actLanguage",
+      "required": false,
+      "side": "left",
+      "group": "activity",
+      "zh": {
+        "name": "語言章",
+        "place": "穿著者左袖下方，六角形活動徽章由袖口縫線上面排起，一行四個、上一行三個（綱要 P.7 附圖）。",
+        "quote": "幼童軍活動徽章 – 多元創藝：語言章（綱要 P.42）。",
+        "conditions": "完成綱要 P.42 語言章嘅要求。"
+      },
+      "en": {
+        "name": "Language Badge",
+        "place": "Lower wearer's left sleeve; the hexagonal activity badges sit just above the cuff seam, four in a row with three above (Training Scheme p.7 figure).",
+        "quote": "Cub Scout activity badge – Creative Arts: Language (Training Scheme p.42).",
+        "conditions": "Complete the Language requirements on Training Scheme p.42."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.32,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "activityL",
+        "layer": "hex",
+        "rank": 14,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "42"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/cub/act_language.png",
+        "ref": "CTS",
+        "page": "42",
+        "example": false,
+        "px": [
+          86,
+          96
+        ]
+      },
+      "area": "arts",
+      "sweater": false
+    },
+    {
+      "id": "actMedia",
+      "required": false,
+      "side": "left",
+      "group": "activity",
+      "zh": {
+        "name": "媒體製作章",
+        "place": "穿著者左袖下方，六角形活動徽章由袖口縫線上面排起，一行四個、上一行三個（綱要 P.7 附圖）。",
+        "quote": "幼童軍活動徽章 – 多元創藝：媒體製作章（綱要 P.43）。",
+        "conditions": "完成綱要 P.43 媒體製作章嘅要求。"
+      },
+      "en": {
+        "name": "Media Production Badge",
+        "place": "Lower wearer's left sleeve; the hexagonal activity badges sit just above the cuff seam, four in a row with three above (Training Scheme p.7 figure).",
+        "quote": "Cub Scout activity badge – Creative Arts: Media Production (Training Scheme p.43).",
+        "conditions": "Complete the Media Production requirements on Training Scheme p.43."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.32,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "activityL",
+        "layer": "hex",
+        "rank": 15,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "43"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/cub/act_media.png",
+        "ref": "CTS",
+        "page": "43",
+        "example": false,
+        "px": [
+          86,
+          96
+        ]
+      },
+      "area": "arts",
+      "sweater": false
+    },
+    {
+      "id": "actMusic",
+      "required": false,
+      "side": "left",
+      "group": "activity",
+      "zh": {
+        "name": "音樂章",
+        "place": "穿著者左袖下方，六角形活動徽章由袖口縫線上面排起，一行四個、上一行三個（綱要 P.7 附圖）。",
+        "quote": "幼童軍活動徽章 – 多元創藝：音樂章（三級制度章：初級／中級／高級）（綱要 P.44）。",
+        "conditions": "完成綱要 P.44 音樂章嘅要求；只戴最高級嗰個。"
+      },
+      "en": {
+        "name": "Musician Badge",
+        "place": "Lower wearer's left sleeve; the hexagonal activity badges sit just above the cuff seam, four in a row with three above (Training Scheme p.7 figure).",
+        "quote": "Cub Scout activity badge – Creative Arts: Musician (three levels: junior / intermediate / senior) (Training Scheme p.44).",
+        "conditions": "Complete the Musician requirements on Training Scheme p.44; only the highest level is worn."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.32,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "activityL",
+        "layer": "hex",
+        "rank": 16,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "44"
+        }
+      ],
+      "status": "verified",
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "bronze",
+          "zh": {
+            "name": "初級"
+          },
+          "en": {
+            "name": "Junior"
+          },
+          "art": {
+            "file": "/badges/cub/act_music_bronze.png",
+            "ref": "CTS",
+            "page": "44",
+            "example": false,
+            "px": [
+              86,
+              96
+            ]
+          }
+        },
+        {
+          "id": "silver",
+          "zh": {
+            "name": "中級"
+          },
+          "en": {
+            "name": "Intermediate"
+          },
+          "art": {
+            "file": "/badges/cub/act_music_silver.png",
+            "ref": "CTS",
+            "page": "44",
+            "example": false,
+            "px": [
+              86,
+              96
+            ]
+          }
+        },
+        {
+          "id": "gold",
+          "zh": {
+            "name": "高級"
+          },
+          "en": {
+            "name": "Senior"
+          },
+          "art": {
+            "file": "/badges/cub/act_music_gold.png",
+            "ref": "CTS",
+            "page": "44",
+            "example": false,
+            "px": [
+              86,
+              96
+            ]
+          }
+        }
+      ],
+      "default": "none",
+      "art": {
+        "file": "/badges/cub/act_music_bronze.png",
+        "ref": "CTS",
+        "page": "44",
+        "example": false,
+        "px": [
+          86,
+          96
+        ]
+      },
+      "area": "arts",
+      "sweater": false
+    },
+    {
+      "id": "actPhotography",
+      "required": false,
+      "side": "left",
+      "group": "activity",
+      "zh": {
+        "name": "攝影章",
+        "place": "穿著者左袖下方，六角形活動徽章由袖口縫線上面排起，一行四個、上一行三個（綱要 P.7 附圖）。",
+        "quote": "幼童軍活動徽章 – 多元創藝：攝影章（綱要 P.46）。",
+        "conditions": "完成綱要 P.46 攝影章嘅要求。"
+      },
+      "en": {
+        "name": "Photographer Badge",
+        "place": "Lower wearer's left sleeve; the hexagonal activity badges sit just above the cuff seam, four in a row with three above (Training Scheme p.7 figure).",
+        "quote": "Cub Scout activity badge – Creative Arts: Photographer (Training Scheme p.46).",
+        "conditions": "Complete the Photographer requirements on Training Scheme p.46."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.32,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "activityL",
+        "layer": "hex",
+        "rank": 17,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "46"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/cub/act_photography.png",
+        "ref": "CTS",
+        "page": "46",
+        "example": false,
+        "px": [
+          86,
+          96
+        ]
+      },
+      "area": "arts",
+      "sweater": false
+    },
+    {
+      "id": "actWriter",
+      "required": false,
+      "side": "left",
+      "group": "activity",
+      "zh": {
+        "name": "寫作章",
+        "place": "穿著者左袖下方，六角形活動徽章由袖口縫線上面排起，一行四個、上一行三個（綱要 P.7 附圖）。",
+        "quote": "幼童軍活動徽章 – 多元創藝：寫作章（綱要 P.47）。",
+        "conditions": "完成綱要 P.47 寫作章嘅要求。"
+      },
+      "en": {
+        "name": "Writer Badge",
+        "place": "Lower wearer's left sleeve; the hexagonal activity badges sit just above the cuff seam, four in a row with three above (Training Scheme p.7 figure).",
+        "quote": "Cub Scout activity badge – Creative Arts: Writer (Training Scheme p.47).",
+        "conditions": "Complete the Writer requirements on Training Scheme p.47."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.32,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "activityL",
+        "layer": "hex",
+        "rank": 18,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "47"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/cub/act_writer.png",
+        "ref": "CTS",
+        "page": "47",
+        "example": false,
+        "px": [
+          86,
+          96
+        ]
+      },
+      "area": "arts",
+      "sweater": false
+    },
+    {
+      "id": "actAstronomy",
+      "required": false,
+      "side": "left",
+      "group": "activity",
+      "zh": {
+        "name": "天象章",
+        "place": "穿著者左袖下方，六角形活動徽章由袖口縫線上面排起，一行四個、上一行三個（綱要 P.7 附圖）。",
+        "quote": "幼童軍活動徽章 – 科學與大自然：天象章（綱要 P.48）。",
+        "conditions": "完成綱要 P.48 天象章嘅要求。"
+      },
+      "en": {
+        "name": "Astronomer Badge",
+        "place": "Lower wearer's left sleeve; the hexagonal activity badges sit just above the cuff seam, four in a row with three above (Training Scheme p.7 figure).",
+        "quote": "Cub Scout activity badge – Science and Nature: Astronomer (Training Scheme p.48).",
+        "conditions": "Complete the Astronomer requirements on Training Scheme p.48."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.32,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "activityL",
+        "layer": "hex",
+        "rank": 19,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "48"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/cub/act_astronomy.png",
+        "ref": "CTS",
+        "page": "48",
+        "example": false,
+        "px": [
+          86,
+          96
+        ]
+      },
+      "area": "nature",
+      "sweater": false
+    },
+    {
+      "id": "actGardener",
+      "required": false,
+      "side": "left",
+      "group": "activity",
+      "zh": {
+        "name": "園藝章",
+        "place": "穿著者左袖下方，六角形活動徽章由袖口縫線上面排起，一行四個、上一行三個（綱要 P.7 附圖）。",
+        "quote": "幼童軍活動徽章 – 科學與大自然：園藝章（綱要 P.49）。",
+        "conditions": "完成綱要 P.49 園藝章嘅要求。"
+      },
+      "en": {
+        "name": "Gardener Badge",
+        "place": "Lower wearer's left sleeve; the hexagonal activity badges sit just above the cuff seam, four in a row with three above (Training Scheme p.7 figure).",
+        "quote": "Cub Scout activity badge – Science and Nature: Gardener (Training Scheme p.49).",
+        "conditions": "Complete the Gardener requirements on Training Scheme p.49."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.32,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "activityL",
+        "layer": "hex",
+        "rank": 20,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "49"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/cub/act_gardener.png",
+        "ref": "CTS",
+        "page": "49",
+        "example": false,
+        "px": [
+          86,
+          96
+        ]
+      },
+      "area": "nature",
+      "sweater": false
+    },
+    {
+      "id": "actScience",
+      "required": false,
+      "side": "left",
+      "group": "activity",
+      "zh": {
+        "name": "科學章",
+        "place": "穿著者左袖下方，六角形活動徽章由袖口縫線上面排起，一行四個、上一行三個（綱要 P.7 附圖）。",
+        "quote": "幼童軍活動徽章 – 科學與大自然：科學章（綱要 P.50）。",
+        "conditions": "完成綱要 P.50 科學章嘅要求。"
+      },
+      "en": {
+        "name": "Scientist Badge",
+        "place": "Lower wearer's left sleeve; the hexagonal activity badges sit just above the cuff seam, four in a row with three above (Training Scheme p.7 figure).",
+        "quote": "Cub Scout activity badge – Science and Nature: Scientist (Training Scheme p.50).",
+        "conditions": "Complete the Scientist requirements on Training Scheme p.50."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.32,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "activityL",
+        "layer": "hex",
+        "rank": 21,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "50"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/cub/act_science.png",
+        "ref": "CTS",
+        "page": "50",
+        "example": false,
+        "px": [
+          86,
+          96
+        ]
+      },
+      "area": "nature",
+      "sweater": false
+    },
+    {
+      "id": "actWeather",
+      "required": false,
+      "side": "left",
+      "group": "activity",
+      "zh": {
+        "name": "氣象章",
+        "place": "穿著者左袖下方，六角形活動徽章由袖口縫線上面排起，一行四個、上一行三個（綱要 P.7 附圖）。",
+        "quote": "幼童軍活動徽章 – 科學與大自然：氣象章（綱要 P.51）。",
+        "conditions": "完成綱要 P.51 氣象章嘅要求。"
+      },
+      "en": {
+        "name": "Weather Badge",
+        "place": "Lower wearer's left sleeve; the hexagonal activity badges sit just above the cuff seam, four in a row with three above (Training Scheme p.7 figure).",
+        "quote": "Cub Scout activity badge – Science and Nature: Weather (Training Scheme p.51).",
+        "conditions": "Complete the Weather requirements on Training Scheme p.51."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.32,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "activityL",
+        "layer": "hex",
+        "rank": 22,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "51"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/cub/act_weather.png",
+        "ref": "CTS",
+        "page": "51",
+        "example": false,
+        "px": [
+          86,
+          96
+        ]
+      },
+      "area": "nature",
+      "sweater": false
+    },
+    {
+      "id": "actArchery",
+      "required": false,
+      "side": "left",
+      "group": "activity",
+      "zh": {
+        "name": "射箭章",
+        "place": "穿著者左袖下方，六角形活動徽章由袖口縫線上面排起，一行四個、上一行三個（綱要 P.7 附圖）。",
+        "quote": "幼童軍活動徽章 – 運動與愛好：射箭章（三級制度章：初級／中級／高級）（綱要 P.53）。",
+        "conditions": "完成綱要 P.53 射箭章嘅要求；只戴最高級嗰個。"
+      },
+      "en": {
+        "name": "Archery Badge",
+        "place": "Lower wearer's left sleeve; the hexagonal activity badges sit just above the cuff seam, four in a row with three above (Training Scheme p.7 figure).",
+        "quote": "Cub Scout activity badge – Sports and Hobbies: Archery (three levels: junior / intermediate / senior) (Training Scheme p.53).",
+        "conditions": "Complete the Archery requirements on Training Scheme p.53; only the highest level is worn."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.32,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "activityL",
+        "layer": "hex",
+        "rank": 23,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "53"
+        }
+      ],
+      "status": "verified",
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "bronze",
+          "zh": {
+            "name": "初級"
+          },
+          "en": {
+            "name": "Junior"
+          },
+          "art": {
+            "file": "/badges/cub/act_archery_bronze.png",
+            "ref": "CTS",
+            "page": "53",
+            "example": false,
+            "px": [
+              86,
+              96
+            ]
+          }
+        },
+        {
+          "id": "silver",
+          "zh": {
+            "name": "中級"
+          },
+          "en": {
+            "name": "Intermediate"
+          },
+          "art": {
+            "file": "/badges/cub/act_archery_silver.png",
+            "ref": "CTS",
+            "page": "53",
+            "example": false,
+            "px": [
+              86,
+              96
+            ]
+          }
+        },
+        {
+          "id": "gold",
+          "zh": {
+            "name": "高級"
+          },
+          "en": {
+            "name": "Senior"
+          },
+          "art": {
+            "file": "/badges/cub/act_archery_gold.png",
+            "ref": "CTS",
+            "page": "53",
+            "example": false,
+            "px": [
+              86,
+              96
+            ]
+          }
+        }
+      ],
+      "default": "none",
+      "art": {
+        "file": "/badges/cub/act_archery_bronze.png",
+        "ref": "CTS",
+        "page": "53",
+        "example": false,
+        "px": [
+          86,
+          96
+        ]
+      },
+      "area": "hobbies",
+      "sweater": false
+    },
+    {
+      "id": "actAthletics",
+      "required": false,
+      "side": "left",
+      "group": "activity",
+      "zh": {
+        "name": "田徑章",
+        "place": "穿著者左袖下方，六角形活動徽章由袖口縫線上面排起，一行四個、上一行三個（綱要 P.7 附圖）。",
+        "quote": "幼童軍活動徽章 – 運動與愛好：田徑章（三級制度章：初級／中級／高級）（綱要 P.54）。",
+        "conditions": "完成綱要 P.54 田徑章嘅要求；只戴最高級嗰個。"
+      },
+      "en": {
+        "name": "Athletics Badge",
+        "place": "Lower wearer's left sleeve; the hexagonal activity badges sit just above the cuff seam, four in a row with three above (Training Scheme p.7 figure).",
+        "quote": "Cub Scout activity badge – Sports and Hobbies: Athletics (three levels: junior / intermediate / senior) (Training Scheme p.54).",
+        "conditions": "Complete the Athletics requirements on Training Scheme p.54; only the highest level is worn."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.32,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "activityL",
+        "layer": "hex",
+        "rank": 24,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "54"
+        }
+      ],
+      "status": "verified",
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "bronze",
+          "zh": {
+            "name": "初級"
+          },
+          "en": {
+            "name": "Junior"
+          },
+          "art": {
+            "file": "/badges/cub/act_athletics_bronze.png",
+            "ref": "CTS",
+            "page": "54",
+            "example": false,
+            "px": [
+              86,
+              96
+            ]
+          }
+        },
+        {
+          "id": "silver",
+          "zh": {
+            "name": "中級"
+          },
+          "en": {
+            "name": "Intermediate"
+          },
+          "art": {
+            "file": "/badges/cub/act_athletics_silver.png",
+            "ref": "CTS",
+            "page": "54",
+            "example": false,
+            "px": [
+              86,
+              96
+            ]
+          }
+        },
+        {
+          "id": "gold",
+          "zh": {
+            "name": "高級"
+          },
+          "en": {
+            "name": "Senior"
+          },
+          "art": {
+            "file": "/badges/cub/act_athletics_gold.png",
+            "ref": "CTS",
+            "page": "54",
+            "example": false,
+            "px": [
+              86,
+              96
+            ]
+          }
+        }
+      ],
+      "default": "none",
+      "art": {
+        "file": "/badges/cub/act_athletics_bronze.png",
+        "ref": "CTS",
+        "page": "54",
+        "example": false,
+        "px": [
+          86,
+          96
+        ]
+      },
+      "area": "hobbies",
+      "sweater": false
+    },
+    {
+      "id": "actReader",
+      "required": false,
+      "side": "left",
+      "group": "activity",
+      "zh": {
+        "name": "閱讀章",
+        "place": "穿著者左袖下方，六角形活動徽章由袖口縫線上面排起，一行四個、上一行三個（綱要 P.7 附圖）。",
+        "quote": "幼童軍活動徽章 – 運動與愛好：閱讀章（綱要 P.55）。",
+        "conditions": "完成綱要 P.55 閱讀章嘅要求。"
+      },
+      "en": {
+        "name": "Reader Badge",
+        "place": "Lower wearer's left sleeve; the hexagonal activity badges sit just above the cuff seam, four in a row with three above (Training Scheme p.7 figure).",
+        "quote": "Cub Scout activity badge – Sports and Hobbies: Reader (Training Scheme p.55).",
+        "conditions": "Complete the Reader requirements on Training Scheme p.55."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.32,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "activityL",
+        "layer": "hex",
+        "rank": 25,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "55"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/cub/act_reader.png",
+        "ref": "CTS",
+        "page": "55",
+        "example": false,
+        "px": [
+          86,
+          96
+        ]
+      },
+      "area": "hobbies",
+      "sweater": false
+    },
+    {
+      "id": "actCanoe",
+      "required": false,
+      "side": "left",
+      "group": "activity",
+      "zh": {
+        "name": "獨木舟章",
+        "place": "穿著者左袖下方，六角形活動徽章由袖口縫線上面排起，一行四個、上一行三個（綱要 P.7 附圖）。",
+        "quote": "幼童軍活動徽章 – 運動與愛好：獨木舟章（三級制度章：初級／中級／高級）（綱要 P.56）。",
+        "conditions": "完成綱要 P.56 獨木舟章嘅要求；只戴最高級嗰個。"
+      },
+      "en": {
+        "name": "Canoeing Badge",
+        "place": "Lower wearer's left sleeve; the hexagonal activity badges sit just above the cuff seam, four in a row with three above (Training Scheme p.7 figure).",
+        "quote": "Cub Scout activity badge – Sports and Hobbies: Canoeing (three levels: junior / intermediate / senior) (Training Scheme p.56).",
+        "conditions": "Complete the Canoeing requirements on Training Scheme p.56; only the highest level is worn."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.32,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "activityL",
+        "layer": "hex",
+        "rank": 26,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "56"
+        }
+      ],
+      "status": "verified",
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "bronze",
+          "zh": {
+            "name": "初級"
+          },
+          "en": {
+            "name": "Junior"
+          },
+          "art": {
+            "file": "/badges/cub/act_canoe_bronze.png",
+            "ref": "CTS",
+            "page": "56",
+            "example": false,
+            "px": [
+              86,
+              96
+            ]
+          }
+        },
+        {
+          "id": "silver",
+          "zh": {
+            "name": "中級"
+          },
+          "en": {
+            "name": "Intermediate"
+          },
+          "art": {
+            "file": "/badges/cub/act_canoe_silver.png",
+            "ref": "CTS",
+            "page": "56",
+            "example": false,
+            "px": [
+              86,
+              96
+            ]
+          }
+        },
+        {
+          "id": "gold",
+          "zh": {
+            "name": "高級"
+          },
+          "en": {
+            "name": "Senior"
+          },
+          "art": {
+            "file": "/badges/cub/act_canoe_gold.png",
+            "ref": "CTS",
+            "page": "56",
+            "example": false,
+            "px": [
+              86,
+              96
+            ]
+          }
+        }
+      ],
+      "default": "none",
+      "art": {
+        "file": "/badges/cub/act_canoe_bronze.png",
+        "ref": "CTS",
+        "page": "56",
+        "example": false,
+        "px": [
+          86,
+          96
+        ]
+      },
+      "area": "hobbies",
+      "sweater": false
+    },
+    {
+      "id": "actCollector",
+      "required": false,
+      "side": "left",
+      "group": "activity",
+      "zh": {
+        "name": "搜集章",
+        "place": "穿著者左袖下方，六角形活動徽章由袖口縫線上面排起，一行四個、上一行三個（綱要 P.7 附圖）。",
+        "quote": "幼童軍活動徽章 – 運動與愛好：搜集章（綱要 P.57）。",
+        "conditions": "完成綱要 P.57 搜集章嘅要求。"
+      },
+      "en": {
+        "name": "Collector Badge",
+        "place": "Lower wearer's left sleeve; the hexagonal activity badges sit just above the cuff seam, four in a row with three above (Training Scheme p.7 figure).",
+        "quote": "Cub Scout activity badge – Sports and Hobbies: Collector (Training Scheme p.57).",
+        "conditions": "Complete the Collector requirements on Training Scheme p.57."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.32,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "activityL",
+        "layer": "hex",
+        "rank": 27,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "57"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/cub/act_collector.png",
+        "ref": "CTS",
+        "page": "57",
+        "example": false,
+        "px": [
+          86,
+          96
+        ]
+      },
+      "area": "hobbies",
+      "sweater": false
+    },
+    {
+      "id": "actCook",
+      "required": false,
+      "side": "left",
+      "group": "activity",
+      "zh": {
+        "name": "烹飪章",
+        "place": "穿著者左袖下方，六角形活動徽章由袖口縫線上面排起，一行四個、上一行三個（綱要 P.7 附圖）。",
+        "quote": "幼童軍活動徽章 – 運動與愛好：烹飪章（綱要 P.58）。",
+        "conditions": "完成綱要 P.58 烹飪章嘅要求。"
+      },
+      "en": {
+        "name": "Cook Badge",
+        "place": "Lower wearer's left sleeve; the hexagonal activity badges sit just above the cuff seam, four in a row with three above (Training Scheme p.7 figure).",
+        "quote": "Cub Scout activity badge – Sports and Hobbies: Cook (Training Scheme p.58).",
+        "conditions": "Complete the Cook requirements on Training Scheme p.58."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.32,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "activityL",
+        "layer": "hex",
+        "rank": 28,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "58"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/cub/act_cook.png",
+        "ref": "CTS",
+        "page": "58",
+        "example": false,
+        "px": [
+          86,
+          96
+        ]
+      },
+      "area": "hobbies",
+      "sweater": false
+    },
+    {
+      "id": "actCyclist",
+      "required": false,
+      "side": "left",
+      "group": "activity",
+      "zh": {
+        "name": "單車章",
+        "place": "穿著者左袖下方，六角形活動徽章由袖口縫線上面排起，一行四個、上一行三個（綱要 P.7 附圖）。",
+        "quote": "幼童軍活動徽章 – 運動與愛好：單車章（綱要 P.59）。",
+        "conditions": "完成綱要 P.59 單車章嘅要求。"
+      },
+      "en": {
+        "name": "Cyclist Badge",
+        "place": "Lower wearer's left sleeve; the hexagonal activity badges sit just above the cuff seam, four in a row with three above (Training Scheme p.7 figure).",
+        "quote": "Cub Scout activity badge – Sports and Hobbies: Cyclist (Training Scheme p.59).",
+        "conditions": "Complete the Cyclist requirements on Training Scheme p.59."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.32,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "activityL",
+        "layer": "hex",
+        "rank": 29,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "59"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/cub/act_cyclist.png",
+        "ref": "CTS",
+        "page": "59",
+        "example": false,
+        "px": [
+          86,
+          96
+        ]
+      },
+      "area": "hobbies",
+      "sweater": false
+    },
+    {
+      "id": "actOrienteering",
+      "required": false,
+      "side": "left",
+      "group": "activity",
+      "zh": {
+        "name": "公園定向章",
+        "place": "穿著者左袖下方，六角形活動徽章由袖口縫線上面排起，一行四個、上一行三個（綱要 P.7 附圖）。",
+        "quote": "幼童軍活動徽章 – 運動與愛好：公園定向章（三級制度章：初級／中級／高級）（綱要 P.60）。",
+        "conditions": "完成綱要 P.60 公園定向章嘅要求；只戴最高級嗰個。"
+      },
+      "en": {
+        "name": "Park Orienteering Badge",
+        "place": "Lower wearer's left sleeve; the hexagonal activity badges sit just above the cuff seam, four in a row with three above (Training Scheme p.7 figure).",
+        "quote": "Cub Scout activity badge – Sports and Hobbies: Park Orienteering (three levels: junior / intermediate / senior) (Training Scheme p.60).",
+        "conditions": "Complete the Park Orienteering requirements on Training Scheme p.60; only the highest level is worn."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.32,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "activityL",
+        "layer": "hex",
+        "rank": 30,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "60"
+        }
+      ],
+      "status": "verified",
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "bronze",
+          "zh": {
+            "name": "初級"
+          },
+          "en": {
+            "name": "Junior"
+          },
+          "art": {
+            "file": "/badges/cub/act_orienteering_bronze.png",
+            "ref": "CTS",
+            "page": "60",
+            "example": false,
+            "px": [
+              86,
+              96
+            ]
+          }
+        },
+        {
+          "id": "silver",
+          "zh": {
+            "name": "中級"
+          },
+          "en": {
+            "name": "Intermediate"
+          },
+          "art": {
+            "file": "/badges/cub/act_orienteering_silver.png",
+            "ref": "CTS",
+            "page": "60",
+            "example": false,
+            "px": [
+              86,
+              96
+            ]
+          }
+        },
+        {
+          "id": "gold",
+          "zh": {
+            "name": "高級"
+          },
+          "en": {
+            "name": "Senior"
+          },
+          "art": {
+            "file": "/badges/cub/act_orienteering_gold.png",
+            "ref": "CTS",
+            "page": "60",
+            "example": false,
+            "px": [
+              86,
+              96
+            ]
+          }
+        }
+      ],
+      "default": "none",
+      "art": {
+        "file": "/badges/cub/act_orienteering_bronze.png",
+        "ref": "CTS",
+        "page": "60",
+        "example": false,
+        "px": [
+          86,
+          96
+        ]
+      },
+      "area": "hobbies",
+      "sweater": false
+    },
+    {
+      "id": "actPets",
+      "required": false,
+      "side": "left",
+      "group": "activity",
+      "zh": {
+        "name": "寵物章",
+        "place": "穿著者左袖下方，六角形活動徽章由袖口縫線上面排起，一行四個、上一行三個（綱要 P.7 附圖）。",
+        "quote": "幼童軍活動徽章 – 運動與愛好：寵物章（綱要 P.61）。",
+        "conditions": "完成綱要 P.61 寵物章嘅要求。"
+      },
+      "en": {
+        "name": "Pet Keeper Badge",
+        "place": "Lower wearer's left sleeve; the hexagonal activity badges sit just above the cuff seam, four in a row with three above (Training Scheme p.7 figure).",
+        "quote": "Cub Scout activity badge – Sports and Hobbies: Pet Keeper (Training Scheme p.61).",
+        "conditions": "Complete the Pet Keeper requirements on Training Scheme p.61."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.32,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "activityL",
+        "layer": "hex",
+        "rank": 31,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "61"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/cub/act_pets.png",
+        "ref": "CTS",
+        "page": "61",
+        "example": false,
+        "px": [
+          86,
+          96
+        ]
+      },
+      "area": "hobbies",
+      "sweater": false
+    },
+    {
+      "id": "actFitness",
+      "required": false,
+      "side": "left",
+      "group": "activity",
+      "zh": {
+        "name": "體適能章",
+        "place": "穿著者左袖下方，六角形活動徽章由袖口縫線上面排起，一行四個、上一行三個（綱要 P.7 附圖）。",
+        "quote": "幼童軍活動徽章 – 運動與愛好：體適能章（三級制度章：初級／中級／高級）（綱要 P.62）。",
+        "conditions": "完成綱要 P.62 體適能章嘅要求；只戴最高級嗰個。"
+      },
+      "en": {
+        "name": "Physical Fitness Badge",
+        "place": "Lower wearer's left sleeve; the hexagonal activity badges sit just above the cuff seam, four in a row with three above (Training Scheme p.7 figure).",
+        "quote": "Cub Scout activity badge – Sports and Hobbies: Physical Fitness (three levels: junior / intermediate / senior) (Training Scheme p.62).",
+        "conditions": "Complete the Physical Fitness requirements on Training Scheme p.62; only the highest level is worn."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.32,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "activityL",
+        "layer": "hex",
+        "rank": 32,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "62"
+        }
+      ],
+      "status": "verified",
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "bronze",
+          "zh": {
+            "name": "初級"
+          },
+          "en": {
+            "name": "Junior"
+          },
+          "art": {
+            "file": "/badges/cub/act_fitness_bronze.png",
+            "ref": "CTS",
+            "page": "62",
+            "example": false,
+            "px": [
+              86,
+              96
+            ]
+          }
+        },
+        {
+          "id": "silver",
+          "zh": {
+            "name": "中級"
+          },
+          "en": {
+            "name": "Intermediate"
+          },
+          "art": {
+            "file": "/badges/cub/act_fitness_silver.png",
+            "ref": "CTS",
+            "page": "62",
+            "example": false,
+            "px": [
+              86,
+              96
+            ]
+          }
+        },
+        {
+          "id": "gold",
+          "zh": {
+            "name": "高級"
+          },
+          "en": {
+            "name": "Senior"
+          },
+          "art": {
+            "file": "/badges/cub/act_fitness_gold.png",
+            "ref": "CTS",
+            "page": "62",
+            "example": false,
+            "px": [
+              86,
+              96
+            ]
+          }
+        }
+      ],
+      "default": "none",
+      "art": {
+        "file": "/badges/cub/act_fitness_bronze.png",
+        "ref": "CTS",
+        "page": "62",
+        "example": false,
+        "px": [
+          86,
+          96
+        ]
+      },
+      "area": "hobbies",
+      "sweater": false
+    },
+    {
+      "id": "actWindsurf",
+      "required": false,
+      "side": "left",
+      "group": "activity",
+      "zh": {
+        "name": "風帆章",
+        "place": "穿著者左袖下方，六角形活動徽章由袖口縫線上面排起，一行四個、上一行三個（綱要 P.7 附圖）。",
+        "quote": "幼童軍活動徽章 – 運動與愛好：風帆章（綱要 P.63）。",
+        "conditions": "完成綱要 P.63 風帆章嘅要求。"
+      },
+      "en": {
+        "name": "Windsurfing Badge",
+        "place": "Lower wearer's left sleeve; the hexagonal activity badges sit just above the cuff seam, four in a row with three above (Training Scheme p.7 figure).",
+        "quote": "Cub Scout activity badge – Sports and Hobbies: Windsurfing (Training Scheme p.63).",
+        "conditions": "Complete the Windsurfing requirements on Training Scheme p.63."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.32,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "activityL",
+        "layer": "hex",
+        "rank": 33,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "63"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/cub/act_windsurf.png",
+        "ref": "CTS",
+        "page": "63",
+        "example": false,
+        "px": [
+          86,
+          96
+        ]
+      },
+      "area": "hobbies",
+      "sweater": false
+    },
+    {
+      "id": "actSailor",
+      "required": false,
+      "side": "left",
+      "group": "activity",
+      "zh": {
+        "name": "水手章",
+        "place": "穿著者左袖下方，六角形活動徽章由袖口縫線上面排起，一行四個、上一行三個（綱要 P.7 附圖）。",
+        "quote": "幼童軍活動徽章 – 運動與愛好：水手章（綱要 P.64）。",
+        "conditions": "完成綱要 P.64 水手章嘅要求。"
+      },
+      "en": {
+        "name": "Sailor Badge",
+        "place": "Lower wearer's left sleeve; the hexagonal activity badges sit just above the cuff seam, four in a row with three above (Training Scheme p.7 figure).",
+        "quote": "Cub Scout activity badge – Sports and Hobbies: Sailor (Training Scheme p.64).",
+        "conditions": "Complete the Sailor requirements on Training Scheme p.64."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.32,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "activityL",
+        "layer": "hex",
+        "rank": 34,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "64"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/cub/act_sailor.png",
+        "ref": "CTS",
+        "page": "64",
+        "example": false,
+        "px": [
+          86,
+          96
+        ]
+      },
+      "area": "hobbies",
+      "sweater": false
+    },
+    {
+      "id": "actSports",
+      "required": false,
+      "side": "left",
+      "group": "activity",
+      "zh": {
+        "name": "運動章",
+        "place": "穿著者左袖下方，六角形活動徽章由袖口縫線上面排起，一行四個、上一行三個（綱要 P.7 附圖）。",
+        "quote": "幼童軍活動徽章 – 運動與愛好：運動章（綱要 P.65）。",
+        "conditions": "完成綱要 P.65 運動章嘅要求。"
+      },
+      "en": {
+        "name": "Sports Badge",
+        "place": "Lower wearer's left sleeve; the hexagonal activity badges sit just above the cuff seam, four in a row with three above (Training Scheme p.7 figure).",
+        "quote": "Cub Scout activity badge – Sports and Hobbies: Sports (Training Scheme p.65).",
+        "conditions": "Complete the Sports requirements on Training Scheme p.65."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.32,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "activityL",
+        "layer": "hex",
+        "rank": 35,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "65"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/cub/act_sports.png",
+        "ref": "CTS",
+        "page": "65",
+        "example": false,
+        "px": [
+          86,
+          96
+        ]
+      },
+      "area": "hobbies",
+      "sweater": false
+    },
+    {
+      "id": "actSwimmer",
+      "required": false,
+      "side": "left",
+      "group": "activity",
+      "zh": {
+        "name": "游泳章",
+        "place": "穿著者左袖下方，六角形活動徽章由袖口縫線上面排起，一行四個、上一行三個（綱要 P.7 附圖）。",
+        "quote": "幼童軍活動徽章 – 運動與愛好：游泳章（三級制度章：初級／中級／高級）（綱要 P.66）。",
+        "conditions": "完成綱要 P.66 游泳章嘅要求；只戴最高級嗰個。"
+      },
+      "en": {
+        "name": "Swimmer Badge",
+        "place": "Lower wearer's left sleeve; the hexagonal activity badges sit just above the cuff seam, four in a row with three above (Training Scheme p.7 figure).",
+        "quote": "Cub Scout activity badge – Sports and Hobbies: Swimmer (three levels: junior / intermediate / senior) (Training Scheme p.66).",
+        "conditions": "Complete the Swimmer requirements on Training Scheme p.66; only the highest level is worn."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.32,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "activityL",
+        "layer": "hex",
+        "rank": 36,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "66"
+        }
+      ],
+      "status": "verified",
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "bronze",
+          "zh": {
+            "name": "初級"
+          },
+          "en": {
+            "name": "Junior"
+          },
+          "art": {
+            "file": "/badges/cub/act_swimmer_bronze.png",
+            "ref": "CTS",
+            "page": "66",
+            "example": false,
+            "px": [
+              86,
+              96
+            ]
+          }
+        },
+        {
+          "id": "silver",
+          "zh": {
+            "name": "中級"
+          },
+          "en": {
+            "name": "Intermediate"
+          },
+          "art": {
+            "file": "/badges/cub/act_swimmer_silver.png",
+            "ref": "CTS",
+            "page": "66",
+            "example": false,
+            "px": [
+              86,
+              96
+            ]
+          }
+        },
+        {
+          "id": "gold",
+          "zh": {
+            "name": "高級"
+          },
+          "en": {
+            "name": "Senior"
+          },
+          "art": {
+            "file": "/badges/cub/act_swimmer_gold.png",
+            "ref": "CTS",
+            "page": "66",
+            "example": false,
+            "px": [
+              86,
+              96
+            ]
+          }
+        }
+      ],
+      "default": "none",
+      "art": {
+        "file": "/badges/cub/act_swimmer_bronze.png",
+        "ref": "CTS",
+        "page": "66",
+        "example": false,
+        "px": [
+          86,
+          96
+        ]
+      },
+      "area": "hobbies",
+      "sweater": false
+    },
+    {
+      "id": "actWorldFriendship",
+      "required": false,
+      "side": "left",
+      "group": "activity",
+      "zh": {
+        "name": "世界友誼章",
+        "place": "穿著者左袖下方，六角形活動徽章由袖口縫線上面排起，一行四個、上一行三個（綱要 P.7 附圖）。",
+        "quote": "幼童軍活動徽章 – 運動與愛好：世界友誼章（綱要 P.67）。",
+        "conditions": "完成綱要 P.67 世界友誼章嘅要求。"
+      },
+      "en": {
+        "name": "World Friendship Badge",
+        "place": "Lower wearer's left sleeve; the hexagonal activity badges sit just above the cuff seam, four in a row with three above (Training Scheme p.7 figure).",
+        "quote": "Cub Scout activity badge – Sports and Hobbies: World Friendship (Training Scheme p.67).",
+        "conditions": "Complete the World Friendship requirements on Training Scheme p.67."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.32,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "activityL",
+        "layer": "hex",
+        "rank": 37,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "67"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/cub/act_worldFriendship.png",
+        "ref": "CTS",
+        "page": "67",
+        "example": false,
+        "px": [
+          86,
+          96
+        ]
+      },
+      "area": "hobbies",
+      "sweater": false
     }
   ],
   "notAllowed": [
     {
-      "id": "activityBadges",
-      "zh": "第一版只示範制服頁列明嘅基本徽章同優異旅團章；進度性獎章、活動徽章等之後再加。",
-      "en": "Version 1 shows only the basic badges on the uniform pages and the Meritorious Group Badge; progress awards, activity badges and others come later.",
+      "id": "oldScheme",
+      "zh": "舊制幼童軍活動徽章：綱要 P.7 容許喺左袖左下方並列，直至晉升童軍團；模型唔示範舊制圖案。",
+      "en": "Old-scheme Cub Scout activity badges may stay at the lower left of the left sleeve until moving up (Training Scheme p.7); the model does not show the old designs.",
       "sources": [
         {
-          "ref": "UH",
-          "page": "26, 28"
+          "ref": "CTS",
+          "page": "7"
         }
       ]
     }
@@ -636,10 +5289,156 @@
       "id": "socks",
       "zh": "長襪：手冊 P.28 寫「深草青色」；綱要 P.6–7 寫「深草青色、直坑紋、襪頭摺下」。模型跟綱要（較詳細，冇矛盾）。",
       "en": "Socks: Handbook p.28 says dark grass green; the Training Scheme pp.6–7 adds vertical ribs and turned-down tops. The model follows the more detailed scheme (no conflict)."
+    },
+    {
+      "id": "v23SixerPosition",
+      "zh": "隊長／副隊長章：手冊 P.132 寫喺右袖縫線上方 3 cm；2026 年 8 月版綱要 P.7 附圖改喺左胸袋會員章下面。綱要較新，模型跟綱要（用戶指示：綱要同手冊唔同就跟綱要）。",
+      "en": "Sixer/Second Badge: Handbook p.132 puts it 3 cm above the right sleeve seam; the August 2026 Training Scheme p.7 figure moves it below the Membership Badge on the left pocket. The scheme is newer and is followed (user instruction: where they differ the Training Scheme wins)."
     }
   ],
   "artCredit": {
-    "zh": "徽章圖案取自香港童軍總會《儀容與制服手冊》P.25、P.92–93、P.159、P.168、《幼童軍支部訓練綱要》P.7 及香港童軍總會網頁「地域及區」，版權屬香港童軍總會。旅章係手冊示例圖案；區章、地域章可以揀返自己嘅區。",
-    "en": "Badge artwork is from the Scout Association of Hong Kong Uniform Handbook (pp.25, 92–93, 159, 168), the Cub Scout Section Training Scheme (p.7) and the SAHK “Regions and Districts” page; copyright the Scout Association of Hong Kong. The Group Badge is the handbook example; pick your own District to get the right District and Region Badges."
-  }
+    "zh": "徽章圖案取自香港童軍總會《儀容與制服手冊》P.25、P.92–93、P.129、P.132、P.138、P.155、P.159、P.168、《幼童軍支部訓練綱要》P.7、P.14–70（進度性獎章、核心範疇章、活動徽章、宗教章、童軍先修章、積極公民獎章） 及香港童軍總會網頁「地域及區」，版權屬香港童軍總會。旅章係手冊示例圖案；區章、地域章可以揀返自己嘅區。",
+    "en": "Badge artwork is from the Scout Association of Hong Kong Uniform Handbook (pp.25, 92–93, 129, 132, 138, 155, 159, 168), the Cub Scout Section Training Scheme (p.7 and pp.14–70: progress awards, core area, activity, Religious, Scout Link and Active Citizen badges) and the SAHK “Regions and Districts” page; copyright the Scout Association of Hong Kong. The Group Badge is the handbook example; pick your own District to get the right District and Region Badges."
+  },
+  "slots": {
+    "pocketR": {
+      "part": "torso",
+      "side": "right",
+      "layers": [
+        {
+          "id": "flap",
+          "gapCm": 0,
+          "max": 1
+        },
+        {
+          "id": "upper",
+          "gapCm": 3,
+          "max": 2,
+          "from": "inner"
+        }
+      ],
+      "zh": "穿著者右胸袋袋蓋上方：童軍先修章緊貼袋蓋；宗教章／公教章、紀念章喺上面（綱要 P.7 附圖），兩個並排時宗教章／公教章喺內側。",
+      "en": "Above the wearer's right pocket flap: the Scout Link Badge on the flap; the Religious/Catholic Badge and the Commemorative Badge above it (Training Scheme p.7 figure), the Religious/Catholic Badge on the inner side when both are worn.",
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "UH",
+          "page": "138–139, 163–164"
+        }
+      ]
+    },
+    "pocketL": {
+      "part": "torso",
+      "side": "left",
+      "layers": [
+        {
+          "id": "stars",
+          "gapCm": 0,
+          "max": 2,
+          "spacingCm": 0.1,
+          "from": "inner"
+        }
+      ],
+      "zh": "穿著者左胸袋袋蓋上方（緊貼袋蓋）：服務年星；有小童軍服務年星就並排喺外側（手冊 P.130；綱要 P.7 附圖）。",
+      "en": "On top of the wearer's left pocket flap: the Service Star, with a Grasshopper Service Star beside it towards the outside (Handbook p.130; Training Scheme p.7 figure).",
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "129–130"
+        },
+        {
+          "ref": "CTS",
+          "page": "7"
+        }
+      ]
+    },
+    "sleeveR": {
+      "part": "sleeve",
+      "side": "right",
+      "belowBadge": "region",
+      "layers": [
+        {
+          "id": "row",
+          "gapCm": 0.6,
+          "max": 4,
+          "from": "front"
+        }
+      ],
+      "zh": "穿著者右袖、地域章／區章下面一行：世界童軍組織系列同「積極公民」獎章系列，最多合共四個（綱要 P.7 附圖）。",
+      "en": "Wearer's right sleeve, one row below the Region/District Badges: WOSM series and Active Citizen series, at most four in total (Training Scheme p.7 figure).",
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        },
+        {
+          "ref": "CTS",
+          "page": "35, 37, 52"
+        }
+      ]
+    },
+    "activityL": {
+      "part": "sleeve",
+      "side": "left",
+      "honeycomb": {
+        "aboveCuffSeamCm": 0.5,
+        "rows": [
+          4,
+          3
+        ],
+        "spacingCm": 0.12
+      },
+      "layers": [
+        {
+          "id": "hex",
+          "gapCm": 0,
+          "max": 11,
+          "from": "front"
+        }
+      ],
+      "zh": "穿著者左袖下方：幼童軍活動徽章（六角形）由袖口縫線上面排起，一行四個、上一行三個，咬合排列（綱要 P.7 附圖）；模型由前面排起，排到核心範疇章下面為止（最多 11 個）。",
+      "en": "Lower wearer's left sleeve: the hexagonal Cub Scout activity badges sit just above the cuff seam, four in a row with three interlocking above (Training Scheme p.7 figure); the model fills from the front and stops below the core area badges (at most 11).",
+      "sources": [
+        {
+          "ref": "CTS",
+          "page": "7"
+        }
+      ]
+    }
+  },
+  "areas": [
+    {
+      "id": "skills",
+      "zh": "童軍技能",
+      "en": "Scout Skills"
+    },
+    {
+      "id": "caring",
+      "zh": "關己愛人",
+      "en": "Caring"
+    },
+    {
+      "id": "community",
+      "zh": "國家與社區",
+      "en": "Nation and Community"
+    },
+    {
+      "id": "arts",
+      "zh": "多元創藝",
+      "en": "Creative Arts"
+    },
+    {
+      "id": "nature",
+      "zh": "科學與大自然",
+      "en": "Science and Nature"
+    },
+    {
+      "id": "hobbies",
+      "zh": "運動與愛好",
+      "en": "Sports and Hobbies"
+    }
+  ]
 }

@@ -7,10 +7,10 @@ const SHAPES = new Set(['circle', 'square', 'rect']);
 const PARTS = new Set(['torso', 'sleeve', 'shoulder', 'neck']); // shoulder = 套喺肩帶上；neck = 掛頸（卓越服務勳章）
 // rank = 成年成員職級肩章（跟所揀職級）；metalRank = 晚禮服金屬職級肩章（跟職級 + 夏季／冬季）；nameTag = 布質名牌（用戶輸入姓名）
 const DYNAMIC = new Set(['district', 'region', 'meritorious', 'patrol', 'rank', 'metalRank', 'nameTag', 'troop']);
-const ART_FILE = /^\/badges\/((districts|patrols|leader|awards|ribbons|extra)\/)?[\w-]+\.png$/;
+const ART_FILE = /^\/badges\/((districts|patrols|leader|awards|ribbons|extra|cub)\/)?[\w-]+\.png$/;
 /** 勳條圖：官方相下面嗰條（或者用戶提供），要有來源、頁碼同 px 尺寸 */
 const ribbonOkWith = (sources) => (r) => !!r && ART_FILE.test(r.file || '') && !!sources[r.ref] && !!r.page && r.px?.[0] > 0 && r.px?.[1] > 0;
-const POCKET = new Set(['centre', 'aboveFlap', 'flap']); // flap = 袋蓋中央（布質名牌、感謝章）
+const POCKET = new Set(['centre', 'aboveFlap', 'flap', 'bottom']); // flap = 袋蓋中央（布質名牌、感謝章）；bottom = 袋身底上面 gapCm（v23 隊長章）
 const RACKS = new Set(['pocket', 'lapel']); // 勳章排：禮服右胸袋袋蓋上方／晚禮服右襟領童軍徽上方
 const SEASONS = ['summer', 'winter'];
 const CAP_TRIMS = new Set(['oak2', 'oak1', 'cord', 'none', 'rim']);
@@ -130,7 +130,9 @@ export function validateRules(rules) {
       seen.add(l.id);
       if (!(l.gapCm >= 0) || (l.max != null && !(Number.isInteger(l.max) && l.max > 0)) || (l.from != null && !FROM.has(l.from))) errors.push(`${w}: layer ${l.id} 設定錯`);
     }
-    if (d.part === 'sleeve' && d.fromShoulderCm == null && !badgeIds.has(d.belowBadge)) errors.push(`${w}: 袖要有 fromShoulderCm 或 belowBadge`);
+    if (d.part === 'sleeve' && d.fromShoulderCm == null && !badgeIds.has(d.belowBadge) && !d.honeycomb) errors.push(`${w}: 袖要有 fromShoulderCm、belowBadge 或 honeycomb`);
+    // v23 honeycomb（六角形活動徽章）：袖口縫線上面幾多 cm、每行數目（正整數）、只可以一層
+    if (d.honeycomb && (d.part !== 'sleeve' || !(d.honeycomb.aboveCuffSeamCm >= 0) || !Array.isArray(d.honeycomb.rows) || !d.honeycomb.rows.length || d.honeycomb.rows.some((n) => !(Number.isInteger(n) && n > 0)) || d.layers?.length !== 1)) errors.push(`${w}: honeycomb 設定錯`);
     if (!d.zh || !d.en) errors.push(`${w}: 缺中英說明`);
     checkSources(d.sources, sources, w, errors);
   }
@@ -159,6 +161,8 @@ export function validateRules(rules) {
         }
       }
       if (x.pocket != null && !POCKET.has(x.pocket)) errors.push(`${where}: anchor.pocket 錯`);
+      if (x.pocket === 'bottom' && !(x.gapCm >= 0)) errors.push(`${where}: pocket bottom 要有 gapCm`);
+      if (x.fitArt && !(b.choices || []).filter((c) => c.art).every((c) => c.art.px?.[0] > 0 && c.art.px?.[1] > 0)) errors.push(`${where}: fitArt 要每個選項都有 px`);
       if (x.flapInnerCm != null && (x.pocket !== 'flap' || !(x.flapInnerCm >= 0))) errors.push(`${where}: anchor.flapInnerCm 只可以配 pocket: flap（cm ≥ 0）`);
       if (x.rack != null && (!RACKS.has(x.rack) || !b.choices && !b.art?.px)) errors.push(`${where}: anchor.rack 錯（勳章要有 px 尺寸）`);
       if (x.lapel != null && (x.lapel !== 'belowFleur' || !(x.gapCm >= 0))) errors.push(`${where}: anchor.lapel 只可以係 belowFleur（要有 gapCm）`);
