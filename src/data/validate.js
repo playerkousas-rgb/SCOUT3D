@@ -7,7 +7,7 @@ const SHAPES = new Set(['circle', 'square', 'rect']);
 const PARTS = new Set(['torso', 'sleeve', 'shoulder', 'neck']); // shoulder = 套喺肩帶上；neck = 掛頸（卓越服務勳章）
 // rank = 成年成員職級肩章（跟所揀職級）；metalRank = 晚禮服金屬職級肩章（跟職級 + 夏季／冬季）；nameTag = 布質名牌（用戶輸入姓名）
 const DYNAMIC = new Set(['district', 'region', 'meritorious', 'patrol', 'rank', 'metalRank', 'nameTag', 'troop']);
-const ART_FILE = /^\/badges\/((districts|patrols|leader|awards|ribbons)\/)?[\w-]+\.png$/;
+const ART_FILE = /^\/badges\/((districts|patrols|leader|awards|ribbons|extra)\/)?[\w-]+\.png$/;
 /** 勳條圖：官方相下面嗰條（或者用戶提供），要有來源、頁碼同 px 尺寸 */
 const ribbonOkWith = (sources) => (r) => !!r && ART_FILE.test(r.file || '') && !!sources[r.ref] && !!r.page && r.px?.[0] > 0 && r.px?.[1] > 0;
 const POCKET = new Set(['centre', 'aboveFlap', 'flap']); // flap = 袋蓋中央（布質名牌、感謝章）
@@ -118,14 +118,45 @@ export function validateRules(rules) {
   }
 
   const badgeIds = new Set((rules.badges || []).map((b) => b.id));
+  // v21 slots：每行要有 part／side、layers（id 唔重複、gapCm ≥ 0、max 正整數）、中英說明同來源
+  const FROM = new Set(['inner', 'outer', 'front', 'back']);
+  for (const [k, d] of Object.entries(rules.slots || {})) {
+    const w = `slot ${k}`;
+    if (!['torso', 'sleeve'].includes(d.part) || !['left', 'right'].includes(d.side)) errors.push(`${w}: part／side 錯`);
+    if (!Array.isArray(d.layers) || !d.layers.length) errors.push(`${w}: 冇 layers`);
+    const seen = new Set();
+    for (const l of d.layers || []) {
+      if (!l.id || seen.has(l.id)) errors.push(`${w}: layer id 錯或重複`);
+      seen.add(l.id);
+      if (!(l.gapCm >= 0) || (l.max != null && !(Number.isInteger(l.max) && l.max > 0)) || (l.from != null && !FROM.has(l.from))) errors.push(`${w}: layer ${l.id} 設定錯`);
+    }
+    if (d.part === 'sleeve' && d.fromShoulderCm == null && !badgeIds.has(d.belowBadge)) errors.push(`${w}: 袖要有 fromShoulderCm 或 belowBadge`);
+    if (!d.zh || !d.en) errors.push(`${w}: 缺中英說明`);
+    checkSources(d.sources, sources, w, errors);
+  }
   const hasSweaterGarment = (rules.garments || []).some((g) => g.id === 'sweater');
   for (const b of rules.badges || []) {
     const w = `badge ${b.id}`;
     /** 位置：上身要有 xCm + fromTopCm、pocket、rack（勳章排）、lanyard（笛繩）或 lapel（晚禮服襟領）其中一樣 */
     const checkAnchor = (x, where) => {
       if (!PARTS.has(x.part)) errors.push(`${where}: anchor.part 錯`);
-      if (x.part === 'torso' && x.pocket == null && x.rack == null && !x.lanyard && x.lapel == null && !(Number.isFinite(x.xCm) && Number.isFinite(x.fromTopCm))) {
-        errors.push(`${where}: 上身位置要有 xCm + fromTopCm、pocket、rack、lanyard 或 lapel`);
+      if (x.part === 'torso' && x.pocket == null && x.rack == null && !x.lanyard && x.lapel == null && x.slot == null && !(Number.isFinite(x.xCm) && Number.isFinite(x.fromTopCm))) {
+        errors.push(`${where}: 上身位置要有 xCm + fromTopCm、pocket、rack、lanyard、lapel 或 slot`);
+      }
+      // v21 slot（佩戴位置「行」）：要已登記、層要存在、要有 rank；圖案要有 px（並排要知闊度）
+      if (x.slot != null) {
+        const def = (rules.slots || {})[x.slot];
+        if (!def) errors.push(`${where}: slot ${x.slot} 未登記`);
+        else {
+          if (def.part !== x.part || def.side !== x.side) errors.push(`${where}: slot ${x.slot} 嘅 part／side 唔一致`);
+          const layers = new Set(def.layers.map((l) => l.id));
+          const ls = b.choices ? b.choices.filter((c) => c.art).map((c) => c.layer ?? x.layer) : [x.layer];
+          if (ls.some((l) => !layers.has(l))) errors.push(`${where}: slot 層唔存在`);
+          const rk = b.choices ? b.choices.filter((c) => c.art).map((c) => c.rank ?? x.rank) : [x.rank];
+          if (rk.some((r) => !Number.isInteger(r))) errors.push(`${where}: slot 要有 rank（整數）`);
+          const arts = b.choices ? b.choices.filter((c) => c.art).map((c) => c.art) : [b.art];
+          if (arts.some((ar) => !(ar?.px?.[0] > 0 && ar?.px?.[1] > 0))) errors.push(`${where}: slot 章嘅圖案要有 px 尺寸`);
+        }
       }
       if (x.pocket != null && !POCKET.has(x.pocket)) errors.push(`${where}: anchor.pocket 錯`);
       if (x.flapInnerCm != null && (x.pocket !== 'flap' || !(x.flapInnerCm >= 0))) errors.push(`${where}: anchor.flapInnerCm 只可以配 pocket: flap（cm ≥ 0）`);
@@ -154,6 +185,10 @@ export function validateRules(rules) {
     }
     const a = b.anchor || {};
     checkAnchor(a, w);
+    // v22：alsoAnchor = 同一個章第二個位置（例：深資童軍急救章兩隻袖都戴）；lanyardEnd = 笛繩／肩帶末端
+    if (b.alsoAnchor != null) checkAnchor(b.alsoAnchor, `${w} alsoAnchor`);
+    if (a.lanyardEnd != null && (!a.lanyard || !['pocketMouth', 'flapInner'].includes(a.lanyardEnd))) errors.push(`${w}: lanyardEnd 只可以係 pocketMouth／flapInner（要配 lanyard）`);
+    if (b.requires != null && !badgeIds.has(b.requires)) errors.push(`${w}: requires 指向不存在嘅章`);
     if (a.side !== b.side) errors.push(`${w}: anchor.side 同「side」唔一致`);
     if (a.rack && !b.choices && !(Number.isInteger(b.rackOrder) && b.rackOrder > 0)) errors.push(`${w}: 單一勳章要有 rackOrder`);
     if (a.belowBadge && !badgeIds.has(a.belowBadge)) errors.push(`${w}: belowBadge 指向不存在嘅章`);

@@ -138,7 +138,8 @@ test('領袖獎勵：勳章及獎勵編號 1–6 全部制服都戴得', () => {
   assert.deepEqual(validateRules(leaderRules), []);
   assert.ok(awards.length >= 15);
   // 服務段章只戴喺制服恤衫上（手冊 P.189，v16），其餘編號 1–6 都戴得
-  for (const b of awards) assert.deepEqual(b.uniforms, b.id === 'serviceBars' ? ['u3', 'u4', 'u5', 'u6'] : ['u1', 'u2', 'u3', 'u4', 'u5', 'u6'], b.id);
+  // v22：模範童軍肩帶唔戴喺禮服、晚禮服（手冊 P.158）
+  for (const b of awards) assert.deepEqual(b.uniforms, ['serviceBars', 'modelScout'].includes(b.id) ? ['u3', 'u4', 'u5', 'u6'] : ['u1', 'u2', 'u3', 'u4', 'u5', 'u6'], b.id);
   const state = { neckMedal: 'goldLion', commendation: 'high', meritAward: 'meritMedal', thanksBadge: true, longService: 'medal' };
   for (const u of ['3', '4', '5', '6']) {
     const ids = visible(placeFor(leaderRules, { gender: 'boy', uniform: `u${u}`, invested: true }), state, { invested: true, level: 'group' }).map((p) => p.id);

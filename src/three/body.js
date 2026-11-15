@@ -328,9 +328,10 @@ export const SWEATER_TOP = 0.5;
  * 肩帶 + 深資童軍肩章（cm）：肩帶由膊頭邊（torso 邊）向衣領；肩章方頭（徽號）近膊頭。
  * 著制服毛衣：肩章改戴喺毛衣雙肩肩帶上（手冊 P.122），所以高 SWEATER_TOP、闊 VEST_T。
  */
-export function strapLayout(L, { sweater = false } = {}) {
+export function strapLayout(L, { sweater = false, virtual = false } = {}) {
   const { B, top } = L;
-  const S = B.strap;
+  // virtual（v22）：童軍恤衫模型冇畫肩帶，但模範童軍肩帶要知肩帶喺邊（手冊 P.158 附圖有肩帶）——用一條唔畫、冇厚度嘅肩帶計路線
+  const S = B.strap ?? (virtual ? { w: 4.4, t: 0 } : null);
   if (!S) return null;
   const outer = shoulderTip(L); // 膊頭（袖頂外邊）：肩帶一直去到膊頭（用戶指正）
   const inner = B.neck.w / 2 + 1.75; // 衣領外圍
@@ -347,7 +348,13 @@ export function strapLayout(L, { sweater = false } = {}) {
  * slideX = 左肩職級肩章中心 x（冇就用肩章預設位：膊頭 − 0.3 − 半個肩章長）。
  * 回傳 [[x, y, z], …]（cm，左 = +X、前 = +Z）；第一、二點喺肩章下面（y 低過肩章面）。後面一段見 lanyardBackPoints。
  */
-export function lanyardPoints({ L, strap, D = null, z, thick, slideX = null }) {
+export function lanyardPoints({ L, strap, D = null, z, thick, slideX = null, side = 1, end = 'pocketMouth' }) {
+  const pts = lanyardFront({ L, strap, D, z, thick, slideX: slideX == null ? null : Math.abs(slideX), end });
+  return side < 0 ? mirrorX(pts) : pts;
+}
+/** 右肩（v22 模範童軍肩帶）＝ 左肩路線左右反轉 */
+const mirrorX = (pts) => pts.map(([x, y, zz]) => [-x, y, zz]);
+function lanyardFront({ L, strap, D, z, thick, slideX, end }) {
   const { B, top } = L;
   const sx = slideX ?? strap.outer - 0.3 - RANK_SLIDE_H / 2;
   const yU = strap.base + strap.t - thick / 2 + 0.02; // 繩面啱啱喺肩章底（肩章 y = 肩帶面 + 0.04）
@@ -359,15 +366,23 @@ export function lanyardPoints({ L, strap, D = null, z, thick, slideX = null }) {
   const flapTop = top - P.top;
   const pocketBottom = flapTop - P.h;
   const seamX = B.torso.w / 2 - 0.8; // 袖窿前面（身邊）
-  return [
+  const path = [
     ...under,
     [sx - 0.3, top + thick / 2, B.sleeve.d / 2], // 袖頂前邊
     [sx - 0.6, top - 1.5, sleeveFront], // 兜落袖前面
     [seamX, top - 9, z], // 沿袖窿前面
     [seamX - 0.3, pocketBottom - 2.5, z],
     [P.x + P.w / 2 + 0.5, pocketBottom - 5, z], // 胸袋外側下面兜返上（斜過胸袋、喺會員章外側經過）
-    [P.x - 1, flapTop + 0.1, z], // 左胸袋口中間偏內（笛子由胸袋口右方放入）
   ];
+  // 模範童軍肩帶（手冊 P.158）：末端扣喺胸袋袋蓋近中線嗰邊（右胸袋袋蓋左方）；嘉許笛繩：左胸袋口中間偏內（笛子由胸袋口右方放入）
+  if (end === 'flapInner') path.push([P.x - P.w / 2 + 1.6, pocketBottom + 1, z], [P.x - P.w / 2 + 1.2, flapTop - P.flap / 2, z + 0.3]);
+  else path.push([P.x - 1, flapTop + 0.1, z]);
+  return path;
+}
+/** 模範童軍肩帶末端嘅穗（手冊 P.158 相片）：由末端吊落 len cm（回傳 [頂, 底]） */
+export function tasselPoints(pts, len = 3.5) {
+  const [x, y, zz] = pts[pts.length - 1];
+  return [[x, y, zz + 0.2], [x, y - len, zz + 0.2]];
 }
 /**
  * 嘉許笛繩後面一段（v20，用戶：「你畫左前面無畫後面」）：笛繩係一個圈套住左膊。
@@ -376,7 +391,11 @@ export function lanyardPoints({ L, strap, D = null, z, thick, slideX = null }) {
  * 晚禮服小型笛繩：接埋之後再去左襟領（同前面一段第三點）。
  * 回傳 [[x, y, z], …]；第一點 = lanyardPoints 第一點（肩章下面）。
  */
-export function lanyardBackPoints({ L, strap, D = null, z, thick, slideX = null }) {
+export function lanyardBackPoints({ L, strap, D = null, z, thick, slideX = null, side = 1 }) {
+  const pts = lanyardBack({ L, strap, D, z, thick, slideX: slideX == null ? null : Math.abs(slideX) });
+  return side < 0 ? mirrorX(pts) : pts;
+}
+function lanyardBack({ L, strap, D, z, thick, slideX }) {
   const { B, top } = L;
   const sx = slideX ?? strap.outer - 0.3 - RANK_SLIDE_H / 2;
   const yU = strap.base + strap.t - thick / 2 + 0.02;
@@ -403,7 +422,11 @@ export function lanyardBackPoints({ L, strap, D = null, z, thick, slideX = null 
 export const LANYARD_COLOURS = {
   commendation: [{ c: '#d98b1e', w: 1 }],
   high: [{ c: '#5b2d72', w: 1 }, { c: '#e3d5ae', w: 0.35 }],
+  // 模範童軍肩帶（v22，手冊 P.158 相片）：深綠同金黃兩色扭紋（俗稱「雞繩」）——alt = 每 ALT_CM 轉一次色
+  modelScout: [{ c: '#2e5e3a', w: 1.3, alt: '#d4b23a' }],
 };
+/** 扭紋每段長度（cm） */
+export const ALT_CM = 0.9;
 /** 並排 strand 嘅中心偏移（以笛繩粗幼計）：全部緊貼、成組置中 */
 export function strandOffsets(ws) {
   const total = ws.reduce((a, w) => a + w, 0);

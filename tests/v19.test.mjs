@@ -73,7 +73,8 @@ test('嘉許笛繩：有職級肩章就跟佢個位（slideX）；晚禮服小�
 
 test('Blocky：笛繩用 lanyardPoints＋四元數（3D 方向），唔再由肩帶內端斜落心口', () => {
   const src = text('src/three/Blocky.jsx');
-  assert.match(src, /const args = \{ L, strap, D: p\.mini \? D : null, z, thick, slideX: slide\?\.x \}/);
+  // v22：加 side／end（模範童軍肩帶喺右肩）；童軍冇肩帶就用 virtual 肩帶（st）
+  assert.match(src, /const args = \{ L, strap: st, D: p\.mini \? D : null, z, thick, slideX: slide\?\.x, side, end: p\.end \}/);
   assert.match(src, /lanyardPoints\(args\)/); // v20：再加 lanyardBackPoints(args)
   assert.match(src, /setFromUnitVectors\(up, dir\)/);
   assert.doesNotMatch(src, /strap\.inner \+ 2\.6/);

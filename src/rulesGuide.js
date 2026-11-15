@@ -49,7 +49,7 @@ export const RULES_GUIDE = {
         { k: 'outfit.sweaterNoteNavy', v: ['sea', 'air'] },
       ],
     },
-    { title: 'rules.g.badges', items: ['badges.tipScout', ...SCOUT_BADGES] },
+    { title: 'rules.g.badges', items: ['badges.tipScout', ...SCOUT_BADGES, 'badges.extraNoteScout'] },
   ],
   venture: [
     {
@@ -77,7 +77,7 @@ export const RULES_GUIDE = {
     },
     { title: 'rules.g.neck', items: ['outfit.scoutWoggle', 'outfit.tieNote'] },
     { title: 'rules.g.sweater', items: ['outfit.sweaterNoteVenture'] },
-    { title: 'rules.g.badges', items: ['badges.tipVenture', ...SCOUT_BADGES] },
+    { title: 'rules.g.badges', items: ['badges.tipVenture', ...SCOUT_BADGES, 'badges.extraNoteVenture', 'badge.why.needsStage'] },
   ],
   rover: [
     {
@@ -105,7 +105,7 @@ export const RULES_GUIDE = {
     },
     { title: 'rules.g.neck', items: ['outfit.scoutWoggle', 'outfit.tieNoteRover'] },
     { title: 'rules.g.sweater', items: ['outfit.sweaterNoteRover'] },
-    { title: 'rules.g.badges', items: ['badges.tipRover', ...SCOUT_BADGES] },
+    { title: 'rules.g.badges', items: ['badges.tipRover', ...SCOUT_BADGES, 'badges.extraNoteRover', 'badge.why.replaced_peace'] },
   ],
   leader: [
     { title: 'rules.g.levels', items: ['badges.tipLeader', { json: 'levels' }] },
@@ -150,7 +150,7 @@ export const RULES_GUIDE = {
     },
     { title: 'rules.g.wood', items: ['outfit.woodBadgeNote', 'outfit.woodBadgeEvening'] },
     { title: 'rules.g.sweater', items: ['outfit.sweaterNoteLeader'] },
-    { title: 'rules.g.badges', items: ['badge.why.sweater', 'pick.nameNote'] },
+    { title: 'rules.g.badges', items: ['badge.why.sweater', 'pick.nameNote', 'badges.extraNoteLeader', 'badge.why.replaced_commendation'] },
     { title: 'rules.g.awards', items: ['badges.awardsNote', 'badges.awardsMiniNote', 'badges.occasionFormalNote', 'badges.occasionGeneralNote'] },
   ],
 };

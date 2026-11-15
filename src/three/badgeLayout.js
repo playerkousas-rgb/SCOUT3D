@@ -90,8 +90,10 @@ export function placeAll(rules, gender, { sweater = false, uniform = null, occas
   const box = {}; // 每個章喺袖上面佔嘅 v 範圍：{ top, bottom }
 
   // 先擺唔靠其他章嘅，再擺「喺某個章下面／上面」嘅
-  const dep = (a) => !!(a.belowBadge || a.aboveBadge || a.onBadge);
-  const order = [...rules.badges].sort((a, b) => dep(anchorOf(a, uniform)) - dep(anchorOf(b, uniform)));
+  const dep = (a) => !!(a.belowBadge || a.aboveBadge || a.onBadge || (a.slot && rules.slots?.[a.slot]?.belowBadge));
+  // alsoAnchor（v22）：同一個章戴喺兩個位置（例：深資童軍急救章左右兩袖都戴，手冊 P.148）—— 當多一個章計，key 加 '-2'
+  const badges = rules.badges.flatMap((b) => (b.alsoAnchor ? [b, { ...b, anchor: b.alsoAnchor, anchorBy: undefined, twin: true }] : [b]));
+  const order = badges.sort((a, b) => dep(anchorOf(a, uniform)) - dep(anchorOf(b, uniform)));
   const onStrap = {}; // 職級肩章喺肩帶上嘅位置（「R」字樣別針跟住佢）
   const RB = ribbonsOn(rules, uniform, occasion) ? rules.ribbons : null;
   for (const b of order) {
@@ -99,7 +101,7 @@ export function placeAll(rules, gender, { sweater = false, uniform = null, occas
     const { wCm: w, hCm: h, shape } = b.size;
     const art = b.dynamic ? dynKey(b.id) : Array.isArray(b.art) ? null : b.art?.file ?? null;
     const fit = b.dynamic === 'district' || b.dynamic === 'region' || b.dynamic === 'nameTag'; // 各區圖案比例唔同：喺 w × h 入面置中縮放
-    const extra = { ...(b.needsInvestiture ? { inv: true } : {}), ...(b.levels ? { levels: b.levels } : {}), ...(b.hiddenBy ? { hiddenBy: b.hiddenBy } : {}), ...(b.limitWhen ? { limitWhen: b.limitWhen } : {}) };
+    const extra = { ...(b.needsInvestiture ? { inv: true } : {}), ...(b.levels ? { levels: b.levels } : {}), ...(b.hiddenBy ? { hiddenBy: b.hiddenBy } : {}), ...(b.limitWhen ? { limitWhen: b.limitWhen } : {}), ...(b.requires ? { requires: b.requires } : {}) };
     const sx = a.side === 'left' ? 1 : -1;
     const withArt = (b.choices || []).filter((c) => c.art);
     if (RB && (a.part === 'neck' || a.rack)) {
@@ -113,6 +115,32 @@ export function placeAll(rules, gender, { sweater = false, uniform = null, occas
           key: [b.id, o.choice].filter(Boolean).join('-'), id: b.id, ...(o.choice ? { choice: o.choice } : {}), kind: 'ribbon', mount: 'torso', shape: 'rect',
           w: RB.wCm, h: RB.hCm, x: rack.cx, y: rack.bottom + RB.hCm / 2, z: B.torso.d / 2, art: o.file, rack, order: o.order, ...extra,
         });
+      }
+      continue;
+    }
+    if (a.slot) {
+      // v21 佩戴位置「行」（slot）：同一行嘅章並排、上下幾層按顯示咗邊幾個先排（arrangeSlots）；呢度先計「自己一個」嘅位置
+      const def = rules.slots?.[a.slot];
+      if (!def) throw new Error(`徽章 ${b.id} 嘅 slot ${a.slot} 未登記`);
+      let geo;
+      if (def.part === 'torso') {
+        const P = B.pocket;
+        if (!P) throw new Error(`徽章 ${b.id} 要胸袋，但呢個身形冇胸袋`);
+        const s2 = def.side === 'left' ? 1 : -1;
+        geo = { kind: 'torso', cx: s2 * P.x, inward: -s2, maxW: P.w, flapTop: top - P.top, z: B.torso.d / 2 };
+      } else {
+        let start;
+        if (def.fromShoulderCm != null) start = def.fromShoulderCm;
+        else if (def.belowBadge && box[def.belowBadge]) start = box[def.belowBadge].bottom;
+        else continue; // 嗰個章唔戴喺呢套制服
+        geo = { kind: 'sleeve', start, frontSign: def.side === 'right' ? 1 : -1, maxW: face.width - 1 };
+      }
+      const opts = b.choices ? withArt.map((c) => ({ choice: c.id, art: c.art, layer: c.layer ?? a.layer, rank: c.rank ?? a.rank })) : [{ art: b.art, layer: a.layer, rank: a.rank }];
+      for (const o of opts) {
+        const f = a.exact || b.dynamic ? { w, h } : fitPx(o.art.px, w, h); // exact：沿用 size（例：香港章 4 × 5.6 cm，唔跟相片比例）；動態圖案（地域章／區章）喺框入面置中縮放
+        const slot = { name: a.slot, layer: o.layer, rank: o.rank, def, geo };
+        const base = { key: [b.id, o.choice].filter(Boolean).join('-'), id: b.id, ...(o.choice ? { choice: o.choice } : {}), shape, w: f.w, h: f.h, art: b.dynamic ? art : o.art.file, slot, ...(fit || b.fit ? { fit: true } : {}), ...extra };
+        out.push(...arrangeSlot([{ ...base, ...(geo.kind === 'torso' ? { mount: 'torso', x: geo.cx, y: 0, z: geo.z } : { mount: def.side === 'left' ? 'l' : 'r', u: 0, v: 0 }) }], []).kept);
       }
       continue;
     }
@@ -159,7 +187,7 @@ export function placeAll(rules, gender, { sweater = false, uniform = null, occas
       const P = B.pocket;
       for (const c of withArt) {
         out.push({
-          key: `${b.id}-${c.id}`, id: b.id, choice: c.id, kind: 'lanyard', mini: !!D, mount: 'torso', shape, w, h,
+          key: `${b.id}-${c.id}`, id: b.id, choice: c.id, kind: 'lanyard', mini: !!D, mount: 'torso', shape, w, h, end: a.lanyardEnd ?? 'pocketMouth',
           x: D ? sx * D.fleur.x : sx * (P.x - P.w / 4), y: D ? D.fleur.y + 4 : top - P.top + 3, z: B.torso.d / 2, art: c.art.file, ...extra,
         });
       }
@@ -285,9 +313,17 @@ export function placeAll(rules, gender, { sweater = false, uniform = null, occas
     else if (a.aboveCuffSeamCm != null) t = face.cuffSeam - a.aboveCuffSeamCm - h;
     else throw new Error(`徽章 ${b.id} 冇袖上位置`);
     box[b.id] = { top: t, bottom: t + h };
-    out.push({ key: b.id, id: b.id, mount, shape, w, h, u, v: t + h / 2, art, fit, ...extra });
+    out.push({ key: b.id, id: b.id, mount, shape, w, h, u, v: t + h / 2, art, fit: fit || !!b.fit, ...extra });
   }
-  return out;
+  // 同一個章兩個位置：第二個 key 加 '-2'（React key、聚焦用）
+  const seen = new Set();
+  return out.map((p) => {
+    if (!seen.has(p.key)) {
+      seen.add(p.key);
+      return p;
+    }
+    return { ...p, key: `${p.key}-2` };
+  });
 }
 
 const artOf = (rules, id, step) => {
@@ -416,7 +452,88 @@ export function visible(placements, state, { invested, school = false, unavailab
   // 跟住另一個章嘅（「R」字樣別針喺職級肩章上）：嗰個章冇顯示就唔顯示
   const ids = new Set(first.map((p) => p.id));
   const shown = first.filter((p) => !p.requires || ids.has(p.requires));
-  return arrangeRacks(centreLonePair(placements, shown));
+  return arrangeSlots(arrangeRacks(centreLonePair(placements, shown)));
+}
+
+/**
+ * v21 佩戴位置「行」（slot）：手冊 P.164–167、P.171–172；綱要 P.12。
+ * 上身（胸袋）：layers 由下至上；第一層底 = 袋蓋頂 + gapCm（上面仲有層就用 gapIfAboveCm，例：飛行章同寰宇童軍章一齊戴時喺袋蓋上方 2 cm）；
+ *   之後每層喺下一層頂上 0.4 cm 或者自己嘅 gapCm（取高嗰個）；clearRacks = 要喺勳章／勳條上面。
+ * 袖：layers 由上至下；第一層頂 = start + gapCm，之後每層喺上一層底下面 gapCm。
+ * 每層：按 rank（細 = 排先）最多 max 個；from = 'inner'（近中線先）／'outer'／'front'（袖：近前面先）；並排置中，太闊就縮細。
+ * @returns {{ kept: Array, dropped: Array }}
+ */
+export function arrangeSlot(items, others) {
+  const GAP0 = 0.4;
+  let GAP = GAP0;
+  if (!items.length) return { kept: [], dropped: [] };
+  const { def, geo } = items[0].slot;
+  const kept = [];
+  const dropped = [];
+  const byLayer = def.layers.map((L) => {
+    const mine = items.filter((p) => p.slot.layer === L.id).sort((a, b) => a.slot.rank - b.slot.rank || a.id.localeCompare(b.id));
+    const n = L.max ?? mine.length;
+    dropped.push(...mine.slice(n));
+    return { L, list: mine.slice(0, n) };
+  }).filter((x) => x.list.length);
+  const rowX = (list, from, maxW) => {
+    const k = Math.min(1, maxW / (list.reduce((s, p) => s + p.w, 0) + GAP * (list.length - 1)));
+    const sized = list.map((p) => (k < 1 ? { ...p, w: Math.round(p.w * k * 100) / 100, h: Math.round(p.h * k * 100) / 100 } : p));
+    const total = sized.reduce((s, p) => s + p.w, 0) + GAP * (sized.length - 1);
+    let o = total / 2; // 由第一個（from 嗰邊）開始
+    return sized.map((p) => {
+      const c = o - p.w / 2;
+      o -= p.w + GAP;
+      return { p, off: from === 'outer' ? -c : c };
+    });
+  };
+  if (geo.kind === 'torso') {
+    let floor = -Infinity;
+    if (def.clearRacks) for (const q of others) if (q.rack && Math.sign(q.x) === Math.sign(geo.cx)) floor = Math.max(floor, q.y + q.h / 2 + GAP);
+    let prevTop = -Infinity;
+    byLayer.forEach(({ L, list }, i) => {
+      GAP = L.spacingCm ?? GAP0;
+      const gap = L.gapIfAboveCm != null && i < byLayer.length - 1 ? L.gapIfAboveCm : L.gapCm;
+      const bottom = Math.max(geo.flapTop + gap, prevTop + GAP0, L.gapCm > 0 ? floor : -Infinity);
+      let top = bottom;
+      for (const { p, off } of rowX(list, L.from ?? 'inner', geo.maxW)) {
+        kept.push({ ...p, x: geo.cx + geo.inward * off, y: bottom + p.h / 2 });
+        top = Math.max(top, bottom + p.h);
+      }
+      prevTop = top;
+    });
+  } else {
+    let prev = geo.start;
+    byLayer.forEach(({ L, list }, i) => {
+      GAP = L.spacingCm ?? GAP0; // 同一行章與章之間（例：地域章、區章相距 1 cm，手冊 P.95）
+      // 袖：上面嘅層冇章就由下一層補上去（用第一層嘅距離），唔留空位
+      const t = prev + ((i === 0 ? def.layers[0].gapCm : L.gapCm) ?? 0);
+      let bottom = t;
+      for (const { p, off } of rowX(list, L.from === 'back' ? 'outer' : 'inner', geo.maxW)) {
+        // 袖：off + = 近前面（from front）；u + = 望住袖外側嘅右手邊（右袖 = 前、左袖 = 後）
+        kept.push({ ...p, u: geo.frontSign * off + 0, v: t + p.h / 2 });
+        bottom = Math.max(bottom, t + p.h);
+      }
+      prev = bottom;
+    });
+  }
+  return { kept, dropped };
+}
+
+/** 將所有 slot 章按顯示咗邊幾個重新排；超出每層 max 嘅唔顯示 */
+export function arrangeSlots(list) {
+  const groups = new Map();
+  for (const p of list) if (p.slot) groups.set(p.slot.name, [...(groups.get(p.slot.name) ?? []), p]);
+  if (!groups.size) return list;
+  const others = list.filter((p) => !p.slot);
+  const moved = new Map();
+  const gone = new Set();
+  for (const items of groups.values()) {
+    const { kept, dropped } = arrangeSlot(items, others);
+    for (const p of kept) moved.set(p.key, p);
+    for (const p of dropped) gone.add(p.key);
+  }
+  return list.filter((p) => !gone.has(p.key)).map((p) => moved.get(p.key) ?? p);
 }
 
 /**
@@ -511,9 +628,11 @@ export function shownReason(rules, outfit, state, id, { unavailable = [], level 
   if (all.some((p) => p.id === id && !levelOk(p, level))) return 'level';
   if (unavailable.includes(id)) return 'noArt';
   const mine = all.filter((p) => p.id === id && (!p.choice || p.choice === state[id]));
-  if (mine.some((p) => hiddenBy(p, state))) return 'replaced';
+  const hider = mine.map((p) => hiddenBy(p, state)).find(Boolean);
+  if (hider) return hider === 'longService' ? 'replaced' : `replaced_${hider}`;
   if (mine.some((p) => limited(p, state))) return 'limited';
   const req = all.find((p) => p.id === id && p.requires);
-  if (req && state[id]) return 'needsHost';
+  if (req && state[id]) return req.requires.startsWith('stage') ? 'needsStage' : 'needsHost'; // v22：金帶要先有段章
+  if (mine.some((p) => p.slot) && isOn(state, id)) return 'slotFull'; // v21：嗰一行已經揀滿（排序較前嘅章優先）
   return 'off';
 }

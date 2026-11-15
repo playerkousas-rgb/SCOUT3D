@@ -108,12 +108,15 @@ const CUB_BADGES = {
 };
 
 // 童軍預設：制服頁列明嘅基本徽章全開（手冊 P.30：世界童軍會員章、香港章、地域章、區章、旅章、小隊章）
-const SCOUT_BADGES = { ...CUB_BADGES, patrol: true };
+// v22：模範童軍肩帶（有選項）用規則 JSON 嘅 default（冇）
+const SCOUT_BADGES = { ...CUB_BADGES, patrol: true, ...Object.fromEntries(SECTIONS.scout.badges.filter((b) => b.choices).map((b) => [b.id, b.default])) };
 
 // 深資童軍預設：基本徽章全開（手冊 P.36）；深資童軍肩章（有選項）用規則 JSON 嘅 default
-const VENTURE_BADGES = { ...CUB_BADGES, epaulette: SECTIONS.venture.badges.find((b) => b.id === 'epaulette')?.default ?? 'none' };
+// v22：非基本章（有選項嘅）用規則 JSON 嘅 default（冇／未考獲）；開關式（段章、金帶、急救章……）預設熄
+const VENTURE_BADGES = { ...CUB_BADGES, ...Object.fromEntries(SECTIONS.venture.badges.filter((b) => b.choices).map((b) => [b.id, b.default])) };
 // 樂行童軍預設：基本徽章全開（手冊 P.42）；樂行童軍肩章（有選項）用規則 JSON 嘅 default
-const ROVER_BADGES = { ...CUB_BADGES, epaulette: SECTIONS.rover.badges.find((b) => b.id === 'epaulette')?.default ?? 'none' };
+// v21：非基本章（有選項嘅）用規則 JSON 嘅 default（冇／未考獲）；開關式嘅預設熄
+const ROVER_BADGES = { ...CUB_BADGES, ...Object.fromEntries(SECTIONS.rover.badges.filter((b) => b.choices).map((b) => [b.id, b.default])) };
 
 // 成年成員預設：必備章全開（手冊 P.92–95、P.103–106）；香港肩章／旅章、總會總部章／地域章／區章跟單位層級自動揀
 // 「R」字樣別針（退休）、優異旅團章係可選
@@ -138,6 +141,8 @@ const DEFAULT_BADGES = {
   meritorious: false,
   commemorative: false,
 };
+// 「其他獎章及徽章」說明（每個支部跟唔同文件）
+const EXTRA_NOTE = { leader: 'badges.extraNoteLeader', rover: 'badges.extraNoteRover', venture: 'badges.extraNoteVenture', scout: 'badges.extraNoteScout' };
 const DEFAULT_BADGE_STATES = { grasshopper: DEFAULT_BADGES, cub: CUB_BADGES, scout: SCOUT_BADGES, venture: VENTURE_BADGES, rover: ROVER_BADGES, leader: LEADER_BADGES };
 /** 成年成員：單位層級（只喺 leader 用，其他支部唔篩） */
 const levelOf = (section, picks) => (section === 'leader' ? picks.level : null);
@@ -720,13 +725,22 @@ function BadgesTab({ rules, section, outfit, setOutfit, badges, setBadges, picks
   // 唔適用（呢套制服唔戴、呢個層級唔戴）嘅章直接唔列出（用戶指示：唔應該出現就冇開關）
   const level = levelOf(section, picks);
   const applies = (b) => (!uid || !b.uniforms || b.uniforms.includes(uid)) && (!level || !b.levels || b.levels.includes(level));
-  const list = rules.badges.filter((b) => applies(b) && b.group !== 'awards');
+  const list = rules.badges.filter((b) => applies(b) && !b.group);
   const awards = rules.badges.filter((b) => applies(b) && b.group === 'awards');
+  // v21：其他獎章及徽章（樂行童軍非基本章；成年成員獎章領袖標誌、公教章、飛行章等）
+  const extras = rules.badges.filter((b) => applies(b) && b.group === 'extra');
   const row = (b) => <BadgeRow key={b.id} b={b} rules={rules} section={section} outfit={outfit} badges={badges} set={set} picks={picks} setPicks={setPicks} unavailable={unavailable} selected={selected} onPick={onPick} />;
   return (
     <div className="tabbody">
       {rules.levels && <LevelRankPicker rules={rules} picks={picks} setPicks={setPicks} />}
       <ul className="badgelist">{list.map(row)}</ul>
+      {extras.length > 0 && (
+        <details className="awards extras" open={extras.some((b) => badges[b.id] && badges[b.id] !== 'none')}>
+          <summary className="h3">{t('badges.extra')}</summary>
+          <p className="occasion__note">{t(EXTRA_NOTE[section] ?? 'badges.extraNoteRover')}</p>
+          <ul className="badgelist">{extras.map(row)}</ul>
+        </details>
+      )}
       {awards.length > 0 && (
         <details className="awards" open={awards.some((b) => badges[b.id] && badges[b.id] !== 'none')}>
           <summary className="h3">{t(uid === 'u2' ? 'badges.awardsMini' : 'badges.awards')}</summary>
