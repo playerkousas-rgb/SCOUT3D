@@ -345,7 +345,7 @@ export function strapLayout(L, { sweater = false } = {}) {
  * 由肩帶前邊出嚟、兜過袖頂前邊，沿袖窿前面吊落到胸袋下面，再兜返上左胸袋口（近中線嗰邊；笛子入袋唔畫）。
  * 晚禮服（D = dressLayout）：小型笛繩一樣由肩帶起，落去左襟領童軍徽。
  * slideX = 左肩職級肩章中心 x（冇就用肩章預設位：膊頭 − 0.3 − 半個肩章長）。
- * 回傳 [[x, y, z], …]（cm，左 = +X、前 = +Z）；第一、二點喺肩章下面（y 低過肩章面）。
+ * 回傳 [[x, y, z], …]（cm，左 = +X、前 = +Z）；第一、二點喺肩章下面（y 低過肩章面）。後面一段見 lanyardBackPoints。
  */
 export function lanyardPoints({ L, strap, D = null, z, thick, slideX = null }) {
   const { B, top } = L;
@@ -369,6 +369,52 @@ export function lanyardPoints({ L, strap, D = null, z, thick, slideX = null }) {
     [P.x - 1, flapTop + 0.1, z], // 左胸袋口中間偏內（笛子由胸袋口右方放入）
   ];
 }
+/**
+ * 嘉許笛繩後面一段（v20，用戶：「你畫左前面無畫後面」）：笛繩係一個圈套住左膊。
+ * 由職級肩章下面（同前面一段同一點起）向後、喺肩帶後邊穿出，兜過袖頂後邊，沿袖窿後面落到腋下，
+ * 喺手臂下面（身側，入咗袖入面）兜去前面，同前面一段喺袖窿前面（top − 9）接埋。
+ * 晚禮服小型笛繩：接埋之後再去左襟領（同前面一段第三點）。
+ * 回傳 [[x, y, z], …]；第一點 = lanyardPoints 第一點（肩章下面）。
+ */
+export function lanyardBackPoints({ L, strap, D = null, z, thick, slideX = null }) {
+  const { B, top } = L;
+  const sx = slideX ?? strap.outer - 0.3 - RANK_SLIDE_H / 2;
+  const yU = strap.base + strap.t - thick / 2 + 0.02;
+  const zBackEdge = -(strap.w / 2 + 0.15);
+  const sleeveBack = -(B.sleeve.d / 2 + thick / 2 + 0.05);
+  const seamX = B.torso.w / 2 - 0.8;
+  const pts = [
+    [sx, yU, -0.6], // 肩章下面（同前面一段接）
+    [sx, yU, zBackEdge], // 肩帶後邊穿出
+    [sx - 0.3, top + thick / 2, -B.sleeve.d / 2], // 袖頂後邊
+    [sx - 0.6, top - 1.5, sleeveBack], // 兜落袖後面
+    [seamX, top - 9, -z], // 沿袖窿後面
+    [B.torso.w / 2 + 0.2, top - 10.5, 0], // 腋下（手臂下面）
+    [seamX, top - 9, z], // 前面：同前面一段接埋
+  ];
+  if (D?.fleur) pts.push([D.fleur.x + 2.2, D.fleur.y - 1.5, z]);
+  return pts;
+}
+
+/**
+ * 笛繩顏色（手冊 P.184 相片；v20 用戶指正：高級嘉許係紫色）。每條 strand：c = 顏色、w = 粗幼（以笛繩粗幼計）。
+ * 嘉許：橙金色一條；高級嘉許：紫色主繩＋幼米白扭紋（相片見到紫繩纏住一條幼米白線）。
+ */
+export const LANYARD_COLOURS = {
+  commendation: [{ c: '#d98b1e', w: 1 }],
+  high: [{ c: '#5b2d72', w: 1 }, { c: '#e3d5ae', w: 0.35 }],
+};
+/** 並排 strand 嘅中心偏移（以笛繩粗幼計）：全部緊貼、成組置中 */
+export function strandOffsets(ws) {
+  const total = ws.reduce((a, w) => a + w, 0);
+  let x = -total / 2;
+  return ws.map((w) => {
+    const o = x + w / 2;
+    x += w;
+    return Math.round(o * 1000) / 1000;
+  });
+}
+
 /** 成年成員職級肩章沿肩帶嘅長度（cm，leader_rules epaulette hCm） */
 export const RANK_SLIDE_H = 3.65;
 
