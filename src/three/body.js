@@ -172,6 +172,8 @@ export const COLOURS = {
   capPeak: '#17171a', // 白頂帽黑色帽舌
   // 制服毛衣（手冊 P.121–122 附圖）
   sweaterGreen: '#353c23', // 深草青色
+  sashGreen: '#1f8f45', // v24 專章帶綠底（綱要 P.16 附圖）
+  sashRed: '#d3262e', // 專章帶紅邊
   sweaterNavy: '#2c2749', // 深藍色
   // 領帶（手冊 P.113）
   tieMaroon: '#8e1f2c',
@@ -524,4 +526,97 @@ export function neckerLayout(L, { vest = false } = {}) {
     /** 巾尾面 z：穿著者左條（s = +1）喺前面少少 */
     tailZ: (s) => front + 0.3 + (s > 0 ? 0.1 : 0),
   };
+}
+
+/**
+ * v24 童軍專科徽章肩帶（專章帶，綱要 P.15–16；手冊 P.160–161）：綠底紅邊、全寬 13 cm、兩紅邊各 0.75 cm；
+ * 由左肩（+x）斜落右腰（−x），兩端喺右褲袋口下面重疊。旅巾戴喺專章帶外面。
+ * 模型：前面、後面各一條斜帶（每個高度一條橫切面，xL = 近頸嗰邊、xR = 外邊），右側一塊、膊頂一塊；
+ * 膊頭位置太窄（衣領至膊頂得 ~10 cm），所以喺膊頂收窄（布耳穿過肩帶，實物都係摺埋），10 cm 之內放返 13 cm。
+ * 章位（slots）：沿中線由上而下，兩行一組（2 × 2），組與組之間多 1 cm；每組次序 = 附圖（一）1 左下、2 右下、3 左上、4 右上。
+ * 章嘅方向：附圖（一）帶直放時菱形頂角指向左上（45°）；帶斜咗 θ 之後，章轉 45° − θ（逆時針）。
+ */
+export const SASH = { widthCm: 13, edgeCm: 0.75, t: 0.15, endY: 88, topHalfFromEdge: 4.85, rampCm: 10, badgeSide: 3.54, firstCm: 10, rowGap: 0.4, blockGap: 0.6, colGap: 0.4, max: 16 };
+
+export function sashLayout(L) {
+  const T = L.B.torso;
+  const hw = T.w / 2;
+  const top = L.top;
+  const front = T.d / 2;
+  const cTop = hw - SASH.topHalfFromEdge; // 膊頂中線 x（外邊貼膊頂）
+  const k = (cTop + hw) / (top - SASH.endY); // 每落 1 cm，中線向 −x 移幾多
+  const cos = 1 / Math.sqrt(1 + k * k);
+  const sin = k * cos;
+  const full = SASH.widthCm / 2 / cos; // 橫切面半闊
+  const half = (y) => SASH.topHalfFromEdge + (full - SASH.topHalfFromEdge) * Math.min(1, Math.max(0, (top - y) / SASH.rampCm));
+  const c = (y) => cTop - k * (top - y);
+  const xL = (y) => c(y) - half(y);
+  const xR = (y) => c(y) + half(y);
+  const side = hw + SASH.t; // 右側面（帶包住側面，離布面 t）
+  const y1 = top - (cTop - full + side) / k; // 近頸嗰邊到右側
+  const y2 = top - (cTop + full + side) / k; // 外邊到右側（帶最低點）
+  const ys = [];
+  for (let y = top; y > y2 + 1e-6; y -= 2) ys.push(y);
+  ys.push(y1, y2);
+  const uniq = [...new Set(ys.map((y) => Math.round(y * 1000) / 1000))].sort((a, b) => b - a);
+  const sections = uniq.map((y) => {
+    const a = xL(y);
+    const b = xR(y);
+    const xa = Math.max(a, -side);
+    const xb = Math.min(b, hw);
+    return { y, xa, xb, ua: (xa - a) / (b - a), ub: (xb - a) / (b - a) };
+  });
+  const edge = SASH.edgeCm / SASH.widthCm;
+  const theta = Math.atan(k);
+  // 章位（前面）：a = 沿中線由膊頂量落幾多 cm；n = 橫向單位（向近頸／左上）
+  const s = SASH.badgeSide;
+  const col = s / 2 + SASH.colGap / 2;
+  const pitch = s + SASH.rowGap;
+  const slots = [];
+  for (let i = 0; i < SASH.max; i++) {
+    const block = Math.floor(i / 4);
+    const j = i % 4;
+    const row = block * 2 + (j < 2 ? 1 : 0);
+    const a = SASH.firstCm + row * pitch + block * SASH.blockGap;
+    const across = (j % 2 === 0 ? 1 : -1) * col; // + = 左（近頸）
+    const x = cTop - sin * a - cos * across;
+    const y = top - cos * a + sin * across;
+    slots.push({ i, block, row, x: Math.round(x * 100) / 100, y: Math.round(y * 100) / 100 });
+  }
+  return { hw, side, top, front, t: SASH.t, cTop, k, theta, full, y1, y2, xLTop: xL(top), xRTop: xR(top), sections, edge, slots, rotZ: Math.PI / 4 - theta, badgeDiag: Math.round(s * Math.SQRT2 * 100) / 100, z: front + SASH.t + 0.04 };
+}
+
+/**
+ * 專章帶 mesh（純數字，Blocky 用嚟砌 BufferGeometry）：前面、後面斜帶 + 右側 + 膊頂。
+ * 回傳 { positions, uvs, indices }；u = 0 近頸紅邊、1 外邊紅邊（貼圖橫向：紅 | 綠 | 紅）。
+ */
+export function sashMesh(S) {
+  const positions = [];
+  const uvs = [];
+  const indices = [];
+  const quad = (pts, us) => {
+    const n = positions.length / 3;
+    pts.forEach((p, i) => {
+      positions.push(...p);
+      uvs.push(us[i], 0.5);
+    });
+    indices.push(n, n + 1, n + 2, n, n + 2, n + 3);
+  };
+  const zf = S.front + S.t;
+  for (const z of [zf, -zf]) {
+    for (let i = 0; i < S.sections.length - 1; i++) {
+      const a = S.sections[i];
+      const b = S.sections[i + 1];
+      quad([[a.xa, a.y, z], [a.xb, a.y, z], [b.xb, b.y, z], [b.xa, b.y, z]], [a.ua, a.ub, b.ub, b.ua]);
+    }
+  }
+  // 右側（x = −side）：上面 y1 = 近頸紅邊（u 0）、下面 y2 = 外邊（u 1）
+  quad([[-S.side, S.y1, zf], [-S.side, S.y1, -zf], [-S.side, S.y2, -zf], [-S.side, S.y2, zf]], [0, 0, 1, 1]);
+  // 膊頂（y = top + t）：x 由近頸嗰邊去到膊頂外邊
+  const x0 = S.xLTop;
+  const x1 = Math.min(S.xRTop, S.side);
+  const u1 = (x1 - x0) / (S.xRTop - x0);
+  const yt = S.top + S.t;
+  quad([[x0, yt, zf], [x1, yt, zf], [x1, yt, -zf], [x0, yt, -zf]], [0, u1, u1, 0]);
+  return { positions, uvs, indices };
 }
