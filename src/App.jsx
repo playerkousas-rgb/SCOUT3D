@@ -239,10 +239,10 @@ function ArtLine({ rules, art }) {
   const src = rules.sources[art.ref];
   return (
     <span className="muted">
-      {t(art.drawn ? 'info.artDrawn' : art.example ? 'info.artExample' : 'info.artOfficial')}
+      {t(art.user ? 'info.artUser' : art.example ? 'info.artExample' : 'info.artOfficial')}
       {lang === 'en' ? ': ' : '：'}
       {src ? bi(lang, src.zh, src.en) : art.ref}
-      {!art.drawn && (
+      {!art.user && (
         <>
           {lang === 'en' ? ', ' : '，'}
           {t('info.page')} {art.page}

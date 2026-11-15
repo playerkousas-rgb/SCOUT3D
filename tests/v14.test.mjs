@@ -137,7 +137,8 @@ const awards = leaderRules.badges.filter((b) => b.group === 'awards');
 test('領袖獎勵：勳章及獎勵編號 1–6 全部制服都戴得', () => {
   assert.deepEqual(validateRules(leaderRules), []);
   assert.ok(awards.length >= 15);
-  for (const b of awards) assert.deepEqual(b.uniforms, ['u1', 'u2', 'u3', 'u4', 'u5', 'u6'], b.id);
+  // 服務段章只戴喺制服恤衫上（手冊 P.189，v16），其餘編號 1–6 都戴得
+  for (const b of awards) assert.deepEqual(b.uniforms, b.id === 'serviceBars' ? ['u3', 'u4', 'u5', 'u6'] : ['u1', 'u2', 'u3', 'u4', 'u5', 'u6'], b.id);
   const state = { neckMedal: 'goldLion', commendation: 'high', meritAward: 'meritMedal', thanksBadge: true, longService: 'medal' };
   for (const u of ['3', '4', '5', '6']) {
     const ids = visible(placeFor(leaderRules, { gender: 'boy', uniform: `u${u}`, invested: true }), state, { invested: true, level: 'group' }).map((p) => p.id);
@@ -145,18 +146,19 @@ test('領袖獎勵：勳章及獎勵編號 1–6 全部制服都戴得', () => {
   }
 });
 
-test('領袖獎勵：銅狼獎章係掛頸勳章最高級，同獅／龍係同一個單選（有銅狼就只戴銅狼）', () => {
+test('領袖獎勵：銅狼勳章係掛頸勳章最高級，同獅／龍係同一個單選（有銅狼就只戴銅狼）', () => {
   const nm = leaderRules.badges.find((b) => b.id === 'neckMedal');
   const wolf = nm.choices.find((c) => c.id === 'bronzeWolf');
   assert.ok(wolf, '冇銅狼');
-  assert.equal(wolf.zh.name, '銅狼獎章');
+  assert.equal(wolf.zh.name, '銅狼勳章'); // 第 24/2025 號通告第 2 位
   assert.equal(wolf.en.name, 'Bronze Wolf');
-  assert.ok(wolf.art.drawn, '銅狼係示意圖，要標明');
+  assert.ok(wolf.art.user && !wolf.art.drawn, '銅狼用用戶提供嘅圖片（v16）');
   assert.ok(existsSync(new URL(`../public${wolf.art.file}`, import.meta.url)));
   const orders = nm.choices.filter((c) => c.order).map((c) => c.order);
   assert.equal(Math.min(...orders), wolf.order);
   assert.ok(leaderRules.sources.WOSM);
-  assert.ok(zh.includes("'info.artDrawn'") && en.includes("'info.artDrawn'"));
+  assert.ok(zh.includes("'info.artUser'") && en.includes("'info.artUser'"));
+  assert.ok(!i18n.includes('info.artDrawn'));
 });
 
 test('領袖獎勵：恤衫制服掛頸勳章喺領巾、巾圈前面', () => {

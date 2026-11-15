@@ -73,9 +73,9 @@ export function placeAll(rules, gender, { sweater = false, uniform = null } = {}
   for (const b of order) {
     const a = anchorOf(b, uniform);
     const { wCm: w, hCm: h, shape } = b.size;
-    const art = b.dynamic ? dynKey(b.id) : Array.isArray(b.art) ? null : b.art.file;
+    const art = b.dynamic ? dynKey(b.id) : Array.isArray(b.art) ? null : b.art?.file ?? null;
     const fit = b.dynamic === 'district' || b.dynamic === 'region' || b.dynamic === 'nameTag'; // 各區圖案比例唔同：喺 w × h 入面置中縮放
-    const extra = { ...(b.needsInvestiture ? { inv: true } : {}), ...(b.levels ? { levels: b.levels } : {}) };
+    const extra = { ...(b.needsInvestiture ? { inv: true } : {}), ...(b.levels ? { levels: b.levels } : {}), ...(b.hiddenBy ? { hiddenBy: b.hiddenBy } : {}), ...(b.limitWhen ? { limitWhen: b.limitWhen } : {}) };
     const sx = a.side === 'left' ? 1 : -1;
     const withArt = (b.choices || []).filter((c) => c.art);
     if (a.part === 'neck') {
@@ -197,6 +197,17 @@ export function placeAll(rules, gender, { sweater = false, uniform = null } = {}
     // 袖面 u：+ = 望住袖外側嘅右手邊。右袖右手邊 = 穿著者前面；左袖右手邊 = 後面
     const frontSign = a.side === 'right' ? 1 : -1;
     const u = a.towards ? (a.towards === 'front' ? frontSign : -frontSign) * a.offsetCm : 0;
+    if (a.stack) {
+      // 服務段章（手冊 P.184、P.189）：第一段底喺袖口縫線上方 aboveCuffSeamCm，之後每段縫喺上一段上面；
+      // 每個選項（一至四段）係一張疊好嘅相，高度 = 段數 × 每段高度（按相片比例縮放）
+      const bottom = face.cuffSeam - a.aboveCuffSeamCm;
+      for (const c of withArt) {
+        const f = fitPx(c.art.px, w, h * c.count);
+        out.push({ key: `${b.id}-${c.id}`, id: b.id, choice: c.id, count: c.count, mount, shape, w: f.w, h: f.h, u, v: bottom - f.h / 2, art: c.art.file, ...extra });
+      }
+      box[b.id] = { top: bottom - h * 4, bottom };
+      continue;
+    }
     if (a.grid) {
       // 2×2 格：底邊喺袖口縫線上方 aboveCuffSeamCm
       const bottom = face.cuffSeam - a.aboveCuffSeamCm;
@@ -333,6 +344,13 @@ export const levelOk = (p, level) => !p.levels || !level || p.levels.includes(le
  * unavailable = 而家冇圖案嘅章（例如揀咗總會總部屬下嘅區，冇地域章）
  * level = 成年成員單位層級（旅／區／地域／總部）：香港肩章／旅章、總會總部章／地域章／區章跟層級（手冊 P.94–95）
  */
+/** 某個章揀咗（有選項嘅章唔係「冇」） */
+const isOn = (state, id) => !!state[id] && state[id] !== 'none';
+/** 俾另一個獎勵取代（例：獲頒長期服務獎章之後唔再戴服務段章，手冊 P.189） */
+export const hiddenBy = (p, state) => (p.hiddenBy || []).find((id) => isOn(state, id)) ?? null;
+/** 同另一個獎勵一齊戴時只限某幾個選項（例：特殊貢獻星章只可以同第十次嘅徽章一齊戴，手冊 P.183） */
+export const limited = (p, state) => !!(p.limitWhen && p.choice && isOn(state, p.limitWhen.badge) && !p.limitWhen.choices.includes(p.choice));
+
 export function visible(placements, state, { invested, school = false, unavailable = [], level = null }) {
   if (school && !invested) return []; // 未宣誓冇旅巾，冇地方戴
   const on = (p) => {
@@ -340,6 +358,8 @@ export function visible(placements, state, { invested, school = false, unavailab
     if (unavailable.includes(p.id)) return false;
     if (!levelOk(p, level)) return false;
     if (p.id === 'progress') return p.step <= (state.progress || 0);
+    if (hiddenBy(p, state)) return false;
+    if (limited(p, state)) return false;
     if (p.choice) return state[p.id] === p.choice; // 有選項嘅章（例：深資童軍肩章）
     return !!state[p.id];
   };
@@ -412,6 +432,9 @@ export function shownReason(rules, outfit, state, id, { unavailable = [], level 
   if ((id === 'membership' || all.some((p) => p.id === id && p.inv)) && !outfit.invested) return 'uninvested';
   if (all.some((p) => p.id === id && !levelOk(p, level))) return 'level';
   if (unavailable.includes(id)) return 'noArt';
+  const mine = all.filter((p) => p.id === id && (!p.choice || p.choice === state[id]));
+  if (mine.some((p) => hiddenBy(p, state))) return 'replaced';
+  if (mine.some((p) => limited(p, state))) return 'limited';
   const req = all.find((p) => p.id === id && p.requires);
   if (req && state[id]) return 'needsHost';
   return 'off';

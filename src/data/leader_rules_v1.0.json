@@ -25,6 +25,12 @@
     "userChecks": [
       {
         "date": "2026-11-15",
+        "item": "awardsDetail",
+        "zh": "銅狼勳章換用戶提供圖片；按手冊 P.177–195 同第 24/2025 號通告逐條覆核勳章及獎勵：加服務段章、長期服務星章年資、特殊貢獻星章同第十次徽章（用戶指示「規定比較多要仔細點查看」）",
+        "en": "Bronze Wolf uses the image supplied by the user; decorations and awards re-checked against Handbook pp.177–195 and Circular 24/2025: service bars added, long service star years, Special Contribution Star with the 10th medallion (user instruction to check the detailed rules carefully)"
+      },
+      {
+        "date": "2026-11-15",
         "item": "awardsAllUniforms",
         "zh": "勳章及獎勵（嘉許笛繩、獅／龍勳章、銅狼等）編號 1–6 全部制服都可以戴；加銅狼獎章，係最高級，有銅狼就只戴銅狼（用戶指示）",
         "en": "Decorations and awards (commendation lanyards, Lion/Dragon decorations, Bronze Wolf, etc.) may be worn with all uniforms Nos. 1–6; Bronze Wolf added as the highest decoration, worn alone (user instruction)"
@@ -129,11 +135,11 @@
       "url": "https://www.scout.org.hk/tc/scout-units/regions-districts/index.html"
     },
     "WOSM": {
-      "zh": "世界童軍運動組織（WOSM）銅狼獎章",
-      "en": "World Organization of the Scout Movement (WOSM) Bronze Wolf Award",
+      "zh": "世界童軍運動組織（WOSM）銅狼勳章",
+      "en": "World Organization of the Scout Movement (WOSM) Bronze Wolf",
       "edition": {
-        "zh": "手冊冇銅狼圖案；綬帶綠底黃邊、銅狼像係示意圖（自行繪畫）",
-        "en": "Not illustrated in the Handbook; the green ribbon with yellow edges and bronze wolf are a drawn illustration"
+        "zh": "手冊冇銅狼圖案；圖片由用戶提供（2026-11-15）；等級跟第 24/2025 號通告第 2 位",
+        "en": "Not illustrated in the Handbook; image supplied by the user (2026-11-15); precedence No. 2 per Circular 24/2025"
       },
       "url": null
     }
@@ -3263,13 +3269,13 @@
         "name": "卓越服務勳章（掛頸）",
         "place": "繫喺頸上：綬帶由衣領兩邊落，勳章喺喉嚨下面（禮服、編號 4 喺領帶前面；編號 3、5、6 喺領巾同巾圈前面；晚禮服喺煲呔下面）。",
         "quote": "銅獅勳章、銀獅勳章、金獅勳章；青龍勳章、銀龍勳章、金龍勳章：繫在特定顏色的綬帶掛在頸上。假若獲頒多於一個勳章，只佩戴最高級的勳章。晚禮服：卓越服務勳章掛在頸上。",
-        "conditions": "獅勳章頒予領袖及總監，龍勳章頒予會務委員；銅狼獎章由世界童軍委員會頒發，係最高級，有銅狼就只戴銅狼。同一時間只戴最高級一個。"
+        "conditions": "獅勳章頒予領袖及總監，龍勳章頒予會務委員；銅狼勳章由世界童軍委員會頒發，等級名單第 2 位（只低過英勇獎勵），係掛頸勳章入面最高級，有銅狼就只戴銅狼。同一時間只戴最高級一個（P.186）。"
       },
       "en": {
         "name": "Distinguished service decoration (neck)",
         "place": "Round the neck: the ribbon comes down either side of the collar with the decoration below the throat (in front of the tie on the dress uniform and No. 4, in front of the neckerchief and woggle on Nos. 3, 5 and 6, below the bow tie on evening dress).",
         "quote": "Bronze, Silver and Gold Lion; Green, Silver and Gold Dragon: hung round the neck on the ribbon of its colour. If more than one is held, wear only the highest. Evening dress: the distinguished service decoration is worn round the neck.",
-        "conditions": "Lions are awarded to scouters and commissioners, Dragons to lay members; the Bronze Wolf is awarded by the World Scout Committee and ranks highest — a holder wears only the Bronze Wolf. Wear only the highest one at a time."
+        "conditions": "Lions are awarded to scouters and commissioners, Dragons to lay members; the Bronze Wolf is awarded by the World Scout Committee, No. 2 in the order of precedence (below only gallantry awards) and the highest neck decoration — a holder wears only the Bronze Wolf. Wear only the highest one at a time (p.186)."
       },
       "size": {
         "shape": "rect",
@@ -3428,7 +3434,7 @@
         {
           "id": "bronzeWolf",
           "zh": {
-            "name": "銅狼獎章"
+            "name": "銅狼勳章"
           },
           "en": {
             "name": "Bronze Wolf"
@@ -3438,13 +3444,13 @@
             "ref": "WOSM",
             "page": "—",
             "example": false,
-            "drawn": true,
             "px": [
-              150,
-              200
-            ]
+              243,
+              324
+            ],
+            "user": true
           },
-          "order": 1
+          "order": 2
         }
       ],
       "default": "none",
@@ -3459,8 +3465,8 @@
         ]
       },
       "modelNote": {
-        "zh": "勳章連 V 字綬帶相片取自手冊 P.178–179（已去背景），模型當一塊貼喺胸前（9 × 13 cm 入面按比例），唔係真係繞住條頸。",
-        "en": "The photo of the decoration with its V ribbon is from Handbook pp.178–179 (background removed); the model lays it flat on the chest (scaled inside 9 × 13 cm) rather than wrapping it round the neck."
+        "zh": "獅／龍勳章連 V 字綬帶相片取自手冊 P.178–179（已去背景）；銅狼勳章圖片由用戶提供。模型當一塊貼喺胸前（9 × 13 cm 入面按比例），唔係真係繞住條頸。",
+        "en": "The Lion/Dragon photos with their V ribbons are from Handbook pp.178–179 (background removed); the Bronze Wolf image was supplied by the user. The model lays it flat on the chest (scaled inside 9 × 13 cm) rather than wrapping it round the neck."
       },
       "fit": true
     },
@@ -3479,13 +3485,13 @@
       "group": "awards",
       "zh": {
         "name": "英勇獎勵",
-        "place": "禮服：右胸袋袋蓋上方中央；晚禮服：右襟領童軍徽上方（小型章）。",
+        "place": "禮服同恤衫（編號 1、3–6）：右胸袋袋蓋上方中央；晚禮服：右襟領童軍徽上方（小型章）。",
         "quote": "佩戴在制服恤衫或禮服上衣右胸袋袋蓋上方中央位置，圓形牌頂端緊貼袋蓋頂。假若佩戴兩個或以上獎章，則依「按等級排列的童軍勳章及獎勵名單」排列，順序由左至右（由內側至外側）佩戴。假若佩戴四個或以上獎章，用金屬胸針串連重疊起來佩戴，最高等級的獎章在最上面。假若在個別獎勵中獲頒多於一個獎章，只佩戴最高級的獎章。晚禮服：佩戴其他勳章及獎勵的小型章在右襟領童軍徽上方位置。",
         "conditions": "頒予童軍成員，表揚個人或團體不同程度嘅英勇表現；只戴最高級一個。P.191–192 等級第 1 位。"
       },
       "en": {
         "name": "Gallantry award",
-        "place": "Dress: centred above the right chest-pocket flap; evening dress: above the Scout emblem on the right lapel (miniature).",
+        "place": "Dress jacket and shirts (Nos. 1, 3–6): centred above the right chest-pocket flap; evening dress: above the Scout emblem on the right lapel (miniature).",
         "quote": "Worn centred above the right chest-pocket flap of the uniform shirt or dress jacket, the top of the round medal against the top of the flap. Two or more are arranged by the order of precedence, from left to right (inside to outside); four or more are joined by a metal brooch and overlapped, the highest on top. If more than one medal of the same award is held, wear only the highest. Evening dress: miniatures of the other awards go above the Scout emblem on the right lapel.",
         "conditions": "Recognises gallantry by individuals or groups; wear only the highest. No. 1 in the pp.191–192 order of precedence."
       },
@@ -3602,8 +3608,8 @@
         ]
       },
       "modelNote": {
-        "zh": "禮服：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）。",
-        "en": "Dress uniform: medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed)."
+        "zh": "禮服同恤衫（編號 1、3–6）：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）。",
+        "en": "Dress jacket and shirts (Nos. 1, 3–6): medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed)."
       }
     },
     {
@@ -3621,13 +3627,13 @@
       "group": "awards",
       "zh": {
         "name": "功績榮譽獎勵",
-        "place": "禮服：右胸袋袋蓋上方中央；晚禮服：右襟領童軍徽上方（小型章）。",
+        "place": "禮服同恤衫（編號 1、3–6）：右胸袋袋蓋上方中央；晚禮服：右襟領童軍徽上方（小型章）。",
         "quote": "佩戴在制服恤衫或禮服上衣右胸袋袋蓋上方中央位置，圓形牌頂端緊貼袋蓋頂。假若佩戴兩個或以上獎章，則依「按等級排列的童軍勳章及獎勵名單」排列，順序由左至右（由內側至外側）佩戴。假若佩戴四個或以上獎章，用金屬胸針串連重疊起來佩戴，最高等級的獎章在最上面。假若在個別獎勵中獲頒多於一個獎章，只佩戴最高級的獎章。晚禮服：佩戴其他勳章及獎勵的小型章在右襟領童軍徽上方位置。",
         "conditions": "頒予成年成員，表揚長期對童軍運動不同程度嘅功績服務；只戴最高級一個。P.191–192 等級：功績榮譽十字章第 9、功績榮譽獎章第 11、優異服務獎章第 13、優良服務獎章第 14。"
       },
       "en": {
         "name": "Meritorious service award",
-        "place": "Dress: centred above the right chest-pocket flap; evening dress: above the Scout emblem on the right lapel (miniature).",
+        "place": "Dress jacket and shirts (Nos. 1, 3–6): centred above the right chest-pocket flap; evening dress: above the Scout emblem on the right lapel (miniature).",
         "quote": "Worn centred above the right chest-pocket flap of the uniform shirt or dress jacket, the top of the round medal against the top of the flap. Two or more are arranged by the order of precedence, from left to right (inside to outside); four or more are joined by a metal brooch and overlapped, the highest on top. If more than one medal of the same award is held, wear only the highest. Evening dress: miniatures of the other awards go above the Scout emblem on the right lapel.",
         "conditions": "For long and meritorious service by adults; wear only the highest. Precedence (pp.191–192): Cross No. 9, Medal No. 11, Distinguished Service No. 13, Good Service No. 14."
       },
@@ -3764,8 +3770,8 @@
         ]
       },
       "modelNote": {
-        "zh": "禮服：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）。",
-        "en": "Dress uniform: medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed)."
+        "zh": "禮服同恤衫（編號 1、3–6）：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）。",
+        "en": "Dress jacket and shirts (Nos. 1, 3–6): medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed)."
       }
     },
     {
@@ -3783,13 +3789,13 @@
       "group": "awards",
       "zh": {
         "name": "鑽禧大露營紀念章",
-        "place": "禮服：右胸袋袋蓋上方中央；晚禮服：右襟領童軍徽上方（小型章）。",
+        "place": "禮服同恤衫（編號 1、3–6）：右胸袋袋蓋上方中央；晚禮服：右襟領童軍徽上方（小型章）。",
         "quote": "佩戴在制服恤衫或禮服上衣右胸袋袋蓋上方中央位置，圓形牌頂端緊貼袋蓋頂。假若佩戴兩個或以上獎章，則依「按等級排列的童軍勳章及獎勵名單」排列，順序由左至右（由內側至外側）佩戴。假若佩戴四個或以上獎章，用金屬胸針串連重疊起來佩戴，最高等級的獎章在最上面。假若在個別獎勵中獲頒多於一個獎章，只佩戴最高級的獎章。晚禮服：佩戴其他勳章及獎勵的小型章在右襟領童軍徽上方位置。",
         "conditions": "特別活動紀念徽章：頒予喺特別活動中有貢獻嘅成年成員。P.191–192 等級第 16 位。"
       },
       "en": {
         "name": "Diamond Jubilee Jamboree Medal",
-        "place": "Dress: centred above the right chest-pocket flap; evening dress: above the Scout emblem on the right lapel (miniature).",
+        "place": "Dress jacket and shirts (Nos. 1, 3–6): centred above the right chest-pocket flap; evening dress: above the Scout emblem on the right lapel (miniature).",
         "quote": "Worn centred above the right chest-pocket flap of the uniform shirt or dress jacket, the top of the round medal against the top of the flap. Two or more are arranged by the order of precedence, from left to right (inside to outside); four or more are joined by a metal brooch and overlapped, the highest on top. If more than one medal of the same award is held, wear only the highest. Evening dress: miniatures of the other awards go above the Scout emblem on the right lapel.",
         "conditions": "Special event commemorative medal for adults who contributed to the event. No. 16 in the pp.191–192 order of precedence."
       },
@@ -3835,8 +3841,8 @@
       },
       "rackOrder": 16,
       "modelNote": {
-        "zh": "禮服：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）。",
-        "en": "Dress uniform: medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed)."
+        "zh": "禮服同恤衫（編號 1、3–6）：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）。",
+        "en": "Dress jacket and shirts (Nos. 1, 3–6): medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed)."
       }
     },
     {
@@ -3854,13 +3860,13 @@
       "group": "awards",
       "zh": {
         "name": "香港童軍跨世紀大露營紀念章／星章",
-        "place": "禮服：右胸袋袋蓋上方中央；晚禮服：右襟領童軍徽上方（小型章）。",
+        "place": "禮服同恤衫（編號 1、3–6）：右胸袋袋蓋上方中央；晚禮服：右襟領童軍徽上方（小型章）。",
         "quote": "佩戴在制服恤衫或禮服上衣右胸袋袋蓋上方中央位置，圓形牌頂端緊貼袋蓋頂。假若佩戴兩個或以上獎章，則依「按等級排列的童軍勳章及獎勵名單」排列，順序由左至右（由內側至外側）佩戴。假若佩戴四個或以上獎章，用金屬胸針串連重疊起來佩戴，最高等級的獎章在最上面。假若在個別獎勵中獲頒多於一個獎章，只佩戴最高級的獎章。晚禮服：佩戴其他勳章及獎勵的小型章在右襟領童軍徽上方位置。",
         "conditions": "特別活動紀念徽章；星章或紀念章只戴一個。P.191–192 等級第 17 位。"
       },
       "en": {
         "name": "Millennium Jamboree Medal / Star",
-        "place": "Dress: centred above the right chest-pocket flap; evening dress: above the Scout emblem on the right lapel (miniature).",
+        "place": "Dress jacket and shirts (Nos. 1, 3–6): centred above the right chest-pocket flap; evening dress: above the Scout emblem on the right lapel (miniature).",
         "quote": "Worn centred above the right chest-pocket flap of the uniform shirt or dress jacket, the top of the round medal against the top of the flap. Two or more are arranged by the order of precedence, from left to right (inside to outside); four or more are joined by a metal brooch and overlapped, the highest on top. If more than one medal of the same award is held, wear only the highest. Evening dress: miniatures of the other awards go above the Scout emblem on the right lapel.",
         "conditions": "Special event commemorative; wear either the star or the medal. No. 17 in the pp.191–192 order of precedence."
       },
@@ -3957,8 +3963,8 @@
         ]
       },
       "modelNote": {
-        "zh": "禮服：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）。",
-        "en": "Dress uniform: medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed)."
+        "zh": "禮服同恤衫（編號 1、3–6）：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）。",
+        "en": "Dress jacket and shirts (Nos. 1, 3–6): medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed)."
       }
     },
     {
@@ -3976,13 +3982,13 @@
       "group": "awards",
       "zh": {
         "name": "大都會露營徽章",
-        "place": "禮服：右胸袋袋蓋上方中央；晚禮服：右襟領童軍徽上方（小型章）。",
+        "place": "禮服同恤衫（編號 1、3–6）：右胸袋袋蓋上方中央；晚禮服：右襟領童軍徽上方（小型章）。",
         "quote": "佩戴在制服恤衫或禮服上衣右胸袋袋蓋上方中央位置，圓形牌頂端緊貼袋蓋頂。假若佩戴兩個或以上獎章，則依「按等級排列的童軍勳章及獎勵名單」排列，順序由左至右（由內側至外側）佩戴。假若佩戴四個或以上獎章，用金屬胸針串連重疊起來佩戴，最高等級的獎章在最上面。假若在個別獎勵中獲頒多於一個獎章，只佩戴最高級的獎章。晚禮服：佩戴其他勳章及獎勵的小型章在右襟領童軍徽上方位置。",
         "conditions": "特別活動紀念徽章；銀章或銅章只戴一個。P.191–192 等級第 18 位。"
       },
       "en": {
         "name": "Metropolitan Camp Medal",
-        "place": "Dress: centred above the right chest-pocket flap; evening dress: above the Scout emblem on the right lapel (miniature).",
+        "place": "Dress jacket and shirts (Nos. 1, 3–6): centred above the right chest-pocket flap; evening dress: above the Scout emblem on the right lapel (miniature).",
         "quote": "Worn centred above the right chest-pocket flap of the uniform shirt or dress jacket, the top of the round medal against the top of the flap. Two or more are arranged by the order of precedence, from left to right (inside to outside); four or more are joined by a metal brooch and overlapped, the highest on top. If more than one medal of the same award is held, wear only the highest. Evening dress: miniatures of the other awards go above the Scout emblem on the right lapel.",
         "conditions": "Special event commemorative; wear either silver or bronze. No. 18 in the pp.191–192 order of precedence."
       },
@@ -4079,8 +4085,8 @@
         ]
       },
       "modelNote": {
-        "zh": "禮服：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）。",
-        "en": "Dress uniform: medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed)."
+        "zh": "禮服同恤衫（編號 1、3–6）：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）。",
+        "en": "Dress jacket and shirts (Nos. 1, 3–6): medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed)."
       }
     },
     {
@@ -4098,13 +4104,13 @@
       "group": "awards",
       "zh": {
         "name": "香港童軍百周年紀念章",
-        "place": "禮服：右胸袋袋蓋上方中央；晚禮服：右襟領童軍徽上方（小型章）。",
+        "place": "禮服同恤衫（編號 1、3–6）：右胸袋袋蓋上方中央；晚禮服：右襟領童軍徽上方（小型章）。",
         "quote": "佩戴在制服恤衫或禮服上衣右胸袋袋蓋上方中央位置，圓形牌頂端緊貼袋蓋頂。假若佩戴兩個或以上獎章，則依「按等級排列的童軍勳章及獎勵名單」排列，順序由左至右（由內側至外側）佩戴。假若佩戴四個或以上獎章，用金屬胸針串連重疊起來佩戴，最高等級的獎章在最上面。假若在個別獎勵中獲頒多於一個獎章，只佩戴最高級的獎章。晚禮服：佩戴其他勳章及獎勵的小型章在右襟領童軍徽上方位置。",
         "conditions": "特別活動紀念徽章；銀章或銅章只戴一個。P.191–192 等級第 19 位。"
       },
       "en": {
         "name": "Hong Kong Scouting Centenary Medal",
-        "place": "Dress: centred above the right chest-pocket flap; evening dress: above the Scout emblem on the right lapel (miniature).",
+        "place": "Dress jacket and shirts (Nos. 1, 3–6): centred above the right chest-pocket flap; evening dress: above the Scout emblem on the right lapel (miniature).",
         "quote": "Worn centred above the right chest-pocket flap of the uniform shirt or dress jacket, the top of the round medal against the top of the flap. Two or more are arranged by the order of precedence, from left to right (inside to outside); four or more are joined by a metal brooch and overlapped, the highest on top. If more than one medal of the same award is held, wear only the highest. Evening dress: miniatures of the other awards go above the Scout emblem on the right lapel.",
         "conditions": "Special event commemorative; wear either silver or bronze. No. 19 in the pp.191–192 order of precedence."
       },
@@ -4201,8 +4207,8 @@
         ]
       },
       "modelNote": {
-        "zh": "禮服：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）。",
-        "en": "Dress uniform: medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed)."
+        "zh": "禮服同恤衫（編號 1、3–6）：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）。",
+        "en": "Dress jacket and shirts (Nos. 1, 3–6): medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed)."
       }
     },
     {
@@ -4220,13 +4226,13 @@
       "group": "awards",
       "zh": {
         "name": "香港童軍中心紀念章",
-        "place": "禮服：右胸袋袋蓋上方中央；晚禮服：右襟領童軍徽上方（小型章）。",
+        "place": "禮服同恤衫（編號 1、3–6）：右胸袋袋蓋上方中央；晚禮服：右襟領童軍徽上方（小型章）。",
         "quote": "佩戴在制服恤衫或禮服上衣右胸袋袋蓋上方中央位置，圓形牌頂端緊貼袋蓋頂。假若佩戴兩個或以上獎章，則依「按等級排列的童軍勳章及獎勵名單」排列，順序由左至右（由內側至外側）佩戴。假若佩戴四個或以上獎章，用金屬胸針串連重疊起來佩戴，最高等級的獎章在最上面。假若在個別獎勵中獲頒多於一個獎章，只佩戴最高級的獎章。晚禮服：佩戴其他勳章及獎勵的小型章在右襟領童軍徽上方位置。",
         "conditions": "特殊貢獻徽章：1995 年捐獻十萬元或以上建設或購置香港童軍中心設施。P.191–192 等級第 23 位。"
       },
       "en": {
         "name": "Hong Kong Scout Centre Commemorative Medal",
-        "place": "Dress: centred above the right chest-pocket flap; evening dress: above the Scout emblem on the right lapel (miniature).",
+        "place": "Dress jacket and shirts (Nos. 1, 3–6): centred above the right chest-pocket flap; evening dress: above the Scout emblem on the right lapel (miniature).",
         "quote": "Worn centred above the right chest-pocket flap of the uniform shirt or dress jacket, the top of the round medal against the top of the flap. Two or more are arranged by the order of precedence, from left to right (inside to outside); four or more are joined by a metal brooch and overlapped, the highest on top. If more than one medal of the same award is held, wear only the highest. Evening dress: miniatures of the other awards go above the Scout emblem on the right lapel.",
         "conditions": "Special contribution: donors of HK$100,000 or more to the Hong Kong Scout Centre in 1995. No. 23 in the pp.191–192 order of precedence."
       },
@@ -4272,8 +4278,8 @@
       },
       "rackOrder": 23,
       "modelNote": {
-        "zh": "禮服：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）。",
-        "en": "Dress uniform: medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed)."
+        "zh": "禮服同恤衫（編號 1、3–6）：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）。",
+        "en": "Dress jacket and shirts (Nos. 1, 3–6): medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed)."
       }
     },
     {
@@ -4291,13 +4297,13 @@
       "group": "awards",
       "zh": {
         "name": "香港童軍 95 周年暨童軍運動百周年特別貢獻章",
-        "place": "禮服：右胸袋袋蓋上方中央；晚禮服：右襟領童軍徽上方（小型章）。",
+        "place": "禮服同恤衫（編號 1、3–6）：右胸袋袋蓋上方中央；晚禮服：右襟領童軍徽上方（小型章）。",
         "quote": "佩戴在制服恤衫或禮服上衣右胸袋袋蓋上方中央位置，圓形牌頂端緊貼袋蓋頂。假若佩戴兩個或以上獎章，則依「按等級排列的童軍勳章及獎勵名單」排列，順序由左至右（由內側至外側）佩戴。假若佩戴四個或以上獎章，用金屬胸針串連重疊起來佩戴，最高等級的獎章在最上面。假若在個別獎勵中獲頒多於一個獎章，只佩戴最高級的獎章。晚禮服：佩戴其他勳章及獎勵的小型章在右襟領童軍徽上方位置。",
         "conditions": "特殊貢獻徽章（2007 年捐獻）；金章或銀章只戴一個。P.191–192 等級第 24 位。"
       },
       "en": {
         "name": "HK Scouting 95th / World Scouting Centenary Special Contribution Medal",
-        "place": "Dress: centred above the right chest-pocket flap; evening dress: above the Scout emblem on the right lapel (miniature).",
+        "place": "Dress jacket and shirts (Nos. 1, 3–6): centred above the right chest-pocket flap; evening dress: above the Scout emblem on the right lapel (miniature).",
         "quote": "Worn centred above the right chest-pocket flap of the uniform shirt or dress jacket, the top of the round medal against the top of the flap. Two or more are arranged by the order of precedence, from left to right (inside to outside); four or more are joined by a metal brooch and overlapped, the highest on top. If more than one medal of the same award is held, wear only the highest. Evening dress: miniatures of the other awards go above the Scout emblem on the right lapel.",
         "conditions": "Special contribution (2007 donations); wear either gold or silver. No. 24 in the pp.191–192 order of precedence."
       },
@@ -4394,8 +4400,8 @@
         ]
       },
       "modelNote": {
-        "zh": "禮服：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）。",
-        "en": "Dress uniform: medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed)."
+        "zh": "禮服同恤衫（編號 1、3–6）：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）。",
+        "en": "Dress jacket and shirts (Nos. 1, 3–6): medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed)."
       }
     },
     {
@@ -4413,13 +4419,13 @@
       "group": "awards",
       "zh": {
         "name": "香港童軍百周年特別貢獻章",
-        "place": "禮服：右胸袋袋蓋上方中央；晚禮服：右襟領童軍徽上方（小型章）。",
+        "place": "禮服同恤衫（編號 1、3–6）：右胸袋袋蓋上方中央；晚禮服：右襟領童軍徽上方（小型章）。",
         "quote": "佩戴在制服恤衫或禮服上衣右胸袋袋蓋上方中央位置，圓形牌頂端緊貼袋蓋頂。假若佩戴兩個或以上獎章，則依「按等級排列的童軍勳章及獎勵名單」排列，順序由左至右（由內側至外側）佩戴。假若佩戴四個或以上獎章，用金屬胸針串連重疊起來佩戴，最高等級的獎章在最上面。假若在個別獎勵中獲頒多於一個獎章，只佩戴最高級的獎章。晚禮服：佩戴其他勳章及獎勵的小型章在右襟領童軍徽上方位置。",
         "conditions": "特殊貢獻徽章（2011 年捐獻）；只戴最高級一個。P.191–192 等級第 25 位。"
       },
       "en": {
         "name": "HK Scouting Centenary Special Contribution Medal",
-        "place": "Dress: centred above the right chest-pocket flap; evening dress: above the Scout emblem on the right lapel (miniature).",
+        "place": "Dress jacket and shirts (Nos. 1, 3–6): centred above the right chest-pocket flap; evening dress: above the Scout emblem on the right lapel (miniature).",
         "quote": "Worn centred above the right chest-pocket flap of the uniform shirt or dress jacket, the top of the round medal against the top of the flap. Two or more are arranged by the order of precedence, from left to right (inside to outside); four or more are joined by a metal brooch and overlapped, the highest on top. If more than one medal of the same award is held, wear only the highest. Evening dress: miniatures of the other awards go above the Scout emblem on the right lapel.",
         "conditions": "Special contribution (2011 donations); wear only the highest. No. 25 in the pp.191–192 order of precedence."
       },
@@ -4556,8 +4562,8 @@
         ]
       },
       "modelNote": {
-        "zh": "禮服：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）。",
-        "en": "Dress uniform: medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed)."
+        "zh": "禮服同恤衫（編號 1、3–6）：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）。",
+        "en": "Dress jacket and shirts (Nos. 1, 3–6): medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed)."
       }
     },
     {
@@ -4575,15 +4581,15 @@
       "group": "awards",
       "zh": {
         "name": "特殊貢獻徽章",
-        "place": "禮服：右胸袋袋蓋上方中央；晚禮服：右襟領童軍徽上方（小型章）。",
+        "place": "禮服同恤衫（編號 1、3–6）：右胸袋袋蓋上方中央；晚禮服：右襟領童軍徽上方（小型章）。",
         "quote": "佩戴在制服恤衫或禮服上衣右胸袋袋蓋上方中央位置，圓形牌頂端緊貼袋蓋頂。假若佩戴兩個或以上獎章，則依「按等級排列的童軍勳章及獎勵名單」排列，順序由左至右（由內側至外側）佩戴。假若佩戴四個或以上獎章，用金屬胸針串連重疊起來佩戴，最高等級的獎章在最上面。假若在個別獎勵中獲頒多於一個獎章，只佩戴最高級的獎章。晚禮服：佩戴其他勳章及獎勵的小型章在右襟領童軍徽上方位置。",
-        "conditions": "每次捐獻十二萬元或以上；揀返最高嗰次（第一至十次）。P.191–192 等級第 28 位。"
+        "conditions": "首次捐獻十二萬港元或以上頒發，其後每再捐十二萬元或以上加徽扣（第一至十次）；只戴最高一個（P.192 第 28 位）。有特殊貢獻星章嘅話，只有第十次頒發嘅徽章可以同星章一齊戴（P.183）。"
       },
       "en": {
         "name": "Special Contribution Medallion",
-        "place": "Dress: centred above the right chest-pocket flap; evening dress: above the Scout emblem on the right lapel (miniature).",
+        "place": "Dress jacket and shirts (Nos. 1, 3–6): centred above the right chest-pocket flap; evening dress: above the Scout emblem on the right lapel (miniature).",
         "quote": "Worn centred above the right chest-pocket flap of the uniform shirt or dress jacket, the top of the round medal against the top of the flap. Two or more are arranged by the order of precedence, from left to right (inside to outside); four or more are joined by a metal brooch and overlapped, the highest on top. If more than one medal of the same award is held, wear only the highest. Evening dress: miniatures of the other awards go above the Scout emblem on the right lapel.",
-        "conditions": "Each donation of HK$120,000 or more; pick the latest (1st–10th). No. 28 in the pp.191–192 order of precedence."
+        "conditions": "First donation of HK$120,000 or more, then a clasp for each further HK$120,000 (1st–10th); wear only the highest (No. 28 on p.192). With a Special Contribution Star, only the 10th medallion may be worn alongside it (p.183)."
       },
       "size": {
         "shape": "rect",
@@ -4838,8 +4844,14 @@
         ]
       },
       "modelNote": {
-        "zh": "禮服：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）。",
-        "en": "Dress uniform: medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed)."
+        "zh": "禮服同恤衫（編號 1、3–6）：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）。",
+        "en": "Dress jacket and shirts (Nos. 1, 3–6): medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed)."
+      },
+      "limitWhen": {
+        "badge": "specialStar",
+        "choices": [
+          "ten"
+        ]
       }
     },
     {
@@ -4857,15 +4869,15 @@
       "group": "awards",
       "zh": {
         "name": "特殊貢獻星章",
-        "place": "禮服：右胸袋袋蓋上方中央；晚禮服：右襟領童軍徽上方（小型章）。",
+        "place": "禮服同恤衫（編號 1、3–6）：右胸袋袋蓋上方中央；晚禮服：右襟領童軍徽上方（小型章）。",
         "quote": "佩戴在制服恤衫或禮服上衣右胸袋袋蓋上方中央位置，圓形牌頂端緊貼袋蓋頂。假若佩戴兩個或以上獎章，則依「按等級排列的童軍勳章及獎勵名單」排列，順序由左至右（由內側至外側）佩戴。假若佩戴四個或以上獎章，用金屬胸針串連重疊起來佩戴，最高等級的獎章在最上面。假若在個別獎勵中獲頒多於一個獎章，只佩戴最高級的獎章。晚禮服：佩戴其他勳章及獎勵的小型章在右襟領童軍徽上方位置。",
-        "conditions": "第十一次起每次捐獻十二萬元或以上；第十次頒發嘅特殊貢獻徽章可以同星章一齊戴。P.191–192 等級第 27 位。"
+        "conditions": "頒予第十一次捐獻嘅特殊貢獻徽章持有人，其後每再捐十二萬元或以上加星章徽扣（第十一至十六次）；只戴最高一個（P.192 第 27 位）。第十次頒發嘅特殊貢獻徽章可以同星章一齊戴（P.183）。"
       },
       "en": {
         "name": "Special Contribution Star",
-        "place": "Dress: centred above the right chest-pocket flap; evening dress: above the Scout emblem on the right lapel (miniature).",
+        "place": "Dress jacket and shirts (Nos. 1, 3–6): centred above the right chest-pocket flap; evening dress: above the Scout emblem on the right lapel (miniature).",
         "quote": "Worn centred above the right chest-pocket flap of the uniform shirt or dress jacket, the top of the round medal against the top of the flap. Two or more are arranged by the order of precedence, from left to right (inside to outside); four or more are joined by a metal brooch and overlapped, the highest on top. If more than one medal of the same award is held, wear only the highest. Evening dress: miniatures of the other awards go above the Scout emblem on the right lapel.",
-        "conditions": "From the 11th donation of HK$120,000 or more; the 10th Special Contribution Medallion may be worn with the star. No. 27 in the pp.191–192 order of precedence."
+        "conditions": "For Special Contribution Medallion holders at their 11th donation, with a clasp for each further HK$120,000 (11th–16th); wear only the highest (No. 27 on p.192). The 10th Special Contribution Medallion may be worn with the star (p.183)."
       },
       "size": {
         "shape": "rect",
@@ -5040,9 +5052,166 @@
         ]
       },
       "modelNote": {
-        "zh": "禮服：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）。",
-        "en": "Dress uniform: medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed)."
+        "zh": "禮服同恤衫（編號 1、3–6）：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）。",
+        "en": "Dress jacket and shirts (Nos. 1, 3–6): medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed)."
       }
+    },
+    {
+      "id": "serviceBars",
+      "required": false,
+      "side": "left",
+      "uniforms": [
+        "u3",
+        "u4",
+        "u5",
+        "u6"
+      ],
+      "group": "awards",
+      "zh": {
+        "name": "服務段章",
+        "place": "只戴喺制服恤衫（編號 3–6）左袖：第一段喺袖口縫線上方三厘米中央，第二、三、四段順序縫喺之前嗰段上面；長袖恤衫同短袖位置一樣。",
+        "quote": "每一服務段章（最多為四段）是頒予於服務實職不少過三年的成年成員。只佩戴在制服恤衫上。佩戴第一段在左袖縫線上方三釐米中央位置，第二、三、四段縫在之前獲取的服務段章之上。假若穿長袖恤衫，則與在短袖恤衫上的位置相同。當獲頒長期服務獎章後，服務段章不可繼續佩戴。",
+        "conditions": "每一段 = 服務實職不少過三年（最多四段）；屬長期服務獎勵。獲頒長期服務獎章之後唔可以再戴（P.189）。"
+      },
+      "en": {
+        "name": "Service bars",
+        "place": "Uniform shirts only (Nos. 3–6), left sleeve: the first bar centred 3 cm above the sleeve seam, the second, third and fourth sewn above the previous one; same position on a long-sleeved shirt.",
+        "quote": "Each service bar (up to four) is awarded to adult members for not less than three years of active service. Worn on the uniform shirt only. The first bar is centred 3 cm above the left sleeve seam; the second, third and fourth are sewn above the bars already earned. On a long-sleeved shirt the position is the same as on a short-sleeved one. Once the Long Service Medal is awarded, the service bars may no longer be worn.",
+        "conditions": "One bar per not less than three years of active service (up to four); part of the long service awards. Not worn once the Long Service Medal is awarded (p.189)."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 4,
+        "hCm": 1.75,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "side": "left",
+        "aboveCuffSeamCm": 3,
+        "edge": "bottom",
+        "stack": true,
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "184, 189"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/awards/serviceBar1.png",
+        "ref": "UH",
+        "page": "184",
+        "example": false,
+        "px": [
+          200,
+          88
+        ]
+      },
+      "hiddenBy": [
+        "longService"
+      ],
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "one",
+          "zh": {
+            "name": "一段（3 年）"
+          },
+          "en": {
+            "name": "1 bar (3 yrs)"
+          },
+          "count": 1,
+          "art": {
+            "file": "/badges/awards/serviceBar1.png",
+            "ref": "UH",
+            "page": "184",
+            "example": false,
+            "px": [
+              200,
+              88
+            ]
+          }
+        },
+        {
+          "id": "two",
+          "zh": {
+            "name": "二段（6 年）"
+          },
+          "en": {
+            "name": "2 bars (6 yrs)"
+          },
+          "count": 2,
+          "art": {
+            "file": "/badges/awards/serviceBar2.png",
+            "ref": "UH",
+            "page": "184",
+            "example": false,
+            "px": [
+              200,
+              176
+            ]
+          }
+        },
+        {
+          "id": "three",
+          "zh": {
+            "name": "三段（9 年）"
+          },
+          "en": {
+            "name": "3 bars (9 yrs)"
+          },
+          "count": 3,
+          "art": {
+            "file": "/badges/awards/serviceBar3.png",
+            "ref": "UH",
+            "page": "184",
+            "example": false,
+            "px": [
+              200,
+              272
+            ]
+          }
+        },
+        {
+          "id": "four",
+          "zh": {
+            "name": "四段（12 年）"
+          },
+          "en": {
+            "name": "4 bars (12 yrs)"
+          },
+          "count": 4,
+          "art": {
+            "file": "/badges/awards/serviceBar4.png",
+            "ref": "UH",
+            "page": "184",
+            "example": false,
+            "px": [
+              200,
+              354
+            ]
+          }
+        }
+      ],
+      "default": "none",
+      "modelNote": {
+        "zh": "手冊冇寫尺寸；模型每段當 4 × 1.75 cm（P.184 相片比例、P.189 附圖）。相片取自手冊 P.184（已去背景）。",
+        "en": "No size in the Handbook; the model takes each bar as 4 × 1.75 cm (p.184 photo proportions, p.189 figure). Photos from Handbook p.184 (background removed)."
+      },
+      "fit": true
     },
     {
       "id": "longService",
@@ -5059,15 +5228,15 @@
       "group": "awards",
       "zh": {
         "name": "長期服務獎章",
-        "place": "禮服：右胸袋袋蓋上方中央；晚禮服：右襟領童軍徽上方（小型章）。",
+        "place": "禮服同恤衫（編號 1、3–6）：右胸袋袋蓋上方中央；晚禮服：右襟領童軍徽上方（小型章）。",
         "quote": "佩戴在制服恤衫或禮服上衣右胸袋袋蓋上方中央位置，圓形牌頂端緊貼袋蓋頂。假若佩戴兩個或以上獎章，則依「按等級排列的童軍勳章及獎勵名單」排列，順序由左至右（由內側至外側）佩戴。假若佩戴四個或以上獎章，用金屬胸針串連重疊起來佩戴，最高等級的獎章在最上面。假若在個別獎勵中獲頒多於一個獎章，只佩戴最高級的獎章。晚禮服：佩戴其他勳章及獎勵的小型章在右襟領童軍徽上方位置。",
-        "conditions": "服務實職年資滿十五年；之後每服務滿十年加一星；只戴最高年資一個。P.191–192 等級第 31 位。"
+        "conditions": "服務實職年資滿十五年頒長期服務獎章；之後每服務滿十年喺綬帶上加一星：一星 25 年、二星 35 年、三星 45 年、四星 55 年、五星 65 年、六星 75 年（P.185）。只戴最高年資一個（P.192 第 31 位）。獲頒長期服務獎章之後，袖上嘅服務段章唔可以再戴（P.189）。"
       },
       "en": {
         "name": "Long Service Medal",
-        "place": "Dress: centred above the right chest-pocket flap; evening dress: above the Scout emblem on the right lapel (miniature).",
+        "place": "Dress jacket and shirts (Nos. 1, 3–6): centred above the right chest-pocket flap; evening dress: above the Scout emblem on the right lapel (miniature).",
         "quote": "Worn centred above the right chest-pocket flap of the uniform shirt or dress jacket, the top of the round medal against the top of the flap. Two or more are arranged by the order of precedence, from left to right (inside to outside); four or more are joined by a metal brooch and overlapped, the highest on top. If more than one medal of the same award is held, wear only the highest. Evening dress: miniatures of the other awards go above the Scout emblem on the right lapel.",
-        "conditions": "15 years' active service, plus a star for every further 10 years; wear only the highest. No. 31 in the pp.191–192 order of precedence."
+        "conditions": "Awarded after 15 years of active service, with a star added to the ribbon for every further 10 years: one star 25 years, two 35, three 45, four 55, five 65, six 75 (p.185). Wear only the highest (No. 31 on p.192). Once the Long Service Medal is awarded, the service bars on the sleeve are no longer worn (p.189)."
       },
       "size": {
         "shape": "rect",
@@ -5112,10 +5281,10 @@
         {
           "id": "medal",
           "zh": {
-            "name": "長期服務獎章"
+            "name": "長期服務獎章（15 年）"
           },
           "en": {
-            "name": "Long Service Medal"
+            "name": "Long Service Medal (15 yrs)"
           },
           "art": {
             "file": "/badges/awards/longService.png",
@@ -5127,15 +5296,16 @@
               150
             ]
           },
-          "order": 31
+          "order": 31,
+          "years": 15
         },
         {
           "id": "one",
           "zh": {
-            "name": "一星獎章"
+            "name": "一星獎章（25 年）"
           },
           "en": {
-            "name": "one star"
+            "name": "One star (25 yrs)"
           },
           "art": {
             "file": "/badges/awards/longService1.png",
@@ -5147,15 +5317,16 @@
               150
             ]
           },
-          "order": 31
+          "order": 31,
+          "years": 25
         },
         {
           "id": "two",
           "zh": {
-            "name": "二星獎章"
+            "name": "二星獎章（35 年）"
           },
           "en": {
-            "name": "two stars"
+            "name": "Two stars (35 yrs)"
           },
           "art": {
             "file": "/badges/awards/longService2.png",
@@ -5167,15 +5338,16 @@
               150
             ]
           },
-          "order": 31
+          "order": 31,
+          "years": 35
         },
         {
           "id": "three",
           "zh": {
-            "name": "三星獎章"
+            "name": "三星獎章（45 年）"
           },
           "en": {
-            "name": "three stars"
+            "name": "Three stars (45 yrs)"
           },
           "art": {
             "file": "/badges/awards/longService3.png",
@@ -5187,15 +5359,16 @@
               150
             ]
           },
-          "order": 31
+          "order": 31,
+          "years": 45
         },
         {
           "id": "four",
           "zh": {
-            "name": "四星獎章"
+            "name": "四星獎章（55 年）"
           },
           "en": {
-            "name": "four stars"
+            "name": "Four stars (55 yrs)"
           },
           "art": {
             "file": "/badges/awards/longService4.png",
@@ -5207,15 +5380,16 @@
               150
             ]
           },
-          "order": 31
+          "order": 31,
+          "years": 55
         },
         {
           "id": "five",
           "zh": {
-            "name": "五星獎章"
+            "name": "五星獎章（65 年）"
           },
           "en": {
-            "name": "five stars"
+            "name": "Five stars (65 yrs)"
           },
           "art": {
             "file": "/badges/awards/longService5.png",
@@ -5227,15 +5401,16 @@
               150
             ]
           },
-          "order": 31
+          "order": 31,
+          "years": 65
         },
         {
           "id": "six",
           "zh": {
-            "name": "六星獎章"
+            "name": "六星獎章（75 年）"
           },
           "en": {
-            "name": "six stars"
+            "name": "Six stars (75 yrs)"
           },
           "art": {
             "file": "/badges/awards/longService6.png",
@@ -5247,7 +5422,8 @@
               150
             ]
           },
-          "order": 31
+          "order": 31,
+          "years": 75
         }
       ],
       "default": "none",
@@ -5262,8 +5438,8 @@
         ]
       },
       "modelNote": {
-        "zh": "禮服：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）。",
-        "en": "Dress uniform: medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed)."
+        "zh": "禮服同恤衫（編號 1、3–6）：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）。",
+        "en": "Dress jacket and shirts (Nos. 1, 3–6): medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed)."
       }
     },
     {
@@ -5392,13 +5568,13 @@
       "group": "awards",
       "zh": {
         "name": "香港總監感謝章",
-        "place": "禮服：右胸袋袋蓋中央；晚禮服：右襟領童軍徽下面。",
+        "place": "禮服同恤衫（編號 1、3–6）：右胸袋袋蓋中央；晚禮服：右襟領童軍徽下面。",
         "quote": "香港總監感謝章佩戴在西服上衣右面翻領上；假若穿著制服，佩戴在恤衫或禮服上衣右胸袋袋蓋中央位置。晚禮服：佩戴香港總監感謝章在右襟領童軍徽下方位置。",
         "conditions": "頒予會務委員，表揚忠誠服務。"
       },
       "en": {
         "name": "Chief Commissioner's Thanks Badge",
-        "place": "Dress: centre of the right chest-pocket flap; evening dress: below the Scout emblem on the right lapel.",
+        "place": "Dress jacket and shirts (Nos. 1, 3–6): centre of the right chest-pocket flap; evening dress: below the Scout emblem on the right lapel.",
         "quote": "The Thanks Badge goes on the right lapel of a suit; with uniform, centred on the right chest-pocket flap of the shirt or dress jacket. Evening dress: below the Scout emblem on the right lapel.",
         "conditions": "Awarded to lay members for loyal service."
       },
@@ -5571,14 +5747,19 @@
       "en": "Handbook p.93: Rover Scouts and adults wear the Hong Kong Badge centred on the right pocket; only the youth sections (Cub, Scout, Venture) wear it above the left flap."
     },
     {
-      "id": "medalsOnShirt",
-      "zh": "手冊 P.187 講勳章可以戴喺制服恤衫或禮服上衣；模型而家只喺禮服（編號 1）同晚禮服（編號 2，小型章）提供勳章，編號 3–6 恤衫之後再做。",
-      "en": "Handbook p.187 allows medals on the uniform shirt or dress jacket; the model currently offers medals only on the dress uniform (No. 1) and evening dress (No. 2, miniatures); shirts (No. 3–6) come later."
+      "id": "medalPrecedenceGaps",
+      "zh": "P.191–192（第 24/2025 號通告）等級名單有 32 項；模型只提供有相片嘅：英勇、銅狼（用戶提供圖片）、獅／龍、功績榮譽十字章、功績榮譽獎章、優異／優良服務獎章、鑽禧、跨世紀、大都會、百周年、童軍中心、95 周年及百周年特別貢獻、特殊貢獻星章／徽章、長期服務。未有：其他童軍會、英國童軍會、世界／亞太區委員會、110 周年紀念及特別貢獻、童心抗疫、同行未來、亞太區童軍基金（手冊冇相）。",
+      "en": "The pp.191–192 list (Circular 24/2025) has 32 entries; the model offers those with photos: gallantry, Bronze Wolf (image supplied by the user), Lion/Dragon, Cross and Medal for Merit, Distinguished and Good Service, Diamond Jubilee, Millennium, Metropolitan Camp, Centenary, Scout Centre, 95th/Centenary special contribution, Special Contribution Star/Medallion and Long Service. Not yet: other associations, The Scout Association (UK), World/Asia-Pacific committees, 110th anniversary medals and special contribution, anti-epidemic, Jamboree 2023, Asia-Pacific Scout Foundation (no photos in the Handbook)."
     },
     {
-      "id": "medalPrecedenceGaps",
-      "zh": "P.191–192 等級名單有 32 項；模型只提供手冊有相片嘅 HKSA 勳章及獎勵（冇鋼狼、其他童軍會、110 周年、同心抗疫、同行未來、亞太區等）。",
-      "en": "The pp.191–192 list has 32 entries; the model offers only the SAHK awards with photos in the Handbook (no Bronze Wolf, other associations' awards, 110th anniversary, anti-epidemic, Jamboree 2023, Asia-Pacific, etc.)."
+      "id": "ribbonsGeneral",
+      "zh": "一般場合（日常活動及訓練）可以改戴勳條（P.190、P.194）：模型而家只做重要禮儀場合嘅勳章；勳條同勳章唔可以同時戴。",
+      "en": "For general occasions (everyday activities and training) ribbons may be worn instead (pp.190, 194): the model currently shows only the medals for important ceremonial occasions; ribbons and medals are never worn together."
+    },
+    {
+      "id": "otherAwards",
+      "zh": "政府／非童軍機構／海外童軍會頒授嘅勳章戴喺左胸袋上方（P.196–200）；模範童軍肩帶或紅笛同嘉許笛繩只可以揀一樣戴（P.158、P.197）：模型未有呢幾項。",
+      "en": "Government, non-Scout and overseas association awards go above the left pocket (pp.196–200); a King's Scout cord or red lanyard and a commendation lanyard are worn one or the other (pp.158, 197): the model does not include these yet."
     }
   ],
   "artCredit": {
