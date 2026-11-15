@@ -96,6 +96,58 @@ export function useDynamicTextures(arts) {
   return out;
 }
 
+/**
+ * v28：透明底圖案（勳章相片等）嘅外框 —— 揀中／hover 時唔再畫一大塊長方形（睇落好似冇退底），
+ * 改用圖案輪廓向外擴 padCm 嘅剪影做 alphaMap。圖案四角唔透明（普通布章）就回傳 null，照舊畫長方形。
+ * crop：掛頸勳章只用相片底部 crop 比例。回傳 CanvasTexture（呼叫者負責 dispose）。
+ */
+export function silhouetteCanvas(img, wCm, padCm, crop = 1) {
+  if (!img?.width || !img?.height || typeof document === 'undefined') return null;
+  const W = img.width;
+  const H = img.height;
+  const sy = Math.round(H * (1 - crop));
+  const sh = H - sy;
+  const probe = document.createElement('canvas');
+  probe.width = W;
+  probe.height = sh;
+  const pc = probe.getContext('2d', { willReadFrequently: true });
+  pc.drawImage(img, 0, sy, W, sh, 0, 0, W, sh);
+  const px = pc.getImageData(0, 0, W, sh).data;
+  const alphaAt = (x, y) => px[(y * W + x) * 4 + 3];
+  // 外圈至少 25% 透明先當透明底（勳章頂嘅橫扣可以頂到兩角）
+  let clear = 0;
+  let total = 0;
+  for (let x = 0; x < W; x++) for (const y of [0, sh - 1]) (total++, alphaAt(x, y) <= 32 && clear++);
+  for (let y = 1; y < sh - 1; y++) for (const x of [0, W - 1]) (total++, alphaAt(x, y) <= 32 && clear++);
+  if (clear < total * 0.25) return null;
+  const pad = Math.max(1, Math.round((padCm * W) / wCm));
+  const sil = document.createElement('canvas');
+  sil.width = W + 2 * pad;
+  sil.height = sh + 2 * pad;
+  const sc = sil.getContext('2d');
+  // 擴張：圖案沿圓周（兩圈）偏移疊畫，再用 source-in 填白
+  for (const f of [1, 0.5]) {
+    const r = pad * f;
+    for (let k = 0; k < 24; k++) {
+      const t = (k / 24) * Math.PI * 2;
+      sc.drawImage(probe, pad + Math.cos(t) * r, pad + Math.sin(t) * r);
+    }
+  }
+  sc.drawImage(probe, pad, pad);
+  sc.globalCompositeOperation = 'source-in';
+  sc.fillStyle = '#ffffff';
+  sc.fillRect(0, 0, sil.width, sil.height);
+  // alphaMap 讀綠色 channel：黑底白剪影
+  const out = document.createElement('canvas');
+  out.width = sil.width;
+  out.height = sil.height;
+  const oc = out.getContext('2d');
+  oc.fillStyle = '#000000';
+  oc.fillRect(0, 0, out.width, out.height);
+  oc.drawImage(sil, 0, 0);
+  return { canvas: out, padX: pad / W, padY: pad / sh };
+}
+
 /** fit：圖案喺 w × h 入面置中縮放（各區區章比例唔同） */
 function fitSize(p, tex) {
   const img = tex?.image;
@@ -165,6 +217,29 @@ function Patch({ p, tex, painted, selected, onSelect, registry, bend = null }) {
   useEffect(() => {
     if (registry && ref.current) registry.set(p.key, ref.current); // 屈／唔屈會換 mesh
   }, [registry, p.key, bent]);
+  // v28：透明底圖案嘅揀中／hover 外框跟輪廓（唔畫長方形）
+  const padCm = selected ? 0.55 : 0.35;
+  const sil = useMemo(() => {
+    if (!ring || round || !tex?.image) return null;
+    const c = silhouetteCanvas(tex.image, w, padCm, crop ?? 1);
+    if (!c) return null;
+    const t = new THREE.CanvasTexture(c.canvas);
+    t.userData.pad = [c.padX, c.padY];
+    return t;
+  }, [ring, round, tex, w, padCm, crop]);
+  useEffect(() => () => sil?.dispose(), [sil]);
+  const silW = sil ? w * (1 + 2 * sil.userData.pad[0]) : 0;
+  const silH = sil ? h * (1 + 2 * sil.userData.pad[1]) : 0;
+  // 外框都跟表面屈（平面框會喺曲面勳章前面，遮住勳章下半）
+  const ringW = sil ? silW : w + (selected ? 1.1 : 0.7);
+  const ringH = sil ? silH : h + (selected ? 1.1 : 0.7);
+  const ringGeo = useMemo(() => {
+    if (!ring || round || !bent || !bend) return null;
+    const g = new THREE.PlaneGeometry(ringW, ringH, Math.max(4, Math.ceil(ringW / 0.6)), Math.max(4, Math.ceil(ringH / 0.6)));
+    bendGeometry(g, bend.matrix, bend.surf);
+    return g;
+  }, [ring, round, bent, bend, ringW, ringH]);
+  useEffect(() => () => ringGeo?.dispose(), [ringGeo]);
   const thick = !bent && !!edge && (round || edge.opaque);
   const lift = thick ? BADGE_LIFT : 0;
   const stitch = detailed && !metal && map ? stitchNormal(w, h) : null;
@@ -225,10 +300,16 @@ function Patch({ p, tex, painted, selected, onSelect, registry, bend = null }) {
           <meshStandardMaterial color={painted ? edge.edge : '#a9abae'} roughness={0.85} />
         </mesh>
       )}
-      {ring && (
-        <mesh position={[0, 0, -EPS / 2]} renderOrder={1}>
-          {round ? <ringGeometry args={[w / 2 - 0.05, w / 2 + (selected ? 0.55 : 0.35), 48]} /> : <planeGeometry args={[w + (selected ? 1.1 : 0.7), h + (selected ? 1.1 : 0.7)]} />}
-          <meshBasicMaterial color={selected ? ACCENT : '#ffffff'} polygonOffset polygonOffsetFactor={-1} />
+      {ring && sil && (
+        <mesh key={ringGeo ? 'rb' : 'rf'} position={[0, 0, -EPS / 2]} renderOrder={1} geometry={ringGeo ?? undefined}>
+          {ringGeo ? null : <planeGeometry args={[silW, silH]} />}
+          <meshBasicMaterial key={sil.uuid} color={selected ? ACCENT : '#ffffff'} alphaMap={sil} alphaTest={0.5} depthWrite={false} polygonOffset polygonOffsetFactor={-1} />
+        </mesh>
+      )}
+      {ring && !sil && (
+        <mesh key={ringGeo ? 'qb' : 'qf'} position={[0, 0, -EPS / 2]} renderOrder={1} geometry={ringGeo ?? undefined}>
+          {ringGeo ? null : round ? <ringGeometry args={[w / 2 - 0.05, w / 2 + (selected ? 0.55 : 0.35), 48]} /> : <planeGeometry args={[w + (selected ? 1.1 : 0.7), h + (selected ? 1.1 : 0.7)]} />}
+          <meshBasicMaterial color={selected ? ACCENT : '#ffffff'} depthWrite={false} polygonOffset polygonOffsetFactor={-1} />
         </mesh>
       )}
     </group>
