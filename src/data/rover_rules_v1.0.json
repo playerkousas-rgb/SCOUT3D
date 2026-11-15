@@ -94,6 +94,12 @@
         "item": "allChecked",
         "zh": "用戶確認全部內容已核對，介面刪走「待核對」字樣（用戶指示）",
         "en": "The user confirmed every item has been checked; the \"pending review\" labels are removed from the interface (user instruction)"
+      },
+      {
+        "date": "2026-11-15",
+        "item": "v21RoverExtras",
+        "zh": "樂行童軍自己考取嘅非基本章要加；以《樂行童軍支部訓練綱要》為準（用戶指示）",
+        "en": "Add the Rover Scouts' own non-basic badges, following the Rover Scout Section Training Scheme (user instruction)"
       }
     ]
   },
@@ -709,7 +715,10 @@
         "zh": "手冊冇寫尺寸；模型用直徑 4 cm，按 P.171 附圖同胸袋嘅比例。",
         "en": "No size in the Handbook; the model uses 4 cm diameter, from its proportion to the pocket in the p.171 figure."
       },
-      "sweater": true
+      "sweater": true,
+      "hiddenBy": [
+        "peace"
+      ]
     },
     {
       "id": "hongKong",
@@ -738,8 +747,10 @@
       "anchor": {
         "part": "torso",
         "side": "left",
-        "pocket": "aboveFlap",
-        "gapCm": 3,
+        "slot": "pocketL",
+        "layer": "upper",
+        "rank": 1,
+        "exact": true,
         "measured": true
       },
       "sources": [
@@ -757,11 +768,15 @@
         "file": "/badges/hong_kong_badge.png",
         "ref": "UH",
         "page": "93",
-        "example": false
+        "example": false,
+        "px": [
+          140,
+          195
+        ]
       },
       "modelNote": {
-        "zh": "手冊冇寫尺寸；模型用 4 × 5.6 cm（跟 P.93 圖案比例）。",
-        "en": "No size in the Handbook; the model uses 4 × 5.6 cm (the p.93 artwork's proportions)."
+        "zh": "手冊冇寫尺寸；模型用 4 × 5.6 cm（跟 P.93 圖案比例）。 同飛行章／跳傘章一齊戴時，飛行章喺袋蓋上方 2 cm、香港章喺佢上面（綱要 P.12 附圖 ②③）。",
+        "en": "No size in the Handbook; the model uses 4 × 5.6 cm (the p.93 artwork's proportions). With the Flying/Parachute Badge, the wings go 2 cm above the flap and the Hong Kong Badge above them (Training Scheme p.12 figure ②③)."
       },
       "sweater": true
     },
@@ -1067,24 +1082,1920 @@
         "en": "No size in the Handbook; the model uses 9 × 2 cm (p.159 artwork proportions). Type a year: the background and lettering come from p.159 and only the year digits change; the colour cycles every 3 years (1999 red, 2000 purple, 2001 blue…, matching 2016 blue, 2017 red, 2018 purple on p.159). Handbook p.171 figure: for Rover Scouts the Meritorious Group Badge is lowest on the right sleeve, just above the cuff seam."
       },
       "sweater": false
-    }
-  ],
-  "notAllowed": [
+    },
     {
-      "id": "activityBadges",
-      "zh": "呢一版只示範制服頁列明嘅基本徽章（世界童軍會員章、香港章、地域章、區章、旅章）、樂行童軍肩章同優異旅團章；樂行童軍急救章、進度性獎章（樂行童軍獎章、貝登堡獎章）、寰宇童軍章、社區參與章、活動徽章等之後再加。",
-      "en": "This version shows only the basic badges on the uniform page (World Membership, Hong Kong, Region, District and Group Badges), the Rover Scout Epaulettes and the Meritorious Group Badge; the Rover Scout First Aid Badge, progress awards (Rover Scout Award, B.-P. Award), the Scouts of the World Award, community involvement and activity badges come later.",
+      "id": "roverAward",
+      "required": false,
+      "side": "right",
+      "group": "extra",
+      "zh": {
+        "name": "樂行童軍獎章／貝登堡獎章",
+        "place": "穿著者右胸袋中央（綱要 P.12 附圖 ⑨）。",
+        "quote": "樂行童軍完成 7 項獎章考驗中的其中 4 項，即可獲頒「樂行童軍獎章」；完成所有 7 項考驗，便能獲頒「貝登堡獎章」。",
+        "conditions": "樂行童軍進度性訓練第三、四階段；只戴最高嗰個。"
+      },
+      "en": {
+        "name": "Rover Scout Award / B.-P. Award",
+        "place": "Centre of the wearer's right chest pocket (Training Scheme p.12 figure ⑨).",
+        "quote": "A Rover Scout who completes 4 of the 7 award requirements receives the Rover Scout Award; completing all 7 earns the B.-P. Award.",
+        "conditions": "Third and fourth stages of Rover Scout progressive training; wear only the higher one."
+      },
+      "size": {
+        "shape": "circle",
+        "wCm": 4.5,
+        "hCm": 4.5,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "pocket": "centre",
+        "side": "right",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "RTS",
+          "page": "12–14"
+        },
+        {
+          "ref": "UH",
+          "page": "146–147, 171"
+        }
+      ],
+      "status": "verified",
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "未考獲"
+          },
+          "en": {
+            "name": "Not yet earned"
+          }
+        },
+        {
+          "id": "rover",
+          "zh": {
+            "name": "樂行童軍獎章"
+          },
+          "en": {
+            "name": "Rover Scout Award"
+          },
+          "art": {
+            "file": "/badges/extra/rover_award.png",
+            "ref": "RTS",
+            "page": "13",
+            "example": false,
+            "px": [
+              172,
+              172
+            ]
+          }
+        },
+        {
+          "id": "bp",
+          "zh": {
+            "name": "貝登堡獎章"
+          },
+          "en": {
+            "name": "B.-P. Award"
+          },
+          "art": {
+            "file": "/badges/extra/bp_award.png",
+            "ref": "RTS",
+            "page": "13",
+            "example": false,
+            "px": [
+              171,
+              172
+            ]
+          }
+        }
+      ],
+      "default": "none",
+      "art": {
+        "file": "/badges/extra/rover_award.png",
+        "ref": "RTS",
+        "page": "13",
+        "example": false,
+        "px": [
+          172,
+          172
+        ]
+      },
+      "modelNote": {
+        "zh": "手冊 P.147、P.171 寫喺左袖下方；2026 年 5 月版綱要 P.12 附圖改咗喺右胸袋中央，樂行童軍跟綱要（用戶指示）。模型用直徑 4.5 cm。",
+        "en": "Handbook pp.147 and 171 put it low on the left sleeve; the May 2026 Training Scheme p.12 figure moves it to the centre of the right chest pocket, and Rover Scouts follow the Training Scheme (user instruction). The model uses 4.5 cm diameter."
+      },
+      "sweater": false,
+      "fit": true
+    },
+    {
+      "id": "faith",
+      "required": false,
+      "side": "right",
+      "group": "extra",
+      "zh": {
+        "name": "樂行童軍宗教章／公教章",
+        "place": "穿著者右胸袋袋蓋上方 3 cm；同紀念章並排時喺左（內側）。",
+        "quote": "青少年成員佩戴所屬支部的宗教章或取得最高段數的公教章在制服恤衫右胸袋袋蓋上方三釐米中央位置。假若與和平使者章／紀念章一起佩戴，兩章並行排列，宗教章／公教章在其左方位置（內側）。不可同時佩戴宗教章與公教章。",
+        "conditions": "宗教章：完成其中一項宗教課程；公教章：已領洗嘅天主教成員，只戴最高段數。兩樣只可以揀一樣。"
+      },
+      "en": {
+        "name": "Rover Scout Religious Badge / Catholic Badge",
+        "place": "3 cm above the wearer's right pocket flap; left (inner side) when worn with the Commemorative Badge.",
+        "quote": "Youth members wear their section's Religious Badge, or the Catholic Badge of the highest stage, centred 3 cm above the right pocket flap. With the Messengers of Peace / Commemorative Badge the two sit side by side, the Religious/Catholic Badge on the left (inner side). The Religious and Catholic Badges may not be worn together.",
+        "conditions": "Religious Badge: complete one of the religious courses; Catholic Badge: baptised Catholics, highest stage only. Only one of the two."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3.2,
+        "hCm": 4,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "slot": "pocketR",
+        "layer": "upper",
+        "rank": 1,
+        "side": "right",
+        "measured": true
+      },
       "sources": [
         {
           "ref": "UH",
-          "page": "42, 44, 46, 171"
+          "page": "138–139, 164"
         },
         {
           "ref": "RTS",
-          "page": "10–13"
+          "page": "12, 40–46"
         }
-      ]
+      ],
+      "status": "verified",
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "religious",
+          "zh": {
+            "name": "樂行童軍宗教章"
+          },
+          "en": {
+            "name": "Rover Scout Religious Badge"
+          },
+          "art": {
+            "file": "/badges/extra/rover_religious.png",
+            "ref": "RTS",
+            "page": "40",
+            "example": false,
+            "px": [
+              152,
+              200
+            ]
+          }
+        },
+        {
+          "id": "catholicOne",
+          "zh": {
+            "name": "公教章第 1 段"
+          },
+          "en": {
+            "name": "Catholic Badge stage 1"
+          },
+          "art": {
+            "file": "/badges/extra/catholic1.png",
+            "ref": "UH",
+            "page": "138",
+            "example": false,
+            "px": [
+              200,
+              198
+            ]
+          }
+        },
+        {
+          "id": "catholicTwo",
+          "zh": {
+            "name": "公教章第 2 段"
+          },
+          "en": {
+            "name": "Catholic Badge stage 2"
+          },
+          "art": {
+            "file": "/badges/extra/catholic2.png",
+            "ref": "UH",
+            "page": "138",
+            "example": false,
+            "px": [
+              200,
+              200
+            ]
+          }
+        },
+        {
+          "id": "catholicThree",
+          "zh": {
+            "name": "公教章第 3 段"
+          },
+          "en": {
+            "name": "Catholic Badge stage 3"
+          },
+          "art": {
+            "file": "/badges/extra/catholic3.png",
+            "ref": "UH",
+            "page": "138",
+            "example": false,
+            "px": [
+              198,
+              200
+            ]
+          }
+        },
+        {
+          "id": "catholicFour",
+          "zh": {
+            "name": "公教章第 4 段"
+          },
+          "en": {
+            "name": "Catholic Badge stage 4"
+          },
+          "art": {
+            "file": "/badges/extra/catholic4.png",
+            "ref": "UH",
+            "page": "138",
+            "example": false,
+            "px": [
+              200,
+              199
+            ]
+          }
+        }
+      ],
+      "default": "none",
+      "art": {
+        "file": "/badges/extra/rover_religious.png",
+        "ref": "RTS",
+        "page": "40",
+        "example": false,
+        "px": [
+          152,
+          200
+        ]
+      },
+      "modelNote": {
+        "zh": "宗教章圖案取自綱要 P.40；公教章四段（黃、白、藍、紅底）取自手冊 P.138。模型用 3.2 × 4 cm 框（按圖案比例）。",
+        "en": "Religious Badge artwork from Training Scheme p.40; the four Catholic Badge stages (yellow, white, blue, red) from Handbook p.138. The model uses a 3.2 × 4 cm box (artwork proportions)."
+      },
+      "sweater": false
     },
+    {
+      "id": "commemorative",
+      "required": false,
+      "side": "right",
+      "group": "extra",
+      "zh": {
+        "name": "紀念章",
+        "place": "穿著者右胸袋袋蓋上方 3 cm；同宗教章／公教章並排時喺右（外側）。",
+        "quote": "紀念章佩戴在制服恤衫右胸袋袋蓋上方三釐米中央位置。假若與其他標誌或徽章一起佩戴，兩章並行排列，紀念章在其右方位置。紀念章最大尺寸以七釐米（闊）× 七釐米（高）為限。",
+        "conditions": "只限已獲批准、喺指定期間內佩戴；同一時間只戴一個。"
+      },
+      "en": {
+        "name": "Commemorative Badge",
+        "place": "3 cm above the wearer's right pocket flap; right (outer side) when worn with the Religious/Catholic Badge.",
+        "quote": "Worn centred 3 cm above the right pocket flap. With another emblem or badge the two sit side by side, the Commemorative Badge on the right. At most 7 cm wide × 7 cm high.",
+        "conditions": "Approved badges only, within the set period; one at a time."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 5,
+        "hCm": 5,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "slot": "pocketR",
+        "layer": "upper",
+        "rank": 2,
+        "side": "right",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "163–165"
+        },
+        {
+          "ref": "RTS",
+          "page": "12"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/handbook_example_commemorative.png",
+        "ref": "UH",
+        "page": "25",
+        "example": true,
+        "px": [
+          128,
+          129
+        ]
+      },
+      "modelNote": {
+        "zh": "圖案係手冊示例色塊，每個紀念章唔同；模型用 5 × 5 cm（上限 7 × 7 cm）。",
+        "en": "The artwork is the handbook's example block; each badge differs. The model uses 5 × 5 cm (limit 7 × 7 cm)."
+      },
+      "sweater": false
+    },
+    {
+      "id": "emblemBauhinia",
+      "required": false,
+      "side": "right",
+      "group": "extra",
+      "zh": {
+        "name": "金紫荊獎章標誌",
+        "place": "穿著者右胸袋袋蓋上方（緊貼袋蓋）；最多三個，按次序由右至左（金紫荊、總領袖、榮譽童軍）。",
+        "quote": "曾考獲金紫荊獎章、總領袖獎章或榮譽童軍獎章的青少年成員晉升至另一支部，可在制服上佩戴相關獎章標誌，直至完成支部訓練為止。佩戴一個、兩個或三個支部最高獎章標誌，按次序由右至左佩戴在制服恤衫右胸袋袋蓋上方中央位置。",
+        "conditions": "以前支部考獲嘅最高獎章；只為青少年成員而設。"
+      },
+      "en": {
+        "name": "Golden Bauhinia Award Emblem",
+        "place": "On top of the wearer's right pocket flap; up to three, right to left in order (Golden Bauhinia, Chief Scout's, Hong Kong Scout Award).",
+        "quote": "Youth members who earned the Golden Bauhinia, Chief Scout's or Hong Kong Scout Award and moved up to another section may wear the emblem until they finish that section's training. One, two or three emblems are worn right to left, centred above the right pocket flap.",
+        "conditions": "Highest award of an earlier section; youth members only."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.6,
+        "hCm": 2,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "slot": "pocketR",
+        "layer": "flap",
+        "rank": 1,
+        "side": "right",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "134, 164–165, 171"
+        },
+        {
+          "ref": "RTS",
+          "page": "12"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/extra/emblem_bauhinia.png",
+        "ref": "UH",
+        "page": "134",
+        "example": false,
+        "px": [
+          200,
+          147
+        ]
+      },
+      "modelNote": {
+        "zh": "手冊冇寫尺寸；模型用 2.6 × 2 cm 框（按 P.134 圖案比例）。",
+        "en": "No size in the Handbook; the model uses a 2.6 × 2 cm box (p.134 artwork proportions)."
+      },
+      "sweater": false
+    },
+    {
+      "id": "emblemChief",
+      "required": false,
+      "side": "right",
+      "group": "extra",
+      "zh": {
+        "name": "總領袖獎章標誌",
+        "place": "穿著者右胸袋袋蓋上方（緊貼袋蓋）；最多三個，按次序由右至左（金紫荊、總領袖、榮譽童軍）。",
+        "quote": "曾考獲金紫荊獎章、總領袖獎章或榮譽童軍獎章的青少年成員晉升至另一支部，可在制服上佩戴相關獎章標誌，直至完成支部訓練為止。佩戴一個、兩個或三個支部最高獎章標誌，按次序由右至左佩戴在制服恤衫右胸袋袋蓋上方中央位置。",
+        "conditions": "以前支部考獲嘅最高獎章；只為青少年成員而設。"
+      },
+      "en": {
+        "name": "Chief Scout's Award Emblem",
+        "place": "On top of the wearer's right pocket flap; up to three, right to left in order (Golden Bauhinia, Chief Scout's, Hong Kong Scout Award).",
+        "quote": "Youth members who earned the Golden Bauhinia, Chief Scout's or Hong Kong Scout Award and moved up to another section may wear the emblem until they finish that section's training. One, two or three emblems are worn right to left, centred above the right pocket flap.",
+        "conditions": "Highest award of an earlier section; youth members only."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.6,
+        "hCm": 2,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "slot": "pocketR",
+        "layer": "flap",
+        "rank": 2,
+        "side": "right",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "134, 164–165, 171"
+        },
+        {
+          "ref": "RTS",
+          "page": "12"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/extra/emblem_chief.png",
+        "ref": "UH",
+        "page": "134",
+        "example": false,
+        "px": [
+          200,
+          147
+        ]
+      },
+      "modelNote": {
+        "zh": "手冊冇寫尺寸；模型用 2.6 × 2 cm 框（按 P.134 圖案比例）。",
+        "en": "No size in the Handbook; the model uses a 2.6 × 2 cm box (p.134 artwork proportions)."
+      },
+      "sweater": false
+    },
+    {
+      "id": "emblemScoutAward",
+      "required": false,
+      "side": "right",
+      "group": "extra",
+      "zh": {
+        "name": "榮譽童軍獎章標誌",
+        "place": "穿著者右胸袋袋蓋上方（緊貼袋蓋）；最多三個，按次序由右至左（金紫荊、總領袖、榮譽童軍）。",
+        "quote": "曾考獲金紫荊獎章、總領袖獎章或榮譽童軍獎章的青少年成員晉升至另一支部，可在制服上佩戴相關獎章標誌，直至完成支部訓練為止。佩戴一個、兩個或三個支部最高獎章標誌，按次序由右至左佩戴在制服恤衫右胸袋袋蓋上方中央位置。",
+        "conditions": "以前支部考獲嘅最高獎章；只為青少年成員而設。"
+      },
+      "en": {
+        "name": "Hong Kong Scout Award Emblem",
+        "place": "On top of the wearer's right pocket flap; up to three, right to left in order (Golden Bauhinia, Chief Scout's, Hong Kong Scout Award).",
+        "quote": "Youth members who earned the Golden Bauhinia, Chief Scout's or Hong Kong Scout Award and moved up to another section may wear the emblem until they finish that section's training. One, two or three emblems are worn right to left, centred above the right pocket flap.",
+        "conditions": "Highest award of an earlier section; youth members only."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.6,
+        "hCm": 2,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "slot": "pocketR",
+        "layer": "flap",
+        "rank": 3,
+        "side": "right",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "134, 164–165, 171"
+        },
+        {
+          "ref": "RTS",
+          "page": "12"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/extra/emblem_scoutAward.png",
+        "ref": "UH",
+        "page": "134",
+        "example": false,
+        "px": [
+          200,
+          147
+        ]
+      },
+      "modelNote": {
+        "zh": "手冊冇寫尺寸；模型用 2.6 × 2 cm 框（按 P.134 圖案比例）。",
+        "en": "No size in the Handbook; the model uses a 2.6 × 2 cm box (p.134 artwork proportions)."
+      },
+      "sweater": false
+    },
+    {
+      "id": "wings",
+      "required": false,
+      "side": "left",
+      "group": "extra",
+      "zh": {
+        "name": "飛行章／跳傘章",
+        "place": "穿著者左胸袋袋蓋上方 2 cm，香港章喺佢上面（綱要 P.12 附圖 ③）。",
+        "quote": "完成「飛行章」或「跳傘章」的樂行童軍支部成員可佩戴相對的活動徽章於制服上，惟飛行章及跳傘章不可同時佩戴於制服上。",
+        "conditions": "只可以戴其中一個。"
+      },
+      "en": {
+        "name": "Flying Badge / Parachute Badge",
+        "place": "2 cm above the wearer's left pocket flap, with the Hong Kong Badge above it (Training Scheme p.12 figure ③).",
+        "quote": "Rover Scouts who complete the Flying or Parachute Badge may wear it on the uniform, but not both at once.",
+        "conditions": "Only one of the two."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 5.5,
+        "hCm": 3.2,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "slot": "pocketL",
+        "layer": "middle",
+        "rank": 1,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "RTS",
+          "page": "12, 36"
+        },
+        {
+          "ref": "UH",
+          "page": "93, 150"
+        }
+      ],
+      "status": "verified",
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "flying",
+          "zh": {
+            "name": "飛行章"
+          },
+          "en": {
+            "name": "Flying Badge"
+          },
+          "art": {
+            "file": "/badges/extra/flying.png",
+            "ref": "RTS",
+            "page": "36",
+            "example": false,
+            "px": [
+              240,
+              76
+            ]
+          }
+        },
+        {
+          "id": "parachute",
+          "zh": {
+            "name": "跳傘章"
+          },
+          "en": {
+            "name": "Parachute Badge"
+          },
+          "art": {
+            "file": "/badges/extra/parachute.png",
+            "ref": "RTS",
+            "page": "36",
+            "example": false,
+            "px": [
+              240,
+              140
+            ]
+          }
+        }
+      ],
+      "default": "none",
+      "art": {
+        "file": "/badges/extra/flying.png",
+        "ref": "RTS",
+        "page": "36",
+        "example": false,
+        "px": [
+          240,
+          76
+        ]
+      },
+      "modelNote": {
+        "zh": "手冊冇寫尺寸；模型用 5.5 cm 闊。",
+        "en": "No size in the Handbook; the model uses 5.5 cm wide."
+      },
+      "sweater": false
+    },
+    {
+      "id": "serviceStar",
+      "required": false,
+      "side": "left",
+      "group": "extra",
+      "zh": {
+        "name": "服務年星",
+        "place": "穿著者左胸袋袋蓋上方（緊貼袋蓋）中央。",
+        "quote": "各青少年成員在宣誓後服務滿一年者，可在制服上佩戴繡有「1」字的服務年星，兩年則可佩戴繡有「2」字的服務年星，餘此類推。樂行童軍：藍色，數目字分別有「1」至「7」。只可佩戴在該支部獲取最高年份的一枚服務年星。",
+        "conditions": "宣誓後每服務滿一年；只戴最高年份嗰枚。"
+      },
+      "en": {
+        "name": "Service Star",
+        "place": "Centred on top of the wearer's left pocket flap.",
+        "quote": "A youth member who has served a full year after investiture wears the star with “1”, two years “2”, and so on. Rover Scouts: blue, numbers 1 to 7. Only the highest star of the section is worn.",
+        "conditions": "One per full year of service after investiture; highest only."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 1.5,
+        "hCm": 1.5,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "slot": "pocketL",
+        "layer": "stars",
+        "rank": 1,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "129–130, 171"
+        },
+        {
+          "ref": "RTS",
+          "page": "12"
+        }
+      ],
+      "status": "verified",
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "one",
+          "zh": {
+            "name": "1 年"
+          },
+          "en": {
+            "name": "1 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_rover_1.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "two",
+          "zh": {
+            "name": "2 年"
+          },
+          "en": {
+            "name": "2 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_rover_2.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "three",
+          "zh": {
+            "name": "3 年"
+          },
+          "en": {
+            "name": "3 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_rover_3.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "four",
+          "zh": {
+            "name": "4 年"
+          },
+          "en": {
+            "name": "4 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_rover_4.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "five",
+          "zh": {
+            "name": "5 年"
+          },
+          "en": {
+            "name": "5 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_rover_5.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "six",
+          "zh": {
+            "name": "6 年"
+          },
+          "en": {
+            "name": "6 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_rover_6.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "seven",
+          "zh": {
+            "name": "7 年"
+          },
+          "en": {
+            "name": "7 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_rover_7.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        }
+      ],
+      "default": "none",
+      "art": {
+        "file": "/badges/extra/service_star_rover_1.png",
+        "ref": "UH",
+        "page": "129",
+        "example": false,
+        "px": [
+          96,
+          96
+        ]
+      },
+      "modelNote": {
+        "zh": "藍底白星跟手冊 P.129 樂行童軍樣式，數字按揀咗嘅年份重畫；手冊冇寫尺寸，模型用 1.5 cm。以前支部嘅服務年星（手冊 P.130：晉支部後仍可佩戴）未有示範。",
+        "en": "Blue with a white star as in the Handbook p.129 Rover Scout sample, with the number redrawn for the chosen year; no size in the Handbook, the model uses 1.5 cm. Stars from earlier sections (still wearable after moving up, p.130) are not shown."
+      },
+      "sweater": false
+    },
+    {
+      "id": "peace",
+      "required": false,
+      "side": "left",
+      "group": "extra",
+      "zh": {
+        "name": "和平使者章（結合世界童軍會員章）",
+        "place": "穿著者左胸袋中央，代替世界童軍會員章（綱要 P.12 附圖 ⑤）。",
+        "quote": "⑤ 會員章／和平使者章（結合世界童軍會員章）。童軍成員在參加已於「世界童軍組織」網站註冊及總會核准的和平使者計劃活動後，可佩戴在制服上。由活動首天起，可佩戴十二個月。",
+        "conditions": "參加已註冊同核准嘅和平使者計劃活動；可戴 12 個月（再完成另一項可額外 12 個月）。"
+      },
+      "en": {
+        "name": "Messengers of Peace Badge (combined with the World Membership Badge)",
+        "place": "Centre of the wearer's left chest pocket, in place of the World Membership Badge (Training Scheme p.12 figure ⑤).",
+        "quote": "⑤ Membership Badge / Messengers of Peace Badge (combined with the World Membership Badge). Members who take part in a Messengers of Peace project registered on the WOSM website and approved by the Association may wear it, for twelve months from the first day.",
+        "conditions": "Registered and approved Messengers of Peace project; 12 months (another 12 after a further project)."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 4,
+        "hCm": 5.03,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "pocket": "centre",
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "RTS",
+          "page": "12"
+        },
+        {
+          "ref": "UH",
+          "page": "155"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/extra/peace.png",
+        "ref": "UH",
+        "page": "155",
+        "example": false,
+        "px": [
+          159,
+          200
+        ]
+      },
+      "modelNote": {
+        "zh": "手冊 P.155 寫喺右胸袋袋蓋上方；綱要 P.12 附圖將佢同世界童軍會員章結合、戴喺左胸袋中央，樂行童軍跟綱要。開咗就唔再另外戴世界童軍會員章。",
+        "en": "Handbook p.155 puts it above the right pocket flap; the Training Scheme p.12 figure combines it with the World Membership Badge at the centre of the left pocket, and Rover Scouts follow the Training Scheme. When on, the separate World Membership Badge is not worn."
+      },
+      "sweater": false,
+      "fit": true
+    },
+    {
+      "id": "worldScout",
+      "required": false,
+      "side": "right",
+      "group": "extra",
+      "zh": {
+        "name": "寰宇童軍章",
+        "place": "穿著者右袖、地域章／區章下面一行；世界童軍組織徽章同「積極公民」獎章最多合共四個（綱要 P.12 附圖 ⑭）。",
+        "quote": "⑭ 世界童軍組織推出的獎章／積極公民獎章系列（最多佩戴合共四枚）。",
+        "conditions": "完成「世界童軍組織」寰宇童軍計劃（探索＋自願服務）。"
+      },
+      "en": {
+        "name": "Scouts of the World Award",
+        "place": "Wearer's right sleeve, in the row below the Region/District Badges; WOSM and Active Citizen badges at most four in total (Training Scheme p.12 figure ⑭).",
+        "quote": "⑭ Badges launched by WOSM / Active Citizen series (at most four in total).",
+        "conditions": "Complete the WOSM Scouts of the World programme (Discovery + Voluntary Service)."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3.2,
+        "hCm": 3.2,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "sleeveR",
+        "layer": "row",
+        "rank": 1,
+        "side": "right",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "RTS",
+          "page": "12, 29"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/extra/world_scout.png",
+        "ref": "RTS",
+        "page": "29",
+        "example": false,
+        "px": [
+          200,
+          200
+        ]
+      },
+      "modelNote": {
+        "zh": "綱要冇寫尺寸；模型按 P.12 附圖比例用 3.2 cm。開多過四個就只顯示排先嘅四個（綱要列出次序）。",
+        "en": "No size in the Training Scheme; the model uses 3.2 cm from the p.12 figure. If more than four are on, only the first four (Training Scheme order) are shown."
+      },
+      "sweater": false
+    },
+    {
+      "id": "earthTribe",
+      "required": false,
+      "side": "right",
+      "group": "extra",
+      "zh": {
+        "name": "地球部落徽章",
+        "place": "穿著者右袖、地域章／區章下面一行；世界童軍組織徽章同「積極公民」獎章最多合共四個（綱要 P.12 附圖 ⑭）。",
+        "quote": "⑭ 世界童軍組織推出的獎章／積極公民獎章系列（最多佩戴合共四枚）。",
+        "conditions": "完成地球部落任何一項挑戰；應同最少一個挑戰徽章一齊戴。"
+      },
+      "en": {
+        "name": "Earth Tribe Badge",
+        "place": "Wearer's right sleeve, in the row below the Region/District Badges; WOSM and Active Citizen badges at most four in total (Training Scheme p.12 figure ⑭).",
+        "quote": "⑭ Badges launched by WOSM / Active Citizen series (at most four in total).",
+        "conditions": "Complete any Earth Tribe challenge; wear with at least one challenge badge."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3.2,
+        "hCm": 3.2,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "sleeveR",
+        "layer": "row",
+        "rank": 2,
+        "side": "right",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "RTS",
+          "page": "12, 30"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/extra/earth_tribe.png",
+        "ref": "RTS",
+        "page": "30",
+        "example": false,
+        "px": [
+          200,
+          200
+        ]
+      },
+      "sweater": false
+    },
+    {
+      "id": "plasticTide",
+      "required": false,
+      "side": "right",
+      "group": "extra",
+      "zh": {
+        "name": "走塑達人挑戰徽章",
+        "place": "穿著者右袖、地域章／區章下面一行；世界童軍組織徽章同「積極公民」獎章最多合共四個（綱要 P.12 附圖 ⑭）。",
+        "quote": "⑭ 世界童軍組織推出的獎章／積極公民獎章系列（最多佩戴合共四枚）。",
+        "conditions": "完成走塑達人挑戰（地球部落）。"
+      },
+      "en": {
+        "name": "Plastic Tide Turners Challenge Badge",
+        "place": "Wearer's right sleeve, in the row below the Region/District Badges; WOSM and Active Citizen badges at most four in total (Training Scheme p.12 figure ⑭).",
+        "quote": "⑭ Badges launched by WOSM / Active Citizen series (at most four in total).",
+        "conditions": "Complete the Plastic Tide Turners Challenge (Earth Tribe)."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3.2,
+        "hCm": 3.2,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "sleeveR",
+        "layer": "row",
+        "rank": 3,
+        "side": "right",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "RTS",
+          "page": "12, 30"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/extra/plastic_tide.png",
+        "ref": "RTS",
+        "page": "30",
+        "example": false,
+        "px": [
+          200,
+          200
+        ]
+      },
+      "sweater": false
+    },
+    {
+      "id": "natureChampions",
+      "required": false,
+      "side": "right",
+      "group": "extra",
+      "zh": {
+        "name": "自然守護者挑戰徽章",
+        "place": "穿著者右袖、地域章／區章下面一行；世界童軍組織徽章同「積極公民」獎章最多合共四個（綱要 P.12 附圖 ⑭）。",
+        "quote": "⑭ 世界童軍組織推出的獎章／積極公民獎章系列（最多佩戴合共四枚）。",
+        "conditions": "完成自然守護者挑戰（地球部落）。"
+      },
+      "en": {
+        "name": "Champions for Nature Challenge Badge",
+        "place": "Wearer's right sleeve, in the row below the Region/District Badges; WOSM and Active Citizen badges at most four in total (Training Scheme p.12 figure ⑭).",
+        "quote": "⑭ Badges launched by WOSM / Active Citizen series (at most four in total).",
+        "conditions": "Complete the Champions for Nature Challenge (Earth Tribe)."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3.2,
+        "hCm": 3.2,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "sleeveR",
+        "layer": "row",
+        "rank": 4,
+        "side": "right",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "RTS",
+          "page": "12, 30"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/extra/nature_champions.png",
+        "ref": "RTS",
+        "page": "30",
+        "example": false,
+        "px": [
+          200,
+          200
+        ]
+      },
+      "sweater": false
+    },
+    {
+      "id": "goSolar",
+      "required": false,
+      "side": "right",
+      "group": "extra",
+      "zh": {
+        "name": "日光善用者挑戰徽章",
+        "place": "穿著者右袖、地域章／區章下面一行；世界童軍組織徽章同「積極公民」獎章最多合共四個（綱要 P.12 附圖 ⑭）。",
+        "quote": "⑭ 世界童軍組織推出的獎章／積極公民獎章系列（最多佩戴合共四枚）。",
+        "conditions": "完成日光善用者挑戰（地球部落）。"
+      },
+      "en": {
+        "name": "Scouts Go Solar Challenge Badge",
+        "place": "Wearer's right sleeve, in the row below the Region/District Badges; WOSM and Active Citizen badges at most four in total (Training Scheme p.12 figure ⑭).",
+        "quote": "⑭ Badges launched by WOSM / Active Citizen series (at most four in total).",
+        "conditions": "Complete the Scouts Go Solar Challenge (Earth Tribe)."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3.2,
+        "hCm": 3.2,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "sleeveR",
+        "layer": "row",
+        "rank": 5,
+        "side": "right",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "RTS",
+          "page": "12, 30"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/extra/go_solar.png",
+        "ref": "RTS",
+        "page": "30",
+        "example": false,
+        "px": [
+          200,
+          200
+        ]
+      },
+      "sweater": false
+    },
+    {
+      "id": "heritage",
+      "required": false,
+      "side": "right",
+      "group": "extra",
+      "zh": {
+        "name": "童軍世界遺產章",
+        "place": "穿著者右袖、地域章／區章下面一行；世界童軍組織徽章同「積極公民」獎章最多合共四個（綱要 P.12 附圖 ⑭）。",
+        "quote": "⑭ 世界童軍組織推出的獎章／積極公民獎章系列（最多佩戴合共四枚）。",
+        "conditions": "喺世界遺產內完成寰宇童軍章嘅自願服務，考獲寰宇童軍章時同時頒發。"
+      },
+      "en": {
+        "name": "Scouts of the World Heritage Badge",
+        "place": "Wearer's right sleeve, in the row below the Region/District Badges; WOSM and Active Citizen badges at most four in total (Training Scheme p.12 figure ⑭).",
+        "quote": "⑭ Badges launched by WOSM / Active Citizen series (at most four in total).",
+        "conditions": "Awarded with the Scouts of the World Award when the voluntary service was done at a World Heritage site."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3.2,
+        "hCm": 3.2,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "sleeveR",
+        "layer": "row",
+        "rank": 6,
+        "side": "right",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "RTS",
+          "page": "12, 31"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/extra/heritage.png",
+        "ref": "RTS",
+        "page": "31",
+        "example": false,
+        "px": [
+          200,
+          200
+        ]
+      },
+      "sweater": false
+    },
+    {
+      "id": "citizenScam",
+      "required": false,
+      "side": "right",
+      "group": "extra",
+      "zh": {
+        "name": "防騙先鋒章",
+        "place": "穿著者右袖、地域章／區章下面一行；世界童軍組織徽章同「積極公民」獎章最多合共四個（綱要 P.12 附圖 ⑭）。",
+        "quote": "⑭ 世界童軍組織推出的獎章／積極公民獎章系列（最多佩戴合共四枚）。",
+        "conditions": "「積極公民」獎章系列。"
+      },
+      "en": {
+        "name": "Anti-Scam Pioneer Badge",
+        "place": "Wearer's right sleeve, in the row below the Region/District Badges; WOSM and Active Citizen badges at most four in total (Training Scheme p.12 figure ⑭).",
+        "quote": "⑭ Badges launched by WOSM / Active Citizen series (at most four in total).",
+        "conditions": "Active Citizen series."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3.2,
+        "hCm": 3.2,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "sleeveR",
+        "layer": "row",
+        "rank": 7,
+        "side": "right",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "RTS",
+          "page": "12, 37"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/extra/citizen_scam.png",
+        "ref": "RTS",
+        "page": "37",
+        "example": false,
+        "px": [
+          200,
+          200
+        ]
+      },
+      "sweater": false
+    },
+    {
+      "id": "citizenChild",
+      "required": false,
+      "side": "right",
+      "group": "extra",
+      "zh": {
+        "name": "保護兒童章",
+        "place": "穿著者右袖、地域章／區章下面一行；世界童軍組織徽章同「積極公民」獎章最多合共四個（綱要 P.12 附圖 ⑭）。",
+        "quote": "⑭ 世界童軍組織推出的獎章／積極公民獎章系列（最多佩戴合共四枚）。",
+        "conditions": "「積極公民」獎章系列。"
+      },
+      "en": {
+        "name": "Child Protection Badge",
+        "place": "Wearer's right sleeve, in the row below the Region/District Badges; WOSM and Active Citizen badges at most four in total (Training Scheme p.12 figure ⑭).",
+        "quote": "⑭ Badges launched by WOSM / Active Citizen series (at most four in total).",
+        "conditions": "Active Citizen series."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3.2,
+        "hCm": 3.2,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "sleeveR",
+        "layer": "row",
+        "rank": 8,
+        "side": "right",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "RTS",
+          "page": "12, 37"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/extra/citizen_child.png",
+        "ref": "RTS",
+        "page": "37",
+        "example": false,
+        "px": [
+          200,
+          200
+        ]
+      },
+      "sweater": false
+    },
+    {
+      "id": "citizenDrug",
+      "required": false,
+      "side": "right",
+      "group": "extra",
+      "zh": {
+        "name": "禁毒章",
+        "place": "穿著者右袖、地域章／區章下面一行；世界童軍組織徽章同「積極公民」獎章最多合共四個（綱要 P.12 附圖 ⑭）。",
+        "quote": "⑭ 世界童軍組織推出的獎章／積極公民獎章系列（最多佩戴合共四枚）。",
+        "conditions": "「積極公民」獎章系列。"
+      },
+      "en": {
+        "name": "Anti-Drug Badge",
+        "place": "Wearer's right sleeve, in the row below the Region/District Badges; WOSM and Active Citizen badges at most four in total (Training Scheme p.12 figure ⑭).",
+        "quote": "⑭ Badges launched by WOSM / Active Citizen series (at most four in total).",
+        "conditions": "Active Citizen series."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3.2,
+        "hCm": 3.2,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "sleeveR",
+        "layer": "row",
+        "rank": 9,
+        "side": "right",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "RTS",
+          "page": "12, 37"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/extra/citizen_drug.png",
+        "ref": "RTS",
+        "page": "37",
+        "example": false,
+        "px": [
+          196,
+          200
+        ]
+      },
+      "sweater": false
+    },
+    {
+      "id": "citizenEmergency",
+      "required": false,
+      "side": "right",
+      "group": "extra",
+      "zh": {
+        "name": "社區應急先鋒章",
+        "place": "穿著者右袖、地域章／區章下面一行；世界童軍組織徽章同「積極公民」獎章最多合共四個（綱要 P.12 附圖 ⑭）。",
+        "quote": "⑭ 世界童軍組織推出的獎章／積極公民獎章系列（最多佩戴合共四枚）。",
+        "conditions": "「積極公民」獎章系列。"
+      },
+      "en": {
+        "name": "Community Emergency Pioneer Badge",
+        "place": "Wearer's right sleeve, in the row below the Region/District Badges; WOSM and Active Citizen badges at most four in total (Training Scheme p.12 figure ⑭).",
+        "quote": "⑭ Badges launched by WOSM / Active Citizen series (at most four in total).",
+        "conditions": "Active Citizen series."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3.2,
+        "hCm": 3.2,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "sleeveR",
+        "layer": "row",
+        "rank": 10,
+        "side": "right",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "RTS",
+          "page": "12, 37"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/extra/citizen_emergency.png",
+        "ref": "RTS",
+        "page": "37",
+        "example": false,
+        "px": [
+          198,
+          200
+        ]
+      },
+      "sweater": false
+    },
+    {
+      "id": "citizenGreen",
+      "required": false,
+      "side": "right",
+      "group": "extra",
+      "zh": {
+        "name": "環保先鋒章",
+        "place": "穿著者右袖、地域章／區章下面一行；世界童軍組織徽章同「積極公民」獎章最多合共四個（綱要 P.12 附圖 ⑭）。",
+        "quote": "⑭ 世界童軍組織推出的獎章／積極公民獎章系列（最多佩戴合共四枚）。",
+        "conditions": "「積極公民」獎章系列。"
+      },
+      "en": {
+        "name": "Green Pioneer Badge",
+        "place": "Wearer's right sleeve, in the row below the Region/District Badges; WOSM and Active Citizen badges at most four in total (Training Scheme p.12 figure ⑭).",
+        "quote": "⑭ Badges launched by WOSM / Active Citizen series (at most four in total).",
+        "conditions": "Active Citizen series."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3.2,
+        "hCm": 3.2,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "sleeveR",
+        "layer": "row",
+        "rank": 11,
+        "side": "right",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "RTS",
+          "page": "12, 37"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/extra/citizen_green.png",
+        "ref": "RTS",
+        "page": "37",
+        "example": false,
+        "px": [
+          200,
+          199
+        ]
+      },
+      "sweater": false
+    },
+    {
+      "id": "airCrew",
+      "required": false,
+      "side": "left",
+      "group": "extra",
+      "zh": {
+        "name": "高級空勤員章",
+        "place": "穿著者左袖上方第一行，近前面（綱要 P.12 附圖 ⑰）。",
+        "quote": "完成「高級空勤員章」及／或「舵手章」的樂行童軍支部成員可佩戴相對的活動徽章於制服上。",
+        "conditions": "完成高級空勤員章課程。"
+      },
+      "en": {
+        "name": "Advanced Air Crew Badge",
+        "place": "First row on the upper wearer's left sleeve, towards the front (Training Scheme p.12 figure ⑰).",
+        "quote": "Rover Scouts who complete the Advanced Air Crew and/or Helmsman Badge may wear the activity badge on the uniform.",
+        "conditions": "Complete the Advanced Air Crew course."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3,
+        "hCm": 3,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "sleeveL",
+        "layer": "top",
+        "rank": 1,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "RTS",
+          "page": "12, 35"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/extra/air_crew.png",
+        "ref": "RTS",
+        "page": "35",
+        "example": false,
+        "px": [
+          200,
+          200
+        ]
+      },
+      "sweater": false
+    },
+    {
+      "id": "hkayp",
+      "required": false,
+      "side": "left",
+      "group": "extra",
+      "zh": {
+        "name": "香港青年獎勵計劃獎章",
+        "place": "穿著者左袖上方中央（綱要 P.12 附圖 ⑯）。",
+        "quote": "凡完成香港青年獎勵計劃金章／銀章之樂行童軍成員，可在其制服上佩戴香港青年獎勵計劃金章或銀章，如樂行童軍同時持有兩者，則只能佩戴最高級別的金章。",
+        "conditions": "樂行童軍只可以戴銀章或金章；只戴最高嗰個。"
+      },
+      "en": {
+        "name": "Hong Kong Award for Young People",
+        "place": "Centre of the upper wearer's left sleeve (Training Scheme p.12 figure ⑯).",
+        "quote": "Rover Scouts who complete the HKAYP Gold or Silver Award may wear it; holders of both wear only the Gold.",
+        "conditions": "Rover Scouts wear only Silver or Gold; highest only."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3,
+        "hCm": 3,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "sleeveL",
+        "layer": "top",
+        "rank": 2,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "RTS",
+          "page": "12, 47"
+        },
+        {
+          "ref": "UH",
+          "page": "157"
+        }
+      ],
+      "status": "verified",
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "silver",
+          "zh": {
+            "name": "銀章"
+          },
+          "en": {
+            "name": "Silver"
+          },
+          "art": {
+            "file": "/badges/extra/hkayp_silver.png",
+            "ref": "RTS",
+            "page": "47",
+            "example": false,
+            "px": [
+              200,
+              200
+            ]
+          }
+        },
+        {
+          "id": "gold",
+          "zh": {
+            "name": "金章"
+          },
+          "en": {
+            "name": "Gold"
+          },
+          "art": {
+            "file": "/badges/extra/hkayp_gold.png",
+            "ref": "RTS",
+            "page": "47",
+            "example": false,
+            "px": [
+              200,
+              200
+            ]
+          }
+        }
+      ],
+      "default": "none",
+      "art": {
+        "file": "/badges/extra/hkayp_silver.png",
+        "ref": "RTS",
+        "page": "47",
+        "example": false,
+        "px": [
+          200,
+          200
+        ]
+      },
+      "sweater": false
+    },
+    {
+      "id": "helmsman",
+      "required": false,
+      "side": "left",
+      "group": "extra",
+      "zh": {
+        "name": "舵手章",
+        "place": "穿著者左袖上方第一行，近後面（綱要 P.12 附圖 ⑱）。",
+        "quote": "完成「高級空勤員章」及／或「舵手章」的樂行童軍支部成員可佩戴相對的活動徽章於制服上。",
+        "conditions": "完成舵手章課程。"
+      },
+      "en": {
+        "name": "Helmsman Badge",
+        "place": "First row on the upper wearer's left sleeve, towards the back (Training Scheme p.12 figure ⑱).",
+        "quote": "Rover Scouts who complete the Advanced Air Crew and/or Helmsman Badge may wear the activity badge on the uniform.",
+        "conditions": "Complete the Helmsman course."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3,
+        "hCm": 3,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "sleeveL",
+        "layer": "top",
+        "rank": 3,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "RTS",
+          "page": "12, 35"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/extra/helmsman.png",
+        "ref": "RTS",
+        "page": "35",
+        "example": false,
+        "px": [
+          199,
+          200
+        ]
+      },
+      "sweater": false
+    },
+    {
+      "id": "firstAid",
+      "required": false,
+      "side": "left",
+      "group": "extra",
+      "zh": {
+        "name": "急救章",
+        "place": "穿著者左袖第二行，近前面（綱要 P.12 附圖 ⑲）。",
+        "quote": "凡獲取本會急救證書或其他根據香港法例第 509 章職業安全及健康條例的勞工處認可的三十小時急救課程證書者，可在證書有效期內佩戴此專章。",
+        "conditions": "持有效急救證書；證書有效期內。"
+      },
+      "en": {
+        "name": "First Aid Badge",
+        "place": "Second row on the wearer's left sleeve, towards the front (Training Scheme p.12 figure ⑲).",
+        "quote": "Holders of the Association's first aid certificate, or a 30-hour first aid certificate recognised by the Labour Department under Cap. 509, may wear it while the certificate is valid.",
+        "conditions": "Valid first aid certificate; while valid."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3,
+        "hCm": 3.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "sleeveL",
+        "layer": "mid",
+        "rank": 1,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "RTS",
+          "page": "12, 33"
+        },
+        {
+          "ref": "UH",
+          "page": "149"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/extra/rover_first_aid.png",
+        "ref": "RTS",
+        "page": "33",
+        "example": false,
+        "px": [
+          160,
+          200
+        ]
+      },
+      "modelNote": {
+        "zh": "手冊 P.149 舊款（圓形）戴喺右袖旅章下面；2026 年綱要 P.33 換咗新圖案、P.12 附圖改喺左袖，樂行童軍跟綱要。",
+        "en": "Handbook p.149 shows the old round badge under the Group Badge on the right sleeve; the 2026 Training Scheme has new artwork (p.33) and moves it to the left sleeve (p.12 figure), which Rover Scouts follow."
+      },
+      "sweater": false
+    },
+    {
+      "id": "lifesaving",
+      "required": false,
+      "side": "left",
+      "group": "extra",
+      "zh": {
+        "name": "童軍拯溺布章",
+        "place": "穿著者左袖第二行，近後面（綱要 P.12 附圖 ⑳）。",
+        "quote": "凡考獲中國香港拯溺總會拯溺資格的樂行童軍支部成員，可佩戴童軍拯溺布章於制服上。",
+        "conditions": "持有效拯溺資格；證書有效期內。"
+      },
+      "en": {
+        "name": "Scout Life Saving Cloth Badge",
+        "place": "Second row on the wearer's left sleeve, towards the back (Training Scheme p.12 figure ⑳).",
+        "quote": "Rover Scouts holding a Hong Kong China Life Saving Society qualification may wear the Scout Life Saving Cloth Badge.",
+        "conditions": "Valid life saving qualification; while valid."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3,
+        "hCm": 3.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "sleeveL",
+        "layer": "mid",
+        "rank": 2,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "RTS",
+          "page": "12, 34"
+        },
+        {
+          "ref": "UH",
+          "page": "156"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/extra/lifesaving.png",
+        "ref": "RTS",
+        "page": "34",
+        "example": false,
+        "px": [
+          155,
+          200
+        ]
+      },
+      "sweater": false
+    },
+    {
+      "id": "community",
+      "required": false,
+      "side": "left",
+      "group": "extra",
+      "zh": {
+        "name": "樂行童軍社區參與章",
+        "place": "穿著者左袖第三行中央（綱要 P.12 附圖 ㉑）。",
+        "quote": "樂行童軍「社區參與章」計劃旨在培養助人的精神……參加者必須於 6 個月內完成專題研習班及實習部分。",
+        "conditions": "6 個月內完成總會認許專題研習班同實習。"
+      },
+      "en": {
+        "name": "Rover Scout Community Involvement Badge",
+        "place": "Centre of the third row on the wearer's left sleeve (Training Scheme p.12 figure ㉑).",
+        "quote": "The Rover Scout Community Involvement Badge scheme builds a spirit of service… Participants complete a recognised study course and its practical part within 6 months.",
+        "conditions": "Complete a recognised study course and practical within 6 months."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3.5,
+        "hCm": 3.5,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "sleeveL",
+        "layer": "low",
+        "rank": 1,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "RTS",
+          "page": "12, 38–39"
+        },
+        {
+          "ref": "UH",
+          "page": "151"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/extra/rover_community.png",
+        "ref": "RTS",
+        "page": "38",
+        "example": false,
+        "px": [
+          198,
+          200
+        ]
+      },
+      "modelNote": {
+        "zh": "手冊 P.151 寫喺右袖地域章及區章下方；綱要 P.12 附圖改喺左袖，樂行童軍跟綱要。",
+        "en": "Handbook p.151 puts it below the Region and District Badges on the right sleeve; the Training Scheme p.12 figure moves it to the left sleeve, which Rover Scouts follow."
+      },
+      "sweater": false
+    },
+    {
+      "id": "atas",
+      "required": false,
+      "side": "left",
+      "group": "extra",
+      "zh": {
+        "name": "世界榮譽童軍會（ATAS）標誌",
+        "place": "穿著者左袖袖口縫線上方中央（綱要 P.12 附圖 ㉒）。",
+        "quote": "已註冊為會員的樂行童軍／成年成員可佩戴在制服上。榮譽童軍獎章或同等獎章的持有人佩戴在樂行童軍或成年成員制服恤衫左袖縫線上方中央位置。",
+        "conditions": "已註冊為世界榮譽童軍會會員（榮譽童軍獎章或同等獎章持有人）。"
+      },
+      "en": {
+        "name": "Association of Top Achiever Scouts (ATAS) Emblem",
+        "place": "Centred just above the hem seam of the wearer's left sleeve (Training Scheme p.12 figure ㉒).",
+        "quote": "Registered Rover Scout / adult members may wear it. Holders of the Hong Kong Scout Award or equivalent wear it centred above the left sleeve seam of the Rover Scout or adult uniform shirt.",
+        "conditions": "Registered ATAS member (Hong Kong Scout Award or equivalent)."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 4,
+        "hCm": 2.08,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "aboveCuffSeamCm": 0.3,
+        "edge": "bottom",
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "137, 171"
+        },
+        {
+          "ref": "RTS",
+          "page": "12"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/extra/atas.png",
+        "ref": "UH",
+        "page": "137",
+        "example": false,
+        "px": [
+          200,
+          104
+        ]
+      },
+      "modelNote": {
+        "zh": "手冊冇寫尺寸；模型用 4 × 2.1 cm。",
+        "en": "No size in the Handbook; the model uses 4 × 2.1 cm."
+      },
+      "sweater": false
+    }
+  ],
+  "notAllowed": [
     {
       "id": "noPatrol",
       "zh": "樂行童軍制服頁冇小隊章（手冊 P.42–47；綱要 P.10–11）。",
@@ -1097,6 +3008,21 @@
         {
           "ref": "RTS",
           "page": "10–11"
+        }
+      ]
+    },
+    {
+      "id": "preEntry",
+      "zh": "樂行童軍先修章（綱要 P.12 ⑧）同以前支部嘅服務年星未有示範：手冊同綱要都冇清晰圖案。",
+      "en": "The Rover Scout pre-entry badge (Training Scheme p.12 ⑧) and earlier-section service stars are not shown: neither document has clear artwork.",
+      "sources": [
+        {
+          "ref": "RTS",
+          "page": "12"
+        },
+        {
+          "ref": "UH",
+          "page": "130"
         }
       ]
     }
@@ -1120,10 +3046,138 @@
       "id": "regionDistrictFigure",
       "zh": "地域章／區章：手冊 P.95 文字「地域章在前，區章在後」，P.171 附圖一致；附圖喺旅章下面先有急救章（考獲先有），模型冇急救章，所以照 P.95 喺旅章下 2 cm。",
       "en": "Region/District: Handbook p.95 says Region in front, District behind, and the p.171 figure agrees; the figure has the (earned) First Aid Badge under the Group Badge, which the model omits, so it follows p.95 — 2 cm below the Group Badge."
+    },
+    {
+      "id": "v21RoverFigure",
+      "zh": "非基本章位置：手冊 P.171（2020 年版附圖）同 2026 年 5 月版綱要 P.12 附圖唔同——綱要將樂行童軍獎章／貝登堡獎章由左袖移到右胸袋中央、急救章同社區參與章由右袖移到左袖、寰宇童軍章由左胸袋上方移到右袖一行（最多四個）、和平使者章同世界童軍會員章結合。樂行童軍跟綱要（用戶指示：綱要最清楚）。",
+      "en": "Non-basic badge positions: Handbook p.171 and the May 2026 Training Scheme p.12 figure differ — the Training Scheme moves the Rover Scout / B.-P. Award from the left sleeve to the centre of the right pocket, the First Aid and Community Involvement Badges from the right sleeve to the left, the Scouts of the World Award from above the left pocket to a row on the right sleeve (at most four), and combines the Messengers of Peace Badge with the World Membership Badge. Rover Scouts follow the Training Scheme (user instruction: it is the clearest)."
     }
   ],
   "artCredit": {
     "zh": "徽章圖案取自香港童軍總會《儀容與制服手冊》P.25、P.92–93、P.102、P.145、P.159 及香港童軍總會網頁「地域及區」，版權屬香港童軍總會。旅章係手冊示例圖案；區章、地域章可以揀返自己嘅。",
     "en": "Badge artwork is from the Scout Association of Hong Kong Uniform Handbook (pp.25, 92–93, 102, 145, 159) and the SAHK “Regions and Districts” page; copyright the Scout Association of Hong Kong. The Group Badge is the handbook example; pick your own District to get the right badges."
+  },
+  "slots": {
+    "pocketR": {
+      "part": "torso",
+      "side": "right",
+      "layers": [
+        {
+          "id": "flap",
+          "gapCm": 0,
+          "max": 3,
+          "from": "outer"
+        },
+        {
+          "id": "upper",
+          "gapCm": 3,
+          "max": 2,
+          "from": "inner"
+        }
+      ],
+      "zh": "穿著者右胸袋袋蓋上方：下層（緊貼袋蓋）支部最高獎章標誌最多三個，由右至左（外側先）；上層（袋蓋上方 3 cm）宗教章／公教章、紀念章最多兩個，宗教章／公教章喺左（內側）。",
+      "en": "Above the wearer's right pocket flap: lower row (on the flap) up to three Highest Award Emblems, right to left (outer first); upper row (3 cm above the flap) up to two of Religious/Catholic Badge and Commemorative Badge, the Religious/Catholic Badge on the left (inner side).",
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "134, 139, 164–165"
+        },
+        {
+          "ref": "RTS",
+          "page": "12"
+        }
+      ]
+    },
+    "pocketL": {
+      "part": "torso",
+      "side": "left",
+      "layers": [
+        {
+          "id": "stars",
+          "gapCm": 0,
+          "max": 1
+        },
+        {
+          "id": "middle",
+          "gapCm": 3,
+          "gapIfAboveCm": 2,
+          "max": 1
+        },
+        {
+          "id": "upper",
+          "gapCm": 3,
+          "max": 1
+        }
+      ],
+      "zh": "穿著者左胸袋袋蓋上方：服務年星緊貼袋蓋；飛行章／跳傘章喺袋蓋上方 2 cm，香港章喺佢上面（綱要 P.12 附圖 ②③④；只得香港章就喺袋蓋上方 3 cm）。",
+      "en": "Above the wearer's left pocket flap: the Service Star on the flap; the Flying/Parachute Badge 2 cm above the flap with the Hong Kong Badge above it (Training Scheme p.12 figure ②③④; the Hong Kong Badge alone sits 3 cm above the flap).",
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "93, 130, 150"
+        },
+        {
+          "ref": "RTS",
+          "page": "12"
+        }
+      ]
+    },
+    "sleeveR": {
+      "part": "sleeve",
+      "side": "right",
+      "belowBadge": "region",
+      "layers": [
+        {
+          "id": "row",
+          "gapCm": 1.5,
+          "max": 4,
+          "from": "front"
+        }
+      ],
+      "zh": "穿著者右袖、地域章／區章下面一行：世界童軍組織推出嘅徽章同「積極公民」獎章系列，最多合共四個（綱要 P.12 附圖 ⑭）。",
+      "en": "Wearer's right sleeve, one row below the Region/District Badges: WOSM badges and the Active Citizen series, at most four in total (Training Scheme p.12 figure ⑭).",
+      "sources": [
+        {
+          "ref": "RTS",
+          "page": "12, 28–31, 37"
+        }
+      ]
+    },
+    "sleeveL": {
+      "part": "sleeve",
+      "side": "left",
+      "fromShoulderCm": 2,
+      "layers": [
+        {
+          "id": "top",
+          "gapCm": 0,
+          "max": 3,
+          "from": "front"
+        },
+        {
+          "id": "mid",
+          "gapCm": 1,
+          "max": 2,
+          "from": "front"
+        },
+        {
+          "id": "low",
+          "gapCm": 1,
+          "max": 1
+        }
+      ],
+      "zh": "穿著者左袖上方：第一行高級空勤員章（前）、香港青年獎勵計劃獎章（中）、舵手章（後）；第二行急救章（前）、拯溺布章（後）；第三行社區參與章（綱要 P.12 附圖 ⑯–㉑）。冇嘅就由上面補上。",
+      "en": "Upper wearer's left sleeve: first row Advanced Air Crew (front), HKAYP Award (centre), Helmsman (back); second row First Aid (front), Life Saving (back); third row Community Involvement (Training Scheme p.12 figure ⑯–㉑). Rows move up when one is empty.",
+      "sources": [
+        {
+          "ref": "RTS",
+          "page": "12, 33–35, 38, 47"
+        },
+        {
+          "ref": "UH",
+          "page": "156–157"
+        }
+      ]
+    }
   }
 }

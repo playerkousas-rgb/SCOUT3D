@@ -148,6 +148,12 @@
         "item": "lanyardHighColour",
         "zh": "高級嘉許笛繩係紫色（用戶指正，v20）",
         "en": "The High Commendation lanyard is purple (user correction, v20)"
+      },
+      {
+        "date": "2026-11-15",
+        "item": "v21LeaderExtras",
+        "zh": "成年成員加最高支部獎章標誌（手冊 P.164–172）同其他可以戴喺領袖制服嘅章（用戶指示）",
+        "en": "Adults: add the section highest award emblem (Handbook pp.164–172) and the other badges allowed on the leader uniform (user instruction)"
       }
     ]
   },
@@ -185,6 +191,15 @@
       "edition": {
         "zh": "手冊冇呢幾個獎章嘅相；等級跟通告；勳章圖片由用戶提供（2026-11-15，官方參考圖，只作參考）",
         "en": "Not illustrated in the Handbook; precedence per the circular; medal images supplied by the user (2026-11-15, official reference sheet, for reference only)"
+      },
+      "url": null
+    },
+    "RTS": {
+      "zh": "《樂行童軍支部訓練綱要》（中文）",
+      "en": "Rover Scout Section Training Scheme (Chinese)",
+      "edition": {
+        "zh": "2026 年 5 月 19 日版；P.10–11 樂行童軍制服，P.13 進度性獎章考驗程序，P.18 樂行童軍肩章",
+        "en": "19 May 2026 edition; pp.10–11 Rover Scout uniforms, p.13 progress award sequence, p.18 Rover Scout Epaulettes"
       },
       "url": null
     }
@@ -6657,6 +6672,660 @@
         "en": "No size in the Handbook; the model uses about 3.2 cm. Photo from Handbook p.198 (background removed). Worn with the cloth name tag it slightly overlaps the right end of the tag (the Handbook does not say how to avoid this)."
       },
       "fit": true
+    },
+    {
+      "id": "leaderEmblem",
+      "required": false,
+      "side": "right",
+      "group": "extra",
+      "zh": {
+        "name": "獎章領袖標誌（榮譽童軍獎章／貝登堡獎章）",
+        "place": "穿著者右胸袋袋蓋上方 3 cm；同勳章或勳條一齊戴時喺佢哋上面；同和平使者章／紀念章並排時喺左（內側），同公教章並排時喺右（外側）。",
+        "quote": "曾考獲榮譽童軍獎章／貝登堡獎章的成年成員可佩戴在制服上。榮譽童軍獎章領袖標誌與貝登堡獎章領袖標誌不能同時佩戴，同時考獲兩個獎章者，只能佩戴榮譽童軍獎章領袖標誌。佩戴在制服恤衫右胸袋袋蓋上方三釐米中央位置。假若與獎勵獎章或勳條一起佩戴，獎章領袖標誌在其上方位置。",
+        "conditions": "以前做青少年成員時考獲支部最高獎章；兩個都有就只戴榮譽童軍獎章領袖標誌。"
+      },
+      "en": {
+        "name": "Award Leader Emblem (Hong Kong Scout Award / B.-P. Award)",
+        "place": "3 cm above the wearer's right pocket flap; above any medals or ribbons; left (inner side) of the Messengers of Peace / Commemorative Badge, right (outer side) of the Catholic Badge.",
+        "quote": "Adults who earned the Hong Kong Scout Award / B.-P. Award may wear it. The two leader emblems may not be worn together; holders of both wear only the Hong Kong Scout Award Leader Emblem. Worn centred 3 cm above the right pocket flap; with medals or ribbons, the emblem goes above them.",
+        "conditions": "Earned the section's highest award as a youth member; holders of both wear only the Hong Kong Scout Award emblem."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 4,
+        "hCm": 2,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "slot": "pocketR",
+        "layer": "upper",
+        "rank": 2,
+        "side": "right",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "135–136, 164–165, 172"
+        }
+      ],
+      "status": "verified",
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "scoutAward",
+          "zh": {
+            "name": "榮譽童軍獎章領袖標誌"
+          },
+          "en": {
+            "name": "Hong Kong Scout Award Leader Emblem"
+          },
+          "art": {
+            "file": "/badges/extra/leader_scoutAward.png",
+            "ref": "UH",
+            "page": "135",
+            "example": false,
+            "px": [
+              200,
+              98
+            ]
+          }
+        },
+        {
+          "id": "bp",
+          "zh": {
+            "name": "貝登堡獎章領袖標誌"
+          },
+          "en": {
+            "name": "B.-P. Award Leader Emblem"
+          },
+          "art": {
+            "file": "/badges/extra/leader_bp.png",
+            "ref": "UH",
+            "page": "135",
+            "example": false,
+            "px": [
+              200,
+              99
+            ]
+          }
+        }
+      ],
+      "default": "none",
+      "art": {
+        "file": "/badges/extra/leader_scoutAward.png",
+        "ref": "UH",
+        "page": "135",
+        "example": false,
+        "px": [
+          200,
+          98
+        ]
+      },
+      "modelNote": {
+        "zh": "即係成年成員嘅「支部最高獎章標誌」（手冊 P.134 嘅金紫荊／總領袖／榮譽童軍獎章標誌只為青少年成員而設）。手冊冇寫尺寸；模型用 4 × 2 cm（P.135 圖案比例）。",
+        "en": "This is the adult form of the section highest award emblem (the p.134 Golden Bauhinia / Chief Scout's / Hong Kong Scout Award emblems are for youth members only). No size in the Handbook; the model uses 4 × 2 cm (p.135 artwork proportions)."
+      },
+      "uniforms": [
+        "u3",
+        "u4",
+        "u5",
+        "u6"
+      ]
+    },
+    {
+      "id": "catholic",
+      "required": false,
+      "side": "right",
+      "group": "extra",
+      "zh": {
+        "name": "成年成員公教章",
+        "place": "穿著者右胸袋袋蓋上方 3 cm；同其他章並排時喺左（內側）；同勳章或勳條一齊戴時喺佢哋上面。",
+        "quote": "已領洗的天主教成年成員可佩戴在制服上。佩戴在制服恤衫右胸袋袋蓋上方三釐米中央位置。假若與獎勵獎章或勳條一起佩戴，公教章在其上方位置。假若與榮譽童軍獎章領袖標誌／貝登堡獎章領袖標誌、和平使者章或紀念章一起佩戴，只可選擇其中一項並行排列佩戴；公教章在各章左方位置（內側）。",
+        "conditions": "已領洗嘅天主教成年成員。"
+      },
+      "en": {
+        "name": "Adult Catholic Badge",
+        "place": "3 cm above the wearer's right pocket flap; left (inner side) when worn beside another badge; above any medals or ribbons.",
+        "quote": "Baptised Catholic adults may wear it, centred 3 cm above the right pocket flap; with medals or ribbons it goes above them. With the Award Leader Emblem, Messengers of Peace Badge or Commemorative Badge, only one of them may be worn beside it, the Catholic Badge on the left (inner side).",
+        "conditions": "Baptised Catholic adults."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.6,
+        "hCm": 2.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "slot": "pocketR",
+        "layer": "upper",
+        "rank": 1,
+        "side": "right",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "140, 164–165, 172"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/extra/catholicAdult.png",
+        "ref": "UH",
+        "page": "140",
+        "example": false,
+        "px": [
+          199,
+          200
+        ]
+      },
+      "modelNote": {
+        "zh": "手冊冇寫尺寸；模型用 2.6 cm（P.140 圖案比例）。",
+        "en": "No size in the Handbook; the model uses 2.6 cm (p.140 proportions)."
+      },
+      "uniforms": [
+        "u3",
+        "u4",
+        "u5",
+        "u6"
+      ]
+    },
+    {
+      "id": "peace",
+      "required": false,
+      "side": "right",
+      "group": "extra",
+      "zh": {
+        "name": "和平使者章",
+        "place": "穿著者右胸袋袋蓋上方 3 cm；同紀念章並排時喺左（內側）；同勳章或勳條一齊戴時喺佢哋上面。",
+        "quote": "童軍成員在參加已於「世界童軍組織」網站註冊及總會核准的和平使者計劃活動後，可佩戴在制服上。佩戴在制服恤衫右胸袋袋蓋上方三釐米中央位置。假若與勳條一起佩戴，和平使者章在其上方位置。假若與紀念章一起佩戴，兩章並行排列，和平使者章在其左方位置。由活動首天起，可佩戴十二個月。",
+        "conditions": "參加已註冊同核准嘅和平使者計劃活動；可戴 12 個月（再完成另一項可額外 12 個月）。"
+      },
+      "en": {
+        "name": "Messengers of Peace Badge",
+        "place": "3 cm above the wearer's right pocket flap; left (inner side) of the Commemorative Badge; above any medals or ribbons.",
+        "quote": "Members who take part in a Messengers of Peace project registered on the WOSM website and approved by the Association may wear it, centred 3 cm above the right pocket flap; above any ribbons; left of the Commemorative Badge. Worn for twelve months from the first day.",
+        "conditions": "Registered and approved Messengers of Peace project; 12 months (another 12 after a further project)."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 4,
+        "hCm": 5.03,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "slot": "pocketR",
+        "layer": "upper",
+        "rank": 3,
+        "side": "right",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "155, 164–165, 172"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/extra/peace.png",
+        "ref": "UH",
+        "page": "155",
+        "example": false,
+        "px": [
+          159,
+          200
+        ]
+      },
+      "uniforms": [
+        "u3",
+        "u4",
+        "u5",
+        "u6"
+      ]
+    },
+    {
+      "id": "commemorative",
+      "required": false,
+      "side": "right",
+      "group": "extra",
+      "zh": {
+        "name": "紀念章",
+        "place": "穿著者右胸袋袋蓋上方 3 cm；同其他章並排時喺右（外側）；同勳章或勳條一齊戴時喺佢哋上面。",
+        "quote": "紀念章佩戴在制服恤衫右胸袋袋蓋上方三釐米中央位置。假若與其他標誌或徽章一起佩戴，兩章並行排列，紀念章在其右方位置。紀念章最大尺寸以七釐米（闊）× 七釐米（高）為限。",
+        "conditions": "只限已獲批准、喺指定期間內佩戴；同一時間只戴一個。"
+      },
+      "en": {
+        "name": "Commemorative Badge",
+        "place": "3 cm above the wearer's right pocket flap; right (outer side) beside another badge; above any medals or ribbons.",
+        "quote": "Worn centred 3 cm above the right pocket flap. With another emblem or badge the two sit side by side, the Commemorative Badge on the right. At most 7 cm wide × 7 cm high.",
+        "conditions": "Approved badges only, within the set period; one at a time."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 5,
+        "hCm": 5,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "slot": "pocketR",
+        "layer": "upper",
+        "rank": 4,
+        "side": "right",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "163–165, 172"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/handbook_example_commemorative.png",
+        "ref": "UH",
+        "page": "25",
+        "example": true,
+        "px": [
+          128,
+          129
+        ]
+      },
+      "modelNote": {
+        "zh": "圖案係手冊示例色塊，每個紀念章唔同；模型用 5 × 5 cm（上限 7 × 7 cm）。",
+        "en": "The artwork is the handbook's example block; each badge differs. The model uses 5 × 5 cm (limit 7 × 7 cm)."
+      },
+      "uniforms": [
+        "u3",
+        "u4",
+        "u5",
+        "u6"
+      ]
+    },
+    {
+      "id": "wings",
+      "required": false,
+      "side": "left",
+      "group": "extra",
+      "zh": {
+        "name": "飛行章／跳傘章",
+        "place": "穿著者左胸袋袋蓋上方 3 cm；飛行章同寰宇童軍章一齊戴時改喺 2 cm、寰宇童軍章喺上面；跳傘章同寰宇童軍章並排（跳傘章喺右）。",
+        "quote": "符合相關資格的深資童軍、樂行童軍及成年成員可佩戴在制服上。樂行童軍及成年成員佩戴在制服恤衫左胸袋袋蓋上方三釐米中央位置。飛行章與跳傘章不可同時佩戴在制服上，只可選擇佩戴其中一項。",
+        "conditions": "只可以戴其中一個。"
+      },
+      "en": {
+        "name": "Flying Badge / Parachute Badge",
+        "place": "3 cm above the wearer's left pocket flap; with the Scouts of the World Award the Flying Badge moves to 2 cm with the award above it, while the Parachute Badge sits beside the award (Parachute on the right).",
+        "quote": "Qualified Venture Scouts, Rover Scouts and adults may wear it. Rover Scouts and adults wear it centred 3 cm above the left pocket flap. The Flying and Parachute Badges may not be worn together.",
+        "conditions": "Only one of the two."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 5.5,
+        "hCm": 3.2,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "slot": "pocketL",
+        "layer": "middle",
+        "rank": 1,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "150, 166–167, 172"
+        }
+      ],
+      "status": "verified",
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "flying",
+          "zh": {
+            "name": "飛行章"
+          },
+          "en": {
+            "name": "Flying Badge"
+          },
+          "art": {
+            "file": "/badges/extra/flying.png",
+            "ref": "RTS",
+            "page": "36",
+            "example": false,
+            "px": [
+              240,
+              76
+            ]
+          }
+        },
+        {
+          "id": "parachute",
+          "zh": {
+            "name": "跳傘章"
+          },
+          "en": {
+            "name": "Parachute Badge"
+          },
+          "art": {
+            "file": "/badges/extra/parachute.png",
+            "ref": "RTS",
+            "page": "36",
+            "example": false,
+            "px": [
+              240,
+              140
+            ]
+          },
+          "layer": "upper",
+          "rank": 1
+        }
+      ],
+      "default": "none",
+      "art": {
+        "file": "/badges/extra/flying.png",
+        "ref": "RTS",
+        "page": "36",
+        "example": false,
+        "px": [
+          240,
+          76
+        ]
+      },
+      "modelNote": {
+        "zh": "圖案取自《樂行童軍支部訓練綱要》P.36（同手冊 P.150 一樣，較清晰）；手冊冇寫尺寸，模型用 5.5 cm 闊。",
+        "en": "Artwork from the Rover Scout Training Scheme p.36 (same as Handbook p.150, clearer); no size in the Handbook, the model uses 5.5 cm wide."
+      },
+      "uniforms": [
+        "u3",
+        "u4",
+        "u5",
+        "u6"
+      ]
+    },
+    {
+      "id": "worldScout",
+      "required": false,
+      "side": "left",
+      "group": "extra",
+      "zh": {
+        "name": "寰宇童軍章",
+        "place": "穿著者左胸袋袋蓋上方 3 cm；同跳傘章並排時喺左；同飛行章一齊戴時喺飛行章上面。",
+        "quote": "完成「世界童軍組織」寰宇童軍計劃的樂行童軍及成年成員可佩戴在制服上，直至年滿二十六歲為止。樂行童軍及成年成員佩戴在制服恤衫左胸袋袋蓋上方三釐米中央位置。假若與跳傘章一起佩戴，兩章並行排列，寰宇童軍章在其左方位置。假若與飛行章一起佩戴，飛行章佩戴在袋蓋上方二釐米中央位置，寰宇童軍章在其上方位置。",
+        "conditions": "完成寰宇童軍計劃；戴到 26 歲為止。"
+      },
+      "en": {
+        "name": "Scouts of the World Award",
+        "place": "3 cm above the wearer's left pocket flap; left of the Parachute Badge; above the Flying Badge.",
+        "quote": "Rover Scouts and adults who complete the WOSM Scouts of the World programme may wear it until age 26, centred 3 cm above the left pocket flap. With the Parachute Badge the two sit side by side, the award on the left. With the Flying Badge, the wings go 2 cm above the flap and the award above them.",
+        "conditions": "Completed the Scouts of the World programme; until age 26."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 5,
+        "hCm": 5,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "slot": "pocketL",
+        "layer": "upper",
+        "rank": 2,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "154, 166–167"
+        },
+        {
+          "ref": "RTS",
+          "page": "29"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/extra/world_scout.png",
+        "ref": "RTS",
+        "page": "29",
+        "example": false,
+        "px": [
+          200,
+          200
+        ]
+      },
+      "modelNote": {
+        "zh": "圖案取自綱要 P.29（同手冊 P.154 一樣，較清晰）；手冊冇寫尺寸，模型用直徑 5 cm。",
+        "en": "Artwork from Training Scheme p.29 (same as Handbook p.154, clearer); no size in the Handbook, the model uses 5 cm diameter."
+      },
+      "uniforms": [
+        "u3",
+        "u4",
+        "u5",
+        "u6"
+      ]
+    },
+    {
+      "id": "hkayp",
+      "required": false,
+      "side": "left",
+      "group": "extra",
+      "zh": {
+        "name": "香港青年獎勵計劃金章",
+        "place": "穿著者左袖上方中央；同拯溺布章一齊戴時喺佢上面。",
+        "quote": "佩戴在制服恤衫左袖上方中央位置。成年成員只可佩戴金章，直至年滿二十五歲為止。",
+        "conditions": "成年成員只可以戴金章；戴到 25 歲為止。"
+      },
+      "en": {
+        "name": "Hong Kong Award for Young People — Gold",
+        "place": "Upper centre of the wearer's left sleeve; above the Life Saving Cloth Badge.",
+        "quote": "Worn at the upper centre of the left sleeve. Adults may wear only the Gold Award, until age 25.",
+        "conditions": "Adults wear only the Gold Award; until age 25."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3,
+        "hCm": 3,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "sleeveL",
+        "layer": "top",
+        "rank": 1,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "157"
+        },
+        {
+          "ref": "RTS",
+          "page": "47"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/extra/hkayp_gold.png",
+        "ref": "RTS",
+        "page": "47",
+        "example": false,
+        "px": [
+          200,
+          200
+        ]
+      },
+      "modelNote": {
+        "zh": "圖案取自綱要 P.47（同手冊 P.157 一樣，較清晰）；手冊冇寫尺寸，模型用 3 cm。",
+        "en": "Artwork from Training Scheme p.47 (same as Handbook p.157, clearer); no size in the Handbook, the model uses 3 cm."
+      },
+      "uniforms": [
+        "u3",
+        "u4",
+        "u5",
+        "u6"
+      ]
+    },
+    {
+      "id": "lifesaving",
+      "required": false,
+      "side": "left",
+      "group": "extra",
+      "zh": {
+        "name": "拯溺布章",
+        "place": "穿著者左袖上方中央；同香港青年獎勵計劃金章一齊戴時喺佢下面。",
+        "quote": "符合相關資格的童軍成員可佩戴在制服上，直至相關證書失效為止。佩戴在制服恤衫左袖上方中央位置。假若與香港青年獎勵計劃獎章一起佩戴，拯溺布章在其下方位置。",
+        "conditions": "持有效拯溺資格；證書有效期內。"
+      },
+      "en": {
+        "name": "Life Saving Cloth Badge",
+        "place": "Upper centre of the wearer's left sleeve; below the HKAYP Gold Award.",
+        "quote": "Qualified members may wear it until the certificate expires, at the upper centre of the left sleeve; below the HKAYP Award when both are worn.",
+        "conditions": "Valid life saving qualification; while valid."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3,
+        "hCm": 3.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "slot": "sleeveL",
+        "layer": "mid",
+        "rank": 1,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "156, 172"
+        },
+        {
+          "ref": "RTS",
+          "page": "34"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/extra/lifesaving.png",
+        "ref": "RTS",
+        "page": "34",
+        "example": false,
+        "px": [
+          155,
+          200
+        ]
+      },
+      "uniforms": [
+        "u3",
+        "u4",
+        "u5",
+        "u6"
+      ]
+    },
+    {
+      "id": "atas",
+      "required": false,
+      "side": "left",
+      "group": "extra",
+      "zh": {
+        "name": "世界榮譽童軍會（ATAS）標誌",
+        "place": "穿著者左袖袖口縫線上方中央（服務段章下面）。",
+        "quote": "已註冊為會員的樂行童軍／成年成員可佩戴在制服上。榮譽童軍獎章或同等獎章的持有人佩戴在樂行童軍或成年成員制服恤衫左袖縫線上方中央位置。貝登堡獎章或同等獎章的持有人佩戴在成年成員制服恤衫左袖縫線上方中央位置。",
+        "conditions": "已註冊為世界榮譽童軍會會員。"
+      },
+      "en": {
+        "name": "Association of Top Achiever Scouts (ATAS) Emblem",
+        "place": "Centred just above the hem seam of the wearer's left sleeve (below any service bars).",
+        "quote": "Registered Rover Scout / adult members may wear it. Holders of the Hong Kong Scout Award or B.-P. Award (or equivalent) wear it centred above the left sleeve seam of the uniform shirt.",
+        "conditions": "Registered ATAS member."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 4,
+        "hCm": 2.08,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "aboveCuffSeamCm": 0.3,
+        "edge": "bottom",
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "137, 172"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/extra/atas.png",
+        "ref": "UH",
+        "page": "137",
+        "example": false,
+        "px": [
+          200,
+          104
+        ]
+      },
+      "modelNote": {
+        "zh": "手冊冇寫尺寸；模型用 4 × 2.1 cm，喺服務段章（袖口縫線上方 3 cm 起）下面。",
+        "en": "No size in the Handbook; the model uses 4 × 2.1 cm, below the service bars (which start 3 cm above the hem seam)."
+      },
+      "uniforms": [
+        "u3",
+        "u4",
+        "u5",
+        "u6"
+      ]
     }
   ],
   "notAllowed": [
@@ -6756,6 +7425,17 @@
         {
           "ref": "UH",
           "page": "53"
+        }
+      ]
+    },
+    {
+      "id": "workerBee",
+      "zh": "工蜂章（手冊 P.130–131，右胸袋袋蓋中央）同感謝章同一個位置，未有示範。",
+      "en": "The Worker Bee badge (Handbook pp.130–131, centre of the right pocket flap) shares the Thanks Badge position and is not shown.",
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "130–131"
         }
       ]
     }
@@ -6967,5 +7647,79 @@
         "page": "185, 190, 194–195"
       }
     ]
+  },
+  "slots": {
+    "pocketR": {
+      "part": "torso",
+      "side": "right",
+      "clearRacks": true,
+      "layers": [
+        {
+          "id": "upper",
+          "gapCm": 3,
+          "max": 2,
+          "from": "inner"
+        }
+      ],
+      "zh": "穿著者右胸袋袋蓋上方 3 cm（上層）：公教章、獎章領袖標誌、和平使者章、紀念章最多揀兩個並排，排先嘅喺左（內側）；同勳章或勳條一齊戴時喺佢哋上面（手冊 P.135–136、P.140、P.164–165）。",
+      "en": "3 cm above the wearer's right pocket flap (upper row): up to two of the Catholic Badge, Award Leader Emblem, Messengers of Peace Badge and Commemorative Badge side by side, the earlier one on the left (inner side); above any medals or ribbons (Handbook pp.135–136, 140, 164–165).",
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "135–136, 140, 155, 163–165, 172"
+        }
+      ]
+    },
+    "pocketL": {
+      "part": "torso",
+      "side": "left",
+      "layers": [
+        {
+          "id": "middle",
+          "gapCm": 3,
+          "gapIfAboveCm": 2,
+          "max": 1
+        },
+        {
+          "id": "upper",
+          "gapCm": 3,
+          "max": 2,
+          "from": "inner"
+        }
+      ],
+      "zh": "穿著者左胸袋袋蓋上方：飛行章、跳傘章或寰宇童軍章單獨戴喺袋蓋上方 3 cm；跳傘章同寰宇童軍章並排（跳傘章喺右、內側）；飛行章同寰宇童軍章一齊戴時飛行章喺袋蓋上方 2 cm、寰宇童軍章喺佢上面（手冊 P.150、P.154、P.166–167）。",
+      "en": "Above the wearer's left pocket flap: the Flying, Parachute or Scouts of the World badge alone sits 3 cm above the flap; the Parachute Badge and Scouts of the World Award sit side by side (Parachute on the right, inner side); with the Flying Badge and the Scouts of the World Award, the wings go 2 cm above the flap and the award above them (Handbook pp.150, 154, 166–167).",
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "150, 154, 166–167, 172"
+        }
+      ]
+    },
+    "sleeveL": {
+      "part": "sleeve",
+      "side": "left",
+      "fromShoulderCm": 2,
+      "layers": [
+        {
+          "id": "top",
+          "gapCm": 0,
+          "max": 1
+        },
+        {
+          "id": "mid",
+          "gapCm": 1,
+          "max": 1
+        }
+      ],
+      "zh": "穿著者左袖上方中央：香港青年獎勵計劃金章喺上，拯溺布章喺佢下面；只得一個就喺最上（手冊 P.156–157）。",
+      "en": "Upper centre of the wearer's left sleeve: the HKAYP Gold Award on top with the Life Saving Cloth Badge below it; a single badge goes at the top (Handbook pp.156–157).",
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "156–157, 172"
+        }
+      ]
+    }
   }
 }

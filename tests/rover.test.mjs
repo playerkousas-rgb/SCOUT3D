@@ -30,7 +30,8 @@ test('樂行童軍規則資料通過驗證，喺支部切換排喺成年成員�
 });
 
 test('必備章 = 制服頁（手冊 P.42：會員章、香港章、地域章、區章、旅章）+ 樂行童軍肩章（用戶指示）；冇小隊章', () => {
-  assert.deepEqual(rover.badges.map((b) => b.id).sort(), ['district', 'epaulette', 'hongKong', 'membership', 'meritorious', 'region', 'troop']);
+  // v21：非基本章另外一組（group: 'extra'），唔計喺基本章入面
+  assert.deepEqual(rover.badges.filter((b) => !b.group).map((b) => b.id).sort(), ['district', 'epaulette', 'hongKong', 'membership', 'meritorious', 'region', 'troop']);
   for (const id of ['membership', 'hongKong', 'troop', 'region', 'district', 'epaulette']) assert.equal(badge(id).required, true, `${id} 係必備`);
   assert.equal(badge('meritorious').required, false);
   assert.ok(!rover.badges.some((b) => b.dynamic === 'patrol'), '樂行童軍冇小隊章');
@@ -102,8 +103,10 @@ for (const gender of ['boy', 'girl']) {
     assert.ok(region.v + region.h / 2 < merit.v - merit.h / 2, '優異旅團章喺最下');
     assert.ok(merit.v + merit.h / 2 <= face.cuffSeam, '唔可以落咗袖口');
     // 同深資童軍（手冊 P.170）擺位一樣，只係肩章圖案唔同
-    const strip = (list) => list.map(({ art, choice, key, ...p }) => ({ ...p, key: key.replace(/-(venture|rover)-/, '-') }));
-    assert.deepEqual(strip(all.filter((p) => !p.art || !p.art.includes('epaulette'))), strip(placeAll(venture, gender).filter((p) => !p.art || !p.art.includes('epaulette'))));
+    // v21：香港章改用 slot（飛行章喺下面時要上移）、會員章俾和平使者章取代（hiddenBy），比較時唔理呢啲資料；非基本章（group: 'extra'）深資童軍冇
+    const basic = new Set(rover.badges.filter((b) => !b.group).map((b) => b.id));
+    const strip = (list) => list.map(({ art, choice, key, slot, hiddenBy, fit, ...p }) => ({ ...p, key: key.replace(/-(venture|rover)-/, '-') }));
+    assert.deepEqual(strip(all.filter((p) => basic.has(p.id) && (!p.art || !p.art.includes('epaulette')))), strip(placeAll(venture, gender).filter((p) => !p.art || !p.art.includes('epaulette'))));
   });
 }
 

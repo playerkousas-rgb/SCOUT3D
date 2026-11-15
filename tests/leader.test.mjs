@@ -149,7 +149,8 @@ test('領袖圖案細（Vercel 唔爆 storage）', () => {
     assert.ok(size < 60_000, `${f} ${size} bytes`);
     total += size;
   }
-  assert.ok(total < 400_000, `total ${total}`);
+  // v21：加咗獎章領袖標誌、公教章、飛行章等 10 個圖（約 75 KB），上限由 400 KB 調到 480 KB（dist 仍遠低於 guard S7 嘅 5 MB）
+  assert.ok(total < 480_000, `total ${total}`);
 });
 
 

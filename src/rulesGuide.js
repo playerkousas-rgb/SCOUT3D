@@ -105,7 +105,7 @@ export const RULES_GUIDE = {
     },
     { title: 'rules.g.neck', items: ['outfit.scoutWoggle', 'outfit.tieNoteRover'] },
     { title: 'rules.g.sweater', items: ['outfit.sweaterNoteRover'] },
-    { title: 'rules.g.badges', items: ['badges.tipRover', ...SCOUT_BADGES] },
+    { title: 'rules.g.badges', items: ['badges.tipRover', ...SCOUT_BADGES, 'badges.extraNoteRover', 'badge.why.replaced_peace'] },
   ],
   leader: [
     { title: 'rules.g.levels', items: ['badges.tipLeader', { json: 'levels' }] },
@@ -150,7 +150,7 @@ export const RULES_GUIDE = {
     },
     { title: 'rules.g.wood', items: ['outfit.woodBadgeNote', 'outfit.woodBadgeEvening'] },
     { title: 'rules.g.sweater', items: ['outfit.sweaterNoteLeader'] },
-    { title: 'rules.g.badges', items: ['badge.why.sweater', 'pick.nameNote'] },
+    { title: 'rules.g.badges', items: ['badge.why.sweater', 'pick.nameNote', 'badges.extraNoteLeader'] },
     { title: 'rules.g.awards', items: ['badges.awardsNote', 'badges.awardsMiniNote', 'badges.occasionFormalNote', 'badges.occasionGeneralNote'] },
   ],
 };
