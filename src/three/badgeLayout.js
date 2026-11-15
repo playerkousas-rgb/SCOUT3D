@@ -2,7 +2,7 @@
 // 全部用厘米，數字直接嚟自規則 JSON 嘅 size / anchor。
 // 上身：x = 穿著者角度（+ = 穿著者左），y = 離地高度。
 // 袖：u = 望住嗰隻袖外側時嘅左右（+ = 望嘅人右手邊），v = 章中心喺肩膊縫線下幾多 cm。
-import { layout, neckerLayout, strapLayout, dressLayout, leaderUniform, isDress, VEST_T } from './body.js';
+import { layout, neckerLayout, strapLayout, dressLayout, leaderUniform, isDress, VEST_T, sashLayout } from './body.js';
 
 const sectionOf = (rules) => rules?.section?.id ?? 'grasshopper';
 
@@ -94,6 +94,7 @@ export function placeAll(rules, gender, { sweater = false, uniform = null, occas
   // alsoAnchor（v22）：同一個章戴喺兩個位置（例：深資童軍急救章左右兩袖都戴，手冊 P.148）—— 當多一個章計，key 加 '-2'
   const badges = rules.badges.flatMap((b) => (b.alsoAnchor ? [b, { ...b, anchor: b.alsoAnchor, anchorBy: undefined, twin: true }] : [b]));
   const order = badges.sort((a, b) => dep(anchorOf(a, uniform)) - dep(anchorOf(b, uniform)));
+  let sashGeo = null;
   const onStrap = {}; // 職級肩章喺肩帶上嘅位置（「R」字樣別針跟住佢）
   const RB = ribbonsOn(rules, uniform, occasion) ? rules.ribbons : null;
   for (const b of order) {
@@ -134,7 +135,8 @@ export function placeAll(rules, gender, { sweater = false, uniform = null, occas
         else if (def.belowBadge && box[def.belowBadge]) start = box[def.belowBadge].bottom;
         else if (def.honeycomb) start = 0; // v23 六角形活動徽章：由袖口縫線上面排起（arrangeSlot）
         else continue; // 嗰個章唔戴喺呢套制服
-        geo = { kind: 'sleeve', start, frontSign: def.side === 'right' ? 1 : -1, maxW: face.width - 1, cuffSeam: face.cuffSeam };
+        geo = { kind: 'sleeve', start, frontSign: def.side === 'right' ? 1 : -1, maxW: face.width - 1, faceW: face.width, cuffSeam: face.cuffSeam };
+        if (def.sash) geo.sash = sashGeo ??= sashLayout(L); // v24 專章帶：頭 sash.max 個章改戴喺帶上（visible 先分）
       }
       const opts = b.choices ? withArt.map((c) => ({ choice: c.id, art: c.art, layer: c.layer ?? a.layer, rank: c.rank ?? a.rank })) : [{ art: b.art, layer: a.layer, rank: a.rank }];
       for (const o of opts) {
@@ -446,7 +448,7 @@ export const hiddenBy = (p, state) => (p.hiddenBy || []).find((x) => (x.includes
 /** 同另一個獎勵一齊戴時只限某幾個選項（例：特殊貢獻星章只可以同第十次嘅徽章一齊戴，手冊 P.183） */
 export const limited = (p, state) => !!(p.limitWhen && p.choice && isOn(state, p.limitWhen.badge) && !p.limitWhen.choices.includes(p.choice));
 
-export function visible(placements, state, { invested, school = false, unavailable = [], level = null }) {
+export function visible(placements, state, { invested, school = false, unavailable = [], level = null, sash = false }) {
   if (school && !invested) return []; // 未宣誓冇旅巾，冇地方戴
   const on = (p) => {
     if ((p.id === 'membership' || p.inv) && !invested) return false; // 世界童軍會員章、童軍小隊章：宣誓後先戴
@@ -462,7 +464,44 @@ export function visible(placements, state, { invested, school = false, unavailab
   // 跟住另一個章嘅（「R」字樣別針喺職級肩章上）：嗰個章冇顯示就唔顯示
   const ids = new Set(first.map((p) => p.id));
   const shown = first.filter((p) => !p.requires || ids.has(p.requires));
-  return arrangeSlots(arrangeRacks(centreLonePair(placements, shown)));
+  return arrangeSlots(arrangeRacks(centreLonePair(placements, sash ? onSash(shown) : shown)));
+}
+
+/**
+ * v24 專章帶（綱要 P.15–16）：有 sash 嘅 slot，按 rank（教導 → 服務 → 技能 → 興趣）頭 sash.max（16）個章
+ * 改戴喺專章帶前面（上身、轉 rotZ）；第 17 個起留喺袖（arrangeSlot 再排、超出 max 唔顯示）。
+ */
+export function onSash(list) {
+  const mine = list.filter((p) => p.slot?.def?.sash && p.slot.geo?.sash).sort((a, b) => a.slot.rank - b.slot.rank || a.id.localeCompare(b.id));
+  if (!mine.length) return list;
+  const S = mine[0].slot.geo.sash;
+  const n = Math.min(mine[0].slot.def.sash.max, S.slots.length);
+  const moved = new Map();
+  mine.slice(0, n).forEach((p, i) => {
+    const q = S.slots[i];
+    const d = S.badgeDiag;
+    const { slot, u, v, ...rest } = p; // eslint-disable-line no-unused-vars
+    moved.set(p.key, { ...rest, mount: 'torso', onSash: true, sashIndex: i, w: d, h: d, x: q.x, y: q.y, z: S.z, rot: [0, 0, S.rotZ] });
+  });
+  return list.map((p) => moved.get(p.key) ?? p);
+}
+
+/** v24 專章帶有冇戴：規則有 sash 嘅 slot、揀咗、整齊制服（唔著毛衣、唔係學校運動上衣）（綱要 P.15 第 4.2 項） */
+// v24c：綱要 P.15 第 4.1 項 —— 考獲十二個專科徽章先可以用專章帶（state = 而家開咗嘅章；sash.min）
+export const profOn = (rules, state = {}) => rules.badges.filter((b) => b.anchor?.slot === 'profL' && state[b.id] && state[b.id] !== 'none').length;
+export const sashActive = (rules, outfit, state = {}) => {
+  const def = Object.values(rules.slots || {}).find((d) => d.sash);
+  return !!(def && outfit.sash && !outfit.sweater && !outfit.school && profOn(rules, state) >= (def.sash.min ?? 0));
+};
+
+/** v24：有幾多個專科徽章顯示唔到（袖 max + 專章帶 max 之外） */
+export function profOverflow(rules, state, { sash = false } = {}) {
+  const def = rules.slots?.profL;
+  if (!def) return { on: 0, sleeve: 0, sash: 0, hidden: 0 };
+  const on = rules.badges.filter((b) => b.anchor?.slot === 'profL' && state[b.id] && state[b.id] !== 'none').length;
+  const onS = sash && def.sash ? Math.min(on, def.sash.max) : 0;
+  const sleeve = Math.min(on - onS, def.layers[0].max);
+  return { on, sash: onS, sleeve, hidden: on - onS - sleeve };
 }
 
 /**
@@ -515,31 +554,57 @@ export function arrangeSlot(items, others) {
   } else if (def.honeycomb) {
     // v23 幼童軍活動徽章（綱要 P.7 附圖）：六角形（尖頂）由袖口縫線上面排起，一行 rows[0] 個、上一行 rows[1] 個……咬合排列；
     // 每行按格位由前面排起（格位固定，唔會疊埋），行與行相距 ¾ 高 + spacing
+    // v24 童軍專科徽章（菱形，綱要 P.12 附圖）：pitch = 0.5（菱形咬合，行距 = ½ 高）；topFirst = 排先（rank 細）嘅章喺最上面一行
     const H = def.honeycomb;
     const s = H.spacingCm ?? GAP0;
+    const pitch = H.pitch ?? 0.75;
     const all = byLayer.flatMap((x) => x.list);
     const cap = Math.max(...H.rows);
     const k = Math.min(1, geo.maxW / (cap * all[0].w + (cap - 1) * s));
-    let i = 0;
-    for (let r = 0; i < all.length; r++) {
+    const cells = [];
+    for (let r = 0; cells.length < all.length; r++) {
       const c = H.rows[r % H.rows.length];
-      for (let j = 0; j < c && i < all.length; j++, i++) {
-        const p0 = all[i];
-        const w = Math.round(p0.w * k * 100) / 100;
-        const h = Math.round(p0.h * k * 100) / 100;
-        const off = ((c - 1) / 2 - j) * (w + s); // + = 近前面
-        const v = geo.cuffSeam - H.aboveCuffSeamCm - h / 2 - r * (0.75 * h + s);
-        kept.push({ ...p0, w, h, u: geo.frontSign * off + 0, v: Math.round(v * 100) / 100 });
-      }
+      for (let j = 0; j < c && cells.length < all.length; j++) cells.push({ r, j, c });
     }
+    if (H.topFirst) cells.sort((a, b) => b.r - a.r || a.j - b.j);
+    all.forEach((p0, i) => {
+      const { r, j, c } = cells[i];
+      const w = Math.round(p0.w * k * 100) / 100;
+      const h = Math.round(p0.h * k * 100) / 100;
+      const off = ((c - 1) / 2 - j) * (w + s); // + = 近前面
+      const v = geo.cuffSeam - H.aboveCuffSeamCm - h / 2 - r * (pitch * h + s);
+      kept.push({ ...p0, w, h, u: geo.frontSign * off + 0, v: Math.round(v * 100) / 100 });
+    });
   } else {
     let prev = geo.start;
     byLayer.forEach(({ L, list }, i) => {
       GAP = L.spacingCm ?? GAP0; // 同一行章與章之間（例：地域章、區章相距 1 cm，手冊 P.95）
       // 袖：上面嘅層冇章就由下一層補上去（用第一層嘅距離），唔留空位
-      const t = prev + ((i === 0 ? def.layers[0].gapCm : L.gapCm) ?? 0);
+      // v24b liftCm：上面有層時向上移入上一層（例：深資童軍航空／海上活動徽章喺香港青年獎勵計劃獎章兩側、低半個章，深資童軍議會附圖）
+      const t = i === 0 ? prev + (def.layers[0].gapCm ?? 0) : prev + (L.gapCm ?? 0) - (L.liftCm ?? 0);
       let bottom = t;
-      for (const { p, off } of rowX(list, L.from === 'back' ? 'outer' : 'inner', geo.maxW)) {
+      // v24b marginCm：呢一行可以用到袖外側邊 marginCm 以內（例：世界童軍組織徽章 4 cm 一行四個）
+      const maxW = L.marginCm != null ? geo.faceW - 2 * L.marginCm : geo.maxW;
+      // v24b pos：按 rank 固定橫向位置（cm，+ = 近前面），淨係得一個都唔會走去中間
+      if (L.cells) {
+        // v24c 固定格位（用戶指示：右袖圓形章嘅四個位置固定，只係放咩同放幾多個唔同，唔會因為得一個就置中）：
+        // cells 個 cellCm 闊嘅格由前面排起；成行太闊就一齊縮（格位同章一樣比例）；章喺自己格入面置中
+        const cw = L.cellCm;
+        const total = L.cells * cw + (L.cells - 1) * GAP;
+        const k = Math.min(1, maxW / total);
+        list.forEach((p, j) => {
+          const off = (total / 2 - cw / 2 - j * (cw + GAP)) * k; // + = 近前面
+          const w0 = p.w0 ?? p.w; // 原本尺寸（placeAll 已經逐個排過一次，唔好縮兩次）
+          const h0 = p.h0 ?? p.h;
+          const w = Math.round(w0 * k * 100) / 100;
+          const h = Math.round(h0 * k * 100) / 100;
+          kept.push({ ...p, w0, h0, w, h, u: Math.round(geo.frontSign * off * 100) / 100 + 0, v: t + (cw * k) / 2 });
+        });
+        prev = t + cw * k;
+        return;
+      }
+      const row = L.pos ? list.map((p) => ({ p, off: L.pos[String(p.slot.rank)] ?? 0 })) : rowX(list, L.from === 'back' ? 'outer' : 'inner', maxW);
+      for (const { p, off } of row) {
         // 袖：off + = 近前面（from front）；u + = 望住袖外側嘅右手邊（右袖 = 前、左袖 = 後）
         kept.push({ ...p, u: geo.frontSign * off + 0, v: t + p.h / 2 });
         bottom = Math.max(bottom, t + p.h);
@@ -652,7 +717,7 @@ export function shownReason(rules, outfit, state, id, { unavailable = [], level 
     }
     return outfit.school ? 'school' : outfit.sweater && hasSweater(rules) ? 'sweater' : 'vest';
   }
-  if (visible(all, state, { invested: outfit.invested, school: outfit.school, unavailable, level }).some((p) => p.id === id)) return null;
+  if (visible(all, state, { invested: outfit.invested, school: outfit.school, unavailable, level, sash: sashActive(rules, outfit, state) }).some((p) => p.id === id)) return null;
   if (outfit.school && !outfit.invested) return 'schoolUninvested';
   if ((id === 'membership' || all.some((p) => p.id === id && p.inv)) && !outfit.invested) return 'uninvested';
   if (all.some((p) => p.id === id && !levelOk(p, level))) return 'level';

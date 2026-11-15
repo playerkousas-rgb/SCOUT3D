@@ -5364,11 +5364,13 @@
           "id": "row",
           "gapCm": 0.6,
           "max": 4,
-          "from": "front"
+          "from": "front",
+          "cells": 4,
+          "cellCm": 2.2
         }
       ],
-      "zh": "穿著者右袖、地域章／區章下面一行：世界童軍組織系列同「積極公民」獎章系列，最多合共四個（綱要 P.7 附圖）。",
-      "en": "Wearer's right sleeve, one row below the Region/District Badges: WOSM series and Active Citizen series, at most four in total (Training Scheme p.7 figure).",
+      "zh": "穿著者右袖、地域章／區章下面一行：世界童軍組織系列同「積極公民」獎章系列，最多合共四個（綱要 P.7 附圖）。四個格位固定（由前面排起），只係放咩同放幾多個唔同，唔會因為得一個就置中（用戶指示）。",
+      "en": "Wearer's right sleeve, one row below the Region/District Badges: WOSM series and Active Citizen series, at most four in total (Training Scheme p.7 figure). The four positions are fixed (filled from the front); only what goes in them and how many change — a single badge is not centred (user instruction).",
       "sources": [
         {
           "ref": "CTS",

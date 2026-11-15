@@ -17,7 +17,7 @@ const leader = read('src/data/leader_rules_v1.0.json');
 const OUTFIT = { gender: 'boy', invested: true };
 const BASIC = { membership: true, hongKong: true, troop: true, region: true, district: true, meritorious: true, epaulette: 'venture' };
 const EXTRAS = venture.badges.filter((b) => b.group === 'extra');
-// 全部非基本章開（有選項就揀最後一個 = 最高級）；和平使者章同紀念章只戴一個，熄紀念章
+// 全部非基本章開（有選項就揀最後一個 = 最高級）；熄紀念章（v24b 前同和平使者章爭位，保留原有測試狀態）
 const ALL = { ...BASIC, ...Object.fromEntries(EXTRAS.map((b) => [b.id, b.choices ? b.choices[b.choices.length - 1].id : true])), commemorative: false };
 // PNG 闊高（IHDR）同第一粒像素（RGBA、第一行嘅濾鏡唔會改第一粒）
 const pngSize = (buf) => [buf.readUInt32BE(16), buf.readUInt32BE(20)];
@@ -68,42 +68,39 @@ test('圖案：檔案存在、px 啱、細過 480 KB；深資童軍服務年星�
   assert.ok(r > 180 && g < 70 && b < 70, `紅底 ${r},${g},${b}`);
 });
 
-test('右袖：急救章喺旅章下面、地域章／區章上面；冇急救章就照 P.95 喺旅章下 2 cm', () => {
+// v24b：深資童軍議會最新附圖 —— 右袖唔再戴急救章同社區參與章；地域章／區章喺旅章下 2 cm，下面一行世界童軍組織徽章（4 cm）最多四個
+test('右袖：地域章／區章喺旅章下 2 cm；下面一行世界童軍組織徽章同積極公民最多四個；冇急救章', () => {
   const all = placeFor(venture, OUTFIT);
   const on = visible(all, ALL, { invested: true });
   const troop = one(on, 'troop');
-  const aidR = on.find((p) => p.id === 'firstAid' && p.mount === 'r');
+  assert.ok(!on.some((p) => p.id === 'firstAid' && p.mount === 'r'), '右袖冇急救章');
   const region = one(on, 'region');
   const district = one(on, 'district');
-  assert.ok(Math.abs(aidR.v - aidR.h / 2 - (troop.v + troop.h / 2 + 2)) < 1e-9, '急救章喺旅章下 2 cm');
-  assert.equal(aidR.u, 0, '置中');
-  assert.ok(region.v - region.h / 2 > aidR.v + aidR.h / 2, '地域章喺急救章下面');
+  assert.ok(Math.abs(region.v - region.h / 2 - (troop.v + troop.h / 2 + 2)) < 1e-9, '旅章下 2 cm');
   assert.ok(region.u > 0 && district.u < 0, '地域章前、區章後');
   assert.ok(Math.abs(region.u - region.w / 2 - (district.u + district.w / 2) - 1) < 1e-9, '相距 1 cm（手冊 P.95）');
-  const off = visible(all, { ...ALL, firstAid: false }, { invested: true });
-  const r2 = one(off, 'region');
-  assert.ok(Math.abs(r2.v - r2.h / 2 - (troop.v + troop.h / 2 + 2)) < 1e-9, '冇急救章：旅章下 2 cm');
-  // 社區參與章一行喺地域章下面，最多四個
   const row = on.filter((p) => p.slot?.layer === 'row');
   assert.equal(row.length, 4);
-  assert.equal(row[0].id, 'community');
+  assert.equal(row[0].id, 'earthTribe');
+  assert.ok(!row.some((p) => p.id === 'community'), '社區參與章唔喺右袖');
   for (const p of row) assert.ok(p.v - p.h / 2 > region.v + region.h / 2, `${p.id} 喺地域章下面`);
   assert.equal(shownReason(venture, OUTFIT, ALL, 'citizenGreen'), 'slotFull');
 });
 
-test('急救章一個開關、兩隻袖都戴（手冊 P.148）', () => {
+test('急救章：只戴左袖、樂行童軍新圖案（深資童軍議會附圖）', () => {
   const on = visible(placeFor(venture, OUTFIT), ALL, { invested: true });
   const aid = by(on, 'firstAid');
-  assert.deepEqual(aid.map((p) => p.mount).sort(), ['l', 'r']);
-  assert.deepEqual(aid.map((p) => p.key).sort(), ['firstAid', 'firstAid-2']);
-  const L = aid.find((p) => p.mount === 'l');
-  assert.ok(Math.abs(L.u) < 0.05, '左袖第一行中間');
+  assert.deepEqual(aid.map((p) => p.mount), ['l']);
+  assert.equal(aid[0].art, '/badges/extra/rover_first_aid.png');
+  assert.equal(one(venture.badges, 'firstAid').alsoAnchor, undefined);
+  const L = aid[0];
+  assert.ok(Math.abs(L.u) < 0.05, '左袖中間');
   const air = on.find((p) => p.id === 'airCrew');
   const sea = on.find((p) => p.id === 'seaBadge');
   assert.ok(air.u < 0 && sea.u > 0, '左袖：u − = 前面 → 航空前、海上後');
   const hkayp = one(on, 'hkayp');
   const ls = one(on, 'lifesaving');
-  assert.ok(hkayp.v > L.v && ls.v > hkayp.v, '香港青年獎勵計劃喺急救章下面、拯溺布章再下面');
+  assert.ok(hkayp.v < L.v && L.v < ls.v, '香港青年獎勵計劃 → 急救章 → 拯溺布章（由上至下）');
 });
 
 test('段章＋金帶：左袖下面兩行兩欄，金帶喺段章下面，最底一行貼住袖口縫線（手冊 P.170 附圖）', () => {
@@ -145,16 +142,16 @@ test('全部開：同一面嘅章唔重疊（袖、胸前），全部喺袖外�
   }
 });
 
-test('胸前：右胸袋袋蓋上金紫荊（外）→ 總領袖 → 深資童軍先修章（內）；宗教章喺和平使者章內側；左胸袋服務年星、飛行章、香港章', () => {
+test('胸前：右胸袋袋蓋上金紫荊（外）→ 總領袖 → 深資童軍先修章 → 樂行童軍先修章（內）；宗教章喺紀念章內側；左胸袋服務年星、飛行章、香港章', () => {
   const { B, top } = layout('boy', 'venture');
   const flapTop = top - B.pocket.top;
   const on = visible(placeFor(venture, OUTFIT), ALL, { invested: true });
-  const [bau, chief, link] = ['emblemBauhinia', 'emblemChief', 'ventureLink'].map((id) => one(on, id));
-  assert.ok(bau.x < chief.x && chief.x < link.x && link.x < 0, '右胸（x −）：外 → 內');
-  for (const p of [bau, chief, link]) assert.ok(Math.abs(p.y - p.h / 2 - flapTop) < 1e-9, `${p.id} 緊貼袋蓋`);
+  const [bau, chief, link, rlink] = ['emblemBauhinia', 'emblemChief', 'ventureLink', 'roverLink'].map((id) => one(on, id));
+  assert.ok(bau.x < chief.x && chief.x < link.x && link.x < rlink.x && rlink.x < 0, '右胸（x −）：外 → 內');
+  for (const p of [bau, chief, link, rlink]) assert.ok(Math.abs(p.y - p.h / 2 - flapTop) < 1e-9, `${p.id} 緊貼袋蓋`);
   const faith = one(on, 'faith');
-  const peace = one(on, 'peace');
-  assert.ok(faith.x > peace.x, '宗教章內側（近中線）');
+  const comm = one(visible(placeFor(venture, OUTFIT), { ...ALL, commemorative: true }, { invested: true }), 'commemorative');
+  assert.ok(faith.x > comm.x, '宗教章內側（近中線）');
   assert.ok(Math.abs(faith.y - faith.h / 2 - (flapTop + 3)) < 1e-9, '袋蓋上方 3 cm');
   assert.equal(one(on, 'ventureAward').x, -B.pocket.x, '進度性獎章喺右胸袋中央');
   const [star, wings, hk] = ['serviceStar', 'wings', 'hongKong'].map((id) => one(on, id));

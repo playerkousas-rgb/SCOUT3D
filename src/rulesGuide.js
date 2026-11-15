@@ -49,7 +49,7 @@ export const RULES_GUIDE = {
         { k: 'outfit.sweaterNoteNavy', v: ['sea', 'air'] },
       ],
     },
-    { title: 'rules.g.badges', items: ['badges.tipScout', ...SCOUT_BADGES, 'badges.extraNoteScout', 'badge.why.replaced_leaderBar'] },
+    { title: 'rules.g.badges', items: ['badges.tipScout', ...SCOUT_BADGES, 'badges.extraNoteScout', 'badge.why.replaced_leaderBar', 'badges.profNote', 'badges.sashRule'] },
   ],
   venture: [
     {

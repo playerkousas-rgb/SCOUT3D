@@ -3,12 +3,12 @@
 // 人物面向 +z；穿著者左 = +x。
 import { useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
-import { layout, neckerLayout, strapLayout, dressLayout, lanyardPoints, lanyardBackPoints, tasselPoints, LANYARD_COLOURS, ALT_CM, strandOffsets, VEST_T, SWEATER_TOP, PX, scoutVariant, SCOUT_VARIANTS, ventureVariant, roverVariant, leaderVariant, isSenior, ventureLegwear, leaderLegwear, pumpParts } from './body.js';
+import { layout, neckerLayout, strapLayout, dressLayout, lanyardPoints, lanyardBackPoints, tasselPoints, LANYARD_COLOURS, ALT_CM, strandOffsets, VEST_T, SWEATER_TOP, PX, sashLayout, sashMesh, SASH, scoutVariant, SCOUT_VARIANTS, ventureVariant, roverVariant, leaderVariant, isSenior, ventureLegwear, leaderLegwear, pumpParts } from './body.js';
 import { useTexture } from '@react-three/drei';
 import { SECTIONS, DISTRICTS, PATROLS } from '../data/rules.js';
 import { resolveArt, rankCap, leaderNeckwear, messCapOf } from '../lib/picks.js';
 import { neckerPalettes } from '../lib/necker.js';
-import { placeAll, placeFor, visible, dynKey, ribbonUrls } from './badgeLayout.js';
+import { placeAll, placeFor, visible, dynKey, ribbonUrls, sashActive } from './badgeLayout.js';
 import { useBadgeTextures, useDynamicTextures, TorsoBadges, SleeveBadges } from './Badges.jsx';
 import {
   headFaces, pigtailFaces, neckFaces, torsoFaces, sleeveFaces, cuffFaces, skinFaces, handFaces, legFaces, shortsFaces, shinFaces,
@@ -520,6 +520,47 @@ function Lanyard({ p, paths, colours, thick, painted, selected, onSelect, regist
     </group>
   );
 }
+/**
+ * v24 童軍專科徽章肩帶（綱要 P.15–16）：綠底紅邊斜布，由左肩斜落右腰；旅巾喺帶外面（帶嘅 z 低過旅巾）。
+ * 幾何由 body.js sashMesh 計；貼圖橫向 紅 0.75 | 綠 11.5 | 紅 0.75 cm。
+ */
+function Sash({ L, painted }) {
+  const geo = useMemo(() => {
+    const m = sashMesh(sashLayout(L));
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.Float32BufferAttribute(m.positions, 3));
+    g.setAttribute('uv', new THREE.Float32BufferAttribute(m.uvs, 2));
+    g.setIndex(m.indices);
+    g.computeVertexNormals();
+    return g;
+  }, [L]);
+  const tex = useMemo(() => {
+    const cv = document.createElement('canvas');
+    const px = 8; // 每 cm
+    cv.width = SASH.widthCm * px;
+    cv.height = 4;
+    const ctx = cv.getContext('2d');
+    ctx.fillStyle = C.sashGreen;
+    ctx.fillRect(0, 0, cv.width, cv.height);
+    ctx.fillStyle = C.sashRed;
+    ctx.fillRect(0, 0, SASH.edgeCm * px, cv.height);
+    ctx.fillRect(cv.width - SASH.edgeCm * px, 0, SASH.edgeCm * px, cv.height);
+    const t = new THREE.CanvasTexture(cv);
+    t.colorSpace = THREE.SRGBColorSpace;
+    t.magFilter = THREE.NearestFilter;
+    return t;
+  }, []);
+  useEffect(() => () => {
+    geo.dispose();
+    tex.dispose();
+  }, [geo, tex]);
+  return (
+    <mesh geometry={geo} castShadow receiveShadow>
+      <meshStandardMaterial map={painted ? tex : null} color={painted ? '#ffffff' : '#a3a6aa'} roughness={0.85} side={THREE.DoubleSide} polygonOffset polygonOffsetFactor={-1} />
+    </mesh>
+  );
+}
+
 /** 將路線切成每段大約 step cm（扭紋轉色用） */
 function subdivide(points, step) {
   const out = [points[0]];
@@ -636,9 +677,11 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
   const textures = useMemo(() => ({ ...fixed, ...dyn }), [fixed, dyn]);
   const unavailable = useMemo(() => RULES.badges.filter((b) => b.dynamic && !dynArts[dynKey(b.id)]).map((b) => b.id), [RULES, dynArts]);
   const all = useMemo(() => placeFor(RULES, outfit), [RULES, outfit]);
+  // v24 專章帶（綱要 P.15–16）：只限童軍、整齊制服（唔著毛衣）；專科徽章頭 16 個改戴喺帶上
+  const sashOn = scout && sashActive(RULES, outfit, badges); // v24c：要有 12 個專科徽章
   const shown = useMemo(
-    () => visible(all, badges, { invested, school: outfit.school, unavailable, level: leader ? picks.level : null }),
-    [all, badges, invested, outfit.school, unavailable, leader, picks.level],
+    () => visible(all, badges, { invested, school: outfit.school, unavailable, level: leader ? picks.level : null, sash: sashOn }),
+    [all, badges, invested, outfit.school, unavailable, leader, picks.level, sashOn],
   );
   const patchProps = { textures, painted, onSelect, registry };
   const torsoItems = shown.filter((p) => p.mount === 'torso');
@@ -824,6 +867,7 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
         {lanyards.map((q) => (
           <Lanyard key={q.p.key} p={q.p} paths={q.paths} colours={q.colours} thick={q.thick} painted={painted} selected={selected === q.p.id} onSelect={onSelect} registry={registry} />
         ))}
+        {sashOn && <Sash L={L} painted={painted} />}
         {vest && <Box size={vestBox} faces={vestF} painted={painted} alpha position={[0, t.y - 1 + vestBox[1] / 2, 0]} />}
         {/* 企領（有領上衣先有；前面開口） */}
         {hasCollar && (

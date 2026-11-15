@@ -5,7 +5,7 @@ import { useLang, LangToggle, bi, pick } from './i18n.jsx';
 import { SECTIONS, SECTION_IDS, DISTRICTS, PATROLS, RULE_ERRORS, badgeById, sourceLines } from './data/rules.js';
 import { garmentsFor, variantOf } from './data/validate.js';
 import { NECKER, WOGGLE, PLAIN } from './palette.js';
-import { shownReason, ribbonsOn } from './three/badgeLayout.js';
+import { shownReason, ribbonsOn, profOverflow, sashActive } from './three/badgeLayout.js';
 import { resolveArt, meritYearOk, findDistrict, findPatrol, ranksFor, fixRank, rankRowOf, leaderNeckwear, messCapOf, troopNumber, ordinalSuffix } from './lib/picks.js';
 import { NECKER_THIRD } from './lib/necker.js';
 import { leaderUniform, isDress } from './three/body.js';
@@ -56,6 +56,7 @@ const SCOUT_OUTFIT = {
   invested: true,
   hat: true,
   sweater: false, // 制服毛衣（手冊 P.121–122）
+  sash: false, // v24 專章帶（綱要 P.15–16，可選）
   neckerMain: '#2e7d4f',
   neckerBorder: '#2e7d4f',
   woggle: '#1f4e9c',
@@ -733,6 +734,8 @@ function BadgesTab({ rules, section, outfit, setOutfit, badges, setBadges, picks
   const extras = rules.badges.filter((b) => applies(b) && b.group === 'extra');
   // v23：幼童軍活動徽章（綱要 P.25–67）：數目多，用細格仔揀
   const activity = rules.badges.filter((b) => applies(b) && b.group === 'activity');
+  // v24：童軍專科徽章（綱要 P.45–147）：四組細格仔 + 專章帶
+  const prof = rules.badges.filter((b) => applies(b) && b.group === 'proficiency');
   const row = (b) => <BadgeRow key={b.id} b={b} rules={rules} section={section} outfit={outfit} badges={badges} set={set} picks={picks} setPicks={setPicks} unavailable={unavailable} selected={selected} onPick={onPick} />;
   return (
     <div className="tabbody">
@@ -746,6 +749,7 @@ function BadgesTab({ rules, section, outfit, setOutfit, badges, setBadges, picks
         </details>
       )}
       {activity.length > 0 && <ActivityGrid rules={rules} list={activity} badges={badges} set={set} />}
+      {prof.length > 0 && <ProficiencyGrid rules={rules} list={prof} badges={badges} set={set} setBadges={setBadges} outfit={outfit} setOutfit={setOutfit} />}
       {awards.length > 0 && (
         <details className="awards" open={awards.some((b) => badges[b.id] && badges[b.id] !== 'none')}>
           <summary className="h3">{t(uid === 'u2' ? 'badges.awardsMini' : 'badges.awards')}</summary>
@@ -826,6 +830,68 @@ function ActivityGrid({ rules, list, badges, set }) {
     </details>
   );
 }
+
+/**
+ * v24 童軍專科徽章（綱要 P.45–47 興趣組、P.84–86 技能組、P.124–125 服務組、P.146–147 教導組）：
+ * 按組別分嘅細格仔，撳一下開／熄。左袖由袖口排到上面排滿（最多 18 個，v24b）；專章帶（綱要 P.15–16）再戴多 16 個；
+ * 放唔落嘅照樣記住，但列明「未能顯示」（用戶指示）。
+ */
+function ProficiencyGrid({ rules, list, badges, set, setBadges, outfit, setOutfit }) {
+  const { lang, t } = useLang();
+  const on = (b) => !!badges[b.id] && badges[b.id] !== 'none';
+  const n = list.filter(on).length;
+  const sash = sashActive(rules, outfit, badges);
+  const sashMin = rules.slots.profL.sash?.min ?? 0;
+  const o = profOverflow(rules, badges, { sash });
+  const fill = (s) => s.replace('{n}', o.on).replace('{sash}', o.sash).replace('{sleeve}', o.sleeve).replace('{k}', o.hidden).replace('{max}', rules.slots.profL.layers[0].max);
+  const clear = () => setBadges((st) => Object.fromEntries(Object.entries(st).filter(([k]) => !list.some((b) => b.id === k))));
+  return (
+    <details className="awards extras prof" open={n > 0}>
+      <summary className="h3">{t('badges.prof')}</summary>
+      <p className="occasion__note">{t('badges.profNote')}</p>
+      {setOutfit && (
+        <Switch label={t('badges.sash')} checked={!!outfit.sash} disabled={!!outfit.sweater} onChange={(v) => setOutfit((x) => ({ ...x, sash: v }))} />
+      )}
+      {outfit.sash && outfit.sweater && <p className="muted">{t('badges.sashSweater')}</p>}
+      {outfit.sash && !outfit.sweater && n < sashMin && <p className="muted">{t('badges.sashHint').replace('{n}', n).replace('{min}', sashMin)}</p>}
+      <p className="muted" aria-live="polite">{fill(t(sash ? 'badges.profCountSash' : 'badges.profCount'))}</p>
+      {o.hidden > 0 && <p className="prof__hidden" role="status">{fill(t('badges.profHidden'))}</p>}
+      {n > 0 && (
+        <button type="button" className="prof__clear" onClick={clear}>
+          {t('badges.profClear')}
+        </button>
+      )}
+      {(rules.areas || []).map((a) => {
+        const items = list.filter((b) => b.area === a.id);
+        if (!items.length) return null;
+        const k = items.filter(on).length;
+        return (
+          <div key={a.id} className="actgrid__area">
+            <div className="actgrid__title">
+              {pick(lang, a)}
+              {k > 0 && <span className="prof__n">{k}</span>}
+            </div>
+            <ul className="actgrid">
+              {items.map((b) => {
+                const name = pick(lang, b, 'name');
+                return (
+                  <li key={b.id}>
+                    <button type="button" className={`actgrid__btn${on(b) ? ' is-on' : ''}`} aria-pressed={on(b)} title={name} onClick={() => set(b.id, !on(b))}>
+                      <img src={b.art.file} alt="" loading="lazy" />
+                      <span className="actgrid__name">{shortName(b, lang)}</span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        );
+      })}
+    </details>
+  );
+}
+/** 格仔用短名：「釣魚章」→「釣魚」、「釣魚教導章」→「釣魚教導」；英文去走 “Badge” */
+const shortName = (b, lang) => (lang === 'en' ? b.en.name.replace(/ Badge$/, '') : b.zh.name.replace(/章$/, ''));
 
 /* ---------- 3D 舞台：上下移動、匯出 ---------- */
 /** 上下移動人物（望住點高度）：拉近之後可以睇唔同高度嘅章 */

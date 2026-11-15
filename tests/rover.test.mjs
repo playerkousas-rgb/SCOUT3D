@@ -58,9 +58,13 @@ test('肩章有選項：未考獲（冇章）＋樂行童軍肩章（手冊 P.14
 });
 
 test('來源：手冊 P.42–47、P.49、P.51、P.171；樂行童軍訓練綱要 P.10–11', () => {
-  assert.ok(rover.sources.UH && rover.sources.RTS && !rover.sources.VTS);
+  assert.ok(rover.sources.UH && rover.sources.RTS);
   const s = JSON.stringify(rover);
-  assert.ok(!/"ref":\s*"VTS"/.test(s), '唔可以引用深資童軍綱要');
+  // v24b：樂行童軍先修章喺深資童軍支部考取，圖案同要求只見於深資童軍綱要 P.57 —— 只有呢個章可以引用 VTS
+  const viaVts = (o) => /"ref":\s*"VTS"/.test(JSON.stringify(o));
+  assert.ok(!viaVts({ ...rover, badges: [], sources: {} }), '唔可以引用深資童軍綱要');
+  for (const b of rover.badges) if (b.id !== 'roverLink') assert.ok(!viaVts(b), `${b.id} 唔可以引用深資童軍綱要`);
+  assert.ok(viaVts(rover.badges.find((b) => b.id === 'roverLink')));
   assert.ok(!/P\.170|p\.170|"170"/.test(s), '樂行童軍佩戴圖係 P.171，唔係 P.170');
   assert.ok(!/棗紅/.test(s) && !/maroon/i.test(s), '樂行童軍冇棗紅色');
   for (const id of ['shirt', 'trousers', 'socks', 'shoes']) assert.ok(rover.garments.find((g) => g.id === id).sources.some((x) => x.ref === 'RTS' && x.page === '10–11'));
