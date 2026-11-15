@@ -22,7 +22,8 @@ test('幼童軍規則資料通過驗證', () => {
 });
 
 test('第一版只有制服頁徽章（手冊 P.26–29、P.92–95、P.159）', () => {
-  assert.deepEqual(cub.badges.map((b) => b.id).sort(), ['district', 'hongKong', 'membership', 'meritorious', 'region', 'troop']);
+  // v23：非基本章（group extra／activity，綱要 P.7）另外喺 v23.test.mjs 測
+  assert.deepEqual(cub.badges.filter((b) => !b.group).map((b) => b.id).sort(), ['district', 'hongKong', 'membership', 'meritorious', 'region', 'troop']);
   for (const b of cub.badges) assert.ok(b.sources.length, `${b.id} 冇來源`);
 });
 
