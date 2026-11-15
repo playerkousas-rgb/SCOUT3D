@@ -25,6 +25,12 @@
     "userChecks": [
       {
         "date": "2026-11-15",
+        "item": "awardsRound5",
+        "zh": "軟帽帽章要戴喺帽身上，唔好低到似戴喺頭髮上；加民政及青年事務局局長嘉許（P.198）；110 周年、童心抗疫、同行未來、亞太基金冇相唔加；感謝章喺編號 3–6 顯示正確（用戶確認）",
+        "en": "Beret cap badges sit on the beret, not low on the hair; added the Secretary for Home and Youth Affairs' Commendation (p.198); 110th Anniversary, Pandemic, Walking Together and APR Foundation awards have no photo and are not added; the Thanks Badge on Nos. 3–6 is correct (user confirmed)"
+      },
+      {
+        "date": "2026-11-15",
         "item": "ribbons",
         "zh": "加「一般場合：勳條」模式（重要禮儀場合戴勳章、一般場合戴勳條，兩樣唔同時戴）；勳條顏色取自手冊 P.178–185 每張相下面嘅勳條；獅／龍掛頸勳章掛低啲；冇相嘅獎勵唔加（用戶指示）",
         "en": "Added the general-occasion ribbon mode (decorations at formal occasions, ribbons at general occasions, never both); ribbon colours from the bars under each photo on Handbook pp.178–185; Lion/Dragon neck decorations hang lower; awards without a handbook photo are not added (user instruction)"
@@ -6089,6 +6095,128 @@
         "en": "No size in the Handbook; the model uses 3 × 3 cm. Photo from Handbook p.184 (background removed). When medals are worn on the dress uniform too, the medals partly cover the Thanks Badge (the Handbook does not say how to avoid this)."
       },
       "fit": true
+    },
+    {
+      "id": "shaCommendation",
+      "required": false,
+      "side": "left",
+      "uniforms": [
+        "u1",
+        "u2",
+        "u3",
+        "u4",
+        "u5",
+        "u6"
+      ],
+      "group": "awards",
+      "zh": {
+        "name": "民政及青年事務局局長嘉許",
+        "place": "禮服同恤衫（編號 1、3–6）：左胸袋袋蓋右方（近中線嗰邊）；晚禮服：左襟領童軍徽下面。冇勳條，一般場合照戴。",
+        "quote": "佩戴資格：1. 獲嘉許的青少年制服團體青年義務領袖（本會 35 歲或以下成年成員）；2. 獲嘉許的青少年制服團體義務領袖（本會成年成員）。佩戴方法：制服恤衫及禮服：佩戴在上衣左胸袋袋蓋右方位置。晚禮服：佩戴在上衣左襟領童軍徽下方位置。西服：佩戴在上衣左面翻領上。此項嘉許不設勳條。",
+        "conditions": "民政及青年事務局局長嘉許計劃（政府頒授）：銀色＝青年義務領袖（35 歲或以下），金色＝義務領袖。手冊 P.198（2024-10-15 修訂）。"
+      },
+      "en": {
+        "name": "Secretary for Home and Youth Affairs' Commendation",
+        "place": "Dress jacket and shirts (Nos. 1, 3–6): right-hand side (towards the centre) of the left chest-pocket flap; evening dress: below the Scout emblem on the left lapel. No ribbon, so it is worn at general occasions too.",
+        "quote": "Eligibility: 1. commended youth volunteer leaders of uniformed youth groups (adult members aged 35 or under); 2. commended volunteer leaders of uniformed youth groups (adult members). Wearing: uniform shirt and dress jacket — on the right-hand side of the left chest-pocket flap; evening dress — below the Scout emblem on the left lapel; lounge suit — on the left lapel. There is no ribbon for this commendation.",
+        "conditions": "Secretary for Home and Youth Affairs' Commendation Scheme (government award): silver = youth volunteer leader (35 or under), gold = volunteer leader. Handbook p.198 (revised 15 Oct 2024)."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3.2,
+        "hCm": 3.1,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "side": "left",
+        "pocket": "flap",
+        "flapInnerCm": 1.8,
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "198"
+        }
+      ],
+      "status": "verified",
+      "anchorBy": {
+        "u2": {
+          "part": "torso",
+          "side": "left",
+          "lapel": "belowFleur",
+          "gapCm": 0.5,
+          "measured": true
+        }
+      },
+      "default": "none",
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "youth",
+          "zh": {
+            "name": "青年義務領袖（銀）"
+          },
+          "en": {
+            "name": "Youth volunteer leader (silver)"
+          },
+          "art": {
+            "file": "/badges/awards/shaYouth.png",
+            "ref": "UH",
+            "page": "198",
+            "example": false,
+            "px": [
+              128,
+              123
+            ]
+          }
+        },
+        {
+          "id": "adult",
+          "zh": {
+            "name": "義務領袖（金）"
+          },
+          "en": {
+            "name": "Volunteer leader (gold)"
+          },
+          "art": {
+            "file": "/badges/awards/shaAdult.png",
+            "ref": "UH",
+            "page": "198",
+            "example": false,
+            "px": [
+              128,
+              120
+            ]
+          }
+        }
+      ],
+      "art": {
+        "file": "/badges/awards/shaAdult.png",
+        "ref": "UH",
+        "page": "198",
+        "example": false,
+        "px": [
+          128,
+          120
+        ]
+      },
+      "modelNote": {
+        "zh": "手冊冇寫尺寸；模型用約 3.2 cm。相片取自手冊 P.198（已去背景）。同布質名牌一齊戴時會疊住名牌右邊少少（手冊冇講點避開）。",
+        "en": "No size in the Handbook; the model uses about 3.2 cm. Photo from Handbook p.198 (background removed). Worn with the cloth name tag it slightly overlaps the right end of the tag (the Handbook does not say how to avoid this)."
+      },
+      "fit": true
     }
   ],
   "notAllowed": [
@@ -6214,13 +6342,13 @@
     },
     {
       "id": "medalPrecedenceGaps",
-      "zh": "P.191–192（第 24/2025 號通告）等級名單有 32 項；模型只提供手冊 P.178–185 有相片（同勳條）嘅：英勇、銅狼（用戶提供圖片）、獅／龍、功績榮譽十字章、功績榮譽獎章、優異／優良服務獎章、鑽禧、跨世紀、大都會、百周年、童軍中心、95 周年及百周年特別貢獻、特殊貢獻星章／徽章、長期服務。已逐頁睇過 P.177–200（v17）：110 周年紀念及特別貢獻、童心抗疫、同行未來、亞太區童軍基金喺手冊冇相亦冇勳條，所以未加；其他童軍會、英國童軍會、世界／亞太區委員會獎勵亦冇相。",
-      "en": "The pp.191–192 order of precedence (Circular 24/2025) lists 32 items; the model provides those with a photo (and ribbon) on Handbook pp.178–185: gallantry, Bronze Wolf (image supplied by the user), Lions/Dragons, Cross and Medal of Merit, Distinguished and Good Service Medals, Diamond Jubilee, Millennium, Metro Camp, Centenary, Scout Centre, 95th and Centenary Special Contribution, Special Contribution Star/medallions and long service. Pages 177–200 were checked one by one (v17): the 110th Anniversary and 110th Special Contribution medals, the Scouts Fighting the Pandemic medal, the Walking Together medal and the APR Scout Foundation award have no photo or ribbon in the handbook, so they are not added; awards of other associations, The Scout Association (UK) and the World/APR Committees have no photo either."
+      "zh": "P.191–192（第 24/2025 號通告）等級名單有 32 項；模型只提供手冊 P.178–185 有相片（同勳條）嘅：英勇、銅狼（用戶提供圖片）、獅／龍、功績榮譽十字章、功績榮譽獎章、優異／優良服務獎章、鑽禧、跨世紀、大都會、百周年、童軍中心、95 周年及百周年特別貢獻、特殊貢獻星章／徽章、長期服務。已逐頁睇過 P.177–200（v17）：110 周年紀念及特別貢獻、童心抗疫、同行未來、亞太區童軍基金喺手冊冇相亦冇勳條，用戶決定唔加；其他童軍會、英國童軍會、世界／亞太區委員會獎勵亦冇相。",
+      "en": "The pp.191–192 order of precedence (Circular 24/2025) lists 32 items; the model provides those with a photo (and ribbon) on Handbook pp.178–185: gallantry, Bronze Wolf (image supplied by the user), Lions/Dragons, Cross and Medal of Merit, Distinguished and Good Service Medals, Diamond Jubilee, Millennium, Metro Camp, Centenary, Scout Centre, 95th and Centenary Special Contribution, Special Contribution Star/medallions and long service. Pages 177–200 were checked one by one (v17): the 110th Anniversary and 110th Special Contribution medals, the Scouts Fighting the Pandemic medal, the Walking Together medal and the APR Scout Foundation award have no photo or ribbon in the handbook and the user decided not to add them; awards of other associations, The Scout Association (UK) and the World/APR Committees have no photo either."
     },
     {
       "id": "otherAwards",
-      "zh": "政府／非童軍機構／海外童軍會頒授嘅勳章戴喺左胸袋上方（P.196–200）；模範童軍肩帶或紅笛同嘉許笛繩只可以揀一樣戴（P.158、P.197）：模型未有呢幾項。",
-      "en": "Government, non-Scout and overseas association awards go above the left pocket (pp.196–200); a King's Scout cord or red lanyard and a commendation lanyard are worn one or the other (pp.158, 197): the model does not include these yet."
+      "zh": "政府／非童軍機構／海外童軍會頒授嘅勳章戴喺左胸袋上方（P.196–200）；模範童軍肩帶或紅笛同嘉許笛繩只可以揀一樣戴（P.158、P.197）：模型未有呢幾項（民政及青年事務局局長嘉許 P.198 已加）。",
+      "en": "Government, non-Scout and overseas association awards go above the left pocket (pp.196–200); a King's Scout cord or red lanyard and a commendation lanyard are worn one or the other (pp.158, 197): the model does not include these yet (the Secretary for Home and Youth Affairs' Commendation, p.198, is included)."
     }
   ],
   "artCredit": {

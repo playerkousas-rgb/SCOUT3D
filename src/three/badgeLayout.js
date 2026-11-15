@@ -42,6 +42,9 @@ export const PROGRESS_GRID = [
 /** 某套制服用邊個位置（anchorBy：例如感謝章喺晚禮服改戴喺右襟領童軍徽下面） */
 export const anchorOf = (b, uniform) => (uniform && b.anchorBy?.[uniform]) || b.anchor;
 
+/** 有選項（例：銀／金）嘅章每個有圖案嘅選項各出一個；冇選項就用 b.art */
+const artOpts = (b, art) => (b.choices ? b.choices.filter((c) => c.art).map((c) => ({ choice: c.id, art: c.art.file })) : [{ art }]);
+
 /** 圖案（px = [闊, 高] 像素）喺 w × h 入面置中縮放（勳章相片比例唔同） */
 export function fitPx(px, w, h) {
   const k = Math.min(w / px[0], h / px[1]);
@@ -165,7 +168,9 @@ export function placeAll(rules, gender, { sweater = false, uniform = null, occas
     if (a.lapel === 'belowFleur') {
       // 晚禮服：右襟領童軍徽下面（手冊 P.189）
       const D = dressLayout(L, uniform);
-      out.push({ key: b.id, id: b.id, mount: 'torso', shape, w, h, x: sx * D.fleur.x, y: D.fleur.y - D.fleur.size / 2 - a.gapCm - h / 2, z: B.torso.d / 2, art, fit: !!b.fit, ...extra });
+      for (const o of artOpts(b, art)) {
+        out.push({ key: [b.id, o.choice].filter(Boolean).join('-'), id: b.id, ...(o.choice ? { choice: o.choice } : {}), mount: 'torso', shape, w, h, x: sx * D.fleur.x, y: D.fleur.y - D.fleur.size / 2 - a.gapCm - h / 2, z: B.torso.d / 2, art: o.art, fit: !!b.fit, ...extra });
+      }
       continue;
     }
     if (a.band) {
@@ -227,10 +232,14 @@ export function placeAll(rules, gender, { sweater = false, uniform = null, occas
         const P = B.pocket;
         if (!P) throw new Error(`徽章 ${b.id} 要胸袋，但呢個身形冇胸袋`);
         x = sx * P.x;
+        // flapInnerCm：袋蓋近中線嗰邊（例：民政及青年事務局局長嘉許「左胸袋袋蓋右方」，手冊 P.198）
+        if (a.flapInnerCm != null) x = sx * (P.x - P.w / 2 + a.flapInnerCm);
         const flapTop = top - P.top;
         y = a.pocket === 'centre' ? flapTop - P.flap - (P.h - P.flap) / 2 : a.pocket === 'flap' ? flapTop - P.flap / 2 : flapTop + a.gapCm + h / 2;
       }
-      out.push({ key: b.id, id: b.id, mount: 'torso', shape, w, h, x, y, z: B.torso.d / 2, art, fit: fit || !!b.fit, ...extra });
+      for (const o of artOpts(b, art)) {
+        out.push({ key: [b.id, o.choice].filter(Boolean).join('-'), id: b.id, ...(o.choice ? { choice: o.choice } : {}), mount: 'torso', shape, w, h, x, y, z: B.torso.d / 2 + (a.flapInnerCm != null ? 0.05 : 0), art: o.art, fit: fit || !!b.fit, ...extra });
+      }
       continue;
     }
     const mount = a.side === 'left' ? 'l' : 'r';

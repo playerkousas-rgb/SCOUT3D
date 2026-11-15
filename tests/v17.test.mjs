@@ -196,3 +196,49 @@ test('冇手冊相片嘅獎勵唔加（110 周年、童心抗疫、同行未來�
   for (const n of ['110 周年', '童心抗疫', '同行未來', '亞太區童軍基金']) assert.ok(c.zh.includes(n), n);
   assert.ok(!rules.conflicts.some((x) => x.id === 'ribbonsGeneral'), '勳條已經做咗');
 });
+
+test('民政及青年事務局局長嘉許（P.198）：銀＝青年義務領袖、金＝義務領袖；左胸袋袋蓋右方；晚禮服左襟領童軍徽下面', () => {
+  const b = badge('shaCommendation');
+  assert.equal(b.group, 'awards');
+  assert.deepEqual(b.uniforms, ['u1', 'u2', 'u3', 'u4', 'u5', 'u6']);
+  assert.deepEqual(b.choices.map((c) => c.id), ['none', 'youth', 'adult']);
+  assert.deepEqual(b.sources, [{ ref: 'UH', page: '198' }]);
+  assert.match(b.zh.quote, /佩戴在上衣左胸袋袋蓋右方位置/);
+  assert.match(b.zh.quote, /此項嘉許不設勳條/);
+  for (const c of b.choices.filter((x) => x.art)) assert.deepEqual(pngSize(c.art.file), c.art.px);
+  const { B } = layout('boy', 'leader');
+  for (const u of [1, 3, 4, 5, 6]) {
+    const p = shown(u, { shaCommendation: 'youth' }).find((x) => x.id === 'shaCommendation');
+    assert.equal(p.art, '/badges/awards/shaYouth.png');
+    assert.ok(p.x > 0, '佩戴者左胸袋');
+    assert.ok(p.x < B.pocket.x, '袋蓋右方 = 近中線');
+    assert.ok(p.x - p.w / 2 >= B.pocket.x - B.pocket.w / 2 - 0.01, '仲喺袋蓋入面');
+  }
+  const u2 = shown(2, { shaCommendation: 'adult' }).find((x) => x.id === 'shaCommendation');
+  const thanks = shown(2, { thanksBadge: true }).find((x) => x.id === 'thanksBadge');
+  assert.equal(u2.x, -thanks.x, '同感謝章對稱：左襟領童軍徽下面');
+  // 冇勳條：一般場合照戴原本個章
+  const g = shown(3, { shaCommendation: 'adult' }, general).find((x) => x.id === 'shaCommendation');
+  assert.equal(g.kind, undefined);
+  assert.equal(g.art, '/badges/awards/shaAdult.png');
+  assert.equal(b.ribbon, undefined);
+});
+
+test('軟帽帽章戴喺帽身上（用戶 v17：以前低到好似戴喺頭髮上）', () => {
+  const blocky = text('src/three/Blocky.jsx');
+  const beret = blocky.slice(blocky.indexOf('function ScoutBeret'), blocky.indexOf('function RankCapBadge'));
+  // 帽章喺帽身 group 入面（跟帽身一齊側），底邊喺帽身底（膠邊頂）上面
+  assert.ok(beret.includes('<group position={CROWN} rotation={[-0.06, 0, 0.16]}>'));
+  assert.ok(beret.indexOf('<RankCapBadge') > beret.indexOf('<group position={CROWN}'));
+  assert.ok(beret.includes('bottom: -crown[1] / 2 + 0.15'));
+  assert.ok(!beret.includes('bandY - 1.2'), '舊位置（膠邊下面）已拎走');
+  assert.ok(!/position=\{\[eyeX, bandY, /.test(beret), '童軍帽章唔再喺膠邊中間');
+});
+
+test('用戶第五輪決定記錄低', () => {
+  const c = rules.review.userChecks.find((x) => x.item === 'awardsRound5');
+  assert.ok(c);
+  assert.match(c.zh, /感謝章喺編號 3–6 顯示正確/);
+  assert.match(rules.conflicts.find((x) => x.id === 'medalPrecedenceGaps').zh, /用戶決定唔加/);
+  assert.match(rules.conflicts.find((x) => x.id === 'otherAwards').zh, /民政及青年事務局局長嘉許 P\.198 已加/);
+});

@@ -157,7 +157,7 @@ function CubHat({ B, girl, painted }) {
 
 /**
  * 童軍深綠色軟帽（手冊 P.30、P.98–99、P.102）：黑色膠邊離眉毛約 2 cm；向穿著者右邊（-x）拉低；
- * 金屬帽章戴喺膠邊、左眼（+x）上方。方塊造型只係示意。
+ * 金屬帽章戴喺帽身、膠邊上面、左眼（+x）上方（用戶 v17：唔好低到似戴喺頭髮上）。方塊造型只係示意。
  */
 function ScoutBeret({ B, painted, colour = C.beret, cap = null }) {
   const h = B.head;
@@ -177,21 +177,25 @@ function ScoutBeret({ B, painted, colour = C.beret, cap = null }) {
   }, [h, colour]);
   const { band, crown } = F;
   const eyeX = h.w / 2 - 5.25; // 穿著者左眼（+x）
+  // 帽章戴喺帽身（綠色）上、左眼上方，底邊貼住膠邊頂（v17 用戶：以前太低，好似戴喺頭髮上）。
+  // 放喺帽身 group 入面，跟帽身一齊側；group 原點 x = -2，所以本地 x = eyeX + 2。
+  const CROWN = [-2, bandY + 1 + crown[1] / 2 - 0.2, h.z - 0.5];
+  const local = { x: eyeX - CROWN[0], bottom: -crown[1] / 2 + 0.15, z: crown[2] / 2 + 0.08 };
   return (
     <group>
       <Box size={band} faces={F.bandF} painted={painted} position={[0, bandY, h.z]} />
-      <group position={[-2, bandY + 1 + crown[1] / 2 - 0.2, h.z - 0.5]} rotation={[-0.06, 0, 0.16]}>
+      <group position={CROWN} rotation={[-0.06, 0, 0.16]}>
         <Box size={crown} faces={F.crownF} painted={painted} position={[0, 0, 0]} />
         <Box size={[1.2, 0.8, 1.2]} faces={F.knob} painted={painted} position={[1.5, crown[1] / 2 + 0.4, 0]} />
+        {cap ? (
+          <RankCapBadge tex={badgeTex} painted={painted} position={[local.x, local.bottom, local.z]} />
+        ) : (
+          <mesh position={[local.x, local.bottom + 1.4, local.z]}>
+            <circleGeometry args={[1.4, 32]} />
+            <meshStandardMaterial map={painted ? badgeTex : null} color={painted ? '#f2f2f2' : '#b4b6b9'} transparent alphaTest={0.3} roughness={0.35} metalness={0.4} polygonOffset polygonOffsetFactor={-2} />
+          </mesh>
+        )}
       </group>
-      {cap ? (
-        <RankCapBadge tex={badgeTex} painted={painted} position={[eyeX, bandY - 1.2, h.z + crown[2] / 2 + 0.75]} />
-      ) : (
-        <mesh position={[eyeX, bandY, h.z + band[2] / 2 + 0.08]}>
-          <circleGeometry args={[1.4, 32]} />
-          <meshStandardMaterial map={painted ? badgeTex : null} color={painted ? '#f2f2f2' : '#b4b6b9'} transparent alphaTest={0.3} roughness={0.35} metalness={0.4} polygonOffset polygonOffsetFactor={-2} />
-        </mesh>
-      )}
     </group>
   );
 }

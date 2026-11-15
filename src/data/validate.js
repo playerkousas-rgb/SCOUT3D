@@ -128,6 +128,7 @@ export function validateRules(rules) {
         errors.push(`${where}: 上身位置要有 xCm + fromTopCm、pocket、rack、lanyard 或 lapel`);
       }
       if (x.pocket != null && !POCKET.has(x.pocket)) errors.push(`${where}: anchor.pocket 錯`);
+      if (x.flapInnerCm != null && (x.pocket !== 'flap' || !(x.flapInnerCm >= 0))) errors.push(`${where}: anchor.flapInnerCm 只可以配 pocket: flap（cm ≥ 0）`);
       if (x.rack != null && (!RACKS.has(x.rack) || !b.choices && !b.art?.px)) errors.push(`${where}: anchor.rack 錯（勳章要有 px 尺寸）`);
       if (x.lapel != null && (x.lapel !== 'belowFleur' || !(x.gapCm >= 0))) errors.push(`${where}: anchor.lapel 只可以係 belowFleur（要有 gapCm）`);
       if (x.band && (x.part !== 'sleeve' || !Number.isFinite(x.aboveElbowCm))) errors.push(`${where}: band（袖圈）要喺袖上兼有 aboveElbowCm`);
