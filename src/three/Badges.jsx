@@ -121,8 +121,43 @@ function Patch({ p, tex, painted, selected, onSelect, registry }) {
   const round = p.shape === 'circle';
   const ring = selected || hover;
   const { w, h } = fitSize(p, tex);
+  // 掛頸勳章（v17）：相片頂 U 形綬帶唔畫（crop = 由底計起畫幾多），綬帶改由衣領拉落嚟（strapCm）：用相片 crop 嗰一行拉長
+  const crop = p.crop && p.crop < 1 ? p.crop : null;
+  const [photo, strap] = useMemo(() => {
+    if (!crop || !tex) return [tex, null];
+    const a = tex.clone();
+    a.repeat.set(1, crop);
+    a.offset.set(0, 0);
+    a.needsUpdate = true;
+    const b = tex.clone();
+    b.repeat.set(1, 0.002);
+    b.offset.set(0, crop - 0.004);
+    b.needsUpdate = true;
+    return [a, b];
+  }, [tex, crop]);
+  useEffect(() => () => {
+    if (photo && photo !== tex) photo.dispose();
+    strap?.dispose();
+  }, [photo, strap, tex]);
+  const map = painted && photo ? photo : null;
   return (
     <group>
+      {crop && p.strapCm > 0 && (
+        <mesh position={[0, h / 2 + p.strapCm / 2, 0]} renderOrder={2} onClick={(e) => { e.stopPropagation(); onSelect?.(p.id); }}>
+          <planeGeometry args={[w, p.strapCm]} />
+          <meshStandardMaterial
+            key={strap ? strap.uuid : 'none'}
+            map={painted && strap ? strap : null}
+            alphaTest={painted && strap ? 0.5 : 0}
+            transparent={!(painted && strap)}
+            opacity={painted && strap ? 1 : 0}
+            color={painted ? '#f2f2f2' : '#b4b6b9'}
+            roughness={0.8}
+            polygonOffset
+            polygonOffsetFactor={-2}
+          />
+        </mesh>
+      )}
       <mesh
         ref={ref}
         renderOrder={2}
@@ -139,10 +174,10 @@ function Patch({ p, tex, painted, selected, onSelect, registry }) {
       >
         {round ? <circleGeometry args={[w / 2, 48]} /> : <planeGeometry args={[w, h]} />}
         <meshStandardMaterial
-          key={tex ? tex.uuid : 'none'}
-          map={painted && tex ? tex : null}
-          alphaTest={painted && tex ? 0.5 : 0} // 勳章、感謝章等透明底 PNG：透明位唔畫
-          color={painted ? (tex ? '#f2f2f2' : '#9aa0a6') : '#b4b6b9'}
+          key={photo ? photo.uuid : 'none'}
+          map={map}
+          alphaTest={map ? 0.5 : 0} // 勳章、感謝章等透明底 PNG：透明位唔畫
+          color={painted ? (photo ? '#f2f2f2' : '#9aa0a6') : '#b4b6b9'}
           roughness={0.8}
           metalness={0}
           polygonOffset

@@ -4,6 +4,9 @@
 
 export const PX = 2; // 每厘米幾多格
 
+/** 杏色恤衫背後膊頭擔干（橫線）離膊頂幾遠（cm）；旅巾背後三角嘅尖到呢條線為止（用戶 2026-11-13 附圖） */
+export const SHIRT_YOKE = 9;
+
 const COMMON = {
   height: 117,
   necker: { tailLen: 19, backW: 22, backH: 16, wogDrop: 7.5 },
@@ -409,7 +412,8 @@ export function neckerLayout(L, { vest = false } = {}) {
   const a = [outer / 2 - rollT / 2, top + 0.4];
   const b = [1.3, wogY];
   const tail = { w: 5.2, len: NK.tailLen, tip: 4, x: 1.7, top: wogY + 1 };
-  const back = { w: NK.backW, h: NK.backH, top, z: -(B.torso.d / 2 + (vest ? VEST_T : 0) + 0.2) };
+  // 有胸袋嘅杏色恤衫（幼童軍以上、領袖）：背後三角尖到擔干橫線；小童軍活動服冇擔干，用返原本長度
+  const back = { w: NK.backW, h: B.pocket ? SHIRT_YOKE : NK.backH, top, z: -(B.torso.d / 2 + (vest ? VEST_T : 0) + 0.2) };
   return {
     nw, collarT, rollT, rollH, inner, outer, front, wogY, a, b,
     len: Math.hypot(a[0] - b[0], a[1] - b[1]),

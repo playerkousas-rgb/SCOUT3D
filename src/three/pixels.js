@@ -3,7 +3,7 @@
 // +z = 前面，+x = 穿著者左。畫圖座標以厘米計，左上角為原點。
 import * as THREE from 'three';
 import { stripeIndex } from '../lib/necker.js';
-import { PX, COLOURS as C } from './body.js';
+import { PX, COLOURS as C, SHIRT_YOKE } from './body.js';
 
 /** 一塊畫布：w × h 厘米。draw(g) 用 g.rect / g.shape / g.px。 */
 export function canvas(wcm, hcm, draw) {
@@ -432,7 +432,7 @@ export function cubTorsoFaces(B, { legColour = C.cubGreen, shirt = C.cubShirt, s
     {
       pz: front,
       nz: (g) => {
-        g.rect(0, 9, w, 0.5, P.dark); // 背後膊頭擔干
+        g.rect(0, SHIRT_YOKE, w, 0.5, P.dark); // 背後膊頭擔干
         g.rect(cx - nw / 2 - 2.5, 0, nw + 5, 2, P.collar);
         g.rect(cx - nw / 2 - 2.5, 2, nw + 5, 0.5, P.dark);
         lower(w)(g);

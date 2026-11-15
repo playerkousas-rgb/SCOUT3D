@@ -185,7 +185,8 @@ test('禮服只戴指定嘅章；晚禮服只得金屬肩章同勳章（手冊 P
   const u2 = idsFor('boy', 'u2', state);
   assert.deepEqual([...new Set(u2)].sort(), ['metalEpaulette', 'thanksBadge']);
   const u3 = idsFor('boy', 'u3', state);
-  assert.ok(!u3.includes('thanksBadge') && !u3.includes('metalEpaulette') && !u3.includes('mourningBand'));
+  // 勳章及獎勵（包括感謝章）編號 1–6 都戴得（用戶 2026-11-15）；金屬肩章、喪禮黑紗仍然只係禮服
+  assert.ok(u3.includes('thanksBadge') && !u3.includes('metalEpaulette') && !u3.includes('mourningBand'));
   assert.equal(shownReason(leader, { gender: 'boy', uniform: 'u2', invested: true }, state, 'membership'), 'uniform');
 });
 

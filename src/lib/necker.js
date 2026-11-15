@@ -27,7 +27,7 @@ export function neckerPalettes(o = {}, fixed = null) {
 }
 
 /** 斜紋：每條闊（cm）同埋某一點屬於第幾條（dir = ±1 左右鏡像） */
-export const STRIPE_W = 1.6;
+export const STRIPE_W = 3.2; // 用戶：1.6 太密會眼花，每邊減一半
 export function stripeIndex(x, y, n, dir = 1) {
   const k = Math.floor((y + dir * x) / STRIPE_W);
   return ((k % n) + n) % n;

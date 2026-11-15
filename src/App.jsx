@@ -1,10 +1,11 @@
 // SCOUT3D 主介面 — v1.0 · © SCOUT SYSTEM
 import { Suspense, forwardRef, lazy, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
+import { guideFor } from './rulesGuide.js';
 import { useLang, LangToggle, bi, pick } from './i18n.jsx';
 import { SECTIONS, SECTION_IDS, DISTRICTS, PATROLS, RULE_ERRORS, badgeById, sourceLines } from './data/rules.js';
 import { garmentsFor, variantOf } from './data/validate.js';
 import { NECKER, WOGGLE, PLAIN } from './palette.js';
-import { shownReason } from './three/badgeLayout.js';
+import { shownReason, ribbonsOn } from './three/badgeLayout.js';
 import { resolveArt, meritYearOk, findDistrict, findPatrol, ranksFor, fixRank, rankRowOf, leaderNeckwear, messCapOf, troopNumber, ordinalSuffix } from './lib/picks.js';
 import { NECKER_THIRD } from './lib/necker.js';
 import { leaderUniform, isDress } from './three/body.js';
@@ -84,6 +85,7 @@ const LEADER_OUTFIT = {
   training: 'none',
   woodBadge: false,
   season: 'winter', // 晚禮服：summer = 白上衣、winter = 黑上衣（手冊 P.60）
+  occasion: 'formal', // 重要禮儀場合（勳章）／一般場合（勳條，手冊 P.190）
   neckerMain: '#2e7d4f',
   neckerBorder: '#e9b425',
   woggle: '#1f4e9c',
@@ -205,7 +207,7 @@ function Swatches({ label, value, options, onChange }) {
   );
 }
 
-function Switch({ label, checked, onChange, disabled, note }) {
+function Switch({ label, checked, onChange, disabled }) {
   return (
     <div className={`switchrow${disabled ? ' is-disabled' : ''}`}>
       <label className="switch">
@@ -213,7 +215,6 @@ function Switch({ label, checked, onChange, disabled, note }) {
         <span className="switch__track" aria-hidden="true" />
         <span className="switch__label">{label}</span>
       </label>
-      {note && <p className="note">{note}</p>}
     </div>
   );
 }
@@ -239,11 +240,15 @@ function ArtLine({ rules, art }) {
   const src = rules.sources[art.ref];
   return (
     <span className="muted">
-      {t(art.example ? 'info.artExample' : 'info.artOfficial')}
+      {t(art.user ? 'info.artUser' : art.example ? 'info.artExample' : 'info.artOfficial')}
       {lang === 'en' ? ': ' : '：'}
       {src ? bi(lang, src.zh, src.en) : art.ref}
-      {lang === 'en' ? ', ' : '，'}
-      {t('info.page')} {art.page}
+      {!art.user && (
+        <>
+          {lang === 'en' ? ', ' : '，'}
+          {t('info.page')} {art.page}
+        </>
+      )}
     </span>
   );
 }
@@ -359,7 +364,7 @@ function TroopPicker({ picks, setPicks, id }) {
         placeholder="22"
         onChange={(e) => setPicks((p) => ({ ...p, troopNo: e.target.value }))}
       />
-      <p className="muted">{no ? `${no}${ordinalSuffix(no)} HONG KONG GROUP · SCOUT ASSOCIATION OF HK` : t('pick.troopNote')}</p>
+      {no && <p className="muted">{`${no}${ordinalSuffix(no)} HONG KONG GROUP · SCOUT ASSOCIATION OF HK`}</p>}
     </div>
   );
 }
@@ -440,6 +445,9 @@ function InfoCard({ rules, id, outfit, badges, picks, unavailable, onClose, onFo
   const onNecker = st && outfit.school && ['membership', 'progress', 'grasshopperAward'].includes(id);
   const sizeText = `${b.size.wCm} × ${b.size.hCm} cm（${t(b.size.measured ? 'info.sizeMeasured' : 'info.sizeGuess')}）`;
   const picked = now?.district ?? now?.region;
+  // 一般場合（手冊 P.190）：勳章改戴勳條 —— 資料卡另外顯示勳條同出處
+  const uidI = rules.section.id === 'leader' ? leaderUniform(outfit.gender, outfit.uniform) : null;
+  const ribbon = ribbonsOn(rules, uidI, outfit.occasion) ? (b.choices ? b.choices.find((c) => c.id === badges[b.id])?.ribbon : b.ribbon) : null;
   return (
     <section className="card" aria-live="polite">
       <header className="card__head">
@@ -490,6 +498,14 @@ function InfoCard({ rules, id, outfit, badges, picks, unavailable, onClose, onFo
         <ArtLine rules={rules} art={arts[0]} />
       )}
       {!shown && <p className="note">{t(reason === 'off' ? 'info.hidden' : `badge.why.${reason}`)}</p>}
+      {ribbon && (
+        <div className="note ribbonnote">
+          <strong>{pick(lang, rules.ribbons, 'name')}</strong>
+          <img className="ribbonnote__img" src={ribbon.file} alt={pick(lang, rules.ribbons, 'name')} />
+          <p>{pick(lang, rules.ribbons, 'place')}</p>
+          <ArtLine rules={rules} art={ribbon} />
+        </div>
+      )}
       {onNecker && (
         <div className="note note--warn">
           <strong>{pick(lang, st, 'name')}</strong>
@@ -543,7 +559,6 @@ function LevelRankPicker({ rules, picks, setPicks }) {
   const { lang, t } = useLang();
   const level = picks.level ?? 'group';
   const rank = fixRank(rules, level, picks.rank);
-  const L = rules.levels.find((x) => x.id === level);
   return (
     <div className="picker picker--leader">
       <Segmented
@@ -552,7 +567,6 @@ function LevelRankPicker({ rules, picks, setPicks }) {
         onChange={(v) => setPicks((p) => ({ ...p, level: v, rank: fixRank(rules, v, p.rank) }))}
         options={rules.levels.map((x) => ({ value: x.id, label: pick(lang, x, 'name') }))}
       />
-      {L && <p className="note">{pick(lang, L, 'note')}</p>}
       <label className="field__label" htmlFor="pick-rank">
         {t('pick.rank')}
       </label>
@@ -589,8 +603,6 @@ function RankLine({ rules, row, picks }) {
 function BadgeRow({ b, rules, section, outfit, badges, set, picks, setPicks, unavailable, selected, onPick }) {
   const { lang, t } = useLang();
   const disabled = b.needsInvestiture && !outfit.invested;
-  const why = shownReason(rules, outfit, badges, b.id, { unavailable, level: levelOf(section, picks) });
-  const whyNote = ['school', 'vest', 'sweater', 'schoolUninvested', 'noArt', 'level', 'needsHost'].includes(why) ? t(`badge.why.${why}`) : null;
   const example = b.dynamic ? resolveArt(b, picks, DISTRICTS, PATROLS)?.example : (Array.isArray(b.art) ? b.art[0] : b.art).example;
   return (
     <li className={`badgerow${selected === b.id ? ' is-sel' : ''}${disabled ? ' is-disabled' : ''}`}>
@@ -651,15 +663,13 @@ function BadgeRow({ b, rules, section, outfit, badges, set, picks, setPicks, una
         </label>
       )}
       {b.dynamic === 'district' && <DistrictPicker picks={picks} setPicks={setPicks} id={`pick-district-${section}`} />}
-      {b.dynamic === 'region' && (picks.level === 'region' ? <RegionPicker picks={picks} setPicks={setPicks} id={`pick-region-${section}`} /> : <p className="note">{t('pick.regionAuto')}</p>)}
+      {b.dynamic === 'region' && picks.level === 'region' && <RegionPicker picks={picks} setPicks={setPicks} id={`pick-region-${section}`} />}
       {b.dynamic === 'troop' && <TroopPicker picks={picks} setPicks={setPicks} id={`pick-troop-${section}`} />}
       {b.dynamic === 'meritorious' && <YearPicker picks={picks} setPicks={setPicks} id={`pick-year-${section}`} />}
       {b.dynamic === 'patrol' && <PatrolPicker picks={picks} setPicks={setPicks} id={`pick-patrol-${section}`} />}
       {b.dynamic === 'rank' && rankRowOf(b, picks.rank) && <RankLine rules={rules} row={rankRowOf(b, picks.rank)} picks={picks} />}
       {b.dynamic === 'metalRank' && rankRowOf(b, picks.rank) && <MetalRankLine rules={rules} row={rankRowOf(b, picks.rank)} picks={picks} />}
       {b.dynamic === 'nameTag' && <NamePicker picks={picks} setPicks={setPicks} />}
-      {disabled && <p className="note">{t('badge.needInvest')}</p>}
-      {!disabled && whyNote && <p className="note">{whyNote}</p>}
     </li>
   );
 }
@@ -698,15 +708,14 @@ function NamePicker({ picks, setPicks }) {
         {t('pick.nameEn')}
       </label>
       <input id="pick-name-en" className="select" type="text" maxLength={24} value={picks.nameEn ?? ''} placeholder="KH TUNG" onChange={(e) => setPicks((p) => ({ ...p, nameEn: e.target.value }))} />
-      <p className="muted">{t('pick.nameNote')}</p>
     </div>
   );
 }
 
-function BadgesTab({ rules, section, outfit, badges, setBadges, picks, setPicks, unavailable, selected, onPick }) {
-  const { lang, t } = useLang();
+function BadgesTab({ rules, section, outfit, setOutfit, badges, setBadges, picks, setPicks, unavailable, selected, onPick }) {
+  const { t } = useLang();
   const set = (k, v) => setBadges((b) => ({ ...b, [k]: v }));
-  // 成年成員：只列呢套制服戴嘅章（手冊 P.57、P.60：禮服／晚禮服只戴指定嘅章）；勳章及獎勵另外一組
+  // 成年成員：只列呢套制服戴嘅章（手冊 P.57、P.60：禮服／晚禮服只戴指定嘅章）；勳章及獎勵另外一組（編號 1–6 都戴得，用戶 2026-11-15）
   const uid = section === 'leader' ? leaderUniform(outfit.gender, outfit.uniform) : null;
   // 唔適用（呢套制服唔戴、呢個層級唔戴）嘅章直接唔列出（用戶指示：唔應該出現就冇開關）
   const level = levelOf(section, picks);
@@ -716,25 +725,29 @@ function BadgesTab({ rules, section, outfit, badges, setBadges, picks, setPicks,
   const row = (b) => <BadgeRow key={b.id} b={b} rules={rules} section={section} outfit={outfit} badges={badges} set={set} picks={picks} setPicks={setPicks} unavailable={unavailable} selected={selected} onPick={onPick} />;
   return (
     <div className="tabbody">
-      <p className="note note--strong">{t({ cub: 'badges.tipCub', scout: 'badges.tipScout', venture: 'badges.tipVenture', rover: 'badges.tipRover', leader: 'badges.tipLeader' }[section] ?? 'badges.tip')}</p>
       {rules.levels && <LevelRankPicker rules={rules} picks={picks} setPicks={setPicks} />}
-      {outfit.school && (
-        <p className="note note--warn">
-          {t('badges.schoolOn')}
-          {t(outfit.schoolLayout === 'gsg' ? 'outfit.schoolGSG' : 'outfit.schoolUH')}
-        </p>
-      )}
       <ul className="badgelist">{list.map(row)}</ul>
       {awards.length > 0 && (
         <details className="awards" open={awards.some((b) => badges[b.id] && badges[b.id] !== 'none')}>
           <summary className="h3">{t(uid === 'u2' ? 'badges.awardsMini' : 'badges.awards')}</summary>
-          <p className="note">{t(uid === 'u2' ? 'badges.awardsMiniNote' : 'badges.awardsNote')}</p>
+          {rules.ribbons?.uniforms.includes(uid) && setOutfit && (
+            // 場合（手冊 P.186、P.190）：重要禮儀場合戴勳章；一般場合戴勳條（兩樣唔可以同時戴）
+            <div className="occasion">
+              <Segmented
+                label={t('badges.occasion')}
+                value={outfit.occasion === 'general' ? 'general' : 'formal'}
+                onChange={(x) => setOutfit((o) => ({ ...o, occasion: x }))}
+                options={[
+                  { value: 'formal', label: t('badges.occasionFormal') },
+                  { value: 'general', label: t('badges.occasionGeneral') },
+                ]}
+              />
+              <p className="occasion__note">{t(outfit.occasion === 'general' ? 'badges.occasionGeneralNote' : 'badges.occasionFormalNote')}</p>
+            </div>
+          )}
           <ul className="badgelist">{awards.map(row)}</ul>
         </details>
       )}
-      <p className="note">{bi(lang, rules.artCredit.zh, rules.artCredit.en)}</p>
-      <p className="note">{bi(lang, DISTRICTS.artCredit.zh, DISTRICTS.artCredit.en)}</p>
-      {rules.badges.some((b) => b.dynamic === 'patrol') && <p className="note">{bi(lang, PATROLS.artCredit.zh, PATROLS.artCredit.en)}</p>}
     </div>
   );
 }
@@ -941,11 +954,9 @@ function NeckerColours({ outfit, setOutfit }) {
             ...(x && !o.neckerRMain ? { neckerRMain: o.neckerBorder, neckerRBorder: o.neckerMain, neckerRThird: o.neckerThird ?? NECKER_THIRD } : {}),
           }))
         }
-        note={split ? t('outfit.neckerSplitNote') : null}
       />
       {side(false)}
       {split && side(true)}
-      {stripe && <p className="note">{t('outfit.neckerStripeNote')}</p>}
     </>
   );
 }
@@ -980,7 +991,6 @@ function OutfitTab({ outfit, setOutfit }) {
         label={t('outfit.invested')}
         checked={outfit.invested}
         onChange={(v) => set('invested', v)}
-        note={outfit.invested ? null : t('outfit.investedNote')}
       />
       <Segmented
         label={t('outfit.top')}
@@ -1008,7 +1018,6 @@ function OutfitTab({ outfit, setOutfit }) {
         label={t('outfit.school')}
         checked={outfit.school}
         onChange={setSchool}
-        note={outfit.school ? t('outfit.schoolNote') : null}
       />
       {outfit.school && (
         <Segmented
@@ -1040,7 +1049,6 @@ function OutfitTab({ outfit, setOutfit }) {
           { value: 'long', label: t('outfit.longSocks') },
         ]}
       />
-      {outfit.legwear === 'trousers' && <p className="note">{t('outfit.socksHidden')}</p>}
       <Segmented
         label={t('outfit.hat')}
         value={outfit.hat}
@@ -1054,7 +1062,7 @@ function OutfitTab({ outfit, setOutfit }) {
       {outfit.hat !== 'none' && (
         <Swatches label={t('outfit.hatColour')} value={outfit.hatColour} options={PLAIN} onChange={(v) => set('hatColour', v)} />
       )}
-      <Switch label={t('outfit.vest')} checked={outfit.vest} onChange={(v) => set('vest', v)} note={outfit.vest ? t('outfit.vestNote') : null} />
+      <Switch label={t('outfit.vest')} checked={outfit.vest} onChange={(v) => set('vest', v)} />
       {outfit.vest && <Swatches label={t('outfit.vestColour')} value={outfit.vestColour} options={PLAIN} onChange={(v) => set('vestColour', v)} />}
       {outfit.invested && (
         <>
@@ -1062,7 +1070,6 @@ function OutfitTab({ outfit, setOutfit }) {
           <Swatches label={t('outfit.woggle')} value={outfit.woggle} options={WOGGLE} onChange={(v) => set('woggle', v)} />
         </>
       )}
-      <p className="note">{t('outfit.stepNote')}</p>
     </div>
   );
 }
@@ -1095,23 +1102,20 @@ function CubOutfitTab({ outfit, setOutfit }) {
         label={t('outfit.invested')}
         checked={outfit.invested}
         onChange={(v) => set('invested', v)}
-        note={outfit.invested ? null : t('outfit.investedNoteCub')}
       />
       <Switch
         label={t(outfit.gender === 'girl' ? 'outfit.cubHatGirl' : 'outfit.cubHatBoy')}
         checked={outfit.hat}
         disabled={!outfit.invested}
         onChange={(v) => set('hat', v)}
-        note={t('outfit.cubHatNote')}
       />
-      <Switch label={t('outfit.sweater')} checked={!!outfit.sweater} onChange={(v) => set('sweater', v)} note={outfit.sweater ? t('outfit.sweaterNoteGreen') : null} />
+      <Switch label={t('outfit.sweater')} checked={!!outfit.sweater} onChange={(v) => set('sweater', v)} />
       {outfit.invested && (
         <>
           <NeckerColours outfit={outfit} setOutfit={setOutfit} />
           <Swatches label={t('outfit.woggle')} value={outfit.woggle} options={WOGGLE} onChange={(v) => set('woggle', v)} />
         </>
       )}
-      <p className="note">{t(outfit.gender === 'girl' ? 'outfit.cubNoteGirl' : 'outfit.cubNoteBoy')}</p>
     </div>
   );
 }
@@ -1122,13 +1126,6 @@ const HAT_KEY = {
   venture: { land: 'ventureHat', sea: 'ventureSeaHat', air: 'ventureAirHat' },
   rover: { land: 'roverHat', sea: 'roverSeaHat', air: 'roverAirHat' },
 };
-const NOTE_KEY = {
-  scout: { land: 'scoutNote', sea: 'seaNote', air: 'airNote' },
-  venture: { land: 'ventureNote', sea: 'ventureSeaNote', air: 'ventureAirNote' },
-  rover: { land: 'roverNote', sea: 'roverSeaNote', air: 'roverAirNote' },
-};
-/** 深資／樂行童軍各自嘅說明 key（例：outfit.investedNoteVenture / outfit.investedNoteRover） */
-const SENIOR_KEY = { venture: 'Venture', rover: 'Rover' };
 /** 童軍同深資童軍共用（深資童軍：手冊 P.36–41；女團員可揀半截裙／長褲，綱要 P.15） */
 function ScoutOutfitTab({ section = 'scout', outfit, setOutfit }) {
   const { lang, t } = useLang();
@@ -1137,9 +1134,7 @@ function ScoutOutfitTab({ section = 'scout', outfit, setOutfit }) {
   const variants = R.variants ?? [];
   const v = variantOf(R, outfit.variant)?.id ?? 'land';
   const venture = SENIOR.has(section);
-  const K = SENIOR_KEY[section]; // 深資／樂行童軍說明 key 後綴
   const hatKey = HAT_KEY[section][v];
-  const girlTrousers = venture && outfit.gender === 'girl' && outfit.ventureLegwear === 'trousers';
   const tie = venture && outfit.neckwear === 'tie';
   return (
     <div className="tabbody">
@@ -1171,14 +1166,12 @@ function ScoutOutfitTab({ section = 'scout', outfit, setOutfit }) {
         label={t('outfit.invested')}
         checked={outfit.invested}
         onChange={(v) => set('invested', v)}
-        note={outfit.invested ? null : t(venture ? `outfit.investedNote${K}` : 'outfit.investedNoteScout')}
       />
-      <Switch label={t(`outfit.${hatKey}`)} checked={outfit.hat} disabled={!outfit.invested} onChange={(x) => set('hat', x)} note={t(`outfit.${hatKey}Note`)} />
+      <Switch label={t(`outfit.${hatKey}`)} checked={outfit.hat} disabled={!outfit.invested} onChange={(x) => set('hat', x)} />
       <Switch
         label={t('outfit.sweater')}
         checked={!!outfit.sweater}
         onChange={(x) => set('sweater', x)}
-        note={outfit.sweater ? t(venture ? `outfit.sweaterNote${K}` : v === 'land' ? 'outfit.sweaterNoteGreen' : 'outfit.sweaterNoteNavy') : null}
       />
       {venture && outfit.gender === 'girl' && (
         <>
@@ -1191,7 +1184,6 @@ function ScoutOutfitTab({ section = 'scout', outfit, setOutfit }) {
               { value: 'trousers', label: t('outfit.trousers') },
             ]}
           />
-          <p className="note">{t(section === 'rover' ? 'outfit.roverLegwearNote' : 'outfit.ventureLegwearNote')}</p>
         </>
       )}
       {outfit.invested && venture && (
@@ -1205,18 +1197,13 @@ function ScoutOutfitTab({ section = 'scout', outfit, setOutfit }) {
               { value: 'tie', label: t('outfit.neckwearTie') },
             ]}
           />
-          {tie && <p className="note">{t(section === 'rover' ? 'outfit.tieNoteRover' : 'outfit.tieNote')}</p>}
         </>
       )}
       {outfit.invested && !tie && (
         <>
           <NeckerColours outfit={outfit} setOutfit={setOutfit} />
-          <p className="note">{t('outfit.scoutWoggle')}</p>
         </>
       )}
-      <p className="note">{t(`outfit.${NOTE_KEY[section][v]}${outfit.gender === 'girl' ? 'Girl' : 'Boy'}`)}</p>
-      {girlTrousers && <p className="note note--strong">{t(section === 'rover' ? 'outfit.roverTrousersOn' : 'outfit.ventureTrousersOn')}</p>}
-      <p className="note">{t(venture ? `outfit.${section}Variants` : 'outfit.scoutVariants')}</p>
     </div>
   );
 }
@@ -1230,7 +1217,6 @@ function LeaderOutfitTab({ outfit, setOutfit, picks }) {
   const picked = variantOf(R, outfit.variant)?.id ?? 'land';
   const girl = outfit.gender === 'girl';
   const uid = leaderUniform(outfit.gender, outfit.uniform);
-  const U = R.uniforms.find((x) => x.id === uid);
   const dress = isDress(uid); // 禮服／晚禮服：童軍只有一款，海／空童軍領袖都一樣（手冊 P.57–62，用戶確認）
   const evening = uid === 'u2';
   const v = dress ? 'land' : picked;
@@ -1240,7 +1226,6 @@ function LeaderOutfitTab({ outfit, setOutfit, picks }) {
   const instructor = picks.rank === 'instructor';
   const hardHatOk = v === 'land' && skirt && !instructor; // 硬帽：女、陸上、編號 1／3／4、唔係教練員（手冊 P.58、P.100）
   const hatKey = evening ? 'leaderMessHat' : v === 'sea' ? 'leaderSeaHat' : v === 'air' ? 'leaderAirHat' : hardHatOk && outfit.hatStyle !== 'beret' ? 'leaderHardHat' : 'leaderHat';
-  const cap = evening ? messCapOf(R, picks.rank, outfit.gender) : null;
   return (
     <div className="tabbody">
       <Segmented
@@ -1273,8 +1258,6 @@ function LeaderOutfitTab({ outfit, setOutfit, picks }) {
         onChange={(x) => set('uniform', x)}
         options={R.uniforms.filter((x) => x.genders.includes(girl ? 'girl' : 'boy')).map((x) => ({ value: x.id, label: pick(lang, x, 'name') }))}
       />
-      {U && <p className="note">{pick(lang, U, 'note')}</p>}
-      {dress && picked !== 'land' && <p className="note">{t('outfit.dressOneStyle')}</p>}
       {evening && (
         <Segmented
           label={t('outfit.season')}
@@ -1290,7 +1273,6 @@ function LeaderOutfitTab({ outfit, setOutfit, picks }) {
         label={t(`outfit.${hatKey}`)}
         checked={outfit.hat}
         onChange={(x) => set('hat', x)}
-        note={cap ? `${t(`outfit.${hatKey}Note`)} ${t('pick.messCap')} ${cap.code}${lang === 'en' ? ` (${cap.en})` : `（${cap.zh}）`}` : t(`outfit.${hatKey}Note`)}
       />
       {hardHatOk && (
         <Segmented
@@ -1304,10 +1286,9 @@ function LeaderOutfitTab({ outfit, setOutfit, picks }) {
         />
       )}
       {v === 'land' && !dress && (!hardHatOk || outfit.hatStyle === 'beret') && (
-        <Switch label={t('outfit.ventureLeader')} checked={!!outfit.ventureLeader} onChange={(x) => set('ventureLeader', x)} note={t('outfit.ventureLeaderNote')} />
+        <Switch label={t('outfit.ventureLeader')} checked={!!outfit.ventureLeader} onChange={(x) => set('ventureLeader', x)} />
       )}
-      {instructor && skirt && v === 'land' && <p className="note">{t('outfit.instructorNoHardHat')}</p>}
-      {!dress && <Switch label={t('outfit.sweater')} checked={!!outfit.sweater} onChange={(x) => set('sweater', x)} note={outfit.sweater ? t('outfit.sweaterNoteLeader') : null} />}
+      {!dress && <Switch label={t('outfit.sweater')} checked={!!outfit.sweater} onChange={(x) => set('sweater', x)} />}
       <Segmented
         label={t('outfit.training')}
         value={LN.training}
@@ -1318,11 +1299,7 @@ function LeaderOutfitTab({ outfit, setOutfit, picks }) {
           { value: 'woodBadge', label: t('outfit.trainingWood') },
         ]}
       />
-      {evening ? (
-        <p className="note">{t('outfit.eveningNeckNote')}</p>
-      ) : tie ? (
-        <p className="note">{t(dress ? 'outfit.dressTieNote' : `outfit.leaderTieNote_${v}`)}</p>
-      ) : (
+      {!evening && !tie && (
         <>
           <Segmented
             label={t('outfit.leaderNecker')}
@@ -1334,7 +1311,6 @@ function LeaderOutfitTab({ outfit, setOutfit, picks }) {
               { value: 'gilwell', label: t('outfit.neckerGilwell'), disabled: !LN.allowed.gilwell },
             ]}
           />
-          <p className="note">{t(`outfit.neckerNote_${LN.necker}`)}</p>
           {LN.necker === 'unit' && (
             <>
               <NeckerColours outfit={outfit} setOutfit={setOutfit} />
@@ -1349,7 +1325,6 @@ function LeaderOutfitTab({ outfit, setOutfit, picks }) {
               { value: 'gilwell', label: t('outfit.woggleGilwell'), disabled: !LN.allowed.gilwellWoggle },
             ]}
           />
-          <p className="note">{t(LN.trainer ? 'outfit.woggleNoteTrainer' : 'outfit.woggleNote')}</p>
         </>
       )}
       <Switch
@@ -1357,92 +1332,119 @@ function LeaderOutfitTab({ outfit, setOutfit, picks }) {
         checked={LN.woodBadge}
         disabled={!LN.allowed.woodBadge || LN.necker === 'gilwell'}
         onChange={(x) => set('woodBadge', x)}
-        note={evening ? t('outfit.woodBadgeEvening') : t('outfit.woodBadgeNote').replace('{n}', String(LN.beads))}
       />
-      <p className="note">{t(dress ? `outfit.dressNote_${uid}` : `outfit.leaderNote_${v}`)}</p>
-      <p className="note">{t('outfit.leaderFigure')}</p>
     </div>
   );
 }
 
-/* ---------- 來源分頁 ---------- */
-function SourcesTab({ rules: RULES, variant }) {
+/* ---------- 來源分頁：只列文件（用戶指示：制服手冊、小童軍活動指引、各支部訓練綱要） ---------- */
+const DOCUMENTS = [
+  ['UH', 'cub'],
+  ['GSG', 'grasshopper'],
+  ['CTS', 'cub'],
+  ['STS', 'scout'],
+  ['VTS', 'venture'],
+  ['RTS', 'rover'],
+].map(([k, sec]) => ({ k, ...SECTIONS[sec].sources[k] }));
+
+function SourcesTab() {
   const { lang, t } = useLang();
-  const V = variantOf(RULES, variant);
-  const garments = garmentsFor(RULES, V?.id);
-  const rv = RULES.review;
   return (
     <div className="tabbody">
       <h3 className="h3">{t('src.title')}</h3>
       <ul className="plainlist">
-        {Object.entries(RULES.sources).map(([k, s]) => (
-          <li key={k}>
-            <strong>{bi(lang, s.zh, s.en)}</strong>
-            <span className="muted">{bi(lang, s.edition.zh, s.edition.en)}</span>
-            {s.url && (
-              <a href={s.url} target="_blank" rel="noopener noreferrer">
+        {DOCUMENTS.map((d) => (
+          <li key={d.k}>
+            <strong>{bi(lang, d.zh, d.en)}</strong>
+            <span className="muted">{lang === 'en' ? d.edition.en.split(';')[0] : d.edition.zh.split('；')[0]}</span>
+            {d.url && (
+              <a href={d.url} target="_blank" rel="noopener noreferrer">
                 {t('src.open')}
               </a>
             )}
           </li>
         ))}
       </ul>
-      <p className="note">{t('src.handbookCopy')}</p>
-      <p className="note">{bi(lang, RULES.artCredit.zh, RULES.artCredit.en)}</p>
-      <p className="note">
-        {bi(lang, DISTRICTS.artCredit.zh, DISTRICTS.artCredit.en)}{' '}
-        <a href={DISTRICTS.source.url} target="_blank" rel="noopener noreferrer">
-          {t('src.open')}
-        </a>
-      </p>
-      <dl className="facts facts--tight">
-        <dt>{t('rules.version')}</dt>
-        <dd>{RULES.fileVersion}</dd>
-        <dt>{t('rules.compiled')}</dt>
-        <dd>{rv.compiledOn}</dd>
-        <dt>{t('rules.checked')}</dt>
-        <dd>{rv.lastChecked ?? t('rules.notChecked')}</dd>
-      </dl>
-      <p className="note note--warn">{bi(lang, rv.note.zh, rv.note.en)}</p>
+      <p className="muted">{t('src.handbookCopy')}</p>
+    </div>
+  );
+}
 
-      <h3 className="h3">{t('src.rules').replace('{section}', V ? pick(lang, V, 'name') : bi(lang, RULES.section.zh, RULES.section.en))}</h3>
-      {V && (
-        <div className="note">
-          {t('src.variant')}
-          <strong>{pick(lang, V, 'name')}</strong> — {pick(lang, V, 'note')}
-          <Sources rules={RULES} list={V.sources} />
-        </div>
+/* ---------- 規定分頁：服裝、徽章嘅規定以列點顯示（src/rulesGuide.js + 規則資料） ---------- */
+function RulesTab({ section, rules: RULES, variant }) {
+  const { lang, t } = useLang();
+  const variants = RULES.variants ?? [];
+  const current = variantOf(RULES, variant)?.id ?? 'land';
+  const [v, setV] = useState(current);
+  useEffect(() => setV(current), [section, current]);
+  const V = variantOf(RULES, v);
+  const garments = garmentsFor(RULES, V?.id);
+  const colon = lang === 'en' ? ': ' : '：';
+  const named = (x) => (
+    <li key={x.id}>
+      <strong>{pick(lang, x, 'name')}</strong>
+      {colon}
+      {pick(lang, x, 'note')}
+    </li>
+  );
+  const items = (item) => {
+    if (typeof item === 'string') return <li key={item}>{t(item)}</li>;
+    const list = item.json === 'levels' ? RULES.levels ?? [] : item.json === 'uniforms' ? RULES.uniforms ?? [] : [];
+    return list.filter((x) => pick(lang, x, 'note')).map(named);
+  };
+  return (
+    <div className="tabbody rules">
+      <p className="rules__lead">{t('rules.lead').replace('{section}', bi(lang, RULES.section.zh, RULES.section.en))}</p>
+      {variants.length > 1 && (
+        <Segmented label={t('rules.variant')} value={v} onChange={setV} options={variants.map((x) => ({ value: x.id, label: pick(lang, x, 'name') }))} />
       )}
-      <ul className="plainlist">
-        {garments.map((g) => (
-          <li key={g.id}>
-            <strong>{pick(lang, g, 'name')}</strong>
-            <span>{pick(lang, g, 'rule')}</span>
-            {g.modelNote && <span className="muted">{bi(lang, g.modelNote.zh, g.modelNote.en)}</span>}
-            <Sources rules={RULES} list={g.sources} />
-          </li>
-        ))}
-      </ul>
-
-      <h3 className="h3">{t('src.uninvested')}</h3>
-      <p>{bi(lang, RULES.uninvested.zh, RULES.uninvested.en)}</p>
-
-      <h3 className="h3">{t('src.notAllowed')}</h3>
-      <ul className="plainlist">
-        {RULES.notAllowed.map((n) => (
-          <li key={n.id}>
-            <span>{bi(lang, n.zh, n.en)}</span>
-            <Sources rules={RULES} list={n.sources} />
-          </li>
-        ))}
-      </ul>
-
-      <h3 className="h3">{t('src.conflicts')}</h3>
-      <ul className="plainlist">
-        {RULES.conflicts.map((c) => (
-          <li key={c.id}>{bi(lang, c.zh, c.en)}</li>
-        ))}
-      </ul>
+      {guideFor(section, v).map((g) => (
+        <section key={g.title} className="rules__group">
+          <h3 className="h3">{t(g.title)}</h3>
+          <ul className="rules__list">{g.items.map(items)}</ul>
+        </section>
+      ))}
+      <section className="rules__group">
+        <h3 className="h3">{t('rules.g.garments')}</h3>
+        <ul className="rules__list">
+          {V && pick(lang, V, 'note') && named(V)}
+          {garments.map((g) => (
+            <li key={g.id}>
+              <strong>{pick(lang, g, 'name')}</strong>
+              {colon}
+              {pick(lang, g, 'rule')}
+              <Sources rules={RULES} list={g.sources} />
+            </li>
+          ))}
+        </ul>
+      </section>
+      <section className="rules__group">
+        <h3 className="h3">{t('src.uninvested')}</h3>
+        <ul className="rules__list">
+          <li>{bi(lang, RULES.uninvested.zh, RULES.uninvested.en)}</li>
+        </ul>
+      </section>
+      <section className="rules__group">
+        <h3 className="h3">{t('src.notAllowed')}</h3>
+        <ul className="rules__list">
+          {RULES.notAllowed.map((n) => (
+            <li key={n.id}>
+              {bi(lang, n.zh, n.en)}
+              <Sources rules={RULES} list={n.sources} />
+            </li>
+          ))}
+        </ul>
+      </section>
+      {RULES.conflicts.length > 0 && (
+        <section className="rules__group">
+          <h3 className="h3">{t('src.conflicts')}</h3>
+          <ul className="rules__list">
+            {RULES.conflicts.map((c) => (
+              <li key={c.id}>{bi(lang, c.zh, c.en)}</li>
+            ))}
+          </ul>
+        </section>
+      )}
     </div>
   );
 }
@@ -1527,6 +1529,7 @@ export default function App() {
   const tabs = [
     ['outfit', t('tab.outfit')],
     ['badges', t('tab.badges')],
+    ['rules', t('tab.rules')],
     ['sources', t('tab.sources')],
   ];
 
@@ -1634,6 +1637,7 @@ export default function App() {
                 rules={RULES}
                 section={section}
                 outfit={outfit}
+                setOutfit={setOutfit}
                 badges={badges}
                 setBadges={setBadges}
                 picks={artPicks}
@@ -1653,7 +1657,8 @@ export default function App() {
               ) : (
                 <OutfitTab outfit={outfit} setOutfit={setOutfit} />
               ))}
-            {tab === 'sources' && <SourcesTab rules={RULES} variant={outfit.variant} />}
+            {tab === 'rules' && <RulesTab section={section} rules={RULES} variant={outfit.variant} />}
+            {tab === 'sources' && <SourcesTab />}
           </div>
         </aside>
       </main>
