@@ -39,4 +39,4 @@ SCOUT3D v1.0 · © SCOUT SYSTEM
 ## Consequences
 
 - 頂部切換有六個支部（手機分兩行）。
-- 之後做編號 1 禮服、編號 2 晚禮服，同埋其他可選章（服務年資章等）。
+- 編號 1 禮服、編號 2 晚禮服同勳章已喺 [ADR-0009](0009-leader-dress-uniforms.md) 做咗。

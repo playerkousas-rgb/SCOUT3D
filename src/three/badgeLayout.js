@@ -2,7 +2,7 @@
 // 全部用厘米，數字直接嚟自規則 JSON 嘅 size / anchor。
 // 上身：x = 穿著者角度（+ = 穿著者左），y = 離地高度。
 // 袖：u = 望住嗰隻袖外側時嘅左右（+ = 望嘅人右手邊），v = 章中心喺肩膊縫線下幾多 cm。
-import { layout, neckerLayout, strapLayout, VEST_T } from './body.js';
+import { layout, neckerLayout, strapLayout, dressLayout, leaderUniform, isDress, VEST_T } from './body.js';
 
 const sectionOf = (rules) => rules?.section?.id ?? 'grasshopper';
 
@@ -39,27 +39,99 @@ export const PROGRESS_GRID = [
   { step: 4, col: 1, row: 1 },
 ];
 
+/** 某套制服用邊個位置（anchorBy：例如感謝章喺晚禮服改戴喺右襟領童軍徽下面） */
+export const anchorOf = (b, uniform) => (uniform && b.anchorBy?.[uniform]) || b.anchor;
+
+/** 圖案（px = [闊, 高] 像素）喺 w × h 入面置中縮放（勳章相片比例唔同） */
+export function fitPx(px, w, h) {
+  const k = Math.min(w / px[0], h / px[1]);
+  return { w: Math.round(px[0] * k * 100) / 100, h: Math.round(px[1] * k * 100) / 100 };
+}
+
+/** 勳章圓形牌當 3.6 cm 高：勳章底喺袋蓋頂下面 3.6 cm（手冊 P.187「圓形牌頂端緊貼袋蓋頂」、P.193 各勳章底同一水平） */
+export const DISC_CM = 3.6;
+/** 晚禮服小型章 = 一半大小（手冊冇寫尺寸） */
+export const MINI = 0.5;
+
 /**
  * 計出所有徽章嘅位置（就算未開都計，方便測試同聚焦）。
+ * uniform = 成年成員制服編號（anchorBy、晚禮服襟領用）
  * @returns {Array<{key,id,mount,shape,w,h,x?,y?,u?,v?,art,step?}>}
  */
-export function placeAll(rules, gender, { sweater = false } = {}) {
+export function placeAll(rules, gender, { sweater = false, uniform = null } = {}) {
   const section = sectionOf(rules);
-  const { B, top } = layout(gender, section);
+  const L = layout(gender, section);
+  const { B, top } = L;
   const face = sleeveFace(gender, section);
   const out = [];
   const box = {}; // 每個章喺袖上面佔嘅 v 範圍：{ top, bottom }
 
   // 先擺唔靠其他章嘅，再擺「喺某個章下面／上面」嘅
   const dep = (a) => !!(a.belowBadge || a.aboveBadge || a.onBadge);
-  const order = [...rules.badges].sort((a, b) => dep(a.anchor) - dep(b.anchor));
+  const order = [...rules.badges].sort((a, b) => dep(anchorOf(a, uniform)) - dep(anchorOf(b, uniform)));
   const onStrap = {}; // 職級肩章喺肩帶上嘅位置（「R」字樣別針跟住佢）
   for (const b of order) {
-    const a = b.anchor;
+    const a = anchorOf(b, uniform);
     const { wCm: w, hCm: h, shape } = b.size;
     const art = b.dynamic ? dynKey(b.id) : Array.isArray(b.art) ? null : b.art.file;
-    const fit = b.dynamic === 'district' || b.dynamic === 'region'; // 各區圖案比例唔同：喺 w × h 入面置中縮放
+    const fit = b.dynamic === 'district' || b.dynamic === 'region' || b.dynamic === 'nameTag'; // 各區圖案比例唔同：喺 w × h 入面置中縮放
     const extra = { ...(b.needsInvestiture ? { inv: true } : {}), ...(b.levels ? { levels: b.levels } : {}) };
+    const sx = a.side === 'left' ? 1 : -1;
+    const withArt = (b.choices || []).filter((c) => c.art);
+    if (a.part === 'neck') {
+      // 卓越服務勳章（手冊 P.186、P.189）：掛頸，綬帶由衣領兩邊落；相片頂喺膊頭（衣領底）
+      for (const c of withArt) {
+        const f = fitPx(c.art.px, w, h);
+        out.push({ key: `${b.id}-${c.id}`, id: b.id, choice: c.id, mount: 'torso', shape, w: f.w, h: f.h, x: 0, y: top + 0.3 - f.h / 2, z: B.torso.d / 2 + 0.4, art: c.art.file, ...extra });
+      }
+      continue;
+    }
+    if (a.rack) {
+      // 勳章排（手冊 P.187、P.189、P.193）：先記低排嘅位置，真正 x 喺 arrangeRacks 按顯示咗邊幾個先計
+      const k = a.rack === 'lapel' ? MINI : 1;
+      let rack;
+      if (a.rack === 'pocket') {
+        const P = B.pocket;
+        rack = { name: 'pocket', cx: sx * P.x, inward: -sx, maxW: P.w, bottom: top - P.top - DISC_CM };
+      } else {
+        const D = dressLayout(L, uniform);
+        if (!D.fleur) throw new Error(`徽章 ${b.id} 要晚禮服翻領`);
+        rack = { name: 'lapel', cx: sx * D.fleur.x, inward: -sx, maxW: D.lapelW, bottom: D.fleur.y + D.fleur.size / 2 + 0.4 };
+      }
+      const opts = b.choices ? withArt.map((c) => ({ choice: c.id, art: c.art, order: c.order })) : [{ art: b.art, order: b.rackOrder }];
+      for (const o of opts) {
+        const f = fitPx(o.art.px, w * k, h * k);
+        out.push({
+          key: [b.id, o.choice].filter(Boolean).join('-'), id: b.id, ...(o.choice ? { choice: o.choice } : {}), mount: 'torso', shape, w: f.w, h: f.h,
+          x: rack.cx, y: rack.bottom + f.h / 2, z: B.torso.d / 2, art: o.art.file, rack, order: o.order, mini: k < 1, ...extra,
+        });
+      }
+      continue;
+    }
+    if (a.lanyard) {
+      // 嘉許笛繩（手冊 P.188–189）：3D 繩由 Blocky 畫（kind = 'lanyard'）；呢度嘅位置只係俾顯示同聚焦用
+      const D = uniform === 'u2' ? dressLayout(L, uniform) : null;
+      const P = B.pocket;
+      for (const c of withArt) {
+        out.push({
+          key: `${b.id}-${c.id}`, id: b.id, choice: c.id, kind: 'lanyard', mini: !!D, mount: 'torso', shape, w, h,
+          x: D ? sx * D.fleur.x : sx * (P.x - P.w / 4), y: D ? D.fleur.y + 4 : top - P.top + 3, z: B.torso.d / 2, art: c.art.file, ...extra,
+        });
+      }
+      continue;
+    }
+    if (a.lapel === 'belowFleur') {
+      // 晚禮服：右襟領童軍徽下面（手冊 P.189）
+      const D = dressLayout(L, uniform);
+      out.push({ key: b.id, id: b.id, mount: 'torso', shape, w, h, x: sx * D.fleur.x, y: D.fleur.y - D.fleur.size / 2 - a.gapCm - h / 2, z: B.torso.d / 2, art, fit: !!b.fit, ...extra });
+      continue;
+    }
+    if (a.band) {
+      // 喪禮黑布（手冊 P.162）：一圈套住左袖、手肘上方；v = 黑布中心喺肩膊縫線下幾多 cm
+      const seamToElbow = top - L.shoulderY + B.upperArm.h;
+      out.push({ key: b.id, id: b.id, kind: 'band', mount: a.side === 'left' ? 'l' : 'r', shape, w, h, u: 0, v: seamToElbow - a.aboveElbowCm - h / 2, art, ...extra });
+      continue;
+    }
     if (a.part === 'shoulder' && (a.upTowards === 'collar' || a.onBadge)) {
       // 成年成員職級肩章（手冊 P.106、P.172）：套喺肩帶膊頭嗰頭、緊貼肩帶末端；徽號向衣領（圖案上 = 向衣領）。
       // 闊（w）橫跨肩帶，高（h）沿肩帶。「R」字樣別針（P.105）喺肩章徽號下面，即係近膊頭嗰半。
@@ -106,18 +178,17 @@ export function placeAll(rules, gender, { sweater = false } = {}) {
       continue;
     }
     if (a.part === 'torso') {
-      const sx = a.side === 'left' ? 1 : -1;
       let x = sx * a.xCm;
       let y = top - a.fromTopCm;
       if (a.pocket) {
-        // 胸袋（body.js 嘅 pocket）：centre = 袋身（袋蓋以下）中央；aboveFlap = 章底喺袋蓋頂上 gapCm
+        // 胸袋（body.js 嘅 pocket）：centre = 袋身（袋蓋以下）中央；aboveFlap = 章底喺袋蓋頂上 gapCm；flap = 袋蓋中央
         const P = B.pocket;
         if (!P) throw new Error(`徽章 ${b.id} 要胸袋，但呢個身形冇胸袋`);
         x = sx * P.x;
         const flapTop = top - P.top;
-        y = a.pocket === 'centre' ? flapTop - P.flap - (P.h - P.flap) / 2 : flapTop + a.gapCm + h / 2;
+        y = a.pocket === 'centre' ? flapTop - P.flap - (P.h - P.flap) / 2 : a.pocket === 'flap' ? flapTop - P.flap / 2 : flapTop + a.gapCm + h / 2;
       }
-      out.push({ key: b.id, id: b.id, mount: 'torso', shape, w, h, x, y, z: B.torso.d / 2, art, fit, ...extra });
+      out.push({ key: b.id, id: b.id, mount: 'torso', shape, w, h, x, y, z: B.torso.d / 2, art, fit: fit || !!b.fit, ...extra });
       continue;
     }
     const mount = a.side === 'left' ? 'l' : 'r';
@@ -146,6 +217,7 @@ export function placeAll(rules, gender, { sweater = false } = {}) {
     }
     let t;
     if (a.fromShoulderCm != null) t = a.fromShoulderCm;
+    else if (a.belowBadge && !box[a.belowBadge]) continue; // 嗰個章唔戴喺呢套制服
     else if (a.belowBadge) t = box[a.belowBadge].bottom + a.gapCm;
     else if (a.aboveBadge) t = box[a.aboveBadge].top - a.gapCm - h;
     else if (a.aboveCuffSeamCm != null) t = face.cuffSeam - a.aboveCuffSeamCm - h;
@@ -219,9 +291,21 @@ export function placeSchool(rules, gender, mode = 'uh', { vest = false } = {}) {
  * - 學校運動上衣：用 placeSchool（衫上面嘅章唔戴）。
  * - 背心：團員章戴喺背心左胸（手冊 P.24），所以向外移；紀念章俾背心遮住。
  */
+/** 成年成員制服毛衣（手冊 P.122、P.127）：只戴世界童軍會員章、香港章、香港肩章／旅章、職級肩章（連「R」字樣別針）、布質名牌 */
+export const LEADER_SWEATER = new Set(['membership', 'hongKong', 'hkTitle', 'troop', 'epaulette', 'retiredPin', 'nameTag']);
+
 export function placeFor(rules, outfit) {
   const gender = outfit.gender === 'girl' ? 'girl' : 'boy';
   const vest = !!outfit.vest;
+  if (sectionOf(rules) === 'leader') {
+    // 成年成員：章跟制服編號（uniforms）；禮服／晚禮服上衣同制服毛衣一樣係一層殼，胸前章向外移、肩章喺外套肩帶上
+    const uid = leaderUniform(gender, outfit.uniform);
+    const dress = isDress(uid);
+    const sweater = !dress && !!outfit.sweater;
+    const R = { ...rules, badges: rules.badges.filter((b) => (!b.uniforms || b.uniforms.includes(uid)) && (!sweater || LEADER_SWEATER.has(b.id))) };
+    const shell = dress || sweater;
+    return placeAll(R, gender, { sweater: shell, uniform: uid }).map((p) => (shell && p.mount === 'torso' && p.facing !== 'up' ? { ...p, z: p.z + VEST_T } : p));
+  }
   if (outfit.school) return placeSchool(rules, gender, outfit.schoolLayout, { vest });
   if (outfit.sweater && hasSweater(rules)) {
     // 制服毛衣（手冊 P.122）：只戴世界童軍會員章、香港章、旅章（「或制服毛衣相同位置」）同深資童軍肩章；
@@ -261,7 +345,37 @@ export function visible(placements, state, { invested, school = false, unavailab
   // 跟住另一個章嘅（「R」字樣別針喺職級肩章上）：嗰個章冇顯示就唔顯示
   const ids = new Set(first.map((p) => p.id));
   const shown = first.filter((p) => !p.requires || ids.has(p.requires));
-  return centreLonePair(placements, shown);
+  return arrangeRacks(centreLonePair(placements, shown));
+}
+
+/**
+ * 勳章排（手冊 P.187、P.189、P.193）：按 P.191–192 等級（order 細 = 高）由內側（近中線）排去外側；
+ * 兩至三個並排，四個或以上（或者太闊）就重疊，最高等級喺最上面；底部同一水平（y 已經喺 placeAll 計好）。
+ */
+export function arrangeRacks(list) {
+  const groups = new Map();
+  for (const p of list) if (p.rack) groups.set(p.rack.name, [...(groups.get(p.rack.name) ?? []), p]);
+  if (!groups.size) return list;
+  const moved = new Map();
+  const GAP = 0.15;
+  for (const items of groups.values()) {
+    const R = items[0].rack;
+    const sorted = [...items].sort((a, b) => a.order - b.order || a.id.localeCompare(b.id));
+    const n = sorted.length;
+    const steps = sorted.slice(1).map((p, i) => (sorted[i].w + p.w) / 2 + GAP);
+    const natural = sorted.reduce((s, p) => s + p.w, 0) + GAP * (n - 1);
+    const overlap = n >= 4 || natural > R.maxW;
+    const span = overlap ? Math.min(natural, R.maxW) : natural;
+    const ends = (sorted[0].w + sorted[n - 1].w) / 2;
+    const sum = steps.reduce((s, v) => s + v, 0);
+    const k = overlap && sum > 0 ? Math.max(0, (span - ends) / sum) : 1;
+    let pos = -span / 2 + sorted[0].w / 2; // 由排中心向外量（+ = 外側）
+    sorted.forEach((p, i) => {
+      if (i > 0) pos += steps[i - 1] * k;
+      moved.set(p.key, { ...p, x: Math.round((R.cx - R.inward * pos) * 100) / 100, z: p.z + (n - i) * 0.03, overlap });
+    });
+  }
+  return list.map((p) => moved.get(p.key) ?? p);
 }
 
 /** 袖上並排嘅一對章（地域章喺前、區章喺後，手冊 P.95） */
@@ -282,7 +396,15 @@ export function centreLonePair(placements, shown) {
 /** 某個章喺而家嘅服裝會唔會顯示，同埋點解唔顯示 */
 export function shownReason(rules, outfit, state, id, { unavailable = [], level = null } = {}) {
   const all = placeFor(rules, outfit);
-  if (!all.some((p) => p.id === id)) return outfit.school ? 'school' : outfit.sweater && hasSweater(rules) ? 'sweater' : 'vest';
+  if (!all.some((p) => p.id === id)) {
+    if (sectionOf(rules) === 'leader') {
+      const b = rules.badges.find((x) => x.id === id);
+      const uid = leaderUniform(outfit.gender === 'girl' ? 'girl' : 'boy', outfit.uniform);
+      if (b?.uniforms && !b.uniforms.includes(uid)) return 'uniform';
+      return 'sweater';
+    }
+    return outfit.school ? 'school' : outfit.sweater && hasSweater(rules) ? 'sweater' : 'vest';
+  }
   if (visible(all, state, { invested: outfit.invested, school: outfit.school, unavailable, level }).some((p) => p.id === id)) return null;
   if (outfit.school && !outfit.invested) return 'schoolUninvested';
   if ((id === 'membership' || all.some((p) => p.id === id && p.inv)) && !outfit.invested) return 'uninvested';

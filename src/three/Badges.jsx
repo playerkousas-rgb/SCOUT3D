@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 import { meritCanvas } from '../lib/meritCanvas.js';
+import { nameTagCanvas } from '../lib/nameTagCanvas.js';
 import { sleevePose } from './badgeLayout.js';
 
 const EPS = 0.06; // 離布面 0.06 cm，避免閃
@@ -52,6 +53,11 @@ export function useDynamicTextures(arts) {
       entries.map(async ([k, a]) => {
         if (!a) return [k, null];
         try {
+          if (a.kind === 'nameTag') {
+            const t = prep(new THREE.CanvasTexture(nameTagCanvas(a)));
+            made.push(t);
+            return [k, t];
+          }
           if (a.kind === 'merit') {
             const t = prep(new THREE.CanvasTexture(await meritCanvas(a)));
             made.push(t);
@@ -129,6 +135,7 @@ function Patch({ p, tex, painted, selected, onSelect, registry }) {
         <meshStandardMaterial
           key={tex ? tex.uuid : 'none'}
           map={painted && tex ? tex : null}
+          alphaTest={painted && tex ? 0.5 : 0} // 勳章、感謝章等透明底 PNG：透明位唔畫
           color={painted ? (tex ? '#f2f2f2' : '#9aa0a6') : '#b4b6b9'}
           roughness={0.8}
           metalness={0}
@@ -148,7 +155,7 @@ function Patch({ p, tex, painted, selected, onSelect, registry }) {
 
 /** 上身嘅章（喺人物 group 入面，單位 cm）；facing = 'back' 嘅（領巾尖）向後；facing = 'up'（肩章）平放喺肩帶上，rot 由 badgeLayout 計 */
 export function TorsoBadges({ items, textures, ...rest }) {
-  return items.map((p) => (
+  return items.filter((p) => p.kind !== 'lanyard').map((p) => (
     <group
       key={p.key}
       position={p.facing === 'up' ? [p.x, p.y + EPS, p.z] : [p.x, p.y, p.facing === 'back' ? p.z - EPS * 2 : p.z + EPS]}
@@ -163,8 +170,9 @@ export function TorsoBadges({ items, textures, ...rest }) {
  * 袖嘅章（喺手臂 group 入面；原點 = 膊頭支點，肩膊縫線喺 y = seamY）。
  * 左袖外側 = +x 面：望住佢時右手邊 = -z。右袖外側 = -x 面：右手邊 = +z。
  */
-export function SleeveBadges({ items, textures, side, sleeveW, seamY, ...rest }) {
+export function SleeveBadges({ items, textures, side, sleeveW, sleeveD, seamY, ...rest }) {
   return items.map((p) => {
+    if (p.kind === 'band') return <SleeveBand key={p.key} p={p} sleeveW={sleeveW} sleeveD={sleeveD} seamY={seamY} {...rest} />;
     const pose = sleevePose(side, sleeveW, seamY, p, EPS);
     return (
       <group key={p.key} position={pose.position} rotation={[0, pose.rotY, 0]}>
@@ -172,4 +180,28 @@ export function SleeveBadges({ items, textures, side, sleeveW, seamY, ...rest })
       </group>
     );
   });
+}
+
+/** 喪禮黑布（手冊 P.162）：一圈套住衫袖（闊 = p.h），可以撳嚟揀 */
+function SleeveBand({ p, sleeveW, sleeveD, seamY, painted, selected, onSelect, registry }) {
+  const ref = useRef();
+  useEffect(() => {
+    if (!registry || !ref.current) return undefined;
+    registry.set(p.key, ref.current);
+    return () => registry.delete(p.key);
+  }, [registry, p.key]);
+  return (
+    <mesh
+      ref={ref}
+      position={[0, seamY - p.v, 0]}
+      onClick={(e) => {
+        e.stopPropagation();
+        onSelect?.(p.id);
+      }}
+      castShadow
+    >
+      <boxGeometry args={[sleeveW + 0.3, p.h, sleeveD + 0.3]} />
+      <meshStandardMaterial color={selected ? '#3a2a1c' : painted ? '#141416' : '#8d9094'} roughness={0.9} />
+    </mesh>
+  );
 }

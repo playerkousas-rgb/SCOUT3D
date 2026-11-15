@@ -4,10 +4,14 @@
 const STATUSES = new Set(['documented', 'pending', 'verified']);
 const SIDES = new Set(['left', 'right', 'centre', 'both']); // both = 雙肩（深資童軍肩章）
 const SHAPES = new Set(['circle', 'square', 'rect']);
-const PARTS = new Set(['torso', 'sleeve', 'shoulder']); // shoulder = 套喺肩帶上
-const DYNAMIC = new Set(['district', 'region', 'meritorious', 'patrol', 'rank']); // rank = 成年成員職級肩章（跟所揀職級）
-const ART_FILE = /^\/badges\/((districts|patrols|leader)\/)?[\w-]+\.png$/;
-const POCKET = new Set(['centre', 'aboveFlap']);
+const PARTS = new Set(['torso', 'sleeve', 'shoulder', 'neck']); // shoulder = 套喺肩帶上；neck = 掛頸（卓越服務勳章）
+// rank = 成年成員職級肩章（跟所揀職級）；metalRank = 晚禮服金屬職級肩章（跟職級 + 夏季／冬季）；nameTag = 布質名牌（用戶輸入姓名）
+const DYNAMIC = new Set(['district', 'region', 'meritorious', 'patrol', 'rank', 'metalRank', 'nameTag']);
+const ART_FILE = /^\/badges\/((districts|patrols|leader|awards)\/)?[\w-]+\.png$/;
+const POCKET = new Set(['centre', 'aboveFlap', 'flap']); // flap = 袋蓋中央（布質名牌、感謝章）
+const RACKS = new Set(['pocket', 'lapel']); // 勳章排：禮服右胸袋袋蓋上方／晚禮服右襟領童軍徽上方
+const SEASONS = ['summer', 'winter'];
+const CAP_TRIMS = new Set(['oak2', 'oak1', 'cord', 'none', 'rim']);
 const TOWARDS = new Set(['front', 'back']);
 
 function bilingual(obj, keys, where, errors) {
@@ -96,12 +100,36 @@ export function validateRules(rules) {
     checkSources(u.sources, sources, w, errors);
     if (!Array.isArray(u.genders) || !u.genders.length) errors.push(`${w}: genders 空白`);
     for (const g of u.genders || []) if (!u.legwear?.[g]) errors.push(`${w}: 冇 ${g} 嘅 legwear`);
+    if (u.seasons != null && (!Array.isArray(u.seasons) || u.seasons.some((x) => !SEASONS.includes(x)))) errors.push(`${w}: seasons 只可以係 summer／winter`);
+  }
+  const uniformIds = new Set((rules.uniforms || []).map((u) => u.id));
+  // 晚禮服黑色硬帽編號（手冊 P.206–211）
+  const capIds = new Set();
+  for (const c of rules.messCaps || []) {
+    const w = `messCap ${c.id}`;
+    if (!/^[UL]M\d\d$/.test(c.id || '') || capIds.has(c.id)) errors.push(`${w}: id 錯或重複`);
+    capIds.add(c.id);
+    if (!CAP_TRIMS.has(c.trim) || !['silver', 'gold'].includes(c.metal)) errors.push(`${w}: trim／metal 錯`);
+    if (!c.zh || !c.en) errors.push(`${w}: 缺中英`);
+    checkSources(c.sources, sources, w, errors);
   }
 
   const badgeIds = new Set((rules.badges || []).map((b) => b.id));
   const hasSweaterGarment = (rules.garments || []).some((g) => g.id === 'sweater');
   for (const b of rules.badges || []) {
     const w = `badge ${b.id}`;
+    /** 位置：上身要有 xCm + fromTopCm、pocket、rack（勳章排）、lanyard（笛繩）或 lapel（晚禮服襟領）其中一樣 */
+    const checkAnchor = (x, where) => {
+      if (!PARTS.has(x.part)) errors.push(`${where}: anchor.part 錯`);
+      if (x.part === 'torso' && x.pocket == null && x.rack == null && !x.lanyard && x.lapel == null && !(Number.isFinite(x.xCm) && Number.isFinite(x.fromTopCm))) {
+        errors.push(`${where}: 上身位置要有 xCm + fromTopCm、pocket、rack、lanyard 或 lapel`);
+      }
+      if (x.pocket != null && !POCKET.has(x.pocket)) errors.push(`${where}: anchor.pocket 錯`);
+      if (x.rack != null && (!RACKS.has(x.rack) || !b.choices && !b.art?.px)) errors.push(`${where}: anchor.rack 錯（勳章要有 px 尺寸）`);
+      if (x.lapel != null && (x.lapel !== 'belowFleur' || !(x.gapCm >= 0))) errors.push(`${where}: anchor.lapel 只可以係 belowFleur（要有 gapCm）`);
+      if (x.band && (x.part !== 'sleeve' || !Number.isFinite(x.aboveElbowCm))) errors.push(`${where}: band（袖圈）要喺袖上兼有 aboveElbowCm`);
+      if (x.part === 'neck' && x.side !== 'centre') errors.push(`${where}: 掛頸要 side centre`);
+    };
     if (ids.has(b.id)) errors.push(`${w}: id 重複`);
     ids.add(b.id);
     bilingual(b, ['name', 'place', 'quote', 'conditions'], w, errors);
@@ -115,14 +143,18 @@ export function validateRules(rules) {
     const s = b.size || {};
     if (!SHAPES.has(s.shape) || !(s.wCm > 0) || !(s.hCm > 0)) errors.push(`${w}: size 錯`);
     if (s.measured && !(s.ref && s.page)) errors.push(`${w}: 有實際尺寸就要寫來源頁`);
+    if (b.uniforms != null && (!Array.isArray(b.uniforms) || !b.uniforms.length || b.uniforms.some((x) => !uniformIds.has(x)))) errors.push(`${w}: uniforms 要係已登記嘅制服編號`);
+    for (const [u, ab] of Object.entries(b.anchorBy || {})) {
+      if (!uniformIds.has(u) || !(b.uniforms || []).includes(u)) errors.push(`${w}: anchorBy ${u} 要係呢個章戴嘅制服`);
+      checkAnchor(ab, `${w} anchorBy ${u}`);
+    }
     const a = b.anchor || {};
-    if (!PARTS.has(a.part)) errors.push(`${w}: anchor.part 錯`);
+    checkAnchor(a, w);
     if (a.side !== b.side) errors.push(`${w}: anchor.side 同「side」唔一致`);
+    if (a.rack && !b.choices && !(Number.isInteger(b.rackOrder) && b.rackOrder > 0)) errors.push(`${w}: 單一勳章要有 rackOrder`);
     if (a.belowBadge && !badgeIds.has(a.belowBadge)) errors.push(`${w}: belowBadge 指向不存在嘅章`);
     if (a.aboveBadge && !badgeIds.has(a.aboveBadge)) errors.push(`${w}: aboveBadge 指向不存在嘅章`);
     if ((a.part === 'shoulder') !== (b.side === 'both')) errors.push(`${w}: 雙肩（side both）同 part shoulder 要一齊用`);
-    if (a.part === 'torso' && a.pocket == null && !(Number.isFinite(a.xCm) && Number.isFinite(a.fromTopCm))) errors.push(`${w}: 上身位置要有 xCm + fromTopCm 或 pocket`);
-    if (a.pocket != null && !POCKET.has(a.pocket)) errors.push(`${w}: anchor.pocket 錯`);
     if (a.towards != null && (!TOWARDS.has(a.towards) || !(a.offsetCm > 0))) errors.push(`${w}: anchor.towards 要係 front/back 兼有 offsetCm`);
     if (b.dynamic != null && !DYNAMIC.has(b.dynamic)) errors.push(`${w}: dynamic 錯`);
     if (b.levels != null && (!Array.isArray(b.levels) || !b.levels.length || b.levels.some((x) => !levelIds.has(x)))) errors.push(`${w}: levels 要係已登記嘅層級`);
@@ -145,6 +177,23 @@ export function validateRules(rules) {
       }
       for (const r of rankIds) if (!seen.has(r)) errors.push(`${w}: 職級 ${r} 冇肩章`);
     }
+    // 晚禮服金屬職級肩章：每個職級一行（夏季白、冬季黑兩個圖案 + 晚禮服黑色硬帽編號）
+    if (b.dynamic === 'metalRank') {
+      const seen = new Set();
+      for (const row of b.rows || []) {
+        for (const ss of SEASONS) {
+          const x = row.art?.[ss];
+          if (!x || !ART_FILE.test(x.file || '') || !sources[x.ref] || !x.page) errors.push(`${w}: row ${row.id} ${ss} 圖案要寫官方文件來源同頁碼`);
+        }
+        if (!capIds.has(row.cap)) errors.push(`${w}: row ${row.id} 硬帽編號 ${row.cap} 未登記`);
+        if (!row.zh?.epaulette || !row.en?.epaulette) errors.push(`${w}: row ${row.id} 缺中英`);
+        for (const r of row.ranks || []) {
+          if (!rankIds.has(r) || seen.has(r)) errors.push(`${w}: row ${row.id} 職級 ${r} 未登記或重複`);
+          seen.add(r);
+        }
+      }
+      for (const r of rankIds) if (!seen.has(r)) errors.push(`${w}: 職級 ${r} 冇金屬肩章`);
+    }
     // 制服毛衣（手冊 P.122）：有毛衣嘅支部，每個章都要講明戴唔戴得喺毛衣上
     if (hasSweaterGarment && typeof b.sweater !== 'boolean') errors.push(`${w}: 有制服毛衣嘅支部要寫 sweater（true/false）`);
     // 選項（例：深資童軍肩章「未考獲／深資童軍肩章」）：每個選項要有中英名；有圖案就要有官方來源；預設要係其中一個
@@ -152,10 +201,12 @@ export function validateRules(rules) {
       if (!Array.isArray(b.choices) || b.choices.length < 2) errors.push(`${w}: choices 最少要兩個`);
       const cids = new Set();
       for (const c of b.choices || []) {
-        if (!/^[a-z]+$/.test(c.id || '') || cids.has(c.id)) errors.push(`${w}: choice id「${c.id}」錯或重複`);
+        if (!/^[a-z][a-zA-Z]*$/.test(c.id || '') || cids.has(c.id)) errors.push(`${w}: choice id「${c.id}」錯或重複`);
         cids.add(c.id);
         if (!c.zh?.name || !c.en?.name) errors.push(`${w}: choice ${c.id} 缺中英名`);
-        if (c.art && (!/^\/badges\/[\w-]+\.png$/.test(c.art.file || '') || !sources[c.art.ref] || !c.art.page)) errors.push(`${w}: choice ${c.id} 圖案要寫官方文件來源同頁碼`);
+        if (c.art && (!ART_FILE.test(c.art.file || '') || !sources[c.art.ref] || !c.art.page)) errors.push(`${w}: choice ${c.id} 圖案要寫官方文件來源同頁碼`);
+        if (c.art && (b.anchor?.rack || b.anchor?.part === 'neck') && !(c.art.px?.[0] > 0 && c.art.px?.[1] > 0)) errors.push(`${w}: choice ${c.id} 要有 px 尺寸（排勳章用）`);
+        if (c.art && b.anchor?.rack && !(Number.isInteger(c.order) && c.order > 0)) errors.push(`${w}: choice ${c.id} 要有 P.191–192 等級 order`);
       }
       if (!cids.has(b.default)) errors.push(`${w}: default 要係 choices 其中一個`);
       if (!(b.choices || []).some((c) => !c.art)) errors.push(`${w}: choices 要有一個「冇章」選項`);

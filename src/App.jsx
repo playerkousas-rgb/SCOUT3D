@@ -5,8 +5,8 @@ import { SECTIONS, SECTION_IDS, DISTRICTS, PATROLS, RULE_ERRORS, badgeById, sour
 import { garmentsFor, variantOf } from './data/validate.js';
 import { NECKER, WOGGLE, PLAIN } from './palette.js';
 import { shownReason } from './three/badgeLayout.js';
-import { resolveArt, meritYearOk, findDistrict, findPatrol, ranksFor, fixRank, rankRowOf, leaderNeckwear } from './lib/picks.js';
-import { leaderUniform } from './three/body.js';
+import { resolveArt, meritYearOk, findDistrict, findPatrol, ranksFor, fixRank, rankRowOf, leaderNeckwear, messCapOf } from './lib/picks.js';
+import { leaderUniform, isDress } from './three/body.js';
 import { APP_VERSION } from './version.js';
 
 const Scene = lazy(() => import('./three/Scene.jsx'));
@@ -82,6 +82,7 @@ const LEADER_OUTFIT = {
   leaderWoggle: 'scout',
   training: 'none',
   woodBadge: false,
+  season: 'winter', // 晚禮服：summer = 白上衣、winter = 黑上衣（手冊 P.60）
   neckerMain: '#2e7d4f',
   neckerBorder: '#e9b425',
   woggle: '#1f4e9c',
@@ -113,10 +114,16 @@ const ROVER_BADGES = { ...CUB_BADGES, epaulette: SECTIONS.rover.badges.find((b) 
 
 // 成年成員預設：必備章全開（手冊 P.92–95、P.103–106）；香港肩章／旅章、總會總部章／地域章／區章跟單位層級自動揀
 // 「R」字樣別針（退休）、優異旅團章係可選
-const LEADER_BADGES = { membership: true, hongKong: true, hkTitle: true, troop: true, ahq: true, region: true, district: true, epaulette: true, retiredPin: false, meritorious: false };
+// 禮服／晚禮服（v11）：金屬職級肩章必備；布質名牌、喪禮黑布、感謝章係開關；勳章、嘉許笛繩用規則 JSON 嘅 default（冇）
+const LEADER_BADGES = {
+  membership: true, hongKong: true, hkTitle: true, troop: true, ahq: true, region: true, district: true, epaulette: true, retiredPin: false, meritorious: false,
+  metalEpaulette: true, nameTag: false, mourningBand: false, thanksBadge: false,
+  ...Object.fromEntries(SECTIONS.leader.badges.filter((b) => b.choices).map((b) => [b.id, b.default])),
+};
 
 // 用戶自選：所屬區（決定區章、地域章圖案）、優異旅團章年份、童軍小隊；成年成員：單位層級、職級
-const DEFAULT_PICKS = { districtId: '', meritYear: new Date().getFullYear(), patrolId: '', level: 'group', rank: 'sectionLeader' };
+// 布質名牌姓名（nameZh／nameEn）只喺瀏覽器入面用，唔會上載
+const DEFAULT_PICKS = { districtId: '', meritYear: new Date().getFullYear(), patrolId: '', level: 'group', rank: 'sectionLeader', nameZh: '', nameEn: '' };
 
 // 預設：必須佩戴嘅章 + 旅章、區章（同手冊 P.25 附圖一樣）
 const DEFAULT_BADGES = {
@@ -242,11 +249,15 @@ function ArtLine({ rules, art }) {
 /** 某個章而家嘅圖案（resolveArt 結果）；優異旅團章要即場畫年份，所以有 src 狀態 */
 function useArtSrc(art) {
   const [src, setSrc] = useState(art?.kind === 'image' ? art.file : null);
-  const key = art ? (art.kind === 'merit' ? `m-${art.colour}-${art.year}` : art.file) : '';
+  const key = art ? (art.kind === 'merit' ? `m-${art.colour}-${art.year}` : art.kind === 'nameTag' ? `n-${art.zh}-${art.en}` : art.file) : '';
   useEffect(() => {
     let alive = true;
     if (!art) setSrc(null);
     else if (art.kind === 'image') setSrc(art.file);
+    else if (art.kind === 'nameTag')
+      import('./lib/nameTagCanvas.js')
+        .then((m) => alive && setSrc(m.nameTagCanvas(art, 48).toDataURL('image/png')))
+        .catch(() => alive && setSrc(null));
     else
       import('./lib/meritCanvas.js')
         .then((m) => m.meritDataUrl(art))
@@ -391,6 +402,8 @@ function InfoCard({ rules, id, outfit, badges, picks, unavailable, onClose, onFo
       <div className="card__art">
         {b.dynamic ? (
           <ArtImg art={now} alt={pick(lang, b, 'name')} className="" />
+        ) : b.choices && b.choices.some((c) => c.id === badges[b.id] && c.art) ? (
+          <img src={b.choices.find((c) => c.id === badges[b.id]).art.file} alt={pick(lang, b, 'name')} />
         ) : (
           arts.map((a) => <img key={a.file} src={a.file} alt={pick(lang, b, 'name')} className={b.size.shape === 'circle' ? 'is-round' : ''} />)
         )}
@@ -409,6 +422,8 @@ function InfoCard({ rules, id, outfit, badges, picks, unavailable, onClose, onFo
         </span>
       ) : b.dynamic === 'rank' && now?.row ? (
         <RankLine rules={rules} row={now.row} picks={picks} />
+      ) : b.dynamic === 'metalRank' && now?.row ? (
+        <MetalRankLine rules={rules} row={now.row} picks={picks} />
       ) : b.dynamic === 'meritorious' && now ? (
         <span className="muted">
           {t('pick.artMerit')} {now.year}・{bi(lang, MERIT_NAME[now.colour].zh, MERIT_NAME[now.colour].en)}
@@ -518,9 +533,134 @@ function RankLine({ rules, row, picks }) {
   );
 }
 
+/** 徽章清單一行 */
+function BadgeRow({ b, rules, section, outfit, badges, set, picks, setPicks, unavailable, selected, onPick }) {
+  const { lang, t } = useLang();
+  const disabled = b.needsInvestiture && !outfit.invested;
+  const why = shownReason(rules, outfit, badges, b.id, { unavailable, level: levelOf(section, picks) });
+  const whyNote = ['school', 'vest', 'sweater', 'schoolUninvested', 'noArt', 'level', 'needsHost'].includes(why) ? t(`badge.why.${why}`) : null;
+  const example = b.dynamic ? resolveArt(b, picks, DISTRICTS, PATROLS)?.example : (Array.isArray(b.art) ? b.art[0] : b.art).example;
+  return (
+    <li className={`badgerow${selected === b.id ? ' is-sel' : ''}${disabled ? ' is-disabled' : ''}`}>
+      <div className="badgerow__main">
+        <BadgeRowArt b={b} badges={badges} picks={picks} />
+        <div>
+          <button type="button" className="badgerow__name" onClick={() => onPick(b.id)}>
+            {pick(lang, b, 'name')}
+          </button>
+          <div className="badgerow__meta">
+            <StatusChip status={b.status} />
+            <span className="chip chip--plain">{t(b.required ? 'info.required' : 'info.optional')}</span>
+            {example && <span className="chip chip--plain">{t('badge.example')}</span>}
+          </div>
+        </div>
+      </div>
+      {b.choices ? (
+        <div className="steps steps--choices" role="radiogroup" aria-label={`${t('badge.choice')}：${pick(lang, b, 'name')}`}>
+          {b.choices.map((c) => (
+            <button
+              key={c.id}
+              type="button"
+              role="radio"
+              aria-checked={badges[b.id] === c.id}
+              disabled={disabled && !!c.art}
+              className={`steps__btn steps__btn--wide${badges[b.id] === c.id ? ' is-on' : ''}`}
+              onClick={() => set(b.id, c.id)}
+            >
+              {pick(lang, c, 'name')}
+            </button>
+          ))}
+        </div>
+      ) : b.id === 'progress' ? (
+        <div className="steps" role="radiogroup" aria-label={t('badge.steps')}>
+          {[0, 1, 2, 3, 4].map((n) => (
+            <button
+              key={n}
+              type="button"
+              role="radio"
+              aria-checked={badges.progress === n}
+              className={`steps__btn${badges.progress === n ? ' is-on' : ''}`}
+              onClick={() => set('progress', n)}
+              title={n === 0 ? t('badge.none') : `${t('badge.steps')} ${n}`}
+            >
+              {n === 0 ? t('badge.none') : n}
+            </button>
+          ))}
+        </div>
+      ) : (
+        <label className="switch switch--compact">
+          <input
+            type="checkbox"
+            checked={!!badges[b.id] && !disabled}
+            disabled={disabled}
+            onChange={(e) => set(b.id, e.target.checked)}
+            aria-label={`${t('badge.show')}：${pick(lang, b, 'name')}`}
+          />
+          <span className="switch__track" aria-hidden="true" />
+        </label>
+      )}
+      {b.dynamic === 'district' && <DistrictPicker picks={picks} setPicks={setPicks} id={`pick-district-${section}`} />}
+      {b.dynamic === 'region' && <p className="note">{t('pick.regionAuto')}</p>}
+      {b.dynamic === 'meritorious' && <YearPicker picks={picks} setPicks={setPicks} id={`pick-year-${section}`} />}
+      {b.dynamic === 'patrol' && <PatrolPicker picks={picks} setPicks={setPicks} id={`pick-patrol-${section}`} />}
+      {b.dynamic === 'rank' && rankRowOf(b, picks.rank) && <RankLine rules={rules} row={rankRowOf(b, picks.rank)} picks={picks} />}
+      {b.dynamic === 'metalRank' && rankRowOf(b, picks.rank) && <MetalRankLine rules={rules} row={rankRowOf(b, picks.rank)} picks={picks} />}
+      {b.dynamic === 'nameTag' && <NamePicker picks={picks} setPicks={setPicks} />}
+      {disabled && <p className="note">{t('badge.needInvest')}</p>}
+      {!disabled && whyNote && <p className="note">{whyNote}</p>}
+    </li>
+  );
+}
+
+/** 晚禮服金屬職級肩章 + 黑色硬帽編號（手冊 P.206–211） */
+function MetalRankLine({ rules, row, picks }) {
+  const { lang, t } = useLang();
+  const r = (rules.ranks || []).find((x) => x.id === picks.rank);
+  const cap = messCapOf(rules, picks.rank, picks.gender);
+  return (
+    <span className="muted">
+      {r ? `${pick(lang, r, 'name')}${lang === 'en' ? ': ' : '：'}` : ''}
+      {t(picks.season === 'summer' ? 'pick.metalSummer' : 'pick.metalWinter')} {bi(lang, row.zh.epaulette, row.en.epaulette)}
+      {cap && (
+        <>
+          {lang === 'en' ? ' · ' : '・'}
+          {t('pick.messCap')} {cap.code}
+          {lang === 'en' ? ` (${cap.en})` : `（${cap.zh}）`}
+        </>
+      )}
+      {lang === 'en' ? ' (Handbook pp.206–211)' : '（手冊 P.206–211）'}
+    </span>
+  );
+}
+
+/** 布質名牌姓名（手冊 P.128）：只喺瀏覽器入面畫，唔會上載 */
+function NamePicker({ picks, setPicks }) {
+  const { t } = useLang();
+  return (
+    <div className="picker">
+      <label className="field__label" htmlFor="pick-name-zh">
+        {t('pick.nameZh')}
+      </label>
+      <input id="pick-name-zh" className="select" type="text" maxLength={8} value={picks.nameZh ?? ''} placeholder="童君好" onChange={(e) => setPicks((p) => ({ ...p, nameZh: e.target.value }))} />
+      <label className="field__label" htmlFor="pick-name-en">
+        {t('pick.nameEn')}
+      </label>
+      <input id="pick-name-en" className="select" type="text" maxLength={24} value={picks.nameEn ?? ''} placeholder="KH TUNG" onChange={(e) => setPicks((p) => ({ ...p, nameEn: e.target.value }))} />
+      <p className="muted">{t('pick.nameNote')}</p>
+    </div>
+  );
+}
+
 function BadgesTab({ rules, section, outfit, badges, setBadges, picks, setPicks, unavailable, selected, onPick }) {
   const { lang, t } = useLang();
   const set = (k, v) => setBadges((b) => ({ ...b, [k]: v }));
+  // 成年成員：只列呢套制服戴嘅章（手冊 P.57、P.60：禮服／晚禮服只戴指定嘅章）；勳章及獎勵另外一組
+  const uid = section === 'leader' ? leaderUniform(outfit.gender, outfit.uniform) : null;
+  const forUniform = (b) => !uid || !b.uniforms || b.uniforms.includes(uid);
+  const list = rules.badges.filter((b) => forUniform(b) && b.group !== 'awards');
+  const awards = rules.badges.filter((b) => forUniform(b) && b.group === 'awards');
+  const hidden = rules.badges.filter((b) => !forUniform(b));
+  const row = (b) => <BadgeRow key={b.id} b={b} rules={rules} section={section} outfit={outfit} badges={badges} set={set} picks={picks} setPicks={setPicks} unavailable={unavailable} selected={selected} onPick={onPick} />;
   return (
     <div className="tabbody">
       <p className="note note--strong">{t({ cub: 'badges.tipCub', scout: 'badges.tipScout', venture: 'badges.tipVenture', rover: 'badges.tipRover', leader: 'badges.tipLeader' }[section] ?? 'badges.tip')}</p>
@@ -531,82 +671,20 @@ function BadgesTab({ rules, section, outfit, badges, setBadges, picks, setPicks,
           {t(outfit.schoolLayout === 'gsg' ? 'outfit.schoolGSG' : 'outfit.schoolUH')}
         </p>
       )}
-      <ul className="badgelist">
-        {rules.badges.map((b) => {
-          const disabled = b.needsInvestiture && !outfit.invested;
-          const why = shownReason(rules, outfit, badges, b.id, { unavailable, level: levelOf(section, picks) });
-          const whyNote = ['school', 'vest', 'sweater', 'schoolUninvested', 'noArt', 'level', 'needsHost'].includes(why) ? t(`badge.why.${why}`) : null;
-          const example = b.dynamic ? resolveArt(b, picks, DISTRICTS, PATROLS)?.example : (Array.isArray(b.art) ? b.art[0] : b.art).example;
-          return (
-            <li key={b.id} className={`badgerow${selected === b.id ? ' is-sel' : ''}${disabled ? ' is-disabled' : ''}`}>
-              <div className="badgerow__main">
-                <BadgeRowArt b={b} badges={badges} picks={picks} />
-                <div>
-                  <button type="button" className="badgerow__name" onClick={() => onPick(b.id)}>
-                    {pick(lang, b, 'name')}
-                  </button>
-                  <div className="badgerow__meta">
-                    <StatusChip status={b.status} />
-                    <span className="chip chip--plain">{t(b.required ? 'info.required' : 'info.optional')}</span>
-                    {example && <span className="chip chip--plain">{t('badge.example')}</span>}
-                  </div>
-                </div>
-              </div>
-              {b.choices ? (
-                <div className="steps steps--choices" role="radiogroup" aria-label={`${t('badge.choice')}：${pick(lang, b, 'name')}`}>
-                  {b.choices.map((c) => (
-                    <button
-                      key={c.id}
-                      type="button"
-                      role="radio"
-                      aria-checked={badges[b.id] === c.id}
-                      disabled={disabled && !!c.art}
-                      className={`steps__btn steps__btn--wide${badges[b.id] === c.id ? ' is-on' : ''}`}
-                      onClick={() => set(b.id, c.id)}
-                    >
-                      {pick(lang, c, 'name')}
-                    </button>
-                  ))}
-                </div>
-              ) : b.id === 'progress' ? (
-                <div className="steps" role="radiogroup" aria-label={t('badge.steps')}>
-                  {[0, 1, 2, 3, 4].map((n) => (
-                    <button
-                      key={n}
-                      type="button"
-                      role="radio"
-                      aria-checked={badges.progress === n}
-                      className={`steps__btn${badges.progress === n ? ' is-on' : ''}`}
-                      onClick={() => set('progress', n)}
-                      title={n === 0 ? t('badge.none') : `${t('badge.steps')} ${n}`}
-                    >
-                      {n === 0 ? t('badge.none') : n}
-                    </button>
-                  ))}
-                </div>
-              ) : (
-                <label className="switch switch--compact">
-                  <input
-                    type="checkbox"
-                    checked={!!badges[b.id] && !disabled}
-                    disabled={disabled}
-                    onChange={(e) => set(b.id, e.target.checked)}
-                    aria-label={`${t('badge.show')}：${pick(lang, b, 'name')}`}
-                  />
-                  <span className="switch__track" aria-hidden="true" />
-                </label>
-              )}
-              {b.dynamic === 'district' && <DistrictPicker picks={picks} setPicks={setPicks} id={`pick-district-${section}`} />}
-              {b.dynamic === 'region' && <p className="note">{t('pick.regionAuto')}</p>}
-              {b.dynamic === 'meritorious' && <YearPicker picks={picks} setPicks={setPicks} id={`pick-year-${section}`} />}
-              {b.dynamic === 'patrol' && <PatrolPicker picks={picks} setPicks={setPicks} id={`pick-patrol-${section}`} />}
-              {b.dynamic === 'rank' && rankRowOf(b, picks.rank) && <RankLine rules={rules} row={rankRowOf(b, picks.rank)} picks={picks} />}
-              {disabled && <p className="note">{t('badge.needInvest')}</p>}
-              {!disabled && whyNote && <p className="note">{whyNote}</p>}
-            </li>
-          );
-        })}
-      </ul>
+      <ul className="badgelist">{list.map(row)}</ul>
+      {awards.length > 0 && (
+        <details className="awards" open={awards.some((b) => badges[b.id] && badges[b.id] !== 'none')}>
+          <summary className="h3">{t(uid === 'u2' ? 'badges.awardsMini' : 'badges.awards')}</summary>
+          <p className="note">{t(uid === 'u2' ? 'badges.awardsMiniNote' : 'badges.awardsNote')}</p>
+          <ul className="badgelist">{awards.map(row)}</ul>
+        </details>
+      )}
+      {hidden.length > 0 && (
+        <p className="note">
+          {t('badges.notThisUniform')}
+          {hidden.map((b) => pick(lang, b, 'name')).join(lang === 'en' ? ', ' : '、')}
+        </p>
+      )}
       <p className="note">{bi(lang, rules.artCredit.zh, rules.artCredit.en)}</p>
       <p className="note">{bi(lang, DISTRICTS.artCredit.zh, DISTRICTS.artCredit.en)}</p>
       {rules.badges.some((b) => b.dynamic === 'patrol') && <p className="note">{bi(lang, PATROLS.artCredit.zh, PATROLS.artCredit.en)}</p>}
@@ -920,16 +998,20 @@ function LeaderOutfitTab({ outfit, setOutfit, picks }) {
   const { lang, t } = useLang();
   const set = (k, v) => setOutfit((o) => ({ ...o, [k]: v }));
   const R = SECTIONS.leader;
-  const v = variantOf(R, outfit.variant)?.id ?? 'land';
+  const picked = variantOf(R, outfit.variant)?.id ?? 'land';
   const girl = outfit.gender === 'girl';
   const uid = leaderUniform(outfit.gender, outfit.uniform);
   const U = R.uniforms.find((x) => x.id === uid);
-  const skirt = girl && (uid === 'u3' || uid === 'u4');
-  const tie = uid === 'u4';
-  const LN = leaderNeckwear(R, outfit, picks);
+  const dress = isDress(uid); // 禮服／晚禮服：只有陸上款（手冊 P.57–62）
+  const evening = uid === 'u2';
+  const v = dress ? 'land' : picked;
+  const skirt = girl && (uid === 'u1' || uid === 'u3' || uid === 'u4');
+  const tie = uid === 'u4' || uid === 'u1';
+  const LN = leaderNeckwear(R, { ...outfit, uniform: uid }, picks);
   const instructor = picks.rank === 'instructor';
-  const hardHatOk = v === 'land' && skirt && !instructor; // 硬帽：女、陸上、編號 3／4、唔係教練員（手冊 P.100）
-  const hatKey = v === 'sea' ? 'leaderSeaHat' : v === 'air' ? 'leaderAirHat' : hardHatOk && outfit.hatStyle !== 'beret' ? 'leaderHardHat' : 'leaderHat';
+  const hardHatOk = v === 'land' && skirt && !instructor; // 硬帽：女、陸上、編號 1／3／4、唔係教練員（手冊 P.58、P.100）
+  const hatKey = evening ? 'leaderMessHat' : v === 'sea' ? 'leaderSeaHat' : v === 'air' ? 'leaderAirHat' : hardHatOk && outfit.hatStyle !== 'beret' ? 'leaderHardHat' : 'leaderHat';
+  const cap = evening ? messCapOf(R, picks.rank, outfit.gender) : null;
   return (
     <div className="tabbody">
       <Segmented
@@ -963,7 +1045,24 @@ function LeaderOutfitTab({ outfit, setOutfit, picks }) {
         options={R.uniforms.filter((x) => x.genders.includes(girl ? 'girl' : 'boy')).map((x) => ({ value: x.id, label: pick(lang, x, 'name') }))}
       />
       {U && <p className="note">{pick(lang, U, 'note')}</p>}
-      <Switch label={t(`outfit.${hatKey}`)} checked={outfit.hat} onChange={(x) => set('hat', x)} note={t(`outfit.${hatKey}Note`)} />
+      {dress && picked !== 'land' && <p className="note note--warn">{t('outfit.dressLandOnly')}</p>}
+      {evening && (
+        <Segmented
+          label={t('outfit.season')}
+          value={outfit.season === 'summer' ? 'summer' : 'winter'}
+          onChange={(x) => set('season', x)}
+          options={[
+            { value: 'summer', label: t('outfit.summer') },
+            { value: 'winter', label: t('outfit.winter') },
+          ]}
+        />
+      )}
+      <Switch
+        label={t(`outfit.${hatKey}`)}
+        checked={outfit.hat}
+        onChange={(x) => set('hat', x)}
+        note={cap ? `${t(`outfit.${hatKey}Note`)} ${t('pick.messCap')} ${cap.code}${lang === 'en' ? ` (${cap.en})` : `（${cap.zh}）`}` : t(`outfit.${hatKey}Note`)}
+      />
       {hardHatOk && (
         <Segmented
           label={t('outfit.leaderHatStyle')}
@@ -975,11 +1074,11 @@ function LeaderOutfitTab({ outfit, setOutfit, picks }) {
           ]}
         />
       )}
-      {v === 'land' && (!hardHatOk || outfit.hatStyle === 'beret') && (
+      {v === 'land' && !dress && (!hardHatOk || outfit.hatStyle === 'beret') && (
         <Switch label={t('outfit.ventureLeader')} checked={!!outfit.ventureLeader} onChange={(x) => set('ventureLeader', x)} note={t('outfit.ventureLeaderNote')} />
       )}
       {instructor && skirt && v === 'land' && <p className="note">{t('outfit.instructorNoHardHat')}</p>}
-      <Switch label={t('outfit.sweater')} checked={!!outfit.sweater} onChange={(x) => set('sweater', x)} note={outfit.sweater ? t('outfit.sweaterNoteLeader') : null} />
+      {!dress && <Switch label={t('outfit.sweater')} checked={!!outfit.sweater} onChange={(x) => set('sweater', x)} note={outfit.sweater ? t('outfit.sweaterNoteLeader') : null} />}
       <Segmented
         label={t('outfit.training')}
         value={LN.training}
@@ -990,8 +1089,10 @@ function LeaderOutfitTab({ outfit, setOutfit, picks }) {
           { value: 'woodBadge', label: t('outfit.trainingWood') },
         ]}
       />
-      {tie ? (
-        <p className="note">{t(`outfit.leaderTieNote_${v}`)}</p>
+      {evening ? (
+        <p className="note">{t('outfit.eveningNeckNote')}</p>
+      ) : tie ? (
+        <p className="note">{t(dress ? 'outfit.dressTieNote' : `outfit.leaderTieNote_${v}`)}</p>
       ) : (
         <>
           <Segmented
@@ -1028,9 +1129,9 @@ function LeaderOutfitTab({ outfit, setOutfit, picks }) {
         checked={LN.woodBadge}
         disabled={!LN.allowed.woodBadge || LN.necker === 'gilwell'}
         onChange={(x) => set('woodBadge', x)}
-        note={t('outfit.woodBadgeNote').replace('{n}', String(LN.beads))}
+        note={evening ? t('outfit.woodBadgeEvening') : t('outfit.woodBadgeNote').replace('{n}', String(LN.beads))}
       />
-      <p className="note">{t(`outfit.leaderNote_${v}`)}</p>
+      <p className="note">{t(dress ? `outfit.dressNote_${uid}` : `outfit.leaderNote_${v}`)}</p>
       <p className="note">{t('outfit.leaderFigure')}</p>
     </div>
   );
@@ -1130,8 +1231,12 @@ export default function App() {
   // 成年成員一律已宣誓（冇未宣誓狀態）
   const outfit = section === 'leader' ? { ...outfits[section], invested: true } : outfits[section];
   // 童軍支部嘅款式（海童軍／空童軍）用自己嘅副標題、截圖說明同檔名
-  const variantTag = (section === 'scout' || SENIOR.has(section) || section === 'leader') && outfit.variant && outfit.variant !== 'land' ? `${section}_${outfit.variant}` : section;
+  // 成年成員禮服／晚禮服只有陸上款（手冊 P.57–62）
+  const dressOn = section === 'leader' && isDress(leaderUniform(outfit.gender, outfit.uniform));
+  const variantTag = (section === 'scout' || SENIOR.has(section) || section === 'leader') && !dressOn && outfit.variant && outfit.variant !== 'land' ? `${section}_${outfit.variant}` : section;
   const badges = badgeStates[section];
+  // 圖案要知嘅外觀設定：晚禮服季節（金屬職級肩章白／黑）、人物（女裝硬帽編號 M 改 F）
+  const artPicks = useMemo(() => (section === 'leader' ? { ...picks, season: outfit.season, gender: outfit.gender } : picks), [section, picks, outfit.season, outfit.gender]);
   // 人物、外觀、宣誓各支部共用
   const setOutfit = useCallback(
     (fn) =>
@@ -1147,8 +1252,8 @@ export default function App() {
     [section],
   );
   const unavailable = useMemo(
-    () => RULES.badges.filter((b) => b.dynamic && !resolveArt(b, picks, DISTRICTS, PATROLS)).map((b) => b.id),
-    [RULES, picks],
+    () => RULES.badges.filter((b) => b.dynamic && !resolveArt(b, artPicks, DISTRICTS, PATROLS)).map((b) => b.id),
+    [RULES, artPicks],
   );
   const switchSection = (id) => {
     setSelected(null);
@@ -1231,7 +1336,7 @@ export default function App() {
         <section className="stage" aria-label={t('app.title')}>
           {webgl ? (
             <Suspense fallback={<div className="stage__msg">{t('loading')}</div>}>
-              <Scene ref={scene} section={section} outfit={outfit} badges={badges} picks={picks} selected={selected} onSelect={onSceneSelect} />
+              <Scene ref={scene} section={section} outfit={outfit} badges={badges} picks={artPicks} selected={selected} onSelect={onSceneSelect} />
             </Suspense>
           ) : (
             <div className="stage__msg">{t('nowebgl')}</div>
@@ -1269,7 +1374,7 @@ export default function App() {
               id={selected}
               outfit={outfit}
               badges={badges}
-              picks={picks}
+              picks={artPicks}
               unavailable={unavailable}
               onClose={() => setSelected(null)}
               onFocus={() => scene.current?.focus(selected)}
@@ -1299,7 +1404,7 @@ export default function App() {
                 outfit={outfit}
                 badges={badges}
                 setBadges={setBadges}
-                picks={picks}
+                picks={artPicks}
                 setPicks={setPicks}
                 unavailable={unavailable}
                 selected={selected}

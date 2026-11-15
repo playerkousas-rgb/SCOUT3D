@@ -183,6 +183,13 @@ export const COLOURS = {
   gilwellWoggle: '#7a4524', // 基維爾巾圈（土耳其結）
   woodBead: '#8a5a33', // 木章木珠
   thong: '#5a3a22', // 皮繩
+  // 禮服、晚禮服（手冊 P.57–62、P.203–205）
+  brass: '#c9a647', // 禮服會徽銅鈕
+  messWhite: '#f3f2ee', // 夏季白色晚禮服上衣
+  messBlack: '#1c1c21', // 冬季黑色晚禮服上衣、黑色長褲／長裙
+  messShirt: '#fbfbf9', // 白色長袖恤衫
+  purple: '#6b3d9a', // 紫色絲質腰封、褲邊間條
+  silver: '#cfd3d8', // 銀色童軍徽、銀鈕
 };
 
 /**
@@ -234,24 +241,72 @@ export const leaderVariant = (id) => LEADER_VARIANTS[id] ?? LEADER_VARIANTS.land
 /** 深資／樂行童軍、成年成員（長褲／半截裙、肩帶、領帶） */
 export const isSenior = (section) => section === 'venture' || section === 'rover' || section === 'leader';
 
+/** 成年成員制服編號（手冊 P.53）：1 禮服、2 晚禮服、3 常規、4 領帶、5 男短褲、6 女長褲 */
+export const LEADER_UNIFORMS = ['u1', 'u2', 'u3', 'u4', 'u5', 'u6'];
+/** 有外套嘅制服：禮服上衣（編號 1）、晚禮服上衣（編號 2）。徽章、肩帶要向外移一個外套厚度 */
+export const isDress = (u) => u === 'u1' || u === 'u2';
+
 /**
- * 成年成員制服編號（手冊 P.53–56）：3 常規、4 領帶、5 男短褲、6 女長褲。
- * 編號 5 只係男、編號 6 只係女：轉人物時自動改做對應嗰套（5 ↔ 6）。
+ * 成年成員制服編號（手冊 P.53–56）。編號 5 只係男、編號 6 只係女：轉人物時自動改做對應嗰套（5 ↔ 6）。
  */
 export function leaderUniform(gender, id) {
   const girl = gender === 'girl';
   if (id === 'u5' && girl) return 'u6';
   if (id === 'u6' && !girl) return 'u5';
-  return ['u3', 'u4', 'u5', 'u6'].includes(id) ? id : 'u3';
+  return LEADER_UNIFORMS.includes(id) ? id : 'u3';
 }
 
 /**
- * 成年成員下身：編號 3、4 女 = 半截裙 + 肉色襪褲 + 非綁帶中跟皮鞋；編號 5 = 短褲 + 長襪；其餘長褲 + 黑短襪 + 綁帶皮鞋。
+ * 成年成員下身：
+ * - 編號 1、3、4 女 = 草青色半截裙（及膝）+ 肉色襪褲 + 非綁帶中跟皮鞋；編號 5 = 短褲 + 長襪；其餘長褲 + 黑短襪 + 綁帶皮鞋。
+ * - 編號 2（晚禮服，手冊 P.61）：男 = 黑色長褲（褲邊紫色間條）+ 黑短襪 + 黑色光身皮鞋；女 = 黑色長裙 + 肉色襪褲 + 黑色高跟皮鞋。
+ * dress：'jacket' = 禮服上衣；'mess' = 晚禮服上衣
  */
 export function leaderLegwear(gender, uniform) {
   const u = leaderUniform(gender, uniform);
-  const skirt = gender === 'girl' && (u === 'u3' || u === 'u4');
-  return { uniform: u, skirt, shorts: u === 'u5', tie: u === 'u4', laced: !skirt, sock: skirt ? COLOURS.tights : COLOURS.blackSock };
+  const girl = gender === 'girl';
+  const skirt = girl && (u === 'u1' || u === 'u2' || u === 'u3' || u === 'u4');
+  return {
+    uniform: u,
+    skirt,
+    longSkirt: girl && u === 'u2',
+    shorts: u === 'u5',
+    tie: u === 'u1' || u === 'u4',
+    bowTie: u === 'u2',
+    dress: u === 'u1' ? 'jacket' : u === 'u2' ? 'mess' : null,
+    stripe: !girl && u === 'u2',
+    laced: !skirt,
+    sock: skirt ? COLOURS.tights : COLOURS.blackSock,
+  };
+}
+
+/**
+ * 禮服／晚禮服外套嘅殼（cm）：同毛衣一樣每邊厚 VEST_T、頂面高過膊頭 SWEATER_TOP。
+ * - 禮服上衣（手冊 P.59 附圖）：長過褲頭，衫腳約喺褲頭下面 8% 身高。
+ * - 晚禮服上衣（手冊 P.62 附圖）：短身；殼一直包到上身底，腰封同褲頭畫喺殼上。
+ * fleur = 兩邊翻領銀色童軍徽中心（x：+ = 穿著者左），襟領勳章排喺佢上面、感謝章喺右邊下面（手冊 P.189）。
+ * opening = 前面 V 位：top 闊（半闊）、bottom = V 底離殼頂幾遠。
+ */
+export function dressLayout(L, uniform) {
+  const { B, top } = L;
+  const t = B.torso;
+  const shellTop = top + SWEATER_TOP;
+  const bottom = uniform === 'u1' ? Math.round((B.waist - B.height * 0.08) * 10) / 10 : t.y - 0.5;
+  const w = t.w + VEST_T * 2;
+  const d = t.d + VEST_T * 2;
+  const front = t.d / 2 + VEST_T;
+  const nw = B.neck.w;
+  const fleurY = Math.round((top - B.height * 0.085) * 10) / 10;
+  const lapelW = 4.6; // 晚禮服翻領闊（示意）
+  const fleurX = nw / 2 + 1.6 + lapelW / 2; // 翻領中間
+  return {
+    w, d, h: shellTop - bottom, top: shellTop, bottom, front,
+    hem: uniform === 'u2' ? B.waist + 1 : bottom, // 晚禮服上衣前幅喺腰封上面完
+    cummerbund: uniform === 'u2' ? { top: B.waist + 9, bottom: B.waist - 1.5 } : null,
+    opening: uniform === 'u1' ? { half: nw / 2 + 2.6, depth: Math.round(B.height * 0.115 * 10) / 10 } : { half: nw / 2 + 1.6, depth: shellTop - B.waist },
+    lapelW,
+    fleur: uniform === 'u2' ? { x: fleurX, y: fleurY, size: 1.8 } : null,
+  };
 }
 
 /**
