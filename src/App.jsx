@@ -100,11 +100,15 @@ const SHARED_OUTFIT_KEYS = ['gender', 'finish', 'invested'];
 
 /** v25 外觀（精緻／簡約）：記喺瀏覽器；私隱模式唔記得都照用 */
 const LOOK_KEY = 'scout3d.look';
+/** v26：流線（預設，圓滑公仔）→ 精緻（圓角方塊）→ 簡約（像素方塊），撳一下轉下一個 */
+const LOOK_ORDER = ['smooth', 'detailed', 'simple'];
+const LOOK_LABEL = { smooth: 'view.lookSmooth', detailed: 'view.lookDetailed', simple: 'view.lookSimple' };
 function readLook() {
   try {
-    return window.localStorage.getItem(LOOK_KEY) === 'simple' ? 'simple' : 'detailed';
+    const v = window.localStorage.getItem(LOOK_KEY);
+    return LOOK_ORDER.includes(v) ? v : LOOK_ORDER[0];
   } catch {
-    return 'detailed';
+    return LOOK_ORDER[0];
   }
 }
 function saveLook(v) {
@@ -1659,7 +1663,7 @@ export default function App() {
   const [look, setLook] = useState(readLook);
   const toggleLook = () =>
     setLook((x) => {
-      const next = x === 'detailed' ? 'simple' : 'detailed';
+      const next = LOOK_ORDER[(LOOK_ORDER.indexOf(x) + 1) % LOOK_ORDER.length];
       saveLook(next);
       return next;
     });
@@ -1760,11 +1764,11 @@ export default function App() {
               <button
                 type="button"
                 className="chipbtn chipbtn--look"
-                aria-pressed={look === 'detailed'}
+                aria-pressed={look !== 'simple'}
                 title={t('view.lookHint')}
                 onClick={toggleLook}
               >
-                {t(look === 'detailed' ? 'view.lookDetailed' : 'view.lookSimple')}
+                {t(LOOK_LABEL[look])}
               </button>
               <button type="button" className="chipbtn chipbtn--accent" onClick={shot} disabled={busy}>
                 {t('view.shot')}

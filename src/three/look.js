@@ -6,11 +6,11 @@ import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
 import { PX } from './body.js';
 
-export const LOOKS = ['detailed', 'simple'];
-export const DEFAULT_LOOK = 'detailed';
+export const LOOKS = ['smooth', 'detailed', 'simple'];
+export const DEFAULT_LOOK = 'smooth';
 export const LookContext = createContext(DEFAULT_LOOK);
 /** 而家係咪「精緻」模式 */
-export const useDetailed = () => useContext(LookContext) === 'detailed';
+export const useDetailed = () => useContext(LookContext) !== 'simple';
 
 /* ---------------- 圓角方塊 ---------------- */
 /**
@@ -327,4 +327,253 @@ export function badgeEdge(image, round) {
   };
   edgeCache.set(image, { ...cached, [k]: out });
   return out;
+}
+
+/* ---------------- v26 流線公仔：圓滑部件（程式砌，唔使模型檔） ---------------- */
+/** 而家係咪「流線」模式（流線都用精緻材質） */
+export const useSmooth = () => useContext(LookContext) === 'smooth';
+
+/** 上身、衫袖橫切面圓角：章、專章帶、笛繩用 snapToSurface 貼返落圓滑表面（平面部分位置唔變） */
+export const TORSO_RC_K = 0.42; // 上身圓角 = 0.42 × 厚度（側面差唔多半圓）
+export const TORSO_RE_TOP = 2.5; // 膊頭收圓
+export const SLEEVE_RC_K = 0.42;
+export const SLEEVE_RE_TOP = 0.32; // 膊頭（袖頂）收圓 = 0.32 × 袖闊；袖章喺圓位會屈返貼住
+/** 上身闊度（由頂 t = 0 到底 t = 1）：胸口最闊、腰收窄、下擺少少放返 */
+export const TORSO_PROFILE = [[0, 1], [0.3, 1], [0.72, 0.93], [1, 0.95]];
+/** 闊度比例 k(t)：profile 線性插值 */
+export function profileAt(profile, t) {
+  if (!profile) return 1;
+  for (let i = 1; i < profile.length; i++) {
+    const [t0, k0] = profile[i - 1], [t1, k1] = profile[i];
+    if (t <= t1) return k0 + ((k1 - k0) * (t - t0)) / (t1 - t0 || 1);
+  }
+  return profile[profile.length - 1][1];
+}
+
+/**
+ * 每種部件嘅形狀：rc = 橫切面圓角、reTop／reBot = 頂／底收圓（cm）。
+ * limb：手腳差唔多係圓柱；head：圓頭；hand：手套形；shoe：圓頭鞋。
+ */
+export function partShape(part, w, h, d) {
+  const m = Math.min(w, d);
+  switch (part) {
+    case 'torso': return { rc: TORSO_RC_K * Math.min(w, d), reTop: TORSO_RE_TOP, reBot: 0.6, profile: TORSO_PROFILE };
+    case 'sleeve': return { rc: SLEEVE_RC_K * Math.min(w, d), reTop: SLEEVE_RE_TOP * Math.min(w, d), reBot: 0.5 };
+    case 'head': return { rc: 0.47 * m, reTop: 0.42 * h, reBot: 0.16 * h };
+    case 'neck': return { rc: 0.48 * m, reTop: 0.3, reBot: 0.3 };
+    case 'limb': return { rc: 0.47 * m, reTop: Math.min(1, 0.2 * m), reBot: Math.min(1, 0.2 * m) };
+    case 'hand': return { rc: 0.45 * m, reTop: 0.6, reBot: 0.45 * m };
+    case 'shoe': return { rc: 0.4 * Math.min(w, d), reTop: Math.min(1.6, 0.45 * h), reBot: 0.3 };
+    case 'hat': return { rc: 0.42 * m, reTop: 0.45 * h, reBot: 0.25 };
+    case 'skirt': return { rc: 0.3 * m, reTop: 0.6, reBot: 0.5 };
+    default: return { rc: Math.min(0.6, 0.22 * Math.min(w, h, d)), reTop: Math.min(0.6, 0.22 * Math.min(w, h, d)), reBot: Math.min(0.6, 0.22 * Math.min(w, h, d)) };
+  }
+}
+
+/** 圓角長方形周邊上第 i 點（由前面中間開始，向 +x 方向行一圈） */
+function ringPoints(a, b, r, nf, na) {
+  const pts = [];
+  const fx = a - r, fz = b - r;
+  const line = (x0, z0, x1, z1, n) => { for (let i = 0; i < n; i++) pts.push([x0 + ((x1 - x0) * i) / n, z0 + ((z1 - z0) * i) / n]); };
+  const arc = (cx, cz, t0, n) => { for (let i = 0; i < n; i++) { const t = t0 + ((Math.PI / 2) * i) / n; pts.push([cx + r * Math.sin(t), cz + r * Math.cos(t)]); } };
+  line(0, b, fx, b, nf); // 前面右半
+  arc(fx, fz, 0, na); // 前 +x 角
+  line(a, fz, a, 0, nf);
+  line(a, 0, a, -fz, nf);
+  arc(fx, -fz, Math.PI / 2, na);
+  line(fx, -b, 0, -b, nf);
+  line(0, -b, -fx, -b, nf);
+  arc(-fx, -fz, Math.PI, na);
+  line(-a, -fz, -a, 0, nf);
+  line(-a, 0, -a, fz, nf);
+  arc(-fx, fz, (3 * Math.PI) / 2, na);
+  line(-fx, b, 0, b, nf);
+  return pts;
+}
+
+const smoothCache = new Map();
+/**
+ * 圓滑部件：圓角長方形橫切面向上下伸，頂底收圓；外框 = w × h × d（同方塊一樣）。
+ * 每個三角形按法線揀返方塊六面其中一面（材質陣列次序一樣），UV 用平面投影（planarUV），
+ * 所以原本畫喺方塊面上嘅貼圖照用，正面中間位置一樣。taper = 底面闊度比例。
+ */
+export function smoothBox(w, h, d, { rc = 1, reTop = 0.6, reBot = 0.6, taper = 1, profile = null } = {}) {
+  const key = [w, h, d, rc, reTop, reBot, taper].map((v) => v.toFixed(3)).join('|') + JSON.stringify(profile);
+  const hit = smoothCache.get(key);
+  if (hit) return hit;
+  const half = h / 2;
+  const reT = Math.max(0.2, Math.min(reTop, h * 0.49, Math.min(w, d) / 2 - 0.01));
+  const reB = Math.max(0.2, Math.min(reBot, h * 0.49, Math.min(w, d) / 2 - 0.01));
+  const nf = 3, na = 6, K = 6, MID = 10;
+  const rings = [];
+  for (let i = 0; i <= K; i++) { const al = -Math.PI / 2 + (i / K) * (Math.PI / 2); rings.push([-half + reB + reB * Math.sin(al), reB * (1 - Math.cos(al))]); }
+  for (let i = 1; i < MID; i++) rings.push([-half + reB + ((h - reB - reT) * i) / MID, 0]);
+  for (let i = 0; i <= K; i++) { const al = (i / K) * (Math.PI / 2); rings.push([half - reT + reT * Math.sin(al), reT * (1 - Math.cos(al))]); }
+  const pos = [];
+  let N = 0;
+  for (const [y, inset] of rings) {
+    const k = (1 + (taper - 1) * ((half - y) / h)) * profileAt(profile, (half - y) / h);
+    const A = (w / 2) * k, Bz = (d / 2) * k;
+    const a = Math.max(0.01, A - inset), b = Math.max(0.01, Bz - inset);
+    const r = Math.max(0.01, Math.min(rc * k - inset, a, b));
+    const pts = ringPoints(a, b, r, nf, na);
+    N = pts.length;
+    for (const [x, z] of pts) pos.push(x, y, z);
+  }
+  const R = rings.length;
+  const botC = pos.length / 3; pos.push(0, -half, 0);
+  const topC = botC + 1; pos.push(0, half, 0);
+  const idx = [];
+  for (let j = 0; j < R - 1; j++) {
+    for (let i = 0; i < N; i++) {
+      const i2 = (i + 1) % N;
+      const p00 = j * N + i, p01 = j * N + i2, p10 = (j + 1) * N + i, p11 = (j + 1) * N + i2;
+      idx.push(p00, p01, p10, p01, p11, p10); // 由外面望係逆時針（向外）
+    }
+  }
+  for (let i = 0; i < N; i++) {
+    const i2 = (i + 1) % N;
+    idx.push(botC, i2, i);
+    idx.push(topC, (R - 1) * N + i, (R - 1) * N + i2);
+  }
+  const ig = new THREE.BufferGeometry();
+  ig.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  ig.setIndex(idx);
+  ig.computeVertexNormals();
+  const P = ig.attributes.position, NN = ig.attributes.normal;
+  const tri = Array.from({ length: idx.length / 3 }, (_, t) => t);
+  const faceOf = (t) => {
+    const v = [0, 1, 2].map((q) => new THREE.Vector3().fromBufferAttribute(P, idx[t * 3 + q]));
+    const n = new THREE.Vector3().subVectors(v[1], v[0]).cross(new THREE.Vector3().subVectors(v[2], v[0]));
+    const ax = [Math.abs(n.x), Math.abs(n.y), Math.abs(n.z)];
+    const m = Math.max(...ax);
+    if (m === ax[0]) return n.x > 0 ? 0 : 1;
+    if (m === ax[1]) return n.y > 0 ? 2 : 3;
+    return n.z > 0 ? 4 : 5;
+  };
+  const groups = [[], [], [], [], [], []];
+  for (const t of tri) groups[faceOf(t)].push(t);
+  const outP = [], outN = [], outU = [];
+  const g = new THREE.BufferGeometry();
+  let start = 0;
+  groups.forEach((list, f) => {
+    for (const t of list) {
+      for (let q = 0; q < 3; q++) {
+        const vi = idx[t * 3 + q];
+        const x = P.getX(vi), y = P.getY(vi), z = P.getZ(vi);
+        outP.push(x, y, z);
+        outN.push(NN.getX(vi), NN.getY(vi), NN.getZ(vi));
+        outU.push(...planarUV(f, x, y, z, w, h, d));
+      }
+    }
+    g.addGroup(start, list.length * 3, f);
+    start += list.length * 3;
+  });
+  g.setAttribute('position', new THREE.Float32BufferAttribute(outP, 3));
+  g.setAttribute('normal', new THREE.Float32BufferAttribute(outN, 3));
+  g.setAttribute('uv', new THREE.Float32BufferAttribute(outU, 2));
+  ig.dispose();
+  smoothCache.set(key, g);
+  return g;
+}
+
+/**
+ * 貼返落圓滑部件表面：p = 原本喺方塊表面外 t cm 嘅點（徽章、專章帶、笛繩），
+ * 回傳喺圓滑表面外同樣 t cm 嘅點。平面部分唔郁；圓角位沿圓心方向推（似由正面投影嘅 decal）。
+ * S = { cx, cy, cz, w, h, d, rc, reTop, reBot }（同 smoothBox 一樣嘅形狀）。maxT：離表面太遠（例如喺手臂）就唔郁。
+ */
+export function snapToSurface([x, y, z], S, maxT = 2.5) {
+  const hh = S.h / 2;
+  const Y = y - S.cy;
+  let X = x - S.cx;
+  let Z = z - S.cz;
+  const a0 = S.w / 2, b0 = S.d / 2, r0 = Math.min(S.rc, a0, b0);
+  // 有 profile（上身腰位收窄）：嗰個高度嘅橫切面細咗 k 倍；近正面／側面嘅點向入移返同樣距離（離表面 t 唔變）
+  const k = profileAt(S.profile, Math.min(1, Math.max(0, (hh - Y) / S.h)));
+  if (k !== 1 && Math.max(Math.abs(X) - a0, Math.abs(Z) - b0) < maxT) {
+    // 喺圓角範圍入面逐步加（連續，唔會一級級），到咗平面位就成個收窄量
+    const ramp = (q, half) => Math.min(1, Math.max(0, (Math.abs(q) - (half - r0)) / r0));
+    const wz = ramp(Z, b0), wx = ramp(X, a0);
+    Z -= (Math.sign(Z) || 1) * b0 * (1 - k) * wz;
+    X -= (Math.sign(X) || 1) * a0 * (1 - k) * wx;
+  }
+  const a = a0 * k, b = b0 * k, r = r0 * k;
+  const sx = Math.sign(X) || 1, sz = Math.sign(Z) || 1;
+  // 1. 橫切面圓角
+  const qx = Math.abs(X) - (a - r), qz = Math.abs(Z) - (b - r);
+  const th = Math.max(Math.abs(X) - a, Math.abs(Z) - b);
+  if (qx > 0 && qz > 0 && th > -r && th < maxT) {
+    const l = Math.hypot(qx, qz);
+    const t = Math.max(0, th);
+    X = sx * (a - r + (qx / l) * (r + t));
+    Z = sz * (b - r + (qz / l) * (r + t));
+  }
+  // 2. 頂／底收圓：喺（離橫切面邊界距離, Y）平面做
+  const sd = roundRectDist(X, Z, a, b, r);
+  let newY = Y;
+  for (const [re, top] of [[S.reTop, true], [S.reBot, false]]) {
+    if (!(re > 0)) continue;
+    const yc = top ? hh - re : -hh + re;
+    const dy = top ? Y - yc : yc - Y;
+    const u = sd.dist + re;
+    if (dy <= 0 || u <= 0) continue;
+    const t = Math.max(sd.dist, dy - re);
+    if (t < -0.01 || t > maxT) continue;
+    const l = Math.hypot(u, dy);
+    const nu = (u / l) * (re + Math.max(0, t)) - re; // 新嘅離邊界距離
+    const ndy = (dy / l) * (re + Math.max(0, t));
+    X += sd.nx * (nu - sd.dist);
+    Z += sd.nz * (nu - sd.dist);
+    newY = top ? yc + ndy : yc - ndy;
+  }
+  return [X + S.cx, newY + S.cy, Z + S.cz];
+}
+
+/** 點去圓角長方形（半闊 a、半深 b、圓角 r）邊界嘅有號距離（外面 = 正）同向外法線 */
+function roundRectDist(X, Z, a, b, r) {
+  const sx = Math.sign(X) || 1, sz = Math.sign(Z) || 1;
+  const qx = Math.abs(X) - (a - r), qz = Math.abs(Z) - (b - r);
+  if (qx > 0 && qz > 0) {
+    const l = Math.hypot(qx, qz) || 1;
+    return { dist: l - r, nx: (sx * qx) / l, nz: (sz * qz) / l };
+  }
+  if (qx > qz) return { dist: qx - r, nx: sx, nz: 0 };
+  return { dist: qz - r, nx: 0, nz: sz };
+}
+
+/** 部件表面描述（俾 snapToSurface 用）：中心、大小、形狀 */
+export function surfaceOf(part, [w, h, d], [cx, cy, cz]) {
+  return { cx, cy, cz, w, h, d, ...partShape(part, w, h, d) };
+}
+
+/** 章最多偏離平面幾多 cm 都仲當係平（照畫厚度，成塊平移）；腰身微微收窄只會令章斜少少 */
+export const BEND_MIN = 0.08;
+
+/** 將一個局部座標嘅平面（徽章）屈返貼住表面：matrix = 局部 → 部件座標 */
+export function bendGeometry(geo, matrix, S) {
+  const inv = matrix.clone().invert();
+  const P = geo.attributes.position;
+  const v = new THREE.Vector3();
+  const o = new THREE.Vector3();
+  const deltas = [];
+  const shift = new THREE.Vector3();
+  for (let i = 0; i < P.count; i++) {
+    o.fromBufferAttribute(P, i);
+    v.copy(o).applyMatrix4(matrix);
+    const q = snapToSurface([v.x, v.y, v.z], S);
+    v.set(q[0], q[1], q[2]).applyMatrix4(inv);
+    P.setXYZ(i, v.x, v.y, v.z);
+    const dl = v.clone().sub(o);
+    deltas.push(dl);
+    shift.add(dl);
+  }
+  if (P.count) shift.divideScalar(P.count);
+  // moved = 真正屈咗幾多（扣除成塊平移）；shift = 成塊平移（局部座標，例如腰身收窄令章向入移少少）
+  let moved = 0;
+  for (const dl of deltas) moved = Math.max(moved, dl.distanceTo(shift));
+  P.needsUpdate = true;
+  geo.computeVertexNormals();
+  geo.userData.moved = moved;
+  geo.userData.shift = shift.toArray();
+  return geo;
 }

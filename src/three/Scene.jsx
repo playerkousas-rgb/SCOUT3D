@@ -207,7 +207,7 @@ const Scene = forwardRef(function Scene({ section = 'grasshopper', look = DEFAUL
   const getState = useRef(null);
   const figure = useRef();
   const registry = useMemo(() => new Map(), []);
-  const detailed = look === 'detailed';
+  const detailed = look !== 'simple';
 
   useImperativeHandle(ref, () => ({
     view: (name) => rig.current?.view(name, { lift, zoom }),

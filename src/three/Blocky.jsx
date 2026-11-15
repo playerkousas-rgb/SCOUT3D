@@ -17,7 +17,7 @@ import {
   gilwellWogglePaint, hardHatFaces, dressJacketFaces, messJacketFaces, messTrouserFaces,
 } from './pixels.js';
 import { COLOURS as C } from './body.js';
-import { useDetailed, roundedBox, plainBox, MAX_RADIUS, SLEEVE_RADIUS } from './look.js';
+import { useDetailed, useSmooth, roundedBox, plainBox, smoothBox, partShape, surfaceOf, snapToSurface, MAX_RADIUS, SLEEVE_RADIUS } from './look.js';
 
 const CAP_BADGE = '/badges/cub_cap_badge.png';
 const SCOUT_CAP_BADGE = '/badges/scout_cap_badge.png';
@@ -37,14 +37,16 @@ const PIGTAIL_TIE = '#5b3fa0';
  * 一個方塊。v25 精緻模式：圓角（平面部分 UV 同普通方塊一樣，貼喺面上嘅章位置唔變）＋布紋材質；
  * taper = 底面闊度比例（只用喺冇章嘅褲腳、裙腳）；radius = 最大圓角（衫袖用 SLEEVE_RADIUS）。
  */
-function Box({ size, faces, painted, position, rotation, alpha = false, taper = 1, radius = MAX_RADIUS }) {
+function Box({ size, faces, painted, position, rotation, alpha = false, taper = 1, radius = MAX_RADIUS, part = null }) {
   const detailed = useDetailed();
+  const smooth = useSmooth();
   const mats = useMemo(() => faces.map((c) => material(c, { painted, alpha, detailed })), [faces, painted, alpha, detailed]);
   useEffect(() => () => mats.forEach((m) => m.dispose()), [mats]);
-  const geo = useMemo(
-    () => (detailed ? roundedBox(size[0], size[1], size[2], taper, radius) : plainBox(size[0], size[1], size[2])),
-    [detailed, size[0], size[1], size[2], taper, radius],
-  );
+  const geo = useMemo(() => {
+    const [w, h, d] = size;
+    if (smooth) return smoothBox(w, h, d, { ...partShape(part ?? (radius < MAX_RADIUS ? 'sleeve' : null), w, h, d), taper });
+    return detailed ? roundedBox(w, h, d, taper, radius) : plainBox(w, h, d);
+  }, [smooth, detailed, size[0], size[1], size[2], taper, radius, part]);
   return <mesh position={position} rotation={rotation} material={mats} geometry={geo} castShadow receiveShadow />;
 }
 
@@ -80,17 +82,21 @@ function Arm({ L, side, painted, faces, long, children }) {
   const len = long ? seam + B.upperArm.h : B.sleeve.len;
   const sl = [B.sleeve.w, len, B.sleeve.d];
   const cuff = [B.lowerArm.w + 1, B.lowerArm.h, B.lowerArm.d + 1.4];
+  // v26 流線：前臂、手向上伸入上一截（ov cm），關節冇坑；手臂向下收窄
+  const smooth = useSmooth();
+  const ov = smooth ? 2 : 0;
+  const ovH = smooth ? 1 : 0;
   return (
     <group position={[s * L.armX, L.shoulderY, 0]} rotation={[0, 0, s * 0.045]}>
-      <Box size={[B.upperArm.w, B.upperArm.h, B.upperArm.d]} faces={faces.upper} painted={painted} position={[0, -B.upperArm.h / 2, 0]} />
-      <Box size={sl} faces={long ? faces.sleeveLong : faces.sleeve} painted={painted} position={[0, seam - len / 2, 0]} radius={SLEEVE_RADIUS} />
+      <Box part="limb" size={[B.upperArm.w, B.upperArm.h, B.upperArm.d]} faces={faces.upper} painted={painted} position={[0, -B.upperArm.h / 2, 0]} taper={smooth ? 0.9 : 1} />
+      <Box part="sleeve" size={sl} faces={long ? faces.sleeveLong : faces.sleeve} painted={painted} position={[0, seam - len / 2, 0]} radius={SLEEVE_RADIUS} />
       <group position={[0, -B.upperArm.h, 0]}>
         {long ? (
-          <Box size={cuff} faces={faces.cuff} painted={painted} position={[0, -B.lowerArm.h / 2, 0]} />
+          <Box part="limb" size={[cuff[0], cuff[1] + ov, cuff[2]]} faces={faces.cuff} painted={painted} position={[0, -(B.lowerArm.h - ov) / 2, 0]} taper={smooth ? 0.9 : 1} />
         ) : (
-          <Box size={[B.lowerArm.w, B.lowerArm.h, B.lowerArm.d]} faces={faces.lower} painted={painted} position={[0, -B.lowerArm.h / 2, 0]} />
+          <Box part="limb" size={[B.lowerArm.w, B.lowerArm.h + ov, B.lowerArm.d]} faces={faces.lower} painted={painted} position={[0, -(B.lowerArm.h - ov) / 2, 0]} taper={smooth ? 0.82 : 1} />
         )}
-        <Box size={[B.hand.w, B.hand.h, B.hand.d]} faces={faces.hand} painted={painted} position={[0, -B.lowerArm.h - B.hand.h / 2, 0]} />
+        <Box part="hand" size={[B.hand.w, B.hand.h + ovH, B.hand.d]} faces={faces.hand} painted={painted} position={[0, -B.lowerArm.h - (B.hand.h - ovH) / 2, 0]} />
       </group>
       {children}
     </group>
@@ -110,7 +116,7 @@ function Hat({ B, kind, colour, painted }) {
   const { crown, brim } = faces;
   return (
     <group>
-      <Box size={crown} faces={faces.crownF} painted={painted} position={[0, base + crown[1] / 2, h.z]} />
+      <Box part="hat" size={crown} faces={faces.crownF} painted={painted} position={[0, base + crown[1] / 2, h.z]} />
       {kind === 'bucket' ? (
         <Box size={brim} faces={faces.brimF} painted={painted} position={[0, base + 0.2, h.z]} rotation={[0, 0, 0]} />
       ) : (
@@ -143,7 +149,7 @@ function CubHat({ B, girl, painted }) {
   const front = h.z + crown[2] / 2 + 0.06;
   return (
     <group>
-      <Box size={crown} faces={F.crownF} painted={painted} position={[0, base + crown[1] / 2, h.z]} />
+      <Box part="hat" size={crown} faces={F.crownF} painted={painted} position={[0, base + crown[1] / 2, h.z]} />
       {girl ? (
         <>
           <Box size={brim} faces={F.brimF} painted={painted} position={[0, base + 0.3, h.z]} />
@@ -192,7 +198,7 @@ function ScoutBeret({ B, painted, colour = C.beret, cap = null }) {
     <group>
       <Box size={band} faces={F.bandF} painted={painted} position={[0, bandY, h.z]} />
       <group position={CROWN} rotation={[-0.06, 0, 0.16]}>
-        <Box size={crown} faces={F.crownF} painted={painted} position={[0, 0, 0]} />
+        <Box part="hat" size={crown} faces={F.crownF} painted={painted} position={[0, 0, 0]} />
         <Box size={[1.2, 0.8, 1.2]} faces={F.knob} painted={painted} position={[1.5, crown[1] / 2 + 0.4, 0]} />
         {cap ? (
           <RankCapBadge tex={badgeTex} painted={painted} position={[local.x, local.bottom, local.z]} />
@@ -429,7 +435,7 @@ function MessCap({ B, girl, painted, cap }) {
     const base = browY + 2.5;
     return (
       <group>
-        <Box size={[h.w + 1.4, 6.5, h.d + 1.4]} faces={F.crownG} painted={painted} position={[0, base + 3.25, h.z]} />
+        <Box part="hat" size={[h.w + 1.4, 6.5, h.d + 1.4]} faces={F.crownG} painted={painted} position={[0, base + 3.25, h.z]} />
         <Box size={[h.w + 5, 0.6, h.d + 5]} faces={F.brimG} painted={painted} position={[0, base + 0.3, h.z]} />
         {badge(base + 3.6, h.z + (h.d + 1.4) / 2 + 0.06, 2.8)}
       </group>
@@ -531,16 +537,46 @@ function Lanyard({ p, paths, colours, thick, painted, selected, onSelect, regist
  * v24 童軍專科徽章肩帶（綱要 P.15–16）：綠底紅邊斜布，由左肩斜落右腰；旅巾喺帶外面（帶嘅 z 低過旅巾）。
  * 幾何由 body.js sashMesh 計；貼圖橫向 紅 0.75 | 綠 11.5 | 紅 0.75 cm。
  */
-function Sash({ L, painted }) {
+function Sash({ L, painted, surf = null }) {
   const geo = useMemo(() => {
     const m = sashMesh(sashLayout(L));
     const g = new THREE.BufferGeometry();
-    g.setAttribute('position', new THREE.Float32BufferAttribute(m.positions, 3));
-    g.setAttribute('uv', new THREE.Float32BufferAttribute(m.uvs, 2));
-    g.setIndex(m.indices);
+    if (surf) {
+      // v26 流線：每塊四邊形切細，再逐點貼返落圓滑上身
+      const P = [], U = [], I = [];
+      const n = 12;
+      for (let q = 0; q < m.indices.length; q += 6) {
+        const c = [m.indices[q], m.indices[q + 1], m.indices[q + 2], m.indices[q + 5]];
+        const pt = (k) => m.positions.slice(c[k] * 3, c[k] * 3 + 3);
+        const uv = (k) => m.uvs.slice(c[k] * 2, c[k] * 2 + 2);
+        const base = P.length / 3;
+        for (let j = 0; j <= n; j++) {
+          for (let i = 0; i <= n; i++) {
+            const a = i / n, b = j / n;
+            const lerp = (f) => [0, 1, 2].map((d) => (1 - a) * (1 - b) * f(0)[d] + a * (1 - b) * f(1)[d] + a * b * f(2)[d] + (1 - a) * b * f(3)[d]);
+            P.push(...snapToSurface(lerp(pt), surf, 3));
+            const u = lerp((k) => [...uv(k), 0]);
+            U.push(u[0], u[1]);
+          }
+        }
+        for (let j = 0; j < n; j++) {
+          for (let i = 0; i < n; i++) {
+            const o = base + j * (n + 1) + i;
+            I.push(o, o + 1, o + n + 2, o, o + n + 2, o + n + 1);
+          }
+        }
+      }
+      g.setAttribute('position', new THREE.Float32BufferAttribute(P, 3));
+      g.setAttribute('uv', new THREE.Float32BufferAttribute(U, 2));
+      g.setIndex(I);
+    } else {
+      g.setAttribute('position', new THREE.Float32BufferAttribute(m.positions, 3));
+      g.setAttribute('uv', new THREE.Float32BufferAttribute(m.uvs, 2));
+      g.setIndex(m.indices);
+    }
     g.computeVertexNormals();
     return g;
-  }, [L]);
+  }, [L, surf]);
   const tex = useMemo(() => {
     const cv = document.createElement('canvas');
     const px = 8; // 每 cm
@@ -626,6 +662,7 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
   const invested = leader ? true : outfit.invested;
   const gender = outfit.gender === 'girl' ? 'girl' : 'boy';
   const painted = outfit.finish !== 'unpainted';
+  const smooth = useSmooth(); // v26 流線公仔
   const L = useMemo(() => layout(gender, section), [gender, section]);
   const VL = leader ? leaderLegwear(gender, outfit.uniform) : venture ? ventureLegwear(gender, outfit.ventureLegwear) : null;
   // 禮服（編號 1）／晚禮服（編號 2）外套：同毛衣一樣係一層殼（手冊 P.57–62）
@@ -787,6 +824,22 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
   // 背心
   const t = B.torso, h = B.head;
   const vestBox = [t.w + VEST_T * 2, t.h + 1.5, t.d + VEST_T * 2];
+  // v26 流線：最外面嗰件上衣（禮服／毛衣／背心／恤衫）嘅圓滑表面，章、專章帶、笛繩貼返落去；衫袖表面喺手臂座標
+  const torsoSurf = useMemo(() => {
+    if (D && dressF) return surfaceOf('torso', [D.w, D.h, D.d], [0, D.bottom + D.h / 2, 0]);
+    if (sweater || vest) return surfaceOf('torso', vestBox, [0, t.y - 1 + vestBox[1] / 2, 0]);
+    return surfaceOf('torso', [t.w, t.h, t.d], [0, t.y + t.h / 2, 0]);
+  }, [D, dressF, sweater, vest, t.w, t.h, t.d, t.y]); // eslint-disable-line react-hooks/exhaustive-deps
+  const sleeveSurf = useMemo(() => {
+    const seam = L.top - L.shoulderY;
+    const len = long ? seam + B.upperArm.h : B.sleeve.len;
+    return surfaceOf('sleeve', [B.sleeve.w, len, B.sleeve.d], [0, seam - len / 2, 0]);
+  }, [L, B, long]);
+  // v26 流線：笛繩切細（1.5 cm）再貼返圓滑上身，唔會喺膊頭圓角度浮起
+  const lanyardsShown = useMemo(
+    () => (smooth ? lanyards.map((q) => ({ ...q, paths: q.paths.map((pts) => subdivide(pts, 1.5).map((v) => snapToSurface(v, torsoSurf))) })) : lanyards),
+    [smooth, lanyards, torsoSurf],
+  );
   const vestF = useMemo(() => (vest ? vestFaces(vestBox, outfit.vestColour ?? '#1f2f4f', B.neck.w) : null), [vest, outfit.vestColour, B, t.w]); // eslint-disable-line react-hooks/exhaustive-deps
   // 毛衣殼同背心一樣大（頂面高過膊頭 SWEATER_TOP）
   const sweaterF = useMemo(() => (sweater ? sweaterFaces(vestBox, sweaterColour, B.neck.w) : null), [sweater, sweaterColour, B, t.w]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -849,10 +902,10 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
       <Plinth />
       <group position={[0, BASE_H, 0]} scale={0.01}>
         {/* 頭、頸、帽 */}
-        <Box size={[h.w, h.h, h.d]} faces={body.head} painted={painted} position={[0, h.y + h.h / 2, h.z]} />
+        <Box part="head" size={[h.w, h.h, h.d]} faces={body.head} painted={painted} position={[0, h.y + h.h / 2, h.z]} />
         {B.hair === 'pigtails' &&
           [1, -1].map((s) => (
-            <Box key={s} size={[4.5, 12, 4.5]} faces={body.pigtail} painted={painted} position={[s * (h.w / 2 + 1.6), h.y + 5, -4.5]} rotation={[0.15, 0, s * 0.12]} />
+            <Box part="limb" key={s} size={[4.5, 12, 4.5]} faces={body.pigtail} painted={painted} position={[s * (h.w / 2 + 1.6), h.y + 5, -4.5]} rotation={[0.15, 0, s * 0.12]} />
           ))}
         {!cub && outfit.hat && outfit.hat !== 'none' && <Hat B={B} kind={outfit.hat} colour={outfit.hatColour ?? '#1f2f4f'} painted={painted} />}
         {section === 'cub' && outfit.hat && outfit.invested && <CubHat B={B} girl={gender === 'girl'} painted={painted} />}
@@ -862,20 +915,20 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
         {leader && outfit.hat && hatInfo.kind === 'hardHat' && hatInfo.cap && <HardHat B={B} painted={painted} cap={hatInfo.cap} />}
         {leader && outfit.hat && hatInfo.kind === 'beret' && <ScoutBeret B={B} painted={painted} colour={hatInfo.colour} cap={hatInfo.cap} />}
         {leader && outfit.hat && hatInfo.kind === 'mess' && <MessCap B={B} girl={gender === 'girl'} painted={painted} cap={hatInfo.cap} />}
-        <Box size={[B.neck.w, B.neck.h, B.neck.d]} faces={body.neck} painted={painted} position={[0, B.neck.y + B.neck.h / 2, 0]} />
+        <Box part="neck" size={[B.neck.w, B.neck.h, B.neck.d]} faces={body.neck} painted={painted} position={[0, B.neck.y + B.neck.h / 2, 0]} />
         {/* 上身 */}
-        <Box size={[t.w, t.h, t.d]} faces={shirt.torso} painted={painted} position={[0, t.y + t.h / 2, 0]} />
+        <Box part="torso" size={[t.w, t.h, t.d]} faces={shirt.torso} painted={painted} position={[0, t.y + t.h / 2, 0]} />
         {strap &&
           [1, -1].map((s) => <Box key={`strap${s}`} size={[strap.len, strap.boxT, strap.w]} faces={strapF} painted={painted} position={[s * strap.cx, strap.boxY, 0]} />)}
-        {sweater && <Box size={vestBox} faces={sweaterF} painted={painted} alpha position={[0, t.y - 1 + vestBox[1] / 2, 0]} />}
-        {D && dressF && <Box size={[D.w, D.h, D.d]} faces={dressF} painted={painted} alpha position={[0, D.bottom + D.h / 2, 0]} />}
+        {sweater && <Box part="torso" size={vestBox} faces={sweaterF} painted={painted} alpha position={[0, t.y - 1 + vestBox[1] / 2, 0]} />}
+        {D && dressF && <Box part="torso" size={[D.w, D.h, D.d]} faces={dressF} painted={painted} alpha position={[0, D.bottom + D.h / 2, 0]} />}
         {D?.fleur && [1, -1].map((s) => <FrontDecal key={`fleur${s}`} file={LAPEL_FLEUR} size={D.fleur.size} painted={painted} position={[s * D.fleur.x, D.fleur.y, D.front + 0.08]} />)}
         {leader && VL.bowTie && <BowTie y={L.top + SWEATER_TOP + 1.6} z={B.neck.d / 2 + 0.7} girl={gender === 'girl'} painted={painted} />}
-        {lanyards.map((q) => (
+        {lanyardsShown.map((q) => (
           <Lanyard key={q.p.key} p={q.p} paths={q.paths} colours={q.colours} thick={q.thick} painted={painted} selected={selected === q.p.id} onSelect={onSelect} registry={registry} />
         ))}
-        {sashOn && <Sash L={L} painted={painted} />}
-        {vest && <Box size={vestBox} faces={vestF} painted={painted} alpha position={[0, t.y - 1 + vestBox[1] / 2, 0]} />}
+        {sashOn && <Sash L={L} painted={painted} surf={smooth ? torsoSurf : null} />}
+        {vest && <Box part="torso" size={vestBox} faces={vestF} painted={painted} alpha position={[0, t.y - 1 + vestBox[1] / 2, 0]} />}
         {/* 企領（有領上衣先有；前面開口） */}
         {hasCollar && (
           <>
@@ -888,25 +941,25 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
         {['l', 'r'].map((side) => (
           <Arm key={side} L={L} side={side} painted={painted} faces={armFaces} long={long}>
             {armItems(side).map((p) => (
-              <SleeveBadges key={p.key} items={[p]} side={side} sleeveW={B.sleeve.w} sleeveD={B.sleeve.d} seamY={seamY} selected={selected === p.id} {...patchProps} />
+              <SleeveBadges key={p.key} items={[p]} side={side} sleeveW={B.sleeve.w} sleeveD={B.sleeve.d} seamY={seamY} surf={sleeveSurf} selected={selected === p.id} {...patchProps} />
             ))}
           </Arm>
         ))}
         {torsoItems.map((p) => (
-          <TorsoBadges key={p.key} items={[p]} selected={selected === p.id} {...patchProps} />
+          <TorsoBadges key={p.key} items={[p]} surf={torsoSurf} selected={selected === p.id} {...patchProps} />
         ))}
         {/* 褲、襪、鞋 */}
         {[1, -1].map((s) => (
           <group key={s}>
             {venture && skirt ? (
-              <Box size={[B.leg.w - 1, legs.shinH + 2, B.leg.d - 1]} faces={legs.tightsF} painted={painted} position={[s * L.legX, B.leg.y + (legs.shinH + 2) / 2, 0]} />
+              <Box part="limb" size={[B.leg.w - 1, legs.shinH + 2, B.leg.d - 1]} faces={legs.tightsF} painted={painted} position={[s * L.legX, B.leg.y + (legs.shinH + 2) / 2, 0]} />
             ) : shorts ? (
               <>
-                <Box size={legs.shortsSize} faces={legs.shorts} painted={painted} taper={1.05} position={[s * (L.legX + (culottes ? 0.4 : 0)), (shortsBottom + B.leg.top) / 2, 0]} />
-                <Box size={legs.shinSize} faces={legs.shin} painted={painted} position={[s * L.legX, B.leg.y + legs.shinH / 2, 0]} />
+                <Box part="limb" size={legs.shortsSize} faces={legs.shorts} painted={painted} taper={1.05} position={[s * (L.legX + (culottes ? 0.4 : 0)), (shortsBottom + B.leg.top) / 2, 0]} />
+                <Box part="limb" size={smooth ? [legs.shinSize[0], legs.shinSize[1] + 2, legs.shinSize[2]] : legs.shinSize} faces={legs.shin} painted={painted} position={[s * L.legX, B.leg.y + legs.shinH / 2 + (smooth ? 1 : 0), 0]} taper={smooth ? 0.86 : 1} />
               </>
             ) : (
-              <Box size={[B.leg.w, body.legH, B.leg.d]} faces={legs.trousers} painted={painted} taper={0.9} position={[s * L.legX, (B.leg.y + B.leg.top) / 2, 0]} />
+              <Box part="limb" size={[B.leg.w, body.legH, B.leg.d]} faces={legs.trousers} painted={painted} taper={0.9} position={[s * L.legX, (B.leg.y + B.leg.top) / 2, 0]} />
             )}
             {body.pump ? (
               <group position={[s * L.legX, 0, B.shoe.z]}>
@@ -915,11 +968,11 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
                 ))}
               </group>
             ) : (
-              <Box size={[B.shoe.w, B.shoe.h, B.shoe.d]} faces={body.shoe} painted={painted} position={[s * L.legX, B.shoe.h / 2, B.shoe.z]} />
+              <Box part="shoe" size={[B.shoe.w, B.shoe.h, B.shoe.d]} faces={body.shoe} painted={painted} position={[s * L.legX, B.shoe.h / 2, B.shoe.z]} />
             )}
           </group>
         ))}
-        {venture && skirt && <Box size={legs.skirtSize} faces={legs.skirtF} painted={painted} taper={1.08} position={[0, (shortsBottom + B.leg.top) / 2, 0]} />}
+        {venture && skirt && <Box part="skirt" size={legs.skirtSize} faces={legs.skirtF} painted={painted} taper={1.08} position={[0, (shortsBottom + B.leg.top) / 2, 0]} />}
         {/* 旅巾 + 巾圈（宣誓後先戴；戴喺衣領／背心外面） */}
         {invested && tie && (
           <group>

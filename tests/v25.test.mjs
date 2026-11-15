@@ -12,9 +12,9 @@ const SECTIONS = ['grasshopper', 'cub', 'scout', 'venture', 'rover', 'leader'];
 const R = Object.fromEntries(SECTIONS.map((s) => [s, JSON.parse(src(`src/data/${s}_rules_v1.0.json`))]));
 const SIZES = [[24, 30, 12], [10, 22, 14], [7.7, 15.5, 10.5], [2, 1, 2], [0.4, 3, 0.4]];
 
-test('外觀：預設「精緻」，可以轉「簡約」', () => {
-  assert.deepEqual(LOOKS, ['detailed', 'simple']);
-  assert.equal(DEFAULT_LOOK, 'detailed');
+test('外觀：v26 起預設「流線」，仲可以轉「精緻」同「簡約」', () => {
+  assert.deepEqual(LOOKS, ['smooth', 'detailed', 'simple']);
+  assert.equal(DEFAULT_LOOK, 'smooth');
 });
 
 test('planarUV 同 three.js BoxGeometry 嘅 UV 一模一樣（六面）', () => {
@@ -95,8 +95,11 @@ test('所有支部、男女：袖章最多只係喺圓角邊浮起 0.03 cm（袖
 test('收窄／放闊只用喺冇章嘅褲腳、短褲、半截裙', () => {
   const b = src('src/three/Blocky.jsx');
   const lines = b.split('\n').filter((l) => /taper=\{/.test(l));
-  assert.equal(lines.length, 3);
-  for (const l of lines) assert.match(l, /legs\.(trousers|shorts|skirtF)/);
+  // 精緻模式：只有褲／短褲／半截裙；v26 流線模式另外收窄手臂同小腿（taper={smooth ? … : 1}），兩樣都冇章
+  const fixed = lines.filter((l) => !/taper=\{smooth \? [\d.]+ : 1\}/.test(l));
+  assert.equal(fixed.length, 3);
+  for (const l of fixed) assert.match(l, /legs\.(trousers|shorts|skirtF)/);
+  for (const l of lines.filter((l) => !fixed.includes(l))) assert.match(l, /B\.(upperArm|lowerArm)|cuff\[0\]|legs\.shinSize/);
 });
 
 test('章嘅位置由 badgeLayout 計，同外觀無關；精緻模式只係章面企出（z），x／y 唔變', () => {
