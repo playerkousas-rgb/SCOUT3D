@@ -24,6 +24,12 @@
     },
     "userChecks": [
       {
+        "date": "2026-11-15",
+        "item": "awardsAllUniforms",
+        "zh": "勳章及獎勵（嘉許笛繩、獅／龍勳章、銅狼等）編號 1–6 全部制服都可以戴；加銅狼獎章，係最高級，有銅狼就只戴銅狼（用戶指示）",
+        "en": "Decorations and awards (commendation lanyards, Lion/Dragon decorations, Bronze Wolf, etc.) may be worn with all uniforms Nos. 1–6; Bronze Wolf added as the highest decoration, worn alone (user instruction)"
+      },
+      {
         "date": "2026-11-14",
         "item": "scope",
         "zh": "制服編號 3–6 先做（v10）；之後加埋編號 1 禮服、編號 2 晚禮服（v11，用戶指示「處理埋最後的成人制服」）",
@@ -121,6 +127,15 @@
         "en": "Retrieved 2026-11-14"
       },
       "url": "https://www.scout.org.hk/tc/scout-units/regions-districts/index.html"
+    },
+    "WOSM": {
+      "zh": "世界童軍運動組織（WOSM）銅狼獎章",
+      "en": "World Organization of the Scout Movement (WOSM) Bronze Wolf Award",
+      "edition": {
+        "zh": "手冊冇銅狼圖案；綬帶綠底黃邊、銅狼像係示意圖（自行繪畫）",
+        "en": "Not illustrated in the Handbook; the green ribbon with yellow edges and bronze wolf are a drawn illustration"
+      },
+      "url": null
     }
   },
   "levels": [
@@ -3237,20 +3252,24 @@
       "side": "centre",
       "uniforms": [
         "u1",
-        "u2"
+        "u2",
+        "u3",
+        "u4",
+        "u5",
+        "u6"
       ],
       "group": "awards",
       "zh": {
         "name": "卓越服務勳章（掛頸）",
-        "place": "繫喺頸上：綬帶由衣領兩邊落，勳章喺喉嚨下面（禮服喺領帶前面、晚禮服喺煲呔下面）。",
+        "place": "繫喺頸上：綬帶由衣領兩邊落，勳章喺喉嚨下面（禮服、編號 4 喺領帶前面；編號 3、5、6 喺領巾同巾圈前面；晚禮服喺煲呔下面）。",
         "quote": "銅獅勳章、銀獅勳章、金獅勳章；青龍勳章、銀龍勳章、金龍勳章：繫在特定顏色的綬帶掛在頸上。假若獲頒多於一個勳章，只佩戴最高級的勳章。晚禮服：卓越服務勳章掛在頸上。",
-        "conditions": "獅勳章頒予領袖及總監，龍勳章頒予會務委員；只戴最高級一個。"
+        "conditions": "獅勳章頒予領袖及總監，龍勳章頒予會務委員；銅狼獎章由世界童軍委員會頒發，係最高級，有銅狼就只戴銅狼。同一時間只戴最高級一個。"
       },
       "en": {
         "name": "Distinguished service decoration (neck)",
-        "place": "Round the neck: the ribbon comes down either side of the collar with the decoration below the throat (in front of the tie on the dress uniform, below the bow tie on evening dress).",
+        "place": "Round the neck: the ribbon comes down either side of the collar with the decoration below the throat (in front of the tie on the dress uniform and No. 4, in front of the neckerchief and woggle on Nos. 3, 5 and 6, below the bow tie on evening dress).",
         "quote": "Bronze, Silver and Gold Lion; Green, Silver and Gold Dragon: hung round the neck on the ribbon of its colour. If more than one is held, wear only the highest. Evening dress: the distinguished service decoration is worn round the neck.",
-        "conditions": "Lions are awarded to scouters and commissioners, Dragons to lay members; wear only the highest."
+        "conditions": "Lions are awarded to scouters and commissioners, Dragons to lay members; the Bronze Wolf is awarded by the World Scout Committee and ranks highest — a holder wears only the Bronze Wolf. Wear only the highest one at a time."
       },
       "size": {
         "shape": "rect",
@@ -3269,6 +3288,10 @@
         {
           "ref": "UH",
           "page": "177–179, 186, 189"
+        },
+        {
+          "ref": "WOSM",
+          "page": "—"
         }
       ],
       "status": "verified",
@@ -3401,6 +3424,27 @@
             ]
           },
           "order": 3
+        },
+        {
+          "id": "bronzeWolf",
+          "zh": {
+            "name": "銅狼獎章"
+          },
+          "en": {
+            "name": "Bronze Wolf"
+          },
+          "art": {
+            "file": "/badges/awards/bronzeWolf.png",
+            "ref": "WOSM",
+            "page": "—",
+            "example": false,
+            "drawn": true,
+            "px": [
+              150,
+              200
+            ]
+          },
+          "order": 1
         }
       ],
       "default": "none",
@@ -3426,7 +3470,11 @@
       "side": "right",
       "uniforms": [
         "u1",
-        "u2"
+        "u2",
+        "u3",
+        "u4",
+        "u5",
+        "u6"
       ],
       "group": "awards",
       "zh": {
@@ -3564,7 +3612,11 @@
       "side": "right",
       "uniforms": [
         "u1",
-        "u2"
+        "u2",
+        "u3",
+        "u4",
+        "u5",
+        "u6"
       ],
       "group": "awards",
       "zh": {
@@ -3722,7 +3774,11 @@
       "side": "right",
       "uniforms": [
         "u1",
-        "u2"
+        "u2",
+        "u3",
+        "u4",
+        "u5",
+        "u6"
       ],
       "group": "awards",
       "zh": {
@@ -3789,7 +3845,11 @@
       "side": "right",
       "uniforms": [
         "u1",
-        "u2"
+        "u2",
+        "u3",
+        "u4",
+        "u5",
+        "u6"
       ],
       "group": "awards",
       "zh": {
@@ -3907,7 +3967,11 @@
       "side": "right",
       "uniforms": [
         "u1",
-        "u2"
+        "u2",
+        "u3",
+        "u4",
+        "u5",
+        "u6"
       ],
       "group": "awards",
       "zh": {
@@ -4025,7 +4089,11 @@
       "side": "right",
       "uniforms": [
         "u1",
-        "u2"
+        "u2",
+        "u3",
+        "u4",
+        "u5",
+        "u6"
       ],
       "group": "awards",
       "zh": {
@@ -4143,7 +4211,11 @@
       "side": "right",
       "uniforms": [
         "u1",
-        "u2"
+        "u2",
+        "u3",
+        "u4",
+        "u5",
+        "u6"
       ],
       "group": "awards",
       "zh": {
@@ -4210,7 +4282,11 @@
       "side": "right",
       "uniforms": [
         "u1",
-        "u2"
+        "u2",
+        "u3",
+        "u4",
+        "u5",
+        "u6"
       ],
       "group": "awards",
       "zh": {
@@ -4328,7 +4404,11 @@
       "side": "right",
       "uniforms": [
         "u1",
-        "u2"
+        "u2",
+        "u3",
+        "u4",
+        "u5",
+        "u6"
       ],
       "group": "awards",
       "zh": {
@@ -4486,7 +4566,11 @@
       "side": "right",
       "uniforms": [
         "u1",
-        "u2"
+        "u2",
+        "u3",
+        "u4",
+        "u5",
+        "u6"
       ],
       "group": "awards",
       "zh": {
@@ -4764,7 +4848,11 @@
       "side": "right",
       "uniforms": [
         "u1",
-        "u2"
+        "u2",
+        "u3",
+        "u4",
+        "u5",
+        "u6"
       ],
       "group": "awards",
       "zh": {
@@ -4962,7 +5050,11 @@
       "side": "right",
       "uniforms": [
         "u1",
-        "u2"
+        "u2",
+        "u3",
+        "u4",
+        "u5",
+        "u6"
       ],
       "group": "awards",
       "zh": {
@@ -5180,7 +5272,11 @@
       "side": "left",
       "uniforms": [
         "u1",
-        "u2"
+        "u2",
+        "u3",
+        "u4",
+        "u5",
+        "u6"
       ],
       "group": "awards",
       "zh": {
@@ -5287,7 +5383,11 @@
       "side": "right",
       "uniforms": [
         "u1",
-        "u2"
+        "u2",
+        "u3",
+        "u4",
+        "u5",
+        "u6"
       ],
       "group": "awards",
       "zh": {

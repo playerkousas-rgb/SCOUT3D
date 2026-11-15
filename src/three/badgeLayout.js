@@ -79,10 +79,12 @@ export function placeAll(rules, gender, { sweater = false, uniform = null } = {}
     const sx = a.side === 'left' ? 1 : -1;
     const withArt = (b.choices || []).filter((c) => c.art);
     if (a.part === 'neck') {
+      // 編號 3、5、6（恤衫＋領巾）：綬帶喺領巾、巾圈同木章前面；編號 4 喺領帶前面（巾圈最出到胸口外 1.7 cm）
+      const neckZ = uniform && !isDress(uniform) ? 2.4 : 0.4;
       // 卓越服務勳章（手冊 P.186、P.189）：掛頸，綬帶由衣領兩邊落；相片頂喺膊頭（衣領底）
       for (const c of withArt) {
         const f = fitPx(c.art.px, w, h);
-        out.push({ key: `${b.id}-${c.id}`, id: b.id, choice: c.id, mount: 'torso', shape, w: f.w, h: f.h, x: 0, y: top + 0.3 - f.h / 2, z: B.torso.d / 2 + 0.4, art: c.art.file, ...extra });
+        out.push({ key: `${b.id}-${c.id}`, id: b.id, choice: c.id, mount: 'torso', shape, w: f.w, h: f.h, x: 0, y: top + 0.3 - f.h / 2, z: B.torso.d / 2 + neckZ, art: c.art.file, ...extra });
       }
       continue;
     }

@@ -239,11 +239,15 @@ function ArtLine({ rules, art }) {
   const src = rules.sources[art.ref];
   return (
     <span className="muted">
-      {t(art.example ? 'info.artExample' : 'info.artOfficial')}
+      {t(art.drawn ? 'info.artDrawn' : art.example ? 'info.artExample' : 'info.artOfficial')}
       {lang === 'en' ? ': ' : '：'}
       {src ? bi(lang, src.zh, src.en) : art.ref}
-      {lang === 'en' ? ', ' : '，'}
-      {t('info.page')} {art.page}
+      {!art.drawn && (
+        <>
+          {lang === 'en' ? ', ' : '，'}
+          {t('info.page')} {art.page}
+        </>
+      )}
     </span>
   );
 }
@@ -699,7 +703,7 @@ function NamePicker({ picks, setPicks }) {
 function BadgesTab({ rules, section, outfit, badges, setBadges, picks, setPicks, unavailable, selected, onPick }) {
   const { t } = useLang();
   const set = (k, v) => setBadges((b) => ({ ...b, [k]: v }));
-  // 成年成員：只列呢套制服戴嘅章（手冊 P.57、P.60：禮服／晚禮服只戴指定嘅章）；勳章及獎勵另外一組
+  // 成年成員：只列呢套制服戴嘅章（手冊 P.57、P.60：禮服／晚禮服只戴指定嘅章）；勳章及獎勵另外一組（編號 1–6 都戴得，用戶 2026-11-15）
   const uid = section === 'leader' ? leaderUniform(outfit.gender, outfit.uniform) : null;
   // 唔適用（呢套制服唔戴、呢個層級唔戴）嘅章直接唔列出（用戶指示：唔應該出現就冇開關）
   const level = levelOf(section, picks);

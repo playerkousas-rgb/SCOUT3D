@@ -112,3 +112,57 @@ test('來源分頁：只列制服手冊、小童軍活動指引同各支部訓�
     assert.ok(src?.zh && src?.en && src?.edition?.zh && src?.edition?.en, k);
   }
 });
+
+/* ---------- v14 第二輪：旅巾背後長度、領袖獎勵（用戶 2026-11-15） ---------- */
+import { neckerLayout, layout, SHIRT_YOKE } from '../src/three/body.js';
+import { placeFor, visible } from '../src/three/badgeLayout.js';
+import { validateRules } from '../src/data/validate.js';
+import { existsSync } from 'node:fs';
+
+test('旅巾背後三角：杏色恤衫嘅尖到背後擔干橫線（離膊頂 9 cm）；小童軍活動服唔變', () => {
+  assert.equal(SHIRT_YOKE, 9);
+  assert.ok(text('src/three/pixels.js').includes('g.rect(0, SHIRT_YOKE, w, 0.5, P.dark)'));
+  for (const s of ['cub', 'scout', 'venture', 'rover', 'leader'])
+    for (const g of ['boy', 'girl']) {
+      const L = layout(g, s);
+      assert.equal(neckerLayout(L).back.h, SHIRT_YOKE, `${s} ${g}`);
+    }
+  const G = layout('boy', 'grasshopper');
+  assert.equal(neckerLayout(G).back.h, G.B.necker.backH);
+});
+
+const leaderRules = json('src/data/leader_rules_v1.0.json');
+const awards = leaderRules.badges.filter((b) => b.group === 'awards');
+
+test('領袖獎勵：勳章及獎勵編號 1–6 全部制服都戴得', () => {
+  assert.deepEqual(validateRules(leaderRules), []);
+  assert.ok(awards.length >= 15);
+  for (const b of awards) assert.deepEqual(b.uniforms, ['u1', 'u2', 'u3', 'u4', 'u5', 'u6'], b.id);
+  const state = { neckMedal: 'goldLion', commendation: 'high', meritAward: 'meritMedal', thanksBadge: true, longService: 'medal' };
+  for (const u of ['3', '4', '5', '6']) {
+    const ids = visible(placeFor(leaderRules, { gender: 'boy', uniform: `u${u}`, invested: true }), state, { invested: true, level: 'group' }).map((p) => p.id);
+    for (const id of ['neckMedal', 'commendation', 'meritAward', 'thanksBadge', 'longService']) assert.ok(ids.includes(id), `編號 ${u} 冇 ${id}`);
+  }
+});
+
+test('領袖獎勵：銅狼獎章係掛頸勳章最高級，同獅／龍係同一個單選（有銅狼就只戴銅狼）', () => {
+  const nm = leaderRules.badges.find((b) => b.id === 'neckMedal');
+  const wolf = nm.choices.find((c) => c.id === 'bronzeWolf');
+  assert.ok(wolf, '冇銅狼');
+  assert.equal(wolf.zh.name, '銅狼獎章');
+  assert.equal(wolf.en.name, 'Bronze Wolf');
+  assert.ok(wolf.art.drawn, '銅狼係示意圖，要標明');
+  assert.ok(existsSync(new URL(`../public${wolf.art.file}`, import.meta.url)));
+  const orders = nm.choices.filter((c) => c.order).map((c) => c.order);
+  assert.equal(Math.min(...orders), wolf.order);
+  assert.ok(leaderRules.sources.WOSM);
+  assert.ok(zh.includes("'info.artDrawn'") && en.includes("'info.artDrawn'"));
+});
+
+test('領袖獎勵：恤衫制服掛頸勳章喺領巾、巾圈前面', () => {
+  const at = (u) => placeFor(leaderRules, { gender: 'boy', uniform: `u${u}`, invested: true }).find((p) => p.id === 'neckMedal' && p.choice === 'bronzeWolf');
+  const L = layout('boy', 'leader');
+  const N = neckerLayout(L);
+  assert.ok(at('3').z > N.front + 1.7, '要喺巾圈前面');
+  assert.ok(at('5').z > N.front + 1.7);
+});
