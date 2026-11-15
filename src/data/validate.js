@@ -185,6 +185,10 @@ export function validateRules(rules) {
     }
     const a = b.anchor || {};
     checkAnchor(a, w);
+    // v22：alsoAnchor = 同一個章第二個位置（例：深資童軍急救章兩隻袖都戴）；lanyardEnd = 笛繩／肩帶末端
+    if (b.alsoAnchor != null) checkAnchor(b.alsoAnchor, `${w} alsoAnchor`);
+    if (a.lanyardEnd != null && (!a.lanyard || !['pocketMouth', 'flapInner'].includes(a.lanyardEnd))) errors.push(`${w}: lanyardEnd 只可以係 pocketMouth／flapInner（要配 lanyard）`);
+    if (b.requires != null && !badgeIds.has(b.requires)) errors.push(`${w}: requires 指向不存在嘅章`);
     if (a.side !== b.side) errors.push(`${w}: anchor.side 同「side」唔一致`);
     if (a.rack && !b.choices && !(Number.isInteger(b.rackOrder) && b.rackOrder > 0)) errors.push(`${w}: 單一勳章要有 rackOrder`);
     if (a.belowBadge && !badgeIds.has(a.belowBadge)) errors.push(`${w}: belowBadge 指向不存在嘅章`);

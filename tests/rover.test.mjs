@@ -106,7 +106,10 @@ for (const gender of ['boy', 'girl']) {
     // v21：香港章改用 slot（飛行章喺下面時要上移）、會員章俾和平使者章取代（hiddenBy），比較時唔理呢啲資料；非基本章（group: 'extra'）深資童軍冇
     const basic = new Set(rover.badges.filter((b) => !b.group).map((b) => b.id));
     const strip = (list) => list.map(({ art, choice, key, slot, hiddenBy, fit, ...p }) => ({ ...p, key: key.replace(/-(venture|rover)-/, '-') }));
-    assert.deepEqual(strip(all.filter((p) => basic.has(p.id) && (!p.art || !p.art.includes('epaulette')))), strip(placeAll(venture, gender).filter((p) => !p.art || !p.art.includes('epaulette'))));
+    // v22：深資童軍都有非基本章，地域章／區章改用 slot（要經 visible 排並排位置）——兩邊都只比較基本章嘅擺位
+    const st = { ...ALL_ON, epaulette: 'none' };
+    const pick = (list) => strip(visible(list, st, { invested: true }).filter((p) => basic.has(p.id))).map(({ centred, ...p }) => p);
+    assert.deepEqual(pick(all), pick(placeAll(venture, gender)));
   });
 }
 
@@ -198,7 +201,8 @@ test('地域章／區章只得一個（例：銀禧區冇地域章）就放中�
     assert.equal(by(noRegion, 'district').v, by(both, 'district').v, '高度唔變');
     const offDistrict = visible(all, { ...st, district: false }, { invested: true });
     assert.equal(by(offDistrict, 'region').u, 0, '只得地域章：都放中間');
-    assert.ok(all.find((p) => p.id === 'district').u < 0, '原本嘅位置資料唔改');
+    const d0 = all.find((p) => p.id === 'district');
+    if (!d0.slot) assert.ok(d0.u < 0, '原本嘅位置資料唔改'); // v22：深資童軍用 slot，位置喺 visible 先排
   }
 });
 

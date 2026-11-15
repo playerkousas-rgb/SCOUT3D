@@ -154,6 +154,12 @@
         "item": "v21LeaderExtras",
         "zh": "成年成員加最高支部獎章標誌（手冊 P.164–172）同其他可以戴喺領袖制服嘅章（用戶指示）",
         "en": "Adults: add the section highest award emblem (Handbook pp.164–172) and the other badges allowed on the leader uniform (user instruction)"
+      },
+      {
+        "date": "2026-11-15",
+        "item": "v22ModelScout",
+        "zh": "加模範童軍雞繩（用戶指示）；位置跟手冊 P.158",
+        "en": "Add the Model Scout lanyard (user instruction); position per Handbook p.158"
       }
     ]
   },
@@ -6479,6 +6485,101 @@
         "zh": "笛繩用 3D 繩示意：嘉許 = 橙金色、高級嘉許 = 紫色主繩夾幼米白扭紋（v20 用戶指正）（P.184 相片顏色）；選單細圖係手冊 P.184 相片。路線（v19 用戶指正＋相片）：由左肩職級肩章（肩帶膊頭嗰頭）下面穿出，兜過袖頂前邊、沿袖窿前面吊落到胸袋下面，再兜返上左胸袋口近中線嗰邊；後面一段（v20）由肩章下面向後、沿袖窿後面落到腋下同前面接埋，成個圈套住左膊。晚禮服小型笛繩幼一半、一樣由肩章下面起，末端去到左襟領。",
         "en": "The lanyard is a 3D cord: Commendation orange-gold, High Commendation purple with a thin cream twist (v20 user correction) (colours from the p.184 photos); the menu thumbnails are the p.184 photos. Route (v19 user correction with photo): out from under the rank slide at the shoulder end of the left strap, over the front of the sleeve top, down the front of the armhole to below the pocket, then back up to the inner side of the left pocket mouth; a back strand (v20) runs from under the rank slide down the back of the armhole to the armpit and joins the front, so the cord loops round the left shoulder. The evening-dress miniature is half as thick, also starts under the rank slide and ends at the left lapel."
       }
+    },
+    {
+      "id": "modelScout",
+      "required": false,
+      "side": "right",
+      "group": "awards",
+      "zh": {
+        "name": "模範童軍肩帶（雞繩）",
+        "place": "掛喺右肩肩帶下面，兜過膊頭沿袖窿前面落去，末端扣喺右胸袋袋蓋左方（近中線）。",
+        "quote": "當選模範童軍的青少年成員可佩戴模範童軍肩帶。肩帶掛在制服恤衫右肩肩帶之下，肩帶末端扣在右胸袋袋蓋左方位置。成年成員可繼續佩戴；假若同時獲頒香港總監嘉許或高級嘉許，只可選擇佩戴其中一條。不可佩戴在西服、制服毛衣、禮服及晚禮服上。",
+        "conditions": "當選模範童軍（模範童軍選舉）；之後成為成年成員仍可佩戴。"
+      },
+      "en": {
+        "name": "Model Scout Lanyard",
+        "place": "Under the wearer's right shoulder strap, over the shoulder and down the front of the armhole, its end clipped at the left (inner) side of the right pocket flap.",
+        "quote": "Youth members elected Model Scout may wear the Model Scout lanyard. It hangs under the right shoulder strap of the uniform shirt, its end clipped at the left of the right pocket flap. Adult members may continue to wear it; if they also hold the Chief Commissioner's Commendation or High Commendation, they choose one of the two to wear. Not worn on the suit, uniform jersey, dress uniform or mess dress.",
+        "conditions": "Elected Model Scout (Scout of the Year election); may still be worn as an adult member."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 1,
+        "hCm": 1,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "lanyard": true,
+        "lanyardEnd": "flapInner",
+        "side": "right",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "158"
+        }
+      ],
+      "status": "verified",
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "modelScout",
+          "zh": {
+            "name": "模範童軍肩帶"
+          },
+          "en": {
+            "name": "Model Scout Lanyard"
+          },
+          "art": {
+            "file": "/badges/awards/lanyard_model_scout.png",
+            "ref": "UH",
+            "page": "158",
+            "example": false,
+            "px": [
+              180,
+              179
+            ]
+          }
+        }
+      ],
+      "default": "none",
+      "art": {
+        "file": "/badges/awards/lanyard_model_scout.png",
+        "ref": "UH",
+        "page": "158",
+        "example": false,
+        "px": [
+          180,
+          179
+        ]
+      },
+      "modelNote": {
+        "zh": "肩帶用 3D 繩示意：深綠同金黃兩色扭紋，末端有穗（P.158 相片，俗稱「雞繩」）；選單細圖係 P.158 相片。路線同嘉許笛繩一樣但喺右肩（左右反轉）：由右肩肩帶下面（膊頭嗰頭）穿出，兜過袖頂前邊、沿袖窿前面落到胸袋下面，再兜返上右胸袋袋蓋近中線嗰邊；後面一段沿袖窿後面落到腋下同前面接埋，成個圈套住右膊。童軍模型冇畫肩帶，繩直接喺膊頭上面經過。",
+        "en": "The lanyard is a 3D cord: dark green and gold twisted, with a tassel at the end (p.158 photo); the menu thumbnail is the p.158 photo. It follows the same route as the commendation lanyard but on the right shoulder (mirrored): out from under the right shoulder strap at the shoulder end, over the front of the sleeve top, down the front of the armhole to below the pocket, then up to the inner side of the right pocket flap; a back strand runs down the back of the armhole to the armpit, so the cord loops round the right shoulder. The Scout model has no shoulder straps drawn, so the cord simply passes over the shoulder."
+      },
+      "sweater": false,
+      "uniforms": [
+        "u3",
+        "u4",
+        "u5",
+        "u6"
+      ],
+      "hiddenBy": [
+        "commendation"
+      ]
     },
     {
       "id": "thanksBadge",

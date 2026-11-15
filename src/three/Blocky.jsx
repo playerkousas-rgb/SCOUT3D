@@ -3,7 +3,7 @@
 // 人物面向 +z；穿著者左 = +x。
 import { useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
-import { layout, neckerLayout, strapLayout, dressLayout, lanyardPoints, lanyardBackPoints, LANYARD_COLOURS, strandOffsets, VEST_T, SWEATER_TOP, PX, scoutVariant, SCOUT_VARIANTS, ventureVariant, roverVariant, leaderVariant, isSenior, ventureLegwear, leaderLegwear, pumpParts } from './body.js';
+import { layout, neckerLayout, strapLayout, dressLayout, lanyardPoints, lanyardBackPoints, tasselPoints, LANYARD_COLOURS, ALT_CM, strandOffsets, VEST_T, SWEATER_TOP, PX, scoutVariant, SCOUT_VARIANTS, ventureVariant, roverVariant, leaderVariant, isSenior, ventureLegwear, leaderLegwear, pumpParts } from './body.js';
 import { useTexture } from '@react-three/drei';
 import { SECTIONS, DISTRICTS, PATROLS } from '../data/rules.js';
 import { resolveArt, rankCap, leaderNeckwear, messCapOf } from '../lib/picks.js';
@@ -492,7 +492,10 @@ function Lanyard({ p, paths, colours, thick, painted, selected, onSelect, regist
     return () => registry.delete(p.key);
   }, [registry, p.key]);
   const offs = useMemo(() => strandOffsets(colours.map((k) => k.w)), [colours]);
-  const segs = useMemo(() => paths.flatMap((pts) => lanyardSegments(pts, thick, offs)), [paths, thick, offs]);
+  // 扭紋（模範童軍肩帶：綠／黃）：每段切細，每 ALT_CM 轉色
+  const alt = colours.some((k) => k.alt);
+  const segs = useMemo(() => paths.flatMap((pts) => lanyardSegments(alt ? subdivide(pts, ALT_CM) : pts, thick, offs)), [paths, thick, offs, alt]);
+  const tassel = useMemo(() => (alt ? lanyardSegments(tasselPoints(paths[0]), thick * 0.8, [0]) : []), [paths, thick, alt]);
   return (
     <group
       onClick={(e) => {
@@ -504,12 +507,29 @@ function Lanyard({ p, paths, colours, thick, painted, selected, onSelect, regist
         colours.map((k, j) => (
           <mesh key={`${i}-${j}`} ref={i === 0 && j === 0 ? ref : undefined} position={sg.pos[j]} quaternion={sg.quat} castShadow>
             <boxGeometry args={[thick * k.w, sg.len, thick * k.w]} />
-            <meshStandardMaterial color={painted ? (selected ? '#f2791c' : k.c) : '#a3a6aa'} roughness={0.6} />
+            <meshStandardMaterial color={painted ? (selected ? '#f2791c' : k.alt && i % 2 ? k.alt : k.c) : '#a3a6aa'} roughness={0.6} />
           </mesh>
         )),
       )}
+      {tassel.map((sg, i) => (
+        <mesh key={`t${i}`} position={sg.pos[0]} quaternion={sg.quat} castShadow>
+          <boxGeometry args={[thick * 1.1, sg.len, thick * 0.6]} />
+          <meshStandardMaterial color={painted ? (selected ? '#f2791c' : colours[0].alt) : '#a3a6aa'} roughness={0.7} />
+        </mesh>
+      ))}
     </group>
   );
+}
+/** 將路線切成每段大約 step cm（扭紋轉色用） */
+function subdivide(points, step) {
+  const out = [points[0]];
+  for (let i = 1; i < points.length; i++) {
+    const a = points[i - 1];
+    const b = points[i];
+    const n = Math.max(1, Math.round(Math.hypot(b[0] - a[0], b[1] - a[1], b[2] - a[2]) / step));
+    for (let k = 1; k <= n; k++) out.push(a.map((v, j) => v + ((b[j] - v) * k) / n));
+  }
+  return out;
 }
 /** 笛繩每段：中心（每條繩一個，並排；offs = strandOffsets，以 thick 計）、長度、四元數（+Y → 段方向）。並排方向 = 段方向 × 前（+Z）；段近乎前後就用 +X。 */
 function lanyardSegments(points, thick, offs) {
@@ -625,19 +645,22 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
   const armItems = (side) => shown.filter((p) => p.mount === side);
   const seamY = L.top - L.shoulderY;
   // 嘉許笛繩：左肩職級肩章下面 → 兜過膊頭 → 沿袖窿前面吊落 → 兜返上左胸袋口（禮服、恤衫）；晚禮服小型笛繩去到左襟領
+  // v22 模範童軍肩帶：右肩（左右反轉）、末端扣喺右胸袋袋蓋近中線嗰邊；童軍模型冇畫肩帶就用 virtual 肩帶計路線
   const lanyards = useMemo(() => {
-    if (!strap) return [];
-    const slide = all.find((q) => q.key === 'epaulette-l'); // 左肩職級肩章（冇揀都用佢個位）
+    const st = strap ?? strapLayout(L, { virtual: true });
+    if (!st) return [];
     return shown
       .filter((p) => p.kind === 'lanyard')
       .map((p) => {
+        const side = p.x < 0 ? -1 : 1;
+        const slide = leader ? all.find((q) => q.key === `epaulette-${side < 0 ? 'r' : 'l'}`) : null; // 職級肩章（冇揀都用佢個位）
         const z = p.z + 0.3;
         const thick = p.mini ? 0.3 : 0.55;
-        const args = { L, strap, D: p.mini ? D : null, z, thick, slideX: slide?.x };
-        const paths = [lanyardPoints(args), lanyardBackPoints(args)]; // 前面一段＋後面一段（套住左膊嘅圈）
+        const args = { L, strap: st, D: p.mini ? D : null, z, thick, slideX: slide?.x, side, end: p.end };
+        const paths = [lanyardPoints(args), lanyardBackPoints(args)]; // 前面一段＋後面一段（套住膊頭嘅圈）
         return { p, paths, colours: LANYARD_COLOURS[p.choice] ?? LANYARD_COLOURS.commendation, thick };
       });
-  }, [all, shown, strap, D, L]);
+  }, [all, shown, strap, D, L, leader]);
 
   // 身體貼圖
   const body = useMemo(() => {

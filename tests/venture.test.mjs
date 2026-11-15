@@ -22,7 +22,8 @@ test('深資童軍規則資料通過驗證', () => {
 });
 
 test('必備章 = 制服頁（手冊 P.36：會員章、香港章、地域章、區章、旅章）+ 深資童軍肩章（用戶指示）；冇小隊章', () => {
-  assert.deepEqual(venture.badges.map((b) => b.id).sort(), ['district', 'epaulette', 'hongKong', 'membership', 'meritorious', 'region', 'troop']);
+  // v22：非基本章（group: 'extra'）另外驗（tests/v22.test.mjs）
+  assert.deepEqual(venture.badges.filter((b) => !b.group).map((b) => b.id).sort(), ['district', 'epaulette', 'hongKong', 'membership', 'meritorious', 'region', 'troop']);
   for (const id of ['membership', 'hongKong', 'troop', 'region', 'district', 'epaulette']) assert.equal(badge(id).required, true, `${id} 係必備`);
   assert.equal(badge('meritorious').required, false);
   assert.ok(!venture.badges.some((b) => b.dynamic === 'patrol'), '深資童軍冇小隊章');
@@ -81,7 +82,8 @@ for (const gender of ['boy', 'girl']) {
 
   test(`深資童軍（${gender}）：胸前同右袖照手冊 P.92–95、P.170`, () => {
     const { B, top } = layout(gender, 'venture');
-    const all = placeAll(venture, gender);
+    // v22：地域章／區章改用 slot（開咗急救章就向下移），要經 visible 先排到並排位置
+    const all = visible(placeAll(venture, gender), ALL_ON, { invested: true });
     const m = by(all, 'membership');
     const hk = by(all, 'hongKong');
     assert.equal(m.x, B.pocket.x);

@@ -56,7 +56,7 @@ test('晚禮服小型笛繩：後面一段接埋之後去左襟領（同前面�
 test('Blocky：笛繩畫兩段（前面＋後面），Lanyard 收 paths', () => {
   const src = text('src/three/Blocky.jsx');
   assert.match(src, /const paths = \[lanyardPoints\(args\), lanyardBackPoints\(args\)\]/);
-  assert.match(src, /paths\.flatMap\(\(pts\) => lanyardSegments\(pts, thick, offs\)\)/);
+  assert.match(src, /paths\.flatMap\(\(pts\) => lanyardSegments\(alt \? subdivide\(pts, ALT_CM\) : pts, thick, offs\)\)/); // v22：扭紋切細
   assert.match(src, /<Lanyard key=\{q\.p\.key\} p=\{q\.p\} paths=\{q\.paths\}/);
 });
 

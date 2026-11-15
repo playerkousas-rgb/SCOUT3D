@@ -91,7 +91,9 @@ export function placeAll(rules, gender, { sweater = false, uniform = null, occas
 
   // 先擺唔靠其他章嘅，再擺「喺某個章下面／上面」嘅
   const dep = (a) => !!(a.belowBadge || a.aboveBadge || a.onBadge || (a.slot && rules.slots?.[a.slot]?.belowBadge));
-  const order = [...rules.badges].sort((a, b) => dep(anchorOf(a, uniform)) - dep(anchorOf(b, uniform)));
+  // alsoAnchor（v22）：同一個章戴喺兩個位置（例：深資童軍急救章左右兩袖都戴，手冊 P.148）—— 當多一個章計，key 加 '-2'
+  const badges = rules.badges.flatMap((b) => (b.alsoAnchor ? [b, { ...b, anchor: b.alsoAnchor, anchorBy: undefined, twin: true }] : [b]));
+  const order = badges.sort((a, b) => dep(anchorOf(a, uniform)) - dep(anchorOf(b, uniform)));
   const onStrap = {}; // 職級肩章喺肩帶上嘅位置（「R」字樣別針跟住佢）
   const RB = ribbonsOn(rules, uniform, occasion) ? rules.ribbons : null;
   for (const b of order) {
@@ -99,7 +101,7 @@ export function placeAll(rules, gender, { sweater = false, uniform = null, occas
     const { wCm: w, hCm: h, shape } = b.size;
     const art = b.dynamic ? dynKey(b.id) : Array.isArray(b.art) ? null : b.art?.file ?? null;
     const fit = b.dynamic === 'district' || b.dynamic === 'region' || b.dynamic === 'nameTag'; // 各區圖案比例唔同：喺 w × h 入面置中縮放
-    const extra = { ...(b.needsInvestiture ? { inv: true } : {}), ...(b.levels ? { levels: b.levels } : {}), ...(b.hiddenBy ? { hiddenBy: b.hiddenBy } : {}), ...(b.limitWhen ? { limitWhen: b.limitWhen } : {}) };
+    const extra = { ...(b.needsInvestiture ? { inv: true } : {}), ...(b.levels ? { levels: b.levels } : {}), ...(b.hiddenBy ? { hiddenBy: b.hiddenBy } : {}), ...(b.limitWhen ? { limitWhen: b.limitWhen } : {}), ...(b.requires ? { requires: b.requires } : {}) };
     const sx = a.side === 'left' ? 1 : -1;
     const withArt = (b.choices || []).filter((c) => c.art);
     if (RB && (a.part === 'neck' || a.rack)) {
@@ -135,9 +137,9 @@ export function placeAll(rules, gender, { sweater = false, uniform = null, occas
       }
       const opts = b.choices ? withArt.map((c) => ({ choice: c.id, art: c.art, layer: c.layer ?? a.layer, rank: c.rank ?? a.rank })) : [{ art: b.art, layer: a.layer, rank: a.rank }];
       for (const o of opts) {
-        const f = a.exact ? { w, h } : fitPx(o.art.px, w, h); // exact：沿用 size（例：香港章 4 × 5.6 cm，唔跟相片比例）
+        const f = a.exact || b.dynamic ? { w, h } : fitPx(o.art.px, w, h); // exact：沿用 size（例：香港章 4 × 5.6 cm，唔跟相片比例）；動態圖案（地域章／區章）喺框入面置中縮放
         const slot = { name: a.slot, layer: o.layer, rank: o.rank, def, geo };
-        const base = { key: [b.id, o.choice].filter(Boolean).join('-'), id: b.id, ...(o.choice ? { choice: o.choice } : {}), shape, w: f.w, h: f.h, art: o.art.file, slot, ...extra };
+        const base = { key: [b.id, o.choice].filter(Boolean).join('-'), id: b.id, ...(o.choice ? { choice: o.choice } : {}), shape, w: f.w, h: f.h, art: b.dynamic ? art : o.art.file, slot, ...(fit || b.fit ? { fit: true } : {}), ...extra };
         out.push(...arrangeSlot([{ ...base, ...(geo.kind === 'torso' ? { mount: 'torso', x: geo.cx, y: 0, z: geo.z } : { mount: def.side === 'left' ? 'l' : 'r', u: 0, v: 0 }) }], []).kept);
       }
       continue;
@@ -185,7 +187,7 @@ export function placeAll(rules, gender, { sweater = false, uniform = null, occas
       const P = B.pocket;
       for (const c of withArt) {
         out.push({
-          key: `${b.id}-${c.id}`, id: b.id, choice: c.id, kind: 'lanyard', mini: !!D, mount: 'torso', shape, w, h,
+          key: `${b.id}-${c.id}`, id: b.id, choice: c.id, kind: 'lanyard', mini: !!D, mount: 'torso', shape, w, h, end: a.lanyardEnd ?? 'pocketMouth',
           x: D ? sx * D.fleur.x : sx * (P.x - P.w / 4), y: D ? D.fleur.y + 4 : top - P.top + 3, z: B.torso.d / 2, art: c.art.file, ...extra,
         });
       }
@@ -311,9 +313,17 @@ export function placeAll(rules, gender, { sweater = false, uniform = null, occas
     else if (a.aboveCuffSeamCm != null) t = face.cuffSeam - a.aboveCuffSeamCm - h;
     else throw new Error(`徽章 ${b.id} 冇袖上位置`);
     box[b.id] = { top: t, bottom: t + h };
-    out.push({ key: b.id, id: b.id, mount, shape, w, h, u, v: t + h / 2, art, fit, ...extra });
+    out.push({ key: b.id, id: b.id, mount, shape, w, h, u, v: t + h / 2, art, fit: fit || !!b.fit, ...extra });
   }
-  return out;
+  // 同一個章兩個位置：第二個 key 加 '-2'（React key、聚焦用）
+  const seen = new Set();
+  return out.map((p) => {
+    if (!seen.has(p.key)) {
+      seen.add(p.key);
+      return p;
+    }
+    return { ...p, key: `${p.key}-2` };
+  });
 }
 
 const artOf = (rules, id, step) => {
@@ -454,7 +464,8 @@ export function visible(placements, state, { invested, school = false, unavailab
  * @returns {{ kept: Array, dropped: Array }}
  */
 export function arrangeSlot(items, others) {
-  const GAP = 0.4;
+  const GAP0 = 0.4;
+  let GAP = GAP0;
   if (!items.length) return { kept: [], dropped: [] };
   const { def, geo } = items[0].slot;
   const kept = [];
@@ -481,8 +492,9 @@ export function arrangeSlot(items, others) {
     if (def.clearRacks) for (const q of others) if (q.rack && Math.sign(q.x) === Math.sign(geo.cx)) floor = Math.max(floor, q.y + q.h / 2 + GAP);
     let prevTop = -Infinity;
     byLayer.forEach(({ L, list }, i) => {
+      GAP = L.spacingCm ?? GAP0;
       const gap = L.gapIfAboveCm != null && i < byLayer.length - 1 ? L.gapIfAboveCm : L.gapCm;
-      const bottom = Math.max(geo.flapTop + gap, prevTop + GAP, L.gapCm > 0 ? floor : -Infinity);
+      const bottom = Math.max(geo.flapTop + gap, prevTop + GAP0, L.gapCm > 0 ? floor : -Infinity);
       let top = bottom;
       for (const { p, off } of rowX(list, L.from ?? 'inner', geo.maxW)) {
         kept.push({ ...p, x: geo.cx + geo.inward * off, y: bottom + p.h / 2 });
@@ -493,6 +505,7 @@ export function arrangeSlot(items, others) {
   } else {
     let prev = geo.start;
     byLayer.forEach(({ L, list }, i) => {
+      GAP = L.spacingCm ?? GAP0; // 同一行章與章之間（例：地域章、區章相距 1 cm，手冊 P.95）
       // 袖：上面嘅層冇章就由下一層補上去（用第一層嘅距離），唔留空位
       const t = prev + ((i === 0 ? def.layers[0].gapCm : L.gapCm) ?? 0);
       let bottom = t;
@@ -619,7 +632,7 @@ export function shownReason(rules, outfit, state, id, { unavailable = [], level 
   if (hider) return hider === 'longService' ? 'replaced' : `replaced_${hider}`;
   if (mine.some((p) => limited(p, state))) return 'limited';
   const req = all.find((p) => p.id === id && p.requires);
-  if (req && state[id]) return 'needsHost';
+  if (req && state[id]) return req.requires.startsWith('stage') ? 'needsStage' : 'needsHost'; // v22：金帶要先有段章
   if (mine.some((p) => p.slot) && isOn(state, id)) return 'slotFull'; // v21：嗰一行已經揀滿（排序較前嘅章優先）
   return 'off';
 }

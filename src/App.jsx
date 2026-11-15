@@ -108,10 +108,12 @@ const CUB_BADGES = {
 };
 
 // 童軍預設：制服頁列明嘅基本徽章全開（手冊 P.30：世界童軍會員章、香港章、地域章、區章、旅章、小隊章）
-const SCOUT_BADGES = { ...CUB_BADGES, patrol: true };
+// v22：模範童軍肩帶（有選項）用規則 JSON 嘅 default（冇）
+const SCOUT_BADGES = { ...CUB_BADGES, patrol: true, ...Object.fromEntries(SECTIONS.scout.badges.filter((b) => b.choices).map((b) => [b.id, b.default])) };
 
 // 深資童軍預設：基本徽章全開（手冊 P.36）；深資童軍肩章（有選項）用規則 JSON 嘅 default
-const VENTURE_BADGES = { ...CUB_BADGES, epaulette: SECTIONS.venture.badges.find((b) => b.id === 'epaulette')?.default ?? 'none' };
+// v22：非基本章（有選項嘅）用規則 JSON 嘅 default（冇／未考獲）；開關式（段章、金帶、急救章……）預設熄
+const VENTURE_BADGES = { ...CUB_BADGES, ...Object.fromEntries(SECTIONS.venture.badges.filter((b) => b.choices).map((b) => [b.id, b.default])) };
 // 樂行童軍預設：基本徽章全開（手冊 P.42）；樂行童軍肩章（有選項）用規則 JSON 嘅 default
 // v21：非基本章（有選項嘅）用規則 JSON 嘅 default（冇／未考獲）；開關式嘅預設熄
 const ROVER_BADGES = { ...CUB_BADGES, ...Object.fromEntries(SECTIONS.rover.badges.filter((b) => b.choices).map((b) => [b.id, b.default])) };
@@ -139,6 +141,8 @@ const DEFAULT_BADGES = {
   meritorious: false,
   commemorative: false,
 };
+// 「其他獎章及徽章」說明（每個支部跟唔同文件）
+const EXTRA_NOTE = { leader: 'badges.extraNoteLeader', rover: 'badges.extraNoteRover', venture: 'badges.extraNoteVenture', scout: 'badges.extraNoteScout' };
 const DEFAULT_BADGE_STATES = { grasshopper: DEFAULT_BADGES, cub: CUB_BADGES, scout: SCOUT_BADGES, venture: VENTURE_BADGES, rover: ROVER_BADGES, leader: LEADER_BADGES };
 /** 成年成員：單位層級（只喺 leader 用，其他支部唔篩） */
 const levelOf = (section, picks) => (section === 'leader' ? picks.level : null);
@@ -733,7 +737,7 @@ function BadgesTab({ rules, section, outfit, setOutfit, badges, setBadges, picks
       {extras.length > 0 && (
         <details className="awards extras" open={extras.some((b) => badges[b.id] && badges[b.id] !== 'none')}>
           <summary className="h3">{t('badges.extra')}</summary>
-          <p className="occasion__note">{t(section === 'leader' ? 'badges.extraNoteLeader' : 'badges.extraNoteRover')}</p>
+          <p className="occasion__note">{t(EXTRA_NOTE[section] ?? 'badges.extraNoteRover')}</p>
           <ul className="badgelist">{extras.map(row)}</ul>
         </details>
       )}
