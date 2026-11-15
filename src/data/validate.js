@@ -5,7 +5,8 @@ const STATUSES = new Set(['documented', 'pending', 'verified']);
 const SIDES = new Set(['left', 'right', 'centre', 'both']); // both = 雙肩（深資童軍肩章）
 const SHAPES = new Set(['circle', 'square', 'rect']);
 const PARTS = new Set(['torso', 'sleeve', 'shoulder']); // shoulder = 套喺肩帶上
-const DYNAMIC = new Set(['district', 'region', 'meritorious', 'patrol']);
+const DYNAMIC = new Set(['district', 'region', 'meritorious', 'patrol', 'rank']); // rank = 成年成員職級肩章（跟所揀職級）
+const ART_FILE = /^\/badges\/((districts|patrols|leader)\/)?[\w-]+\.png$/;
 const POCKET = new Set(['centre', 'aboveFlap']);
 const TOWARDS = new Set(['front', 'back']);
 
@@ -71,6 +72,32 @@ export function validateRules(rules) {
   }
   if (rules.variants && rules.variants[0]?.garments?.length) errors.push('第一個 variant 要係基本款（garments 空白）');
 
+  // 成年成員：單位層級、職級、制服編號
+  const levelIds = new Set((rules.levels || []).map((l) => l.id));
+  for (const l of rules.levels || []) {
+    if (!/^[a-z]+$/.test(l.id || '')) errors.push(`level ${l.id}: id 格式錯`);
+    bilingual(l, ['name', 'note'], `level ${l.id}`, errors);
+    checkSources(l.sources, sources, `level ${l.id}`, errors);
+  }
+  const rankIds = new Set();
+  for (const r of rules.ranks || []) {
+    const w = `rank ${r.id}`;
+    if (!/^[a-zA-Z]+$/.test(r.id || '') || rankIds.has(r.id)) errors.push(`${w}: id 錯或重複`);
+    rankIds.add(r.id);
+    bilingual(r, ['name'], w, errors);
+    checkSources(r.sources, sources, w, errors);
+    if (!Array.isArray(r.levels) || !r.levels.length || r.levels.some((x) => !levelIds.has(x))) errors.push(`${w}: levels 要係已登記嘅層級`);
+  }
+  for (const l of levelIds) if (rules.ranks && !(rules.ranks || []).some((r) => r.levels.includes(l))) errors.push(`level ${l}: 冇職級`);
+  for (const u of rules.uniforms || []) {
+    const w = `uniform ${u.id}`;
+    if (!/^u\d+$/.test(u.id || '')) errors.push(`${w}: id 格式錯`);
+    bilingual(u, ['name', 'note'], w, errors);
+    checkSources(u.sources, sources, w, errors);
+    if (!Array.isArray(u.genders) || !u.genders.length) errors.push(`${w}: genders 空白`);
+    for (const g of u.genders || []) if (!u.legwear?.[g]) errors.push(`${w}: 冇 ${g} 嘅 legwear`);
+  }
+
   const badgeIds = new Set((rules.badges || []).map((b) => b.id));
   const hasSweaterGarment = (rules.garments || []).some((g) => g.id === 'sweater');
   for (const b of rules.badges || []) {
@@ -98,6 +125,26 @@ export function validateRules(rules) {
     if (a.pocket != null && !POCKET.has(a.pocket)) errors.push(`${w}: anchor.pocket 錯`);
     if (a.towards != null && (!TOWARDS.has(a.towards) || !(a.offsetCm > 0))) errors.push(`${w}: anchor.towards 要係 front/back 兼有 offsetCm`);
     if (b.dynamic != null && !DYNAMIC.has(b.dynamic)) errors.push(`${w}: dynamic 錯`);
+    if (b.levels != null && (!Array.isArray(b.levels) || !b.levels.length || b.levels.some((x) => !levelIds.has(x)))) errors.push(`${w}: levels 要係已登記嘅層級`);
+    if (a.onBadge != null && (!badgeIds.has(a.onBadge) || a.part !== 'shoulder' || !Number.isFinite(a.alongCm))) errors.push(`${w}: onBadge 要指向肩上嘅章兼有 alongCm`);
+    if (a.upTowards != null && a.upTowards !== 'collar') errors.push(`${w}: upTowards 只可以係 collar`);
+    // 職級肩章：每個職級要喺其中一行（一個肩章 + 一個帽章），兩個圖案都要有官方來源
+    if (b.dynamic === 'rank') {
+      if (!Array.isArray(b.rows) || !b.rows.length) errors.push(`${w}: rank 要有 rows`);
+      const seen = new Map();
+      for (const row of b.rows || []) {
+        for (const x of [row.art, row.cap]) {
+          if (!x || !ART_FILE.test(x.file || '') || !sources[x.ref] || !x.page) errors.push(`${w}: row ${row.id} 圖案要寫官方文件來源同頁碼`);
+        }
+        if (!row.cap?.zh || !row.cap?.en) errors.push(`${w}: row ${row.id} 帽章顏色缺中英`);
+        for (const r of row.ranks || []) {
+          if (!rankIds.has(r)) errors.push(`${w}: row ${row.id} 職級 ${r} 未登記`);
+          if (seen.has(r)) errors.push(`${w}: 職級 ${r} 重複（${seen.get(r)}、${row.id}）`);
+          seen.set(r, row.id);
+        }
+      }
+      for (const r of rankIds) if (!seen.has(r)) errors.push(`${w}: 職級 ${r} 冇肩章`);
+    }
     // 制服毛衣（手冊 P.122）：有毛衣嘅支部，每個章都要講明戴唔戴得喺毛衣上
     if (hasSweaterGarment && typeof b.sweater !== 'boolean') errors.push(`${w}: 有制服毛衣嘅支部要寫 sweater（true/false）`);
     // 選項（例：深資童軍肩章「未考獲／深資童軍肩章」）：每個選項要有中英名；有圖案就要有官方來源；預設要係其中一個
@@ -117,7 +164,7 @@ export function validateRules(rules) {
     const arts = Array.isArray(b.art) ? b.art : b.art ? [b.art] : [];
     if (!arts.length) errors.push(`${w}: 冇徽章圖案（art）`);
     for (const art of arts) {
-      if (!/^\/badges\/((districts|patrols)\/)?[\w-]+\.png$/.test(art.file || '')) errors.push(`${w}: art.file 格式錯`);
+      if (!ART_FILE.test(art.file || '')) errors.push(`${w}: art.file 格式錯`);
       if (!sources[art.ref] || !art.page) errors.push(`${w}: art 要寫官方文件來源同頁碼`);
     }
   }

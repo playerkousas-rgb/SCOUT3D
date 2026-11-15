@@ -627,6 +627,45 @@ export function scoutWogglePaint(size) {
   }, C.leather);
 }
 
+/** 基維爾巾圈（手冊 P.111、P.115 相片）：啡色皮繩土耳其結；用交叉斜紋示意。trainer = 加「斧頭木」金屬訓練隊標誌（P.116） */
+export function gilwellWogglePaint(size, { trainer = false } = {}) {
+  const [w, h, d] = size;
+  const knot = (ww, hh) => (g) => {
+    const dark = shade(C.gilwellWoggle, 0.62);
+    const hi = shade(C.gilwellWoggle, 1.22);
+    g.shape((x, y) => Math.abs(((x + y) % 2) - 1) < 0.3, dark); // 斜紋（一個方向）
+    g.shape((x, y) => Math.abs(((x - y + 40) % 2) - 1) < 0.22, hi); // 斜紋（另一個方向）
+    g.rect(0, 0, ww, 0.5, hi);
+    g.rect(0, hh - 0.5, ww, 0.5, dark);
+  };
+  return boxFaces(size, {
+    pz: (g) => {
+      knot(w, h)(g);
+      if (trainer) {
+        g.rect(w / 2 - 1.75, h / 2 - 0.5, 3.5, 1, '#c9ccd1'); // 斧頭木（示意）
+        g.rect(w / 2 - 1.75, h / 2 - 0.5, 3.5, 0.5, '#eef0f2');
+      }
+    },
+    px: knot(d, h), nx: knot(d, h), nz: knot(w, h), py: knot(w, d), ny: knot(w, d),
+  }, C.gilwellWoggle);
+}
+
+/** 深綠色金邊硬帽（手冊 P.100、P.105 附圖）：深綠色帽身，頂邊同帽邊有金邊 */
+export function hardHatFaces(size) {
+  const [w, h, d] = size;
+  const G = C.hardHat, Y = C.gold;
+  const side = (ww) => (g) => {
+    g.rect(0, 0, ww, 0.5, Y); // 頂邊金邊
+    g.rect(0, h - 0.6, ww, 0.6, Y); // 帽邊金邊
+    g.rect(0, 0.5, ww, 0.5, shade(G, 0.8));
+  };
+  return boxFaces(size, {
+    px: side(d), nx: side(d), pz: side(w), nz: side(w),
+    py: (g) => { g.fill(shade(G, 1.08)); g.rect(0, 0, w, 0.5, Y); g.rect(0, d - 0.5, w, 0.5, Y); g.rect(0, 0, 0.5, d, Y); g.rect(w - 0.5, 0, 0.5, d, Y); },
+    ny: (g) => g.fill(shade(G, 0.6)),
+  }, G);
+}
+
 /* ---------------- 材質 ---------------- */
 const texCache = new WeakMap();
 function texOf(c) {

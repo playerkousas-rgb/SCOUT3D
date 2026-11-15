@@ -5,7 +5,8 @@ import { SECTIONS, SECTION_IDS, DISTRICTS, PATROLS, RULE_ERRORS, badgeById, sour
 import { garmentsFor, variantOf } from './data/validate.js';
 import { NECKER, WOGGLE, PLAIN } from './palette.js';
 import { shownReason } from './three/badgeLayout.js';
-import { resolveArt, meritYearOk, findDistrict, findPatrol } from './lib/picks.js';
+import { resolveArt, meritYearOk, findDistrict, findPatrol, ranksFor, fixRank, rankRowOf, leaderNeckwear } from './lib/picks.js';
+import { leaderUniform } from './three/body.js';
 import { APP_VERSION } from './version.js';
 
 const Scene = lazy(() => import('./three/Scene.jsx'));
@@ -65,7 +66,28 @@ const VENTURE_OUTFIT = { ...SCOUT_OUTFIT, ventureLegwear: 'skirt', neckwear: 'ne
 // 樂行童軍（手冊 P.42–47）：同深資童軍一樣嘅揀法（款式、半截裙／長褲、旅巾／領帶）
 const ROVER_OUTFIT = { ...VENTURE_OUTFIT, neckerMain: '#2e7d4f', neckerBorder: '#2e7d4f' };
 
-const DEFAULT_OUTFITS = { grasshopper: DEFAULT_OUTFIT, cub: CUB_OUTFIT, scout: SCOUT_OUTFIT, venture: VENTURE_OUTFIT, rover: ROVER_OUTFIT };
+// 成年成員（手冊 P.52–81）：款式（陸上／海／空）、制服編號 3–6、帽（女：硬帽／軟帽；深資童軍領袖棗紅色軟帽）、
+// 領巾（旅巾／會巾／基維爾領巾）、木章訓練進度（決定基維爾巾圈、木章可唔可以揀）
+const LEADER_OUTFIT = {
+  variant: 'land',
+  gender: 'boy',
+  finish: 'painted',
+  invested: true,
+  hat: true,
+  sweater: false,
+  uniform: 'u3',
+  hatStyle: 'hardHat',
+  ventureLeader: false,
+  leaderNecker: 'unit',
+  leaderWoggle: 'scout',
+  training: 'none',
+  woodBadge: false,
+  neckerMain: '#2e7d4f',
+  neckerBorder: '#e9b425',
+  woggle: '#1f4e9c',
+};
+
+const DEFAULT_OUTFITS = { grasshopper: DEFAULT_OUTFIT, cub: CUB_OUTFIT, scout: SCOUT_OUTFIT, venture: VENTURE_OUTFIT, rover: ROVER_OUTFIT, leader: LEADER_OUTFIT };
 /** 深資／樂行童軍：肩帶、肩章、長褲／半截裙、領帶 */
 const SENIOR = new Set(['venture', 'rover']);
 /** 各支部共用嘅設定（轉支部時保留） */
@@ -89,8 +111,12 @@ const VENTURE_BADGES = { ...CUB_BADGES, epaulette: SECTIONS.venture.badges.find(
 // 樂行童軍預設：基本徽章全開（手冊 P.42）；樂行童軍肩章（有選項）用規則 JSON 嘅 default
 const ROVER_BADGES = { ...CUB_BADGES, epaulette: SECTIONS.rover.badges.find((b) => b.id === 'epaulette')?.default ?? 'none' };
 
-// 用戶自選：所屬區（決定區章、地域章圖案）、優異旅團章年份、童軍小隊
-const DEFAULT_PICKS = { districtId: '', meritYear: new Date().getFullYear(), patrolId: '' };
+// 成年成員預設：必備章全開（手冊 P.92–95、P.103–106）；香港肩章／旅章、總會總部章／地域章／區章跟單位層級自動揀
+// 「R」字樣別針（退休）、優異旅團章係可選
+const LEADER_BADGES = { membership: true, hongKong: true, hkTitle: true, troop: true, ahq: true, region: true, district: true, epaulette: true, retiredPin: false, meritorious: false };
+
+// 用戶自選：所屬區（決定區章、地域章圖案）、優異旅團章年份、童軍小隊；成年成員：單位層級、職級
+const DEFAULT_PICKS = { districtId: '', meritYear: new Date().getFullYear(), patrolId: '', level: 'group', rank: 'sectionLeader' };
 
 // 預設：必須佩戴嘅章 + 旅章、區章（同手冊 P.25 附圖一樣）
 const DEFAULT_BADGES = {
@@ -102,7 +128,9 @@ const DEFAULT_BADGES = {
   meritorious: false,
   commemorative: false,
 };
-const DEFAULT_BADGE_STATES = { grasshopper: DEFAULT_BADGES, cub: CUB_BADGES, scout: SCOUT_BADGES, venture: VENTURE_BADGES, rover: ROVER_BADGES };
+const DEFAULT_BADGE_STATES = { grasshopper: DEFAULT_BADGES, cub: CUB_BADGES, scout: SCOUT_BADGES, venture: VENTURE_BADGES, rover: ROVER_BADGES, leader: LEADER_BADGES };
+/** 成年成員：單位層級（只喺 leader 用，其他支部唔篩） */
+const levelOf = (section, picks) => (section === 'leader' ? picks.level : null);
 
 function hasWebGL() {
   try {
@@ -128,6 +156,7 @@ function Segmented({ label, value, options, onChange }) {
             role="radio"
             aria-checked={value === o.value}
             className={`seg__btn${value === o.value ? ' is-on' : ''}`}
+            disabled={!!o.disabled}
             onClick={() => onChange(o.value)}
           >
             {o.label}
@@ -341,7 +370,7 @@ function InfoCard({ rules, id, outfit, badges, picks, unavailable, onClose, onFo
   const b = badgeById(rules, id);
   const arts = Array.isArray(b.art) ? b.art : [b.art];
   const now = b.dynamic ? resolveArt(b, picks, DISTRICTS, PATROLS) : null;
-  const reason = shownReason(rules, outfit, badges, id, { unavailable });
+  const reason = shownReason(rules, outfit, badges, id, { unavailable, level: levelOf(rules.section.id, picks) });
   const shown = reason === null;
   const st = rules.schoolTop;
   const onNecker = st && outfit.school && ['membership', 'progress', 'grasshopperAward'].includes(id);
@@ -378,6 +407,8 @@ function InfoCard({ rules, id, outfit, badges, picks, unavailable, onClose, onFo
           {lang === 'en' ? ': ' : '：'}
           {b.dynamic === 'region' ? bi(lang, now.region.zh, now.region.en) : bi(lang, picked.zh, picked.en)}
         </span>
+      ) : b.dynamic === 'rank' && now?.row ? (
+        <RankLine rules={rules} row={now.row} picks={picks} />
       ) : b.dynamic === 'meritorious' && now ? (
         <span className="muted">
           {t('pick.artMerit')} {now.year}・{bi(lang, MERIT_NAME[now.colour].zh, MERIT_NAME[now.colour].en)}
@@ -440,12 +471,60 @@ function BadgeRowArt({ b, badges, picks }) {
   return <ArtImg art={art} alt="" className={`badgerow__art${b.size.shape === 'circle' ? ' is-round' : ''}`} />;
 }
 
+/** 成年成員：單位層級 → 職級（職級清單跟層級篩選，手冊 P.94–95、P.103–104） */
+function LevelRankPicker({ rules, picks, setPicks }) {
+  const { lang, t } = useLang();
+  const level = picks.level ?? 'group';
+  const rank = fixRank(rules, level, picks.rank);
+  const L = rules.levels.find((x) => x.id === level);
+  return (
+    <div className="picker picker--leader">
+      <Segmented
+        label={t('pick.level')}
+        value={level}
+        onChange={(v) => setPicks((p) => ({ ...p, level: v, rank: fixRank(rules, v, p.rank) }))}
+        options={rules.levels.map((x) => ({ value: x.id, label: pick(lang, x, 'name') }))}
+      />
+      {L && <p className="note">{pick(lang, L, 'note')}</p>}
+      <label className="field__label" htmlFor="pick-rank">
+        {t('pick.rank')}
+      </label>
+      <select id="pick-rank" className="select" value={rank ?? ''} onChange={(e) => setPicks((p) => ({ ...p, rank: e.target.value }))}>
+        {ranksFor(rules, level).map((r) => (
+          <option key={r.id} value={r.id}>
+            {pick(lang, r, 'name')}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+}
+
+/** 揀咗嘅職級：帽章顏色、肩章樣式（手冊 P.103–104 表格） */
+function RankLine({ rules, row, picks }) {
+  const { lang, t } = useLang();
+  const r = (rules.ranks || []).find((x) => x.id === picks.rank);
+  return (
+    <div className="rankline">
+      <img src={row.cap.file} alt="" className="rankline__cap" />
+      <span className="muted">
+        {r ? `${pick(lang, r, 'name')}${lang === 'en' ? ': ' : '：'}` : ''}
+        {t('pick.capColour')} {bi(lang, row.cap.zh, row.cap.en)}
+        {lang === 'en' ? ' · ' : '・'}
+        {t('pick.epaulette')} {bi(lang, row.zh.epaulette, row.en.epaulette)}
+        {lang === 'en' ? ' (Handbook pp.103–104)' : '（手冊 P.103–104）'}
+      </span>
+    </div>
+  );
+}
+
 function BadgesTab({ rules, section, outfit, badges, setBadges, picks, setPicks, unavailable, selected, onPick }) {
   const { lang, t } = useLang();
   const set = (k, v) => setBadges((b) => ({ ...b, [k]: v }));
   return (
     <div className="tabbody">
-      <p className="note note--strong">{t({ cub: 'badges.tipCub', scout: 'badges.tipScout', venture: 'badges.tipVenture', rover: 'badges.tipRover' }[section] ?? 'badges.tip')}</p>
+      <p className="note note--strong">{t({ cub: 'badges.tipCub', scout: 'badges.tipScout', venture: 'badges.tipVenture', rover: 'badges.tipRover', leader: 'badges.tipLeader' }[section] ?? 'badges.tip')}</p>
+      {rules.levels && <LevelRankPicker rules={rules} picks={picks} setPicks={setPicks} />}
       {outfit.school && (
         <p className="note note--warn">
           {t('badges.schoolOn')}
@@ -455,8 +534,8 @@ function BadgesTab({ rules, section, outfit, badges, setBadges, picks, setPicks,
       <ul className="badgelist">
         {rules.badges.map((b) => {
           const disabled = b.needsInvestiture && !outfit.invested;
-          const why = shownReason(rules, outfit, badges, b.id, { unavailable });
-          const whyNote = ['school', 'vest', 'sweater', 'schoolUninvested', 'noArt'].includes(why) ? t(`badge.why.${why}`) : null;
+          const why = shownReason(rules, outfit, badges, b.id, { unavailable, level: levelOf(section, picks) });
+          const whyNote = ['school', 'vest', 'sweater', 'schoolUninvested', 'noArt', 'level', 'needsHost'].includes(why) ? t(`badge.why.${why}`) : null;
           const example = b.dynamic ? resolveArt(b, picks, DISTRICTS, PATROLS)?.example : (Array.isArray(b.art) ? b.art[0] : b.art).example;
           return (
             <li key={b.id} className={`badgerow${selected === b.id ? ' is-sel' : ''}${disabled ? ' is-disabled' : ''}`}>
@@ -521,6 +600,7 @@ function BadgesTab({ rules, section, outfit, badges, setBadges, picks, setPicks,
               {b.dynamic === 'region' && <p className="note">{t('pick.regionAuto')}</p>}
               {b.dynamic === 'meritorious' && <YearPicker picks={picks} setPicks={setPicks} id={`pick-year-${section}`} />}
               {b.dynamic === 'patrol' && <PatrolPicker picks={picks} setPicks={setPicks} id={`pick-patrol-${section}`} />}
+              {b.dynamic === 'rank' && rankRowOf(b, picks.rank) && <RankLine rules={rules} row={rankRowOf(b, picks.rank)} picks={picks} />}
               {disabled && <p className="note">{t('badge.needInvest')}</p>}
               {!disabled && whyNote && <p className="note">{whyNote}</p>}
             </li>
@@ -834,6 +914,128 @@ function ScoutOutfitTab({ section = 'scout', outfit, setOutfit }) {
   );
 }
 
+/* ---------- 成年成員服裝分頁 ---------- */
+/** 成年成員（手冊 P.52–81、P.97–117）：款式、人物、制服編號、帽、領巾／巾圈／木章 */
+function LeaderOutfitTab({ outfit, setOutfit, picks }) {
+  const { lang, t } = useLang();
+  const set = (k, v) => setOutfit((o) => ({ ...o, [k]: v }));
+  const R = SECTIONS.leader;
+  const v = variantOf(R, outfit.variant)?.id ?? 'land';
+  const girl = outfit.gender === 'girl';
+  const uid = leaderUniform(outfit.gender, outfit.uniform);
+  const U = R.uniforms.find((x) => x.id === uid);
+  const skirt = girl && (uid === 'u3' || uid === 'u4');
+  const tie = uid === 'u4';
+  const LN = leaderNeckwear(R, outfit, picks);
+  const instructor = picks.rank === 'instructor';
+  const hardHatOk = v === 'land' && skirt && !instructor; // 硬帽：女、陸上、編號 3／4、唔係教練員（手冊 P.100）
+  const hatKey = v === 'sea' ? 'leaderSeaHat' : v === 'air' ? 'leaderAirHat' : hardHatOk && outfit.hatStyle !== 'beret' ? 'leaderHardHat' : 'leaderHat';
+  return (
+    <div className="tabbody">
+      <Segmented
+        label={t('outfit.scoutVariant')}
+        value={v}
+        onChange={(x) => set('variant', x)}
+        options={R.variants.map((x) => ({ value: x.id, label: pick(lang, x, 'name') }))}
+      />
+      <Segmented
+        label={t('outfit.figure')}
+        value={outfit.gender}
+        onChange={(x) => set('gender', x)}
+        options={[
+          { value: 'boy', label: t('outfit.man') },
+          { value: 'girl', label: t('outfit.woman') },
+        ]}
+      />
+      <Segmented
+        label={t('outfit.finish')}
+        value={outfit.finish}
+        onChange={(x) => set('finish', x)}
+        options={[
+          { value: 'painted', label: t('outfit.painted') },
+          { value: 'unpainted', label: t('outfit.unpainted') },
+        ]}
+      />
+      <Segmented
+        label={t('outfit.uniformNo')}
+        value={uid}
+        onChange={(x) => set('uniform', x)}
+        options={R.uniforms.filter((x) => x.genders.includes(girl ? 'girl' : 'boy')).map((x) => ({ value: x.id, label: pick(lang, x, 'name') }))}
+      />
+      {U && <p className="note">{pick(lang, U, 'note')}</p>}
+      <Switch label={t(`outfit.${hatKey}`)} checked={outfit.hat} onChange={(x) => set('hat', x)} note={t(`outfit.${hatKey}Note`)} />
+      {hardHatOk && (
+        <Segmented
+          label={t('outfit.leaderHatStyle')}
+          value={outfit.hatStyle === 'beret' ? 'beret' : 'hardHat'}
+          onChange={(x) => set('hatStyle', x)}
+          options={[
+            { value: 'hardHat', label: t('outfit.hardHat') },
+            { value: 'beret', label: t('outfit.beret') },
+          ]}
+        />
+      )}
+      {v === 'land' && (!hardHatOk || outfit.hatStyle === 'beret') && (
+        <Switch label={t('outfit.ventureLeader')} checked={!!outfit.ventureLeader} onChange={(x) => set('ventureLeader', x)} note={t('outfit.ventureLeaderNote')} />
+      )}
+      {instructor && skirt && v === 'land' && <p className="note">{t('outfit.instructorNoHardHat')}</p>}
+      <Switch label={t('outfit.sweater')} checked={!!outfit.sweater} onChange={(x) => set('sweater', x)} note={outfit.sweater ? t('outfit.sweaterNoteLeader') : null} />
+      <Segmented
+        label={t('outfit.training')}
+        value={LN.training}
+        onChange={(x) => set('training', x)}
+        options={[
+          { value: 'none', label: t('outfit.trainingNone') },
+          { value: 'basic', label: t('outfit.trainingBasic') },
+          { value: 'woodBadge', label: t('outfit.trainingWood') },
+        ]}
+      />
+      {tie ? (
+        <p className="note">{t(`outfit.leaderTieNote_${v}`)}</p>
+      ) : (
+        <>
+          <Segmented
+            label={t('outfit.leaderNecker')}
+            value={LN.necker}
+            onChange={(x) => set('leaderNecker', x)}
+            options={[
+              { value: 'unit', label: t('outfit.neckerUnit') },
+              { value: 'association', label: t('outfit.neckerAssoc'), disabled: !LN.allowed.association },
+              { value: 'gilwell', label: t('outfit.neckerGilwell'), disabled: !LN.allowed.gilwell },
+            ]}
+          />
+          <p className="note">{t(`outfit.neckerNote_${LN.necker}`)}</p>
+          {LN.necker === 'unit' && (
+            <>
+              <Swatches label={neckerLabel(t, 'outfit.neckerMain')} value={outfit.neckerMain} options={NECKER} onChange={(x) => set('neckerMain', x)} />
+              <Swatches label={neckerLabel(t, 'outfit.neckerBorder')} value={outfit.neckerBorder} options={NECKER} onChange={(x) => set('neckerBorder', x)} />
+            </>
+          )}
+          <Segmented
+            label={t('outfit.leaderWoggle')}
+            value={LN.gilwellWoggle ? 'gilwell' : 'scout'}
+            onChange={(x) => set('leaderWoggle', x)}
+            options={[
+              { value: 'scout', label: t('outfit.woggleScout'), disabled: LN.necker === 'gilwell' },
+              { value: 'gilwell', label: t('outfit.woggleGilwell'), disabled: !LN.allowed.gilwellWoggle },
+            ]}
+          />
+          <p className="note">{t(LN.trainer ? 'outfit.woggleNoteTrainer' : 'outfit.woggleNote')}</p>
+        </>
+      )}
+      <Switch
+        label={t('outfit.woodBadge')}
+        checked={LN.woodBadge}
+        disabled={!LN.allowed.woodBadge || LN.necker === 'gilwell'}
+        onChange={(x) => set('woodBadge', x)}
+        note={t('outfit.woodBadgeNote').replace('{n}', String(LN.beads))}
+      />
+      <p className="note">{t(`outfit.leaderNote_${v}`)}</p>
+      <p className="note">{t('outfit.leaderFigure')}</p>
+    </div>
+  );
+}
+
 /* ---------- 來源分頁 ---------- */
 function SourcesTab({ rules: RULES, variant }) {
   const { lang, t } = useLang();
@@ -925,9 +1127,10 @@ export default function App() {
   const [picks, setPicks] = useState(DEFAULT_PICKS);
   const [selected, setSelected] = useState(null);
   const RULES = SECTIONS[section];
-  const outfit = outfits[section];
+  // 成年成員一律已宣誓（冇未宣誓狀態）
+  const outfit = section === 'leader' ? { ...outfits[section], invested: true } : outfits[section];
   // 童軍支部嘅款式（海童軍／空童軍）用自己嘅副標題、截圖說明同檔名
-  const variantTag = (section === 'scout' || SENIOR.has(section)) && outfit.variant && outfit.variant !== 'land' ? `${section}_${outfit.variant}` : section;
+  const variantTag = (section === 'scout' || SENIOR.has(section) || section === 'leader') && outfit.variant && outfit.variant !== 'land' ? `${section}_${outfit.variant}` : section;
   const badges = badgeStates[section];
   // 人物、外觀、宣誓各支部共用
   const setOutfit = useCallback(
@@ -1106,6 +1309,8 @@ export default function App() {
             {tab === 'outfit' &&
               (section === 'cub' ? (
                 <CubOutfitTab outfit={outfit} setOutfit={setOutfit} />
+              ) : section === 'leader' ? (
+                <LeaderOutfitTab outfit={outfit} setOutfit={setOutfit} picks={picks} />
               ) : section === 'scout' || SENIOR.has(section) ? (
                 <ScoutOutfitTab key={section} section={section} outfit={outfit} setOutfit={setOutfit} />
               ) : (

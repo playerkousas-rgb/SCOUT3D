@@ -4,12 +4,13 @@ import CUB from './cub_rules_v1.0.json';
 import SCOUT from './scout_rules_v1.0.json';
 import VENTURE from './venture_rules_v1.0.json';
 import ROVER from './rover_rules_v1.0.json';
+import LEADER from './leader_rules_v1.0.json';
 import DISTRICTS from './districts_v1.0.json';
 import PATROLS from './patrols_v1.0.json';
 import { validateRules } from './validate.js';
 
 /** 支部（次序 = 頂部切換掣次序） */
-export const SECTIONS = { grasshopper: GRASSHOPPER, cub: CUB, scout: SCOUT, venture: VENTURE, rover: ROVER };
+export const SECTIONS = { grasshopper: GRASSHOPPER, cub: CUB, scout: SCOUT, venture: VENTURE, rover: ROVER, leader: LEADER };
 export const SECTION_IDS = Object.keys(SECTIONS);
 export { DISTRICTS, PATROLS };
 

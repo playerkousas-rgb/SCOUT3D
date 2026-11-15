@@ -67,6 +67,11 @@ export function resolveArt(badge, picks, data, patrols = null) {
     if (!patrol) return fallback;
     return { kind: 'image', file: patrol.file, example: false, patrol };
   }
+  if (badge.dynamic === 'rank') {
+    const row = rankRowOf(badge, picks?.rank);
+    if (!row) return fallback;
+    return { kind: 'image', file: row.art.file, example: false, row };
+  }
   if (badge.dynamic === 'meritorious') {
     const year = Math.trunc(Number(picks?.meritYear));
     const colour = meritColour(year);
@@ -75,4 +80,57 @@ export function resolveArt(badge, picks, data, patrols = null) {
     return { kind: 'merit', year, colour, base: a.file, digits: a.digits, text: a.text, example: false };
   }
   return fallback;
+}
+
+/* ---------- 成年成員：單位層級、職級（手冊 P.94–95、P.103–105） ---------- */
+
+/** 職級肩章章（dynamic = 'rank'）入面，某個職級屬於邊一行（肩章 + 帽章）；搵唔到 = null */
+export function rankRowOf(badge, rankId) {
+  return badge?.rows?.find((r) => r.ranks.includes(rankId)) ?? null;
+}
+
+/** 某個層級可以揀嘅職級（次序跟規則 JSON，即手冊 P.103–104 表格次序） */
+export function ranksFor(rules, level) {
+  return (rules?.ranks || []).filter((r) => r.levels.includes(level));
+}
+
+/** 職級唔屬於呢個層級（例如由旅轉去總部）→ 改做呢個層級第一個職級 */
+export function fixRank(rules, level, rankId) {
+  const list = ranksFor(rules, level);
+  return list.some((r) => r.id === rankId) ? rankId : list[0]?.id ?? null;
+}
+
+/** 揀咗嘅職級嘅帽章（職級帽章；海童軍領袖用海童軍領袖帽章，唔經呢度） */
+export function rankCap(rules, rankId) {
+  const b = (rules?.badges || []).find((x) => x.dynamic === 'rank');
+  return rankRowOf(b, rankId)?.cap ?? null;
+}
+
+/**
+ * 成年成員領巾、巾圈、木章（手冊 P.108–111、P.115–116）：
+ * - 旅巾：旅成員；會巾：總會總部／地域／區幹部、會務委員、專業領袖、受薪職員（旅層級唔可以揀）；
+ * - 基維爾領巾：木章持有人（同時戴基維爾巾圈同木章）；
+ * - 基維爾巾圈：完成木章訓練系統第 4 階段（training = 'basic' 或 'woodBadge'）；
+ * - 木章：完成第 6 階段並獲頒木章（training = 'woodBadge'）；助理領袖訓練主任 3 顆、領袖訓練主任 4 顆木珠，其餘 2 顆。
+ * 揀咗唔合資格嘅選項會自動退返（例如由區轉返旅，會巾變旅巾）。
+ */
+export function leaderNeckwear(rules, outfit, picks) {
+  const training = ['none', 'basic', 'woodBadge'].includes(outfit?.training) ? outfit.training : 'none';
+  const level = picks?.level ?? 'group';
+  const allowed = { association: level !== 'group', gilwell: training === 'woodBadge', gilwellWoggle: training !== 'none', woodBadge: training === 'woodBadge' };
+  let necker = outfit?.leaderNecker ?? 'unit';
+  if (!['unit', 'association', 'gilwell'].includes(necker) || (necker === 'association' && !allowed.association) || (necker === 'gilwell' && !allowed.gilwell)) {
+    necker = 'unit';
+  }
+  const gilwell = necker === 'gilwell';
+  const rank = (rules?.ranks || []).find((r) => r.id === picks?.rank);
+  return {
+    training,
+    necker,
+    allowed,
+    gilwellWoggle: gilwell || (allowed.gilwellWoggle && outfit?.leaderWoggle === 'gilwell'),
+    woodBadge: gilwell || (allowed.woodBadge && !!outfit?.woodBadge),
+    beads: rank?.woodBadgeBeads ?? 2,
+    trainer: !!rank?.trainingTeam,
+  };
 }

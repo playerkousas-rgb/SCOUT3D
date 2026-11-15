@@ -1,0 +1,2389 @@
+{
+  "fileVersion": "v1.0",
+  "copyright": "© SCOUT SYSTEM",
+  "section": {
+    "id": "leader",
+    "zh": "領袖",
+    "en": "Leaders"
+  },
+  "organisation": {
+    "zh": "香港童軍總會",
+    "en": "Scout Association of Hong Kong"
+  },
+  "review": {
+    "status": "pending",
+    "reviewer": {
+      "zh": "專案負責人（領袖）",
+      "en": "Project owner (leader)"
+    },
+    "lastChecked": null,
+    "compiledOn": "2026-11-14",
+    "note": {
+      "zh": "以下內容由 AI 助手依文件整理，未經核對人逐項確認；確認後請把每項 status 改為 verified 並填 lastChecked。",
+      "en": "Compiled from the documents by an AI assistant and not yet confirmed item by item. After review, set each status to verified and fill lastChecked."
+    },
+    "userChecks": [
+      {
+        "date": "2026-11-14",
+        "item": "scope",
+        "zh": "先做制服編號 3–6（常規、領帶、男短褲、女長褲）；編號 1 禮服、編號 2 晚禮服之後再做（用戶揀）",
+        "en": "Uniforms No. 3–6 first (regular, tie, men's shorts, women's trousers); No. 1 dress and No. 2 evening dress later (user choice)"
+      },
+      {
+        "date": "2026-11-14",
+        "item": "levels",
+        "zh": "四個層級（旅／區／地域／總部）都要，職級清單跟層級篩選（用戶揀）",
+        "en": "All four levels (Group / District / Region / Headquarters), with the rank list filtered by level (user choice)"
+      },
+      {
+        "date": "2026-11-14",
+        "item": "neckwear",
+        "zh": "領巾全套：旅巾、會巾、基維爾領巾，基維爾巾圈同木章分開揀（用戶揀）",
+        "en": "Full neckwear: Group, Association and Gilwell neckerchiefs, with the Gilwell woggle and Wood Badge as separate options (user choice)"
+      },
+      {
+        "date": "2026-11-14",
+        "item": "figure",
+        "zh": "成年方塊人：男 172 cm、女 160 cm，冇身形滑桿（用戶揀）",
+        "en": "Adult blocky figures: men 172 cm, women 160 cm, no body sliders (user choice)"
+      },
+      {
+        "date": "2026-11-14",
+        "item": "lonePairCentred",
+        "zh": "只得一個區章／地域章／總會總部章就放中間（用戶指示）",
+        "en": "A lone District / Region / Association Headquarters Badge is centred (user instruction)"
+      },
+      {
+        "date": "2026-11-14",
+        "item": "requiredFirst",
+        "zh": "先做必備章，之後先做可選／專科章（用戶指示）",
+        "en": "Required badges first, optional / proficiency badges later (user instruction)"
+      }
+    ]
+  },
+  "sources": {
+    "UH": {
+      "zh": "香港童軍總會《儀容與制服手冊》",
+      "en": "SAHK Uniform Handbook (Chinese edition)",
+      "edition": {
+        "zh": "網上版（含 2026-01-01 第 04/2026 號通告制服帽修訂）；P.52–56 成年成員制服總覽，P.64–69 制服編號 3–6，P.70–75 海童軍領袖，P.76–81 空童軍領袖，P.88 尺寸，P.92–95 基本徽章，P.97–101 制服帽，P.103–106 職級帽章及肩章，P.107–112 領巾及巾圈，P.113 領帶，P.115–117 基維爾巾圈、基維爾領巾及木章，P.159 優異旅團章，P.172 成年成員徽章佩戴圖",
+        "en": "Online edition incl. Circular 04/2026 (1 Jan 2026) cap amendment; pp.52–56 adult uniform overview, pp.64–69 uniforms No. 3–6, pp.70–75 Sea Scout leaders, pp.76–81 Air Scout leaders, p.88 sizes, pp.92–95 basic badges, pp.97–101 caps, pp.103–106 rank cap badges and epaulettes, pp.107–112 neckerchiefs and woggles, p.113 ties, pp.115–117 Gilwell woggle, Gilwell neckerchief and Wood Badge, p.159 Meritorious Group Badge, p.172 adult badge chart"
+      },
+      "url": "https://www.scout.org.hk/uniformhandbook"
+    },
+    "WEB": {
+      "zh": "香港童軍總會網頁「地域及區」",
+      "en": "SAHK “Regions and Districts” page",
+      "edition": {
+        "zh": "2026-11-14 擷取",
+        "en": "Retrieved 2026-11-14"
+      },
+      "url": "https://www.scout.org.hk/tc/scout-units/regions-districts/index.html"
+    }
+  },
+  "levels": [
+    {
+      "id": "group",
+      "zh": {
+        "name": "旅",
+        "note": "旅成員：右袖戴旅章，下面地域章、區章並排；戴旅巾。"
+      },
+      "en": {
+        "name": "Group",
+        "note": "Group members: Group Badge on the right sleeve with the Region and District Badges side by side below; Group neckerchief."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "94–95, 108–109"
+        }
+      ]
+    },
+    {
+      "id": "district",
+      "zh": {
+        "name": "區",
+        "note": "區幹部、會務委員：右袖戴香港肩章，下面地域章、區章並排；戴會巾。"
+      },
+      "en": {
+        "name": "District",
+        "note": "District cadre and lay members: Hong Kong shoulder title on the right sleeve with the Region and District Badges side by side below; Association neckerchief."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "94–95, 108"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "zh": {
+        "name": "地域",
+        "note": "地域幹部、會務委員：右袖戴香港肩章，下面只戴地域章（置中）；戴會巾。"
+      },
+      "en": {
+        "name": "Region",
+        "note": "Regional cadre and lay members: Hong Kong shoulder title on the right sleeve with only the Region Badge below (centred); Association neckerchief."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "94–95, 108"
+        }
+      ]
+    },
+    {
+      "id": "hq",
+      "zh": {
+        "name": "總部",
+        "note": "總會總部幹部、會務委員：右袖戴香港肩章，下面只戴總會總部章（置中）；戴會巾。"
+      },
+      "en": {
+        "name": "Headquarters",
+        "note": "Headquarters cadre and lay members: Hong Kong shoulder title on the right sleeve with only the Association Headquarters Badge below (centred); Association neckerchief."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "94–95, 108"
+        }
+      ]
+    }
+  ],
+  "ranks": [
+    {
+      "id": "chiefScout",
+      "zh": {
+        "name": "總領袖"
+      },
+      "en": {
+        "name": "Chief Scout"
+      },
+      "levels": [
+        "hq"
+      ],
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "95, 103–104, 108"
+        }
+      ]
+    },
+    {
+      "id": "deputyChiefScout",
+      "zh": {
+        "name": "副總領袖"
+      },
+      "en": {
+        "name": "Deputy Chief Scout"
+      },
+      "levels": [
+        "hq"
+      ],
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "95, 103–104, 108"
+        }
+      ]
+    },
+    {
+      "id": "chiefCommissioner",
+      "zh": {
+        "name": "香港總監"
+      },
+      "en": {
+        "name": "Chief Commissioner"
+      },
+      "levels": [
+        "hq"
+      ],
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "95, 103–104, 108"
+        }
+      ]
+    },
+    {
+      "id": "deputyChiefCommissioner",
+      "zh": {
+        "name": "副香港總監"
+      },
+      "en": {
+        "name": "Deputy Chief Commissioner"
+      },
+      "levels": [
+        "hq"
+      ],
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "95, 103–104, 108"
+        }
+      ]
+    },
+    {
+      "id": "assistantChiefCommissioner",
+      "zh": {
+        "name": "助理香港總監"
+      },
+      "en": {
+        "name": "Assistant Chief Commissioner"
+      },
+      "levels": [
+        "hq"
+      ],
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "95, 103–104, 108"
+        }
+      ]
+    },
+    {
+      "id": "deputyBranchCommissioner",
+      "zh": {
+        "name": "副署總監"
+      },
+      "en": {
+        "name": "Deputy Branch Commissioner"
+      },
+      "levels": [
+        "hq"
+      ],
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "95, 103–104, 108"
+        }
+      ]
+    },
+    {
+      "id": "deputyRegionalCommissioner",
+      "zh": {
+        "name": "副地域總監"
+      },
+      "en": {
+        "name": "Deputy Regional Commissioner"
+      },
+      "levels": [
+        "region"
+      ],
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "95, 103–104, 108"
+        }
+      ]
+    },
+    {
+      "id": "assistantBranchCommissioner",
+      "zh": {
+        "name": "助理署總監"
+      },
+      "en": {
+        "name": "Assistant Branch Commissioner"
+      },
+      "levels": [
+        "hq"
+      ],
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "95, 103–104, 108"
+        }
+      ]
+    },
+    {
+      "id": "assistantRegionalCommissioner",
+      "zh": {
+        "name": "助理地域總監"
+      },
+      "en": {
+        "name": "Assistant Regional Commissioner"
+      },
+      "levels": [
+        "region"
+      ],
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "95, 103–104, 108"
+        }
+      ]
+    },
+    {
+      "id": "districtCommissioner",
+      "zh": {
+        "name": "區總監"
+      },
+      "en": {
+        "name": "District Commissioner"
+      },
+      "levels": [
+        "district"
+      ],
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "95, 103–104, 108"
+        }
+      ]
+    },
+    {
+      "id": "leaderTrainerInCharge",
+      "zh": {
+        "name": "領袖訓練主任"
+      },
+      "en": {
+        "name": "Leader Trainer in Charge"
+      },
+      "levels": [
+        "hq",
+        "region"
+      ],
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "95, 103–104, 108"
+        }
+      ],
+      "woodBadgeBeads": 4,
+      "trainingTeam": true
+    },
+    {
+      "id": "hqCommissioner",
+      "zh": {
+        "name": "總部總監"
+      },
+      "en": {
+        "name": "Headquarters Commissioner"
+      },
+      "levels": [
+        "hq"
+      ],
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "95, 103–104, 108"
+        }
+      ]
+    },
+    {
+      "id": "regionalHqCommissioner",
+      "zh": {
+        "name": "地域總部總監"
+      },
+      "en": {
+        "name": "Regional Headquarters Commissioner"
+      },
+      "levels": [
+        "region"
+      ],
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "95, 103–104, 108"
+        }
+      ]
+    },
+    {
+      "id": "deputyDistrictCommissioner",
+      "zh": {
+        "name": "副區總監"
+      },
+      "en": {
+        "name": "Deputy District Commissioner"
+      },
+      "levels": [
+        "district"
+      ],
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "95, 103–104, 108"
+        }
+      ]
+    },
+    {
+      "id": "assistantLeaderTrainerInCharge",
+      "zh": {
+        "name": "助理領袖訓練主任"
+      },
+      "en": {
+        "name": "Assistant Leader Trainer in Charge"
+      },
+      "levels": [
+        "hq",
+        "region"
+      ],
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "95, 103–104, 108"
+        }
+      ],
+      "woodBadgeBeads": 3,
+      "trainingTeam": true
+    },
+    {
+      "id": "assistantHqCommissioner",
+      "zh": {
+        "name": "助理總部總監"
+      },
+      "en": {
+        "name": "Assistant Headquarters Commissioner"
+      },
+      "levels": [
+        "hq"
+      ],
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "95, 103–104, 108"
+        }
+      ]
+    },
+    {
+      "id": "assistantRegionalHqCommissioner",
+      "zh": {
+        "name": "助理地域總部總監"
+      },
+      "en": {
+        "name": "Assistant Regional Headquarters Commissioner"
+      },
+      "levels": [
+        "region"
+      ],
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "95, 103–104, 108"
+        }
+      ]
+    },
+    {
+      "id": "assistantDistrictCommissioner",
+      "zh": {
+        "name": "助理區總監"
+      },
+      "en": {
+        "name": "Assistant District Commissioner"
+      },
+      "levels": [
+        "district"
+      ],
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "95, 103–104, 108"
+        }
+      ]
+    },
+    {
+      "id": "districtSectionLeader",
+      "zh": {
+        "name": "區長"
+      },
+      "en": {
+        "name": "District section leader"
+      },
+      "levels": [
+        "district"
+      ],
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "95, 103–104, 108"
+        }
+      ]
+    },
+    {
+      "id": "leaderTrainer",
+      "zh": {
+        "name": "領袖訓練員"
+      },
+      "en": {
+        "name": "Leader Trainer"
+      },
+      "levels": [
+        "hq",
+        "region"
+      ],
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "95, 103–104, 108"
+        }
+      ],
+      "trainingTeam": true
+    },
+    {
+      "id": "hqScouter",
+      "zh": {
+        "name": "總部領袖"
+      },
+      "en": {
+        "name": "Headquarters Scouter"
+      },
+      "levels": [
+        "hq"
+      ],
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "95, 103–104, 108"
+        }
+      ]
+    },
+    {
+      "id": "regionalScouter",
+      "zh": {
+        "name": "地域領袖"
+      },
+      "en": {
+        "name": "Regional Scouter"
+      },
+      "levels": [
+        "region"
+      ],
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "95, 103–104, 108"
+        }
+      ]
+    },
+    {
+      "id": "districtScouter",
+      "zh": {
+        "name": "區領袖"
+      },
+      "en": {
+        "name": "District Scouter"
+      },
+      "levels": [
+        "district"
+      ],
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "95, 103–104, 108"
+        }
+      ]
+    },
+    {
+      "id": "groupScoutLeader",
+      "zh": {
+        "name": "旅長"
+      },
+      "en": {
+        "name": "Group Scout Leader"
+      },
+      "levels": [
+        "group"
+      ],
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "95, 103–104, 108"
+        }
+      ]
+    },
+    {
+      "id": "assistantGroupScoutLeader",
+      "zh": {
+        "name": "副旅長"
+      },
+      "en": {
+        "name": "Assistant Group Scout Leader"
+      },
+      "levels": [
+        "group"
+      ],
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "95, 103–104, 108"
+        }
+      ]
+    },
+    {
+      "id": "sectionLeader",
+      "zh": {
+        "name": "團長"
+      },
+      "en": {
+        "name": "Section Leader"
+      },
+      "levels": [
+        "group"
+      ],
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "95, 103–104, 108"
+        }
+      ]
+    },
+    {
+      "id": "assistantSectionLeader",
+      "zh": {
+        "name": "副團長"
+      },
+      "en": {
+        "name": "Assistant Section Leader"
+      },
+      "levels": [
+        "group"
+      ],
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "95, 103–104, 108"
+        }
+      ]
+    },
+    {
+      "id": "assistantHqScouter",
+      "zh": {
+        "name": "助理總部領袖"
+      },
+      "en": {
+        "name": "Assistant Headquarters Scouter"
+      },
+      "levels": [
+        "hq"
+      ],
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "95, 103–104, 108"
+        }
+      ]
+    },
+    {
+      "id": "assistantRegionalScouter",
+      "zh": {
+        "name": "助理地域領袖"
+      },
+      "en": {
+        "name": "Assistant Regional Scouter"
+      },
+      "levels": [
+        "region"
+      ],
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "95, 103–104, 108"
+        }
+      ]
+    },
+    {
+      "id": "assistantDistrictScouter",
+      "zh": {
+        "name": "助理區領袖"
+      },
+      "en": {
+        "name": "Assistant District Scouter"
+      },
+      "levels": [
+        "district"
+      ],
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "95, 103–104, 108"
+        }
+      ]
+    },
+    {
+      "id": "instructor",
+      "zh": {
+        "name": "教練員"
+      },
+      "en": {
+        "name": "Instructor"
+      },
+      "levels": [
+        "group"
+      ],
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "95, 103–104, 108"
+        }
+      ]
+    },
+    {
+      "id": "layMember",
+      "zh": {
+        "name": "會務委員"
+      },
+      "en": {
+        "name": "Lay member"
+      },
+      "levels": [
+        "hq",
+        "region",
+        "district"
+      ],
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "95, 103–104, 108"
+        }
+      ]
+    },
+    {
+      "id": "professionalScouter",
+      "zh": {
+        "name": "專業領袖"
+      },
+      "en": {
+        "name": "Professional Scouter"
+      },
+      "levels": [
+        "hq",
+        "region",
+        "district"
+      ],
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "95, 103–104, 108"
+        }
+      ]
+    },
+    {
+      "id": "salariedStaff",
+      "zh": {
+        "name": "受薪職員"
+      },
+      "en": {
+        "name": "Salaried staff"
+      },
+      "levels": [
+        "hq",
+        "region",
+        "district"
+      ],
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "95, 103–104, 108"
+        }
+      ]
+    }
+  ],
+  "uniforms": [
+    {
+      "id": "u3",
+      "number": 3,
+      "genders": [
+        "boy",
+        "girl"
+      ],
+      "neckwear": "necker",
+      "legwear": {
+        "boy": "trousers",
+        "girl": "skirt"
+      },
+      "zh": {
+        "name": "編號 3 常規制服",
+        "note": "領巾連童軍巾圈；男：長褲、黑短襪、綁帶皮鞋；女：半截裙、肉色襪褲、非綁帶中跟皮鞋。"
+      },
+      "en": {
+        "name": "No. 3 Regular uniform",
+        "note": "Neckerchief with Scout woggle; men: trousers, black short socks, laced shoes; women: skirt, flesh-coloured tights, non-laced medium-heel shoes."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "53–56, 64–65, 70–71, 76–77"
+        }
+      ]
+    },
+    {
+      "id": "u4",
+      "number": 4,
+      "genders": [
+        "boy",
+        "girl"
+      ],
+      "neckwear": "tie",
+      "legwear": {
+        "boy": "trousers",
+        "girl": "skirt"
+      },
+      "zh": {
+        "name": "編號 4 領帶制服",
+        "note": "領帶代替領巾（陸上深綠色、海童軍黑色、空童軍深藍色）；其餘同編號 3。"
+      },
+      "en": {
+        "name": "No. 4 Tie uniform",
+        "note": "A tie instead of the neckerchief (dark green; Sea black; Air dark blue); otherwise as No. 3."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "53–56, 66–67, 72–73, 78–79, 113"
+        }
+      ]
+    },
+    {
+      "id": "u5",
+      "number": 5,
+      "genders": [
+        "boy"
+      ],
+      "neckwear": "necker",
+      "legwear": {
+        "boy": "shorts"
+      },
+      "zh": {
+        "name": "編號 5 男性成員短褲制服",
+        "note": "短褲、長襪（陸上深草青色；海／空深藍色）、綁帶皮鞋；領巾連童軍巾圈。"
+      },
+      "en": {
+        "name": "No. 5 Men's shorts uniform",
+        "note": "Shorts, long socks (dark grass green; Sea/Air dark blue), laced shoes; neckerchief with Scout woggle."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "53–56, 68–69, 74–75, 80–81"
+        }
+      ]
+    },
+    {
+      "id": "u6",
+      "number": 6,
+      "genders": [
+        "girl"
+      ],
+      "neckwear": "necker",
+      "legwear": {
+        "girl": "trousers"
+      },
+      "zh": {
+        "name": "編號 6 女性成員長褲制服",
+        "note": "長褲、黑短襪、綁帶皮鞋；領巾連童軍巾圈；唔可以戴金邊硬帽（戴軟帽）。"
+      },
+      "en": {
+        "name": "No. 6 Women's trousers uniform",
+        "note": "Trousers, black short socks, laced shoes; neckerchief with Scout woggle; the gold-edged hard hat may not be worn (beret instead)."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "53–56, 68–69, 74–75, 80–81, 100"
+        }
+      ]
+    }
+  ],
+  "garments": [
+    {
+      "id": "hat",
+      "zh": {
+        "name": "帽",
+        "rule": "男：深綠色軟帽連職級帽章，帽章戴喺軟帽黑色膠邊左眼上方二釐米。女（編號 3、4）：深綠色金邊硬帽連職級帽章，帽章喺硬帽右方、同右耳成一直線，帽邊離眼眉約四釐米；女性成員著常規制服或領帶制服而唔戴硬帽時可戴深綠色軟帽；著長褲（編號 6）唔可以戴硬帽。深資童軍領袖（同教練員）戴棗紅色軟帽；女性深資童軍領袖著編號 3、4 而唔戴硬帽時可戴棗紅色軟帽。"
+      },
+      "en": {
+        "name": "Cap / beret / hard hat",
+        "rule": "Men: dark green beret with the rank cap badge, worn on the black band 2 cm above the left eye. Women (No. 3, 4): dark green gold-edged hard hat with the rank cap badge on the right side, in line with the right ear, the brim about 4 cm above the eyebrows; women in the regular or tie uniform may wear the dark green beret instead of the hard hat; the hard hat may not be worn with trousers (No. 6). Venture Scout leaders (and instructors) wear the maroon beret; women Venture Scout leaders in No. 3, 4 may wear the maroon beret instead of the hard hat."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "64–69, 97–100, 103–105"
+        }
+      ],
+      "status": "documented",
+      "modelNote": {
+        "zh": "職級帽章 = 帽章頂嘅顏色帽纓，顏色跟職級（P.103–104）；圖案取自手冊 P.103–104 表格（細圖放大）。方塊人嘅軟帽、硬帽只係示意形狀：硬帽係深綠色方盒、頂邊同帽邊有金邊。",
+        "en": "The rank cap badge is the coloured plume above the cap badge, its colour set by rank (pp.103–104); artwork from the Handbook pp.103–104 table (small images enlarged). The blocky beret and hard hat are only indicative: the hard hat is a dark green box with gold edging round the top and brim."
+      }
+    },
+    {
+      "id": "shirt",
+      "zh": {
+        "name": "恤衫",
+        "rule": "杏色、短袖、兩胸袋、無褶、肩帶。"
+      },
+      "en": {
+        "name": "Shirt",
+        "rule": "Beige, short sleeves, two chest pockets, no pleats, shoulder straps."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "64–69"
+        }
+      ],
+      "status": "documented",
+      "modelNote": {
+        "zh": "短袖約喺手踭上 5 釐米（P.88）。",
+        "en": "Short sleeves end about 5 cm above the elbow (p.88)."
+      }
+    },
+    {
+      "id": "trousers",
+      "zh": {
+        "name": "長褲／半截裙／短褲",
+        "rule": "編號 3、4：男草青色長褲（兩斜袋、兩後袋、有褶）；女草青色半截裙（側袋、無褶、及膝）。編號 5：男草青色短褲（兩斜袋、兩後袋、有褶）。編號 6：女草青色長褲（兩斜袋、兩後袋、有褶）。"
+      },
+      "en": {
+        "name": "Trousers / skirt / shorts",
+        "rule": "No. 3, 4: men grass-green trousers (two slanted pockets, two back pockets, pleated); women grass-green skirt (side pockets, no pleats, knee length). No. 5: men grass-green shorts (two slanted pockets, two back pockets, pleated). No. 6: women grass-green trousers (two slanted pockets, two back pockets, pleated)."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "64–69"
+        }
+      ],
+      "status": "documented",
+      "modelNote": {
+        "zh": "短褲約喺膝頭中間上 10 釐米（P.88）。半截裙一件過，中間冇線。",
+        "en": "Shorts end about 10 cm above mid-knee (p.88). The skirt is one piece with no centre line."
+      }
+    },
+    {
+      "id": "belt",
+      "zh": {
+        "name": "皮帶",
+        "rule": "棕色（連童軍徽皮帶扣）。"
+      },
+      "en": {
+        "name": "Belt",
+        "rule": "Brown, with the Scout badge buckle."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "64–69"
+        }
+      ],
+      "status": "documented",
+      "modelNote": {
+        "zh": "皮帶扣只畫銀色方塊示意。",
+        "en": "The buckle is a plain silver block."
+      }
+    },
+    {
+      "id": "socks",
+      "zh": {
+        "name": "襪",
+        "rule": "編號 3、4：男黑色短襪；女肉色、尼龍、無花、襪褲。編號 5：深草青色長襪。編號 6：黑色短襪。"
+      },
+      "en": {
+        "name": "Socks",
+        "rule": "No. 3, 4: men black short socks; women flesh-coloured plain nylon tights. No. 5: dark grass-green long socks. No. 6: black short socks."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "64–69"
+        }
+      ],
+      "status": "documented"
+    },
+    {
+      "id": "shoes",
+      "zh": {
+        "name": "皮鞋",
+        "rule": "編號 3、4：男黑色、無花紋、綁帶；女黑色、無花紋、非綁帶、中跟。編號 5、6：黑色、無花紋、綁帶。"
+      },
+      "en": {
+        "name": "Shoes",
+        "rule": "No. 3, 4: men black, plain, laced; women black, plain, not laced, medium heel. No. 5, 6: black, plain, laced."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "64–69"
+        }
+      ],
+      "status": "documented",
+      "modelNote": {
+        "zh": "中跟皮鞋沿用深資／樂行童軍嘅方塊造型（腳弓位留空、鞋面見肉色襪褲）。",
+        "en": "The medium-heel shoe reuses the Venture/Rover block build (hollow arch, tights showing on top)."
+      }
+    },
+    {
+      "id": "necker",
+      "zh": {
+        "name": "領巾",
+        "rule": "編號 3、5、6：領巾連童軍巾圈。旅成員戴旅巾；總會總部、地域及區幹部（包括總領袖、副總領袖、贊助人、副贊助人、各級總監及領袖）、會務委員、專業領袖及受薪職員戴會巾（深綠色，領巾尖繡香港章，捲巾方式）。木章持有人可戴基維爾領巾（捲巾方式）。領巾尾喺肚臍附近，唔可以越過皮帶扣。"
+      },
+      "en": {
+        "name": "Neckerchief",
+        "rule": "No. 3, 5, 6: neckerchief with the Scout woggle. Group members wear the Group neckerchief; Headquarters, Regional and District cadre (including the Chief Scout, Deputy Chief Scout, patrons, commissioners and scouters), lay members, professional scouters and salaried staff wear the Association neckerchief (dark green, Hong Kong Badge embroidered at the point, rolled). Wood Badge holders may wear the Gilwell neckerchief (rolled). The ends sit near the navel and may not pass the belt buckle."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "64, 68, 107–112, 115"
+        }
+      ],
+      "status": "documented",
+      "modelNote": {
+        "zh": "會巾領巾尖嘅香港章用手冊 P.93 香港章圖案示意；基維爾領巾尖嘅格仔布取自手冊 P.109 圖。旅巾顏色可以喺服裝分頁揀。",
+        "en": "The Hong Kong Badge at the Association neckerchief point uses the Handbook p.93 artwork; the tartan patch on the Gilwell neckerchief is from the Handbook p.109 figure. The Group neckerchief colours can be picked in the Outfit tab."
+      }
+    },
+    {
+      "id": "woggle",
+      "zh": {
+        "name": "巾圈",
+        "rule": "童軍巾圈（啡色皮巾圈）。完成木章訓練系統第 4 階段（基本在職訓練）嘅成年成員可戴基維爾巾圈；領袖訓練員、助理領袖訓練主任及領袖訓練主任戴附有「斧頭木」金屬訓練隊標誌嘅基維爾巾圈。"
+      },
+      "en": {
+        "name": "Woggle",
+        "rule": "Scout woggle (brown leather). Adults who have completed Stage 4 (basic in-service training) of the Wood Badge Training System may wear the Gilwell woggle; Leader Trainers, Assistant Leader Trainers in Charge and Leader Trainers in Charge wear the Gilwell woggle with the metal “axe and log” Training Team emblem."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "110–111, 115–116"
+        }
+      ],
+      "status": "documented",
+      "modelNote": {
+        "zh": "基維爾巾圈（土耳其結）用啡色方塊加結紋示意；斧頭木標誌用銀色小方塊示意。",
+        "en": "The Gilwell woggle (Turk's head) is a brown block with a knot pattern; the axe-and-log emblem is a small silver block."
+      }
+    },
+    {
+      "id": "woodBadge",
+      "zh": {
+        "name": "木章",
+        "rule": "完成木章訓練系統第 6 階段（高級在職訓練）並獲頒木章嘅成年成員可佩戴：皮繩連兩顆木珠穿過頸項，掛喺領巾前面，皮繩喺頸後藏喺領巾下面；領帶制服掛喺領帶前面。助理領袖訓練主任、領袖訓練主任分別戴三顆、四顆木珠。唔可以喺晚禮服上佩戴。"
+      },
+      "en": {
+        "name": "Wood Badge",
+        "rule": "Adults who have completed Stage 6 (advanced in-service training) and been awarded the Wood Badge: a leather thong with two beads round the neck, hanging in front of the neckerchief, the thong hidden under the neckerchief at the back; with the tie uniform it hangs in front of the tie. Assistant Leader Trainers in Charge and Leader Trainers in Charge wear three and four beads. Not worn with evening dress."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "115–117"
+        }
+      ],
+      "status": "documented",
+      "modelNote": {
+        "zh": "木珠數目跟職級自動轉。",
+        "en": "The number of beads follows the rank automatically."
+      }
+    },
+    {
+      "id": "tie",
+      "zh": {
+        "name": "領帶（編號 4）",
+        "rule": "編號 4 領帶制服：深綠色領帶代替領巾；領帶尖喺皮帶扣上面。"
+      },
+      "en": {
+        "name": "Tie (No. 4)",
+        "rule": "No. 4 tie uniform: a dark green tie instead of the neckerchief; the tip sits at the top of the belt buckle."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "66–67, 113"
+        }
+      ],
+      "status": "documented"
+    }
+  ],
+  "variants": [
+    {
+      "id": "land",
+      "zh": {
+        "name": "領袖（陸上）",
+        "note": "成年成員制服編號 3–6（手冊 P.52–56、P.64–69）。"
+      },
+      "en": {
+        "name": "Leaders (land)",
+        "note": "Adult uniforms No. 3–6 (Handbook pp.52–56, 64–69)."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "52–56, 64–69"
+        }
+      ],
+      "garments": []
+    },
+    {
+      "id": "sea",
+      "zh": {
+        "name": "海童軍領袖",
+        "note": "海童軍領袖制服編號 3–6（手冊 P.70–75）：徽章同擺位同陸上領袖一樣；帽、恤衫、褲／裙、長襪、領帶唔同。"
+      },
+      "en": {
+        "name": "Sea Scout leaders",
+        "note": "Sea Scout leader uniforms No. 3–6 (Handbook pp.70–75): the same badges in the same places as land leaders; the cap, shirt, trousers/skirt, long socks and tie differ."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "70–75"
+        }
+      ],
+      "garments": [
+        {
+          "id": "hat",
+          "zh": {
+            "name": "帽",
+            "rule": "海童軍男領袖白頂帽／海童軍女領袖白頂帽，連海童軍領袖帽章：帽章戴喺白頂同黑色帽邊中間前面中央。帽邊喺眼眉上方約二釐米，同水平線看齊。"
+          },
+          "en": {
+            "name": "Cap / beret / hard hat",
+            "rule": "Sea Scout male / female leader's white-top cap with the Sea Scout leader cap badge, worn front centre between the white top and the black band. The brim sits about 2 cm above the eyebrows, level."
+          },
+          "sources": [
+            {
+              "ref": "UH",
+              "page": "70–75, 101, 105–106"
+            }
+          ],
+          "status": "documented",
+          "modelNote": {
+            "zh": "海童軍領袖帽章（唔係職級帽章）圖案取自手冊 P.105。方塊人嘅白頂帽只係示意形狀。",
+            "en": "The Sea Scout leader cap badge (not a rank cap badge) artwork is from Handbook p.105. The blocky cap is only indicative."
+          }
+        },
+        {
+          "id": "shirt",
+          "zh": {
+            "name": "恤衫",
+            "rule": "白色、短袖、兩胸袋、無褶、肩帶。"
+          },
+          "en": {
+            "name": "Shirt",
+            "rule": "White, short sleeves, two chest pockets, no pleats, shoulder straps."
+          },
+          "sources": [
+            {
+              "ref": "UH",
+              "page": "70–75"
+            }
+          ],
+          "status": "documented"
+        },
+        {
+          "id": "trousers",
+          "zh": {
+            "name": "長褲／半截裙／短褲",
+            "rule": "深藍色：編號 3、4 男長褲、女半截裙（及膝）；編號 5 男短褲；編號 6 女長褲。"
+          },
+          "en": {
+            "name": "Trousers / skirt / shorts",
+            "rule": "Dark blue: No. 3, 4 men trousers, women skirt (knee length); No. 5 men shorts; No. 6 women trousers."
+          },
+          "sources": [
+            {
+              "ref": "UH",
+              "page": "70–75"
+            }
+          ],
+          "status": "documented"
+        },
+        {
+          "id": "socks",
+          "zh": {
+            "name": "襪",
+            "rule": "編號 3、4：男黑色短襪；女肉色尼龍襪褲。編號 5：深藍色長襪。編號 6：黑色短襪。"
+          },
+          "en": {
+            "name": "Socks",
+            "rule": "No. 3, 4: men black short socks; women flesh-coloured nylon tights. No. 5: dark blue long socks. No. 6: black short socks."
+          },
+          "sources": [
+            {
+              "ref": "UH",
+              "page": "70–75"
+            }
+          ],
+          "status": "documented"
+        },
+        {
+          "id": "tie",
+          "zh": {
+            "name": "領帶（編號 4）",
+            "rule": "海童軍領袖戴黑色領帶。"
+          },
+          "en": {
+            "name": "Tie (No. 4)",
+            "rule": "Sea Scout leaders wear the black tie."
+          },
+          "sources": [
+            {
+              "ref": "UH",
+              "page": "72–73, 113"
+            }
+          ],
+          "status": "documented"
+        }
+      ]
+    },
+    {
+      "id": "air",
+      "zh": {
+        "name": "空童軍領袖",
+        "note": "空童軍領袖制服編號 3–6（手冊 P.76–81）：徽章同擺位同陸上領袖一樣；帽、恤衫、褲／裙、長襪、領帶唔同。"
+      },
+      "en": {
+        "name": "Air Scout leaders",
+        "note": "Air Scout leader uniforms No. 3–6 (Handbook pp.76–81): the same badges in the same places as land leaders; the beret, shirt, trousers/skirt, long socks and tie differ."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "76–81"
+        }
+      ],
+      "garments": [
+        {
+          "id": "hat",
+          "zh": {
+            "name": "帽",
+            "rule": "灰藍色軟帽連職級帽章（男女同款），帽章戴喺軟帽黑色膠邊左眼上方二釐米。"
+          },
+          "en": {
+            "name": "Cap / beret / hard hat",
+            "rule": "Grey-blue beret with the rank cap badge (men and women), worn on the black band 2 cm above the left eye."
+          },
+          "sources": [
+            {
+              "ref": "UH",
+              "page": "76–81, 99, 105"
+            }
+          ],
+          "status": "documented",
+          "modelNote": {
+            "zh": "方塊人嘅軟帽只係示意形狀。",
+            "en": "The blocky beret is only indicative."
+          }
+        },
+        {
+          "id": "shirt",
+          "zh": {
+            "name": "恤衫",
+            "rule": "淺藍色、短袖、兩胸袋、無褶、肩帶。"
+          },
+          "en": {
+            "name": "Shirt",
+            "rule": "Light blue, short sleeves, two chest pockets, no pleats, shoulder straps."
+          },
+          "sources": [
+            {
+              "ref": "UH",
+              "page": "76–81"
+            }
+          ],
+          "status": "documented"
+        },
+        {
+          "id": "trousers",
+          "zh": {
+            "name": "長褲／半截裙／短褲",
+            "rule": "深藍色：編號 3、4 男長褲、女半截裙（及膝）；編號 5 男短褲；編號 6 女長褲。"
+          },
+          "en": {
+            "name": "Trousers / skirt / shorts",
+            "rule": "Dark blue: No. 3, 4 men trousers, women skirt (knee length); No. 5 men shorts; No. 6 women trousers."
+          },
+          "sources": [
+            {
+              "ref": "UH",
+              "page": "76–81"
+            }
+          ],
+          "status": "documented"
+        },
+        {
+          "id": "socks",
+          "zh": {
+            "name": "襪",
+            "rule": "編號 3、4：男黑色短襪；女肉色尼龍襪褲。編號 5：深藍色長襪。編號 6：黑色短襪。"
+          },
+          "en": {
+            "name": "Socks",
+            "rule": "No. 3, 4: men black short socks; women flesh-coloured nylon tights. No. 5: dark blue long socks. No. 6: black short socks."
+          },
+          "sources": [
+            {
+              "ref": "UH",
+              "page": "76–81"
+            }
+          ],
+          "status": "documented"
+        },
+        {
+          "id": "tie",
+          "zh": {
+            "name": "領帶（編號 4）",
+            "rule": "空童軍領袖戴深藍色領帶。"
+          },
+          "en": {
+            "name": "Tie (No. 4)",
+            "rule": "Air Scout leaders wear the dark blue tie."
+          },
+          "sources": [
+            {
+              "ref": "UH",
+              "page": "78–79, 113"
+            }
+          ],
+          "status": "documented"
+        }
+      ]
+    }
+  ],
+  "badges": [
+    {
+      "id": "membership",
+      "required": true,
+      "side": "left",
+      "zh": {
+        "name": "世界童軍會員章",
+        "place": "穿著者左胸袋中央。",
+        "quote": "童軍成員佩戴在制服恤衫或禮服上衣（成年成員適用）左胸袋中央位置，或制服毛衣相同位置。",
+        "conditions": "基本徽章。"
+      },
+      "en": {
+        "name": "World Membership Badge",
+        "place": "Centre of the wearer's left chest pocket.",
+        "quote": "Worn centred on the left chest pocket of the uniform shirt or dress jacket (adults), or the same position on the sweater.",
+        "conditions": "Basic badge."
+      },
+      "size": {
+        "shape": "circle",
+        "wCm": 4,
+        "hCm": 4,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "side": "left",
+        "pocket": "centre",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "64–81, 92, 172"
+        }
+      ],
+      "status": "documented",
+      "art": {
+        "file": "/badges/world_membership.png",
+        "ref": "UH",
+        "page": "92",
+        "example": false
+      },
+      "modelNote": {
+        "zh": "手冊冇寫尺寸；模型用直徑 4 cm（同其他支部一樣）。",
+        "en": "No size in the Handbook; the model uses 4 cm diameter (as for the other sections)."
+      }
+    },
+    {
+      "id": "hongKong",
+      "required": true,
+      "side": "right",
+      "zh": {
+        "name": "香港章",
+        "place": "穿著者右胸袋中央。",
+        "quote": "樂行童軍及成年成員佩戴在制服恤衫或禮服上衣（成年成員適用）右胸袋中央位置，或制服毛衣相同位置。",
+        "conditions": "基本徽章。"
+      },
+      "en": {
+        "name": "Hong Kong Badge",
+        "place": "Centre of the wearer's right chest pocket.",
+        "quote": "Rover Scouts and adult members wear it centred on the right chest pocket of the uniform shirt or dress jacket (adults), or the same position on the sweater.",
+        "conditions": "Basic badge."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 4,
+        "hCm": 5.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "side": "right",
+        "pocket": "centre",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "64–81, 93, 172"
+        }
+      ],
+      "status": "documented",
+      "art": {
+        "file": "/badges/hong_kong_badge.png",
+        "ref": "UH",
+        "page": "93",
+        "example": false
+      },
+      "modelNote": {
+        "zh": "手冊冇寫尺寸；模型用 4 × 5.6 cm（P.93 圖案比例）。成年成員同樂行童軍一樣戴喺右胸袋中央（P.93 第 3 點、P.172 附圖），唔係青少年支部嘅左袋蓋上面。",
+        "en": "No size in the Handbook; the model uses 4 × 5.6 cm (p.93 artwork proportions). Adults, like Rover Scouts, wear it centred on the right pocket (p.93 item 3, p.172 figure), not above the left flap as the youth sections do."
+      }
+    },
+    {
+      "id": "hkTitle",
+      "required": true,
+      "side": "right",
+      "zh": {
+        "name": "香港肩章",
+        "place": "穿著者右袖，肩膊縫線下方 2 釐米，置中。",
+        "quote": "總會總部、地域及區幹部（包括總領袖、副總領袖、贊助人、副贊助人、各級總監及領袖）、會務委員、專業領袖及受薪職員佩戴在制服恤衫或禮服上衣右袖肩膊位下方二釐米中央位置，或制服毛衣相同位置。",
+        "conditions": "總部、地域、區層級先戴；旅成員改戴旅章。"
+      },
+      "en": {
+        "name": "Hong Kong Shoulder Title",
+        "place": "Wearer's right sleeve, centred 2 cm below the shoulder seam.",
+        "quote": "Headquarters, Regional and District cadre (including the Chief Scout, Deputy Chief Scout, patrons, commissioners and scouters), lay members, professional scouters and salaried staff wear it centred 2 cm below the shoulder on the right sleeve of the uniform shirt or dress jacket, or the same position on the sweater.",
+        "conditions": "Headquarters, Region and District levels; Group members wear the Group Badge instead."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 9,
+        "hCm": 2.2,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "side": "right",
+        "fromShoulderCm": 2,
+        "edge": "top",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "64–81, 94"
+        }
+      ],
+      "status": "documented",
+      "art": {
+        "file": "/badges/leader/hong_kong_shoulder_title.png",
+        "ref": "UH",
+        "page": "94",
+        "example": false
+      },
+      "levels": [
+        "district",
+        "region",
+        "hq"
+      ],
+      "modelNote": {
+        "zh": "手冊冇寫尺寸；模型用 9 × 2.2 cm（同旅章一樣大，P.94 圖案比例約 4.1 : 1）。",
+        "en": "No size in the Handbook; the model uses 9 × 2.2 cm (the same as the Group Badge; the p.94 artwork is about 4.1 : 1)."
+      }
+    },
+    {
+      "id": "troop",
+      "required": true,
+      "side": "right",
+      "zh": {
+        "name": "旅章",
+        "place": "穿著者右袖，肩膊縫線下方 2 釐米，置中。",
+        "quote": "旅成員佩戴在制服恤衫或禮服上衣（成年成員適用）右袖肩膊位下方二釐米中央位置，或制服毛衣相同位置。",
+        "conditions": "旅層級先戴；由所屬旅提供。"
+      },
+      "en": {
+        "name": "Group Badge",
+        "place": "Wearer's right sleeve, centred 2 cm below the shoulder seam.",
+        "quote": "Group members wear it centred 2 cm below the shoulder on the right sleeve of the uniform shirt or dress jacket (adults), or the same position on the sweater.",
+        "conditions": "Group level only; supplied by the Group."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 9,
+        "hCm": 2.2,
+        "measured": true,
+        "ref": "UH",
+        "page": "94"
+      },
+      "anchor": {
+        "part": "sleeve",
+        "side": "right",
+        "fromShoulderCm": 2,
+        "edge": "top",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "64–81, 94, 172"
+        }
+      ],
+      "status": "documented",
+      "art": {
+        "file": "/badges/handbook_example_troop.png",
+        "ref": "UH",
+        "page": "25",
+        "example": true
+      },
+      "levels": [
+        "group"
+      ],
+      "modelNote": {
+        "zh": "手冊 P.94：新成立旅嘅旅章不小過 8.5 × 2 cm、不大過 10.5 × 2.5 cm；模型用 9 × 2.2 cm。圖案係手冊示例（2222 旅）。",
+        "en": "Handbook p.94: a new Group's badge is between 8.5 × 2 cm and 10.5 × 2.5 cm; the model uses 9 × 2.2 cm. The artwork is the handbook example (2222th Group)."
+      }
+    },
+    {
+      "id": "ahq",
+      "required": true,
+      "side": "right",
+      "zh": {
+        "name": "總會總部章",
+        "place": "穿著者右袖，香港肩章下方 2 釐米，置中。",
+        "quote": "總會總部幹部（包括各級總監及領袖）及會務委員佩戴在制服恤衫右袖香港肩章下方二釐米中央位置。香港訓練隊隊員依所屬服務單位佩戴總會總部章／地域章。",
+        "conditions": "總部層級先戴。"
+      },
+      "en": {
+        "name": "Association Headquarters Badge",
+        "place": "Wearer's right sleeve, centred 2 cm below the Hong Kong shoulder title.",
+        "quote": "Headquarters cadre (including commissioners and scouters) and lay members wear it centred 2 cm below the Hong Kong shoulder title on the right sleeve of the uniform shirt. Hong Kong Training Team members wear the Association Headquarters Badge or Region Badge of the unit they serve.",
+        "conditions": "Headquarters level only."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3.8,
+        "hCm": 5,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "side": "right",
+        "belowBadge": "hkTitle",
+        "gapCm": 2,
+        "edge": "top",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "64–81, 95"
+        }
+      ],
+      "status": "documented",
+      "art": {
+        "file": "/badges/leader/ahq_badge.png",
+        "ref": "UH",
+        "page": "95",
+        "example": false
+      },
+      "levels": [
+        "hq"
+      ],
+      "modelNote": {
+        "zh": "手冊冇寫尺寸；模型用 3.8 × 5 cm（同地域章、區章一樣，P.95 圖案比例相近）。只得一個章，放中間（用戶指示）。唔可以戴喺毛衣上。",
+        "en": "No size in the Handbook; the model uses 3.8 × 5 cm (as the Region/District Badges; the p.95 artwork is similar). A single badge, centred (user instruction). Not worn on the sweater."
+      }
+    },
+    {
+      "id": "region",
+      "required": true,
+      "side": "right",
+      "zh": {
+        "name": "地域章",
+        "place": "穿著者右袖，香港肩章／旅章下方 2 釐米；同區章並排時地域章在前（靠穿著者前面），兩章相距 1 釐米；地域層級只戴地域章，置中。",
+        "quote": "地域幹部（包括各級總監及領袖）及會務委員佩戴所屬地域章在制服恤衫右袖香港肩章下方二釐米中央位置。區幹部（包括各級總監及領袖）、會務委員及旅成員同時佩戴所屬地域章及區章在制服恤衫右袖香港肩章／旅章下方二釐米中央位置；地域章在前，區章在後，兩章相距一釐米。",
+        "conditions": "旅、區、地域層級；跟所屬區嘅地域。"
+      },
+      "en": {
+        "name": "Region Badge",
+        "place": "Wearer's right sleeve, 2 cm below the Hong Kong shoulder title / Group Badge; beside the District Badge it goes in front (toward the wearer's front), 1 cm apart; at Region level only the Region Badge, centred.",
+        "quote": "Regional cadre (including commissioners and scouters) and lay members wear their Region Badge centred 2 cm below the Hong Kong shoulder title on the right sleeve. District cadre, lay members and Group members wear both the Region and District Badges centred 2 cm below the Hong Kong shoulder title / Group Badge; Region Badge in front, District Badge behind, 1 cm apart.",
+        "conditions": "Group, District and Region levels; the Region of the picked District."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3.8,
+        "hCm": 5,
+        "measured": true,
+        "ref": "UH",
+        "page": "95"
+      },
+      "anchor": {
+        "part": "sleeve",
+        "side": "right",
+        "belowBadge": "troop",
+        "gapCm": 2,
+        "towards": "front",
+        "offsetCm": 2.4,
+        "edge": "top",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "64–81, 95, 172"
+        }
+      ],
+      "status": "documented",
+      "art": {
+        "file": "/badges/handbook_example_region.png",
+        "ref": "UH",
+        "page": "168",
+        "example": true
+      },
+      "dynamic": "region",
+      "levels": [
+        "group",
+        "district",
+        "region"
+      ],
+      "modelNote": {
+        "zh": "香港肩章同旅章一樣高（9 × 2.2 cm），所以兩款都係喺佢下面 2 cm。圖案跟揀咗嘅區轉做所屬地域；地域層級揀所屬地域入面任何一區就得。只得一個（地域層級、總會總部屬下嘅區，或者熄咗區章）就放中間（用戶指示）。",
+        "en": "The Hong Kong shoulder title is the same height as the Group Badge (9 × 2.2 cm), so either way it sits 2 cm below. The artwork follows the Region of the picked District; at Region level pick any District in that Region. When it is alone (Region level, a District under AHQ, or the District Badge off) it is centred (user instruction)."
+      }
+    },
+    {
+      "id": "district",
+      "required": true,
+      "side": "right",
+      "zh": {
+        "name": "區章",
+        "place": "穿著者右袖，香港肩章／旅章下方 2 釐米；喺地域章後面，相距 1 釐米。",
+        "quote": "地域章在前，區章在後，兩章相距一釐米。地域章及區章……標準尺寸是 3.8 釐米（闊）× 5 釐米（高）。",
+        "conditions": "旅、區層級；揀返自己所屬嘅區。"
+      },
+      "en": {
+        "name": "District Badge",
+        "place": "Wearer's right sleeve, 2 cm below the Hong Kong shoulder title / Group Badge; behind the Region Badge, 1 cm apart.",
+        "quote": "Region Badge in front, District Badge behind, 1 cm apart. The standard size of the Region and District Badges is 3.8 cm wide × 5 cm high.",
+        "conditions": "Group and District levels; pick your own District."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3.8,
+        "hCm": 5,
+        "measured": true,
+        "ref": "UH",
+        "page": "95"
+      },
+      "anchor": {
+        "part": "sleeve",
+        "side": "right",
+        "belowBadge": "troop",
+        "gapCm": 2,
+        "towards": "back",
+        "offsetCm": 2.4,
+        "edge": "top",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "64–81, 95, 172"
+        }
+      ],
+      "status": "documented",
+      "art": {
+        "file": "/badges/handbook_example_district.png",
+        "ref": "UH",
+        "page": "25",
+        "example": true
+      },
+      "dynamic": "district",
+      "levels": [
+        "group",
+        "district"
+      ],
+      "modelNote": {
+        "zh": "可以揀全港所有區；未揀區就用手冊示例色塊。",
+        "en": "Every District can be picked; with none picked it uses the handbook example block."
+      }
+    },
+    {
+      "id": "epaulette",
+      "required": true,
+      "side": "both",
+      "zh": {
+        "name": "職級肩章",
+        "place": "雙肩肩帶上，緊貼肩帶末端（膊頭）。",
+        "quote": "成年成員依照本身職級而佩戴該級帽章及肩章。不同顏色的帽章，以及不同顏色及圖樣的肩章標示不同職級。肩章套在制服恤衫、禮服上衣或制服毛衣雙肩肩帶上，緊貼肩帶末端。",
+        "conditions": "跟所揀職級；喺徽章分頁頂揀單位層級同職級。"
+      },
+      "en": {
+        "name": "Rank epaulettes",
+        "place": "On both shoulder straps, tight against the end of the strap (at the shoulder).",
+        "quote": "Adult members wear the cap badge and epaulettes of their rank. Different cap badge colours, and different epaulette colours and patterns, mark different ranks. The epaulettes slide onto both shoulder straps of the uniform shirt, dress jacket or sweater, tight against the end of the strap.",
+        "conditions": "Follows the picked rank; pick the level and rank at the top of the Badges tab."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 4.6,
+        "hCm": 3.65,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "shoulder",
+        "side": "both",
+        "upTowards": "collar",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "103–106, 172"
+        }
+      ],
+      "status": "documented",
+      "art": {
+        "file": "/badges/leader/epaulette_sl.png",
+        "ref": "UH",
+        "page": "104",
+        "example": false
+      },
+      "dynamic": "rank",
+      "rows": [
+        {
+          "id": "chief",
+          "ranks": [
+            "chiefScout",
+            "deputyChiefScout"
+          ],
+          "art": {
+            "file": "/badges/leader/epaulette_chief.png",
+            "ref": "UH",
+            "page": "103",
+            "example": false
+          },
+          "cap": {
+            "file": "/badges/leader/cap_purple.png",
+            "ref": "UH",
+            "page": "103",
+            "example": false,
+            "zh": "紫色",
+            "en": "purple"
+          },
+          "zh": {
+            "epaulette": "紫底金線繡花環"
+          },
+          "en": {
+            "epaulette": "purple, gold-embroidered wreath"
+          }
+        },
+        {
+          "id": "cc",
+          "ranks": [
+            "chiefCommissioner"
+          ],
+          "art": {
+            "file": "/badges/leader/epaulette_cc.png",
+            "ref": "UH",
+            "page": "103",
+            "example": false
+          },
+          "cap": {
+            "file": "/badges/leader/cap_purple.png",
+            "ref": "UH",
+            "page": "103",
+            "example": false,
+            "zh": "紫色",
+            "en": "purple"
+          },
+          "zh": {
+            "epaulette": "紫底銀線繡花環"
+          },
+          "en": {
+            "epaulette": "purple, silver-embroidered wreath"
+          }
+        },
+        {
+          "id": "deputycc",
+          "ranks": [
+            "deputyChiefCommissioner"
+          ],
+          "art": {
+            "file": "/badges/leader/epaulette_deputy_cc.png",
+            "ref": "UH",
+            "page": "103",
+            "example": false
+          },
+          "cap": {
+            "file": "/badges/leader/cap_purple.png",
+            "ref": "UH",
+            "page": "103",
+            "example": false,
+            "zh": "紫色",
+            "en": "purple"
+          },
+          "zh": {
+            "epaulette": "紫底白線繡花環"
+          },
+          "en": {
+            "epaulette": "purple, white-embroidered wreath"
+          }
+        },
+        {
+          "id": "asstcc",
+          "ranks": [
+            "assistantChiefCommissioner"
+          ],
+          "art": {
+            "file": "/badges/leader/epaulette_asst_cc.png",
+            "ref": "UH",
+            "page": "103",
+            "example": false
+          },
+          "cap": {
+            "file": "/badges/leader/cap_purple.png",
+            "ref": "UH",
+            "page": "103",
+            "example": false,
+            "zh": "紫色",
+            "en": "purple"
+          },
+          "zh": {
+            "epaulette": "紫底白花環"
+          },
+          "en": {
+            "epaulette": "purple, white wreath"
+          }
+        },
+        {
+          "id": "deputy",
+          "ranks": [
+            "deputyBranchCommissioner",
+            "deputyRegionalCommissioner"
+          ],
+          "art": {
+            "file": "/badges/leader/epaulette_deputy.png",
+            "ref": "UH",
+            "page": "103",
+            "example": false
+          },
+          "cap": {
+            "file": "/badges/leader/cap_purple.png",
+            "ref": "UH",
+            "page": "103",
+            "example": false,
+            "zh": "紫色",
+            "en": "purple"
+          },
+          "zh": {
+            "epaulette": "紫底三條白間"
+          },
+          "en": {
+            "epaulette": "purple, three white bars"
+          }
+        },
+        {
+          "id": "asstdeputy",
+          "ranks": [
+            "assistantBranchCommissioner",
+            "assistantRegionalCommissioner",
+            "districtCommissioner",
+            "leaderTrainerInCharge"
+          ],
+          "art": {
+            "file": "/badges/leader/epaulette_asst_deputy.png",
+            "ref": "UH",
+            "page": "104",
+            "example": false
+          },
+          "cap": {
+            "file": "/badges/leader/cap_purple.png",
+            "ref": "UH",
+            "page": "103",
+            "example": false,
+            "zh": "紫色",
+            "en": "purple"
+          },
+          "zh": {
+            "epaulette": "紫底兩條白間"
+          },
+          "en": {
+            "epaulette": "purple, two white bars"
+          }
+        },
+        {
+          "id": "hqcomm",
+          "ranks": [
+            "hqCommissioner",
+            "regionalHqCommissioner",
+            "deputyDistrictCommissioner",
+            "assistantLeaderTrainerInCharge"
+          ],
+          "art": {
+            "file": "/badges/leader/epaulette_hq_comm.png",
+            "ref": "UH",
+            "page": "104",
+            "example": false
+          },
+          "cap": {
+            "file": "/badges/leader/cap_purple.png",
+            "ref": "UH",
+            "page": "103",
+            "example": false,
+            "zh": "紫色",
+            "en": "purple"
+          },
+          "zh": {
+            "epaulette": "紫底一條白間"
+          },
+          "en": {
+            "epaulette": "purple, one white bar"
+          }
+        },
+        {
+          "id": "assthqcomm",
+          "ranks": [
+            "assistantHqCommissioner",
+            "assistantRegionalHqCommissioner",
+            "assistantDistrictCommissioner"
+          ],
+          "art": {
+            "file": "/badges/leader/epaulette_asst_hq_comm.png",
+            "ref": "UH",
+            "page": "104",
+            "example": false
+          },
+          "cap": {
+            "file": "/badges/leader/cap_purple.png",
+            "ref": "UH",
+            "page": "103",
+            "example": false,
+            "zh": "紫色",
+            "en": "purple"
+          },
+          "zh": {
+            "epaulette": "紫底（冇間）"
+          },
+          "en": {
+            "epaulette": "plain purple"
+          }
+        },
+        {
+          "id": "districtchief",
+          "ranks": [
+            "districtSectionLeader",
+            "leaderTrainer"
+          ],
+          "art": {
+            "file": "/badges/leader/epaulette_district_chief.png",
+            "ref": "UH",
+            "page": "104",
+            "example": false
+          },
+          "cap": {
+            "file": "/badges/leader/cap_darkblue.png",
+            "ref": "UH",
+            "page": "104",
+            "example": false,
+            "zh": "深藍色",
+            "en": "dark blue"
+          },
+          "zh": {
+            "epaulette": "深藍色"
+          },
+          "en": {
+            "epaulette": "dark blue"
+          }
+        },
+        {
+          "id": "hqleader",
+          "ranks": [
+            "hqScouter",
+            "regionalScouter",
+            "districtScouter"
+          ],
+          "art": {
+            "file": "/badges/leader/epaulette_hq_leader.png",
+            "ref": "UH",
+            "page": "104",
+            "example": false
+          },
+          "cap": {
+            "file": "/badges/leader/cap_grey.png",
+            "ref": "UH",
+            "page": "104",
+            "example": false,
+            "zh": "灰色",
+            "en": "grey"
+          },
+          "zh": {
+            "epaulette": "灰色"
+          },
+          "en": {
+            "epaulette": "grey"
+          }
+        },
+        {
+          "id": "gsl",
+          "ranks": [
+            "groupScoutLeader",
+            "assistantGroupScoutLeader"
+          ],
+          "art": {
+            "file": "/badges/leader/epaulette_gsl.png",
+            "ref": "UH",
+            "page": "104",
+            "example": false
+          },
+          "cap": {
+            "file": "/badges/leader/cap_blue.png",
+            "ref": "UH",
+            "page": "104",
+            "example": false,
+            "zh": "藍色",
+            "en": "blue"
+          },
+          "zh": {
+            "epaulette": "藍色"
+          },
+          "en": {
+            "epaulette": "blue"
+          }
+        },
+        {
+          "id": "sl",
+          "ranks": [
+            "sectionLeader"
+          ],
+          "art": {
+            "file": "/badges/leader/epaulette_sl.png",
+            "ref": "UH",
+            "page": "104",
+            "example": false
+          },
+          "cap": {
+            "file": "/badges/leader/cap_green.png",
+            "ref": "UH",
+            "page": "104",
+            "example": false,
+            "zh": "綠色",
+            "en": "green"
+          },
+          "zh": {
+            "epaulette": "綠色"
+          },
+          "en": {
+            "epaulette": "green"
+          }
+        },
+        {
+          "id": "asl",
+          "ranks": [
+            "assistantSectionLeader"
+          ],
+          "art": {
+            "file": "/badges/leader/epaulette_asl.png",
+            "ref": "UH",
+            "page": "104",
+            "example": false
+          },
+          "cap": {
+            "file": "/badges/leader/cap_red.png",
+            "ref": "UH",
+            "page": "104",
+            "example": false,
+            "zh": "紅色",
+            "en": "red"
+          },
+          "zh": {
+            "epaulette": "紅色"
+          },
+          "en": {
+            "epaulette": "red"
+          }
+        },
+        {
+          "id": "asstleader",
+          "ranks": [
+            "assistantHqScouter",
+            "assistantRegionalScouter",
+            "assistantDistrictScouter",
+            "instructor"
+          ],
+          "art": {
+            "file": "/badges/leader/epaulette_asst_leader.png",
+            "ref": "UH",
+            "page": "104",
+            "example": false
+          },
+          "cap": {
+            "file": "/badges/leader/cap_yellow.png",
+            "ref": "UH",
+            "page": "104",
+            "example": false,
+            "zh": "黃色",
+            "en": "yellow"
+          },
+          "zh": {
+            "epaulette": "黃色"
+          },
+          "en": {
+            "epaulette": "yellow"
+          }
+        },
+        {
+          "id": "committee",
+          "ranks": [
+            "layMember"
+          ],
+          "art": {
+            "file": "/badges/leader/epaulette_committee.png",
+            "ref": "UH",
+            "page": "104",
+            "example": false
+          },
+          "cap": {
+            "file": "/badges/leader/cap_brown.png",
+            "ref": "UH",
+            "page": "104",
+            "example": false,
+            "zh": "啡色",
+            "en": "brown"
+          },
+          "zh": {
+            "epaulette": "啡、肉色、啡三間"
+          },
+          "en": {
+            "epaulette": "brown / peach / brown"
+          }
+        },
+        {
+          "id": "professional",
+          "ranks": [
+            "professionalScouter",
+            "salariedStaff"
+          ],
+          "art": {
+            "file": "/badges/leader/epaulette_professional.png",
+            "ref": "UH",
+            "page": "104",
+            "example": false
+          },
+          "cap": {
+            "file": "/badges/leader/cap_greenwhite.png",
+            "ref": "UH",
+            "page": "104",
+            "example": false,
+            "zh": "綠白綠間色",
+            "en": "green-white-green"
+          },
+          "zh": {
+            "epaulette": "綠、白、綠三間"
+          },
+          "en": {
+            "epaulette": "green / white / green"
+          }
+        }
+      ],
+      "modelNote": {
+        "zh": "手冊冇寫尺寸；模型用 4.6 cm（橫跨肩帶，肩帶闊 4.4 cm）× 3.65 cm（P.103–104 圖案比例）。P.172 袖圖：肩章喺肩帶膊頭嗰頭，徽號向衣領。圖案取自手冊 P.103–104 表格（細圖放大）。",
+        "en": "No size in the Handbook; the model uses 4.6 cm (across the 4.4 cm strap) × 3.65 cm (pp.103–104 artwork proportions). P.172 sleeve figure: the epaulette sits at the shoulder end of the strap with the emblem pointing to the collar. Artwork from the Handbook pp.103–104 table (small images enlarged)."
+      }
+    },
+    {
+      "id": "retiredPin",
+      "required": false,
+      "side": "both",
+      "zh": {
+        "name": "「R」字樣別針（退休）",
+        "place": "雙肩職級肩章下方（近膊頭）。",
+        "quote": "退休領袖／總監佩戴其退休前最高職級帽章及肩章，並在肩章下方位置佩上「R」字樣（「R」指「Retired 退休」）別針。香港訓練隊隊員假若獲香港總監批准延長退休年限，在續任期內，肩章不需佩上「R」字樣別針。穿著晚禮服時，不需佩上「R」字樣別針。",
+        "conditions": "退休領袖／總監；職級揀退休前最高職級。"
+      },
+      "en": {
+        "name": "“R” pin (retired)",
+        "place": "On both rank epaulettes, below the emblem (toward the shoulder).",
+        "quote": "Retired scouters/commissioners wear the cap badge and epaulettes of their highest rank before retirement, with an “R” pin (“R” for “Retired”) below on the epaulette. Hong Kong Training Team members whose retirement is extended by the Chief Commissioner do not add the R pin during the extension. The R pin is not worn with evening dress.",
+        "conditions": "Retired scouters/commissioners; pick the highest rank held."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 0.85,
+        "hCm": 0.75,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "shoulder",
+        "side": "both",
+        "onBadge": "epaulette",
+        "alongCm": 1.1,
+        "measured": false
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "105"
+        }
+      ],
+      "status": "documented",
+      "art": {
+        "file": "/badges/leader/retired_r_pin.png",
+        "ref": "UH",
+        "page": "105",
+        "example": false
+      },
+      "modelNote": {
+        "zh": "手冊 P.105 圖：「R」喺肩章徽號下面。模型照圖放喺肩章近膊頭嗰半；尺寸跟圖案比例估計。圖案取自 P.105。",
+        "en": "Handbook p.105 figure: the “R” sits below the emblem on the epaulette. The model puts it on the shoulder half of the epaulette as drawn; size estimated from the artwork. Artwork from p.105."
+      }
+    },
+    {
+      "id": "meritorious",
+      "required": false,
+      "side": "right",
+      "zh": {
+        "name": "優異旅團章",
+        "place": "穿著者右袖，袖口縫線上方中央，為期一年。",
+        "quote": "佩戴在制服恤衫右袖縫線上方中央位置，為期一年。有紅、紫和粉藍等三種顏色，每年輪流使用。",
+        "conditions": "「優異旅團獎勵計劃」獲獎旅團嘅領袖、教練員及團員；為期一年。旅層級先有。"
+      },
+      "en": {
+        "name": "Meritorious Group Badge",
+        "place": "Wearer's right sleeve, centred above the sleeve-hem seam, for one year.",
+        "quote": "Worn centred above the right sleeve seam of the uniform shirt, for one year. Comes in red, purple and light blue, used in turn each year.",
+        "conditions": "Leaders, instructors and members of a Group awarded under the Meritorious Group Scheme; for one year. Group level only."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 9,
+        "hCm": 2,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "sleeve",
+        "side": "right",
+        "aboveCuffSeamCm": 0.3,
+        "edge": "bottom",
+        "measured": false
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "159, 172"
+        }
+      ],
+      "status": "documented",
+      "art": {
+        "file": "/badges/meritorious_base_blue.png",
+        "ref": "UH",
+        "page": "159",
+        "example": false
+      },
+      "dynamic": "meritorious",
+      "levels": [
+        "group"
+      ],
+      "modelNote": {
+        "zh": "手冊冇寫尺寸；模型用 9 × 2 cm（P.159 圖案比例）。P.172 附圖：成年成員嘅優異旅團章喺右袖最下。",
+        "en": "No size in the Handbook; the model uses 9 × 2 cm (p.159 artwork proportions). P.172 figure: for adults it is lowest on the right sleeve."
+      }
+    }
+  ],
+  "notAllowed": [
+    {
+      "id": "hardHatTrousers",
+      "zh": "著長褲（編號 6）唔可以戴深綠色金邊硬帽。",
+      "en": "The dark green gold-edged hard hat may not be worn with trousers (No. 6).",
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "100"
+        }
+      ]
+    },
+    {
+      "id": "lowerBadgesSweater",
+      "zh": "總會總部章、地域章、區章只戴喺制服恤衫上（毛衣、禮服上衣只戴香港肩章／旅章）。",
+      "en": "The Association Headquarters, Region and District Badges go only on the uniform shirt (the sweater and dress jacket carry only the Hong Kong shoulder title / Group Badge).",
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "94–95"
+        }
+      ]
+    },
+    {
+      "id": "associationColours",
+      "zh": "除獲得香港總監批准外，童軍單位嘅領巾唔可以用總會會巾嘅顏色。",
+      "en": "Unless approved by the Chief Commissioner, a unit neckerchief may not use the colours of the Association neckerchief.",
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "107"
+        }
+      ]
+    },
+    {
+      "id": "neckerEnds",
+      "zh": "領巾尾喺肚臍附近，唔可以越過皮帶扣。",
+      "en": "The neckerchief ends sit near the navel and may not pass the belt buckle.",
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "112"
+        }
+      ]
+    },
+    {
+      "id": "woodBadgeEvening",
+      "zh": "唔可以喺晚禮服上戴木章；晚禮服唔需要佩上「R」字樣別針。",
+      "en": "The Wood Badge is not worn on evening dress, nor the “R” pin.",
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "105, 116"
+        }
+      ]
+    }
+  ],
+  "uninvested": {
+    "zh": "成年成員制服按已宣誓處理（會員章、領巾、帽都戴）；模型唔提供未宣誓狀態。",
+    "en": "Adult uniforms are shown as invested (membership badge, neckerchief and cap worn); the model has no uninvested state."
+  },
+  "conflicts": [
+    {
+      "id": "englishRanks",
+      "zh": "職級英文名係描述性翻譯（中文版手冊冇英文名），請以總會英文文件為準。",
+      "en": "The English rank names are descriptive translations (the Chinese Handbook has none); follow SAHK's English documents."
+    },
+    {
+      "id": "epauletteSize",
+      "zh": "職級肩章、香港肩章、總會總部章手冊冇寫尺寸：模型按圖案比例同 P.172 附圖估計。",
+      "en": "The Handbook gives no size for the rank epaulettes, Hong Kong shoulder title or Association Headquarters Badge: the model estimates from artwork proportions and the p.172 figure."
+    },
+    {
+      "id": "hongKongPocket",
+      "zh": "手冊 P.93：樂行童軍同成年成員嘅香港章戴喺右胸袋中央，青少年支部（幼童軍、童軍、深資童軍）先戴喺左袋蓋上面。",
+      "en": "Handbook p.93: Rover Scouts and adults wear the Hong Kong Badge centred on the right pocket; only the youth sections (Cub, Scout, Venture) wear it above the left flap."
+    }
+  ],
+  "artCredit": {
+    "zh": "徽章、帽章、肩章圖案取自香港童軍總會《儀容與制服手冊》（P.92–95、P.103–105、P.109；© 香港童軍總會），只作示意，未經修改設計。",
+    "en": "Badge, cap badge and epaulette artwork from the SAHK Uniform Handbook (pp.92–95, 103–105, 109; © SAHK), for illustration only, design unaltered."
+  }
+}
