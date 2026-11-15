@@ -62,14 +62,16 @@ export function boxFaces([w, h, d], faces, base) {
 }
 
 /* ---------------- 頭 ---------------- */
-function headFacesRaw(B) {
+function headFacesRaw(B, smooth = false) {
   const { w, h, d } = B.head;
   const long = B.hair === 'pigtails';
   const front = (g) => {
     g.fill(C.skin);
-    // 頭髮 + 陰
-    g.rect(0, 0, w, long ? 5 : 4.5, C.hair);
-    if (long) {
+    // 頭髮 + 陰（v27 流線：頭髮係立體，唔畫）
+    if (!smooth) g.rect(0, 0, w, long ? 5 : 4.5, C.hair);
+    if (smooth) {
+      // 立體頭髮遮住額頭；只畫五官
+    } else if (long) {
       // 女仔：齊陰 + 兩邊長髮
       g.shape((x, y) => y < 6 && (x < 3 || x > w - 3 || (y < 5.5 && Math.floor(x * PX) % 5 !== 0)), C.hair);
       g.rect(0, 0, 2, h, C.hair);
@@ -80,8 +82,10 @@ function headFacesRaw(B) {
       g.rect(0, 0, 1.5, 8, C.hair);
       g.rect(w - 1.5, 0, 1.5, 8, C.hair);
     }
-    g.px(6, 2, C.hairHi, 3, 1);
-    g.px(22, 3, C.hairHi, 4, 1);
+    if (!smooth) {
+      g.px(6, 2, C.hairHi, 3, 1);
+      g.px(22, 3, C.hairHi, 4, 1);
+    }
     // 眉
     g.rect(4, 7.5, 3, 0.5, C.brow);
     g.rect(w - 7, 7.5, 3, 0.5, C.brow);
@@ -118,6 +122,11 @@ function headFacesRaw(B) {
     g.px(10, 6, C.hairHi, 6, 1);
     g.px(18, 14, C.hairHi, 5, 1);
   };
+  if (smooth) {
+    // 流線：側面只畫耳仔位嘅陰影都唔要（有立體耳仔），頂底全皮膚（頂俾頭髮遮住）
+    const skin = (g) => g.fill(C.skin);
+    return boxFaces([w, h, d], { px: skin, nx: skin, py: skin, ny: skin, pz: front, nz: skin });
+  }
   return boxFaces([w, h, d], {
     px: side(true),
     nx: side(false),
@@ -713,8 +722,8 @@ export function hardHatFaces(size) {
 }
 
 /* ---------------- v25 材質種類標記（皮膚、頭髮、鞋唔要布紋） ---------------- */
-export function headFaces(B) {
-  return tagKind(headFacesRaw(B), 'skin');
+export function headFaces(B, smooth = false) {
+  return tagKind(headFacesRaw(B, smooth), 'skin');
 }
 export function pigtailFaces(size, tie) {
   return tagKind(pigtailFacesRaw(size, tie), 'hair');

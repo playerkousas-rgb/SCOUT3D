@@ -1744,7 +1744,8 @@ export default function App() {
           ) : (
             <div className="stage__msg">{t('nowebgl')}</div>
           )}
-          <p className="hint">{t('hint.drag')}</p>
+          <p className="hint hint--mouse">{t('hint.drag')}</p>
+          <p className="hint hint--touch">{t('hint.touch')}</p>
           {webgl && <HeightBar ref={heightBar} scene={scene} />}
           {webgl && exportOpen && <ExportPanel scene={scene} variantTag={variantTag} onClose={() => setExportOpen(false)} toast={setToast} />}
           {webgl && (

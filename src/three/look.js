@@ -359,7 +359,7 @@ export function partShape(part, w, h, d) {
   switch (part) {
     case 'torso': return { rc: TORSO_RC_K * Math.min(w, d), reTop: TORSO_RE_TOP, reBot: 0.6, profile: TORSO_PROFILE };
     case 'sleeve': return { rc: SLEEVE_RC_K * Math.min(w, d), reTop: SLEEVE_RE_TOP * Math.min(w, d), reBot: 0.5 };
-    case 'head': return { rc: 0.47 * m, reTop: 0.42 * h, reBot: 0.16 * h };
+    case 'head': return { rc: 0.47 * m, reTop: 0.42 * h, reBot: 0.26 * h };
     case 'neck': return { rc: 0.48 * m, reTop: 0.3, reBot: 0.3 };
     case 'limb': return { rc: 0.47 * m, reTop: Math.min(1, 0.2 * m), reBot: Math.min(1, 0.2 * m) };
     case 'hand': return { rc: 0.45 * m, reTop: 0.6, reBot: 0.45 * m };

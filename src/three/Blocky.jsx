@@ -17,6 +17,7 @@ import {
   gilwellWogglePaint, hardHatFaces, dressJacketFaces, messJacketFaces, messTrouserFaces,
 } from './pixels.js';
 import { COLOURS as C } from './body.js';
+import { SmoothHand, SmoothHead } from './Anatomy.jsx';
 import { useDetailed, useSmooth, roundedBox, plainBox, smoothBox, partShape, surfaceOf, snapToSurface, MAX_RADIUS, SLEEVE_RADIUS } from './look.js';
 
 const CAP_BADGE = '/badges/cub_cap_badge.png';
@@ -96,7 +97,12 @@ function Arm({ L, side, painted, faces, long, children }) {
         ) : (
           <Box part="limb" size={[B.lowerArm.w, B.lowerArm.h + ov, B.lowerArm.d]} faces={faces.lower} painted={painted} position={[0, -(B.lowerArm.h - ov) / 2, 0]} taper={smooth ? 0.82 : 1} />
         )}
-        <Box part="hand" size={[B.hand.w, B.hand.h + ovH, B.hand.d]} faces={faces.hand} painted={painted} position={[0, -B.lowerArm.h - (B.hand.h - ovH) / 2, 0]} />
+        {smooth ? (
+          // v27 流線：有手指嘅手
+          <SmoothHand size={[B.hand.w, B.hand.h, B.hand.d]} side={side} painted={painted} position={[0, -B.lowerArm.h, 0]} overlap={ovH} />
+        ) : (
+          <Box part="hand" size={[B.hand.w, B.hand.h + ovH, B.hand.d]} faces={faces.hand} painted={painted} position={[0, -B.lowerArm.h - (B.hand.h - ovH) / 2, 0]} />
+        )}
       </group>
       {children}
     </group>
@@ -755,7 +761,7 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
     const slLong = [B.sleeve.w, L.top - L.shoulderY + B.upperArm.h, B.sleeve.d];
     const legH = B.leg.top - B.leg.y;
     return {
-      head: headFaces(B),
+      head: headFaces(B, smooth),
       pigtail: pigtailFaces([4.5, 12, 4.5], PIGTAIL_TIE),
       neck: neckFaces(B),
       arm: {
@@ -777,7 +783,7 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
       sl,
       slLong,
     };
-  }, [B, L, cub, skirt, dress]);
+  }, [B, L, cub, skirt, dress, smooth]);
 
   // 衫（跟款式、顏色、袖長變）
   const shirt = useMemo(() => {
@@ -835,6 +841,12 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
     const len = long ? seam + B.upperArm.h : B.sleeve.len;
     return surfaceOf('sleeve', [B.sleeve.w, len, B.sleeve.d], [0, seam - len / 2, 0]);
   }, [L, B, long]);
+  // v27：有冇戴帽（同下面畫帽嘅條件一樣）— 戴帽時立體頭髮壓薄啲
+  const hatOn = !!outfit.hat && (
+    (!cub && outfit.hat !== 'none') ||
+    ((section === 'cub' || scout || (venture && !leader)) && !!outfit.invested) ||
+    (leader && (hatInfo.kind === 'sea' || hatInfo.kind === 'beret' || hatInfo.kind === 'mess' || (hatInfo.kind === 'hardHat' && !!hatInfo.cap)))
+  );
   // v26 流線：笛繩切細（1.5 cm）再貼返圓滑上身，唔會喺膊頭圓角度浮起
   const lanyardsShown = useMemo(
     () => (smooth ? lanyards.map((q) => ({ ...q, paths: q.paths.map((pts) => subdivide(pts, 1.5).map((v) => snapToSurface(v, torsoSurf))) })) : lanyards),
@@ -903,7 +915,8 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
       <group position={[0, BASE_H, 0]} scale={0.01}>
         {/* 頭、頸、帽 */}
         <Box part="head" size={[h.w, h.h, h.d]} faces={body.head} painted={painted} position={[0, h.y + h.h / 2, h.z]} />
-        {B.hair === 'pigtails' &&
+        {smooth && <SmoothHead head={h} style={B.hair} hat={hatOn} painted={painted} tie={PIGTAIL_TIE} />}
+        {!smooth && B.hair === 'pigtails' &&
           [1, -1].map((s) => (
             <Box part="limb" key={s} size={[4.5, 12, 4.5]} faces={body.pigtail} painted={painted} position={[s * (h.w / 2 + 1.6), h.y + 5, -4.5]} rotation={[0.15, 0, s * 0.12]} />
           ))}
