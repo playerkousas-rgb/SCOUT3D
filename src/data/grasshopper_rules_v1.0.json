@@ -11,16 +11,16 @@
     "en": "Scout Association of Hong Kong"
   },
   "review": {
-    "status": "pending",
+    "status": "verified",
     "reviewer": {
       "zh": "專案負責人（領袖）",
       "en": "Project owner (leader)"
     },
-    "lastChecked": null,
+    "lastChecked": "2026-11-13",
     "compiledOn": "2026-11-14",
     "note": {
-      "zh": "以下內容由 AI 助手依文件整理，未經核對人逐項確認；確認後請把每項 status 改為 verified 並填 lastChecked。",
-      "en": "Compiled from the documents by an AI assistant and not yet confirmed item by item. After review, set each status to verified and fill lastChecked."
+      "zh": "用戶（專案負責人，領袖）已逐項核對（2026-11-13：「我都對過了」）。",
+      "en": "Checked item by item by the user (project owner, a leader) on 2026-11-13."
     },
     "userChecks": [
       {
@@ -28,6 +28,12 @@
         "item": "progress",
         "zh": "進步獎章左右以衣服除下後、望住左袖外側嘅角度（手冊插圖睇法）",
         "en": "Progress Award left/right follows the view of the outside of the left sleeve with the shirt taken off (as in the handbook figures)"
+      },
+      {
+        "date": "2026-11-13",
+        "item": "allChecked",
+        "zh": "用戶確認全部內容已核對，介面刪走「待核對」字樣（用戶指示）",
+        "en": "The user confirmed every item has been checked; the \"pending review\" labels are removed from the interface (user instruction)"
       }
     ]
   },
@@ -91,7 +97,7 @@
           "page": "P.8"
         }
       ],
-      "status": "documented"
+      "status": "verified"
     },
     {
       "id": "shirt",
@@ -114,7 +120,7 @@
           "page": "P.8"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "modelNote": {
         "zh": "手冊 P.25 附圖：橙色短袖、白色袖口。模型照附圖加白領、白袖邊。",
         "en": "Handbook p.25 figure: orange short sleeves with white cuffs. The model adds the white collar and cuffs as drawn."
@@ -141,7 +147,7 @@
           "page": "P.8"
         }
       ],
-      "status": "documented"
+      "status": "verified"
     },
     {
       "id": "necker",
@@ -164,7 +170,7 @@
           "page": "P.8"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "modelNote": {
         "zh": "旅巾顏色及花邊由各旅自定，模型可自選顏色。",
         "en": "Neckerchief colours are set by each Group; pick them in the model."
@@ -191,7 +197,7 @@
           "page": "P.8"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "modelNote": {
         "zh": "文件未指定小童軍巾圈顏色，模型可自選。",
         "en": "The documents do not set a woggle colour for Grasshoppers; pick one in the model."
@@ -218,7 +224,7 @@
           "page": "P.8"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "modelNote": {
         "zh": "第一版只示範背心。",
         "en": "Version 1 shows the vest only."
@@ -241,7 +247,7 @@
           "page": "24"
         }
       ],
-      "status": "documented"
+      "status": "verified"
     },
     {
       "id": "shoes",
@@ -264,7 +270,7 @@
           "page": "P.8"
         }
       ],
-      "status": "documented"
+      "status": "verified"
     }
   ],
   "badges": [
@@ -310,7 +316,7 @@
           "page": "P.8–10"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "art": {
         "file": "/badges/grasshopper_membership.png",
         "ref": "UH",
@@ -363,7 +369,7 @@
           "page": "P.11–12"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "art": [
         {
           "file": "/badges/grasshopper_progress1_red.png",
@@ -432,7 +438,7 @@
           "page": "P.9, P.12"
         }
       ],
-      "status": "pending",
+      "status": "verified",
       "pendingReason": {
         "zh": "只見於 2026 年第三版指引（P.9 附圖：左袖、進步獎章上方），《儀容與制服手冊》未收錄。尺寸同與進步獎章嘅距離未有寫明；模型按附圖比例用直徑 5 cm、相距 1 cm。",
         "en": "Only in the 2026 3rd-edition guide (P.9 figure: left sleeve, above the Progress Awards); not yet in the Uniform Handbook. Size and gap are not stated; the model uses 5 cm diameter and a 1 cm gap from the figure's proportions."
@@ -485,7 +491,7 @@
           "page": "P.9"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "art": {
         "file": "/badges/handbook_example_troop.png",
         "ref": "UH",
@@ -495,7 +501,8 @@
       "modelNote": {
         "zh": "手冊 P.94：新成立旅嘅旅章不小過 8.5 × 2 cm、不大過 10.5 × 2.5 cm；模型用 9 × 2.2 cm。圖案係手冊示例（2222 旅），各旅實際圖案唔同。",
         "en": "Handbook p.94: a new Group's badge is between 8.5 × 2 cm and 10.5 × 2.5 cm; the model uses 9 × 2.2 cm. The artwork is the handbook example (2222th Group); each Group's badge differs."
-      }
+      },
+      "dynamic": "troop"
     },
     {
       "id": "district",
@@ -539,7 +546,7 @@
           "page": "P.9"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "art": {
         "file": "/badges/handbook_example_district.png",
         "ref": "UH",
@@ -593,7 +600,7 @@
           "page": "P.9"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "art": {
         "file": "/badges/meritorious_base_blue.png",
         "ref": "UH",
@@ -647,7 +654,7 @@
           "page": "P.9"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "art": {
         "file": "/badges/handbook_example_commemorative.png",
         "ref": "UH",
@@ -661,7 +668,7 @@
     }
   ],
   "schoolTop": {
-    "status": "pending",
+    "status": "verified",
     "zh": {
       "name": "學校運動上衣（未能縫章）",
       "place": "兩種排法（模型可以揀）：①《儀容與制服手冊》P.24：團員章戴喺領巾尖中央；進步章依左袖排列，戴喺前面巾尾左、右末端。②《小童軍活動指引》第三版 P.9 附圖：團員章同小草蜢獎章並排喺領巾尖，藍、綠進步獎章喺兩邊，紅、啡喺下面。",

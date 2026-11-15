@@ -55,6 +55,19 @@ export function allDistricts(data) {
  */
 export function resolveArt(badge, picks, data, patrols = null) {
   const fallback = { kind: 'image', file: Array.isArray(badge.art) ? badge.art[0].file : badge.art.file, example: !!badge.art.example };
+  if (badge.dynamic === 'region' && picks?.level === 'region') {
+    // 成年成員地域層級：直接揀地域（唔使揀區），只戴地域章（手冊 P.94–95）
+    const region = picks?.regionId ? (data?.regions || []).find((r) => r.id === picks.regionId) : null;
+    if (!region) return fallback;
+    if (!region.badge) return null;
+    return { kind: 'image', file: region.badge.file, example: false, region };
+  }
+  if (badge.dynamic === 'troop') {
+    // 旅條（手冊 P.25、P.94 示例）：用戶輸入旅號，英文序數自動轉（1ST、22ND、33RD、44TH）
+    const no = troopNumber(picks?.troopNo);
+    if (!no) return fallback;
+    return { kind: 'troopTape', no, suffix: ordinalSuffix(no), example: false };
+  }
   if (badge.dynamic === 'district' || badge.dynamic === 'region') {
     const hit = picks?.districtId ? findDistrict(data, picks.districtId) : null;
     if (!hit) return fallback; // 未揀區：手冊示例色塊
@@ -94,6 +107,21 @@ export function resolveArt(badge, picks, data, patrols = null) {
     return { kind: 'merit', year, colour, base: a.file, digits: a.digits, text: a.text, example: false };
   }
   return fallback;
+}
+
+/** 英文序數字尾：1ST、2ND、3RD、4TH；11–13 一律 TH（11TH、112TH） */
+export function ordinalSuffix(n) {
+  const v = Math.abs(Math.trunc(n));
+  if (v % 100 >= 11 && v % 100 <= 13) return 'TH';
+  return { 1: 'ST', 2: 'ND', 3: 'RD' }[v % 10] ?? 'TH';
+}
+
+/** 旅號：由輸入攞第一組數字（「22」「22nd」「第22旅」都得），1–9999；冇就 null */
+export function troopNumber(v) {
+  const m = String(v ?? '').match(/\d+/);
+  if (!m) return null;
+  const n = parseInt(m[0].slice(0, 4), 10);
+  return n > 0 ? n : null;
 }
 
 /** 名牌姓名：去走控制字元、頭尾空白，限長度 */

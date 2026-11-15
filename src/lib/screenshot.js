@@ -23,7 +23,7 @@ export async function captureScreenshot(source, caption) {
   g.font = `600 ${fs}px "Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif`;
   g.textBaseline = 'bottom';
 
-  // 左下：說明（待核對）
+  // 左下：說明（支部、款式）
   if (caption) {
     g.textAlign = 'left';
     const tw = g.measureText(caption).width;

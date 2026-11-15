@@ -11,16 +11,16 @@
     "en": "Scout Association of Hong Kong"
   },
   "review": {
-    "status": "pending",
+    "status": "verified",
     "reviewer": {
       "zh": "專案負責人（領袖）",
       "en": "Project owner (leader)"
     },
-    "lastChecked": null,
+    "lastChecked": "2026-11-13",
     "compiledOn": "2026-11-14",
     "note": {
-      "zh": "以下內容由 AI 助手依文件整理，未經核對人逐項確認；確認後請把每項 status 改為 verified 並填 lastChecked。",
-      "en": "Compiled from the documents by an AI assistant and not yet confirmed item by item. After review, set each status to verified and fill lastChecked."
+      "zh": "用戶（專案負責人，領袖）已逐項核對（2026-11-13：「我都對過了」）。",
+      "en": "Checked item by item by the user (project owner, a leader) on 2026-11-13."
     },
     "userChecks": [
       {
@@ -34,6 +34,12 @@
         "item": "lonePairCentred",
         "zh": "地域章／區章只得一個（例如銀禧區）就放中間；之後只得一個總會章嘅制服都係（用戶指示）",
         "en": "If only one of the Region/District Badges is worn (e.g. Silver Jubilee) it is centred; the same later for uniforms with a single HQ badge (user instruction)"
+      },
+      {
+        "date": "2026-11-13",
+        "item": "allChecked",
+        "zh": "用戶確認全部內容已核對，介面刪走「待核對」字樣（用戶指示）",
+        "en": "The user confirmed every item has been checked; the \"pending review\" labels are removed from the interface (user instruction)"
       }
     ]
   },
@@ -97,7 +103,7 @@
           "page": "12"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "modelNote": {
         "zh": "帽章圖案取自手冊 P.102 相片（細圖放大，會有啲矇）。方塊人嘅軟帽只係示意形狀。",
         "en": "The cap badge artwork is from the Handbook p.102 photo (a small image enlarged, so slightly blurry). The blocky beret is only an indicative shape."
@@ -124,7 +130,7 @@
           "page": "12"
         }
       ],
-      "status": "documented"
+      "status": "verified"
     },
     {
       "id": "shorts",
@@ -147,7 +153,7 @@
           "page": "12"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "modelNote": {
         "zh": "手冊 P.26：旅長可決定全旅喺冬季改穿長褲；模型只畫短褲／裙褲。",
         "en": "Handbook p.26: the Group Scout Leader may switch the whole Group to long trousers in winter; the model shows shorts/culottes only."
@@ -174,7 +180,7 @@
           "page": "12"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "modelNote": {
         "zh": "皮帶扣只畫銀色方塊示意，冇畫徽號。",
         "en": "The buckle is a plain silver block; the emblem is not drawn."
@@ -201,7 +207,7 @@
           "page": "12"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "modelNote": {
         "zh": "手冊 P.31 同綱要 P.12 附圖：襪頭摺下；模型照畫。",
         "en": "The Handbook p.31 and Training Scheme p.12 figures show turned-down tops; the model follows them."
@@ -228,7 +234,7 @@
           "page": "12"
         }
       ],
-      "status": "documented"
+      "status": "verified"
     },
     {
       "id": "necker",
@@ -251,7 +257,7 @@
           "page": "12"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "modelNote": {
         "zh": "旅巾顏色由各旅自定，模型可自選；巾圈畫做啡色皮巾圈（手冊 P.110 相片），冇畫徽號。",
         "en": "Neckerchief colours are set by each Group; pick them in the model. The woggle is drawn as a brown leather woggle (Handbook p.110 photo) without the emblem."
@@ -273,7 +279,7 @@
           "page": "121–122"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "modelNote": {
         "zh": "毛衣畫做長袖、坑紋、圓領（見到恤衫領）、膊頭淺色膊布（手冊 P.121–122 附圖）。徽章「或制服毛衣相同位置」：位置同恤衫一樣，向外移一個毛衣厚度。",
         "en": "The jersey is drawn long-sleeved and ribbed, with a crew neck (shirt collar showing) and lighter shoulder patches (Handbook pp.121–122 figures). Badges go in “the same position on the uniform jersey”: the shirt positions, moved out by the jersey thickness."
@@ -344,7 +350,7 @@
               "page": "13"
             }
           ],
-          "status": "documented",
+          "status": "verified",
           "modelNote": {
             "zh": "帽帶圖案取自手冊 P.102 相片（細圖放大）。方塊人嘅白頂帽只係示意形狀；蝴蝶結畫喺穿著者左邊（+x）。",
             "en": "The tally artwork is from the Handbook p.102 photo (a small image enlarged). The blocky white-top cap is only an indicative shape; the bow is on the wearer's left (+x)."
@@ -370,7 +376,7 @@
               "page": "13"
             }
           ],
-          "status": "documented"
+          "status": "verified"
         },
         {
           "id": "shorts",
@@ -392,7 +398,7 @@
               "page": "13"
             }
           ],
-          "status": "documented"
+          "status": "verified"
         },
         {
           "id": "socks",
@@ -414,7 +420,7 @@
               "page": "13"
             }
           ],
-          "status": "documented"
+          "status": "verified"
         },
         {
           "id": "sweater",
@@ -432,7 +438,7 @@
               "page": "121–122"
             }
           ],
-          "status": "documented",
+          "status": "verified",
           "modelNote": {
             "zh": "手冊 P.121：海童軍／空童軍青少年成員穿深藍色制服毛衣。毛衣畫做長袖、坑紋、圓領（見到恤衫領）、膊頭淺色膊布（手冊 P.121–122 附圖）。徽章「或制服毛衣相同位置」：位置同恤衫一樣，向外移一個毛衣厚度。",
             "en": "Handbook p.121: Sea/Air Scout youth members wear the dark blue jersey. The jersey is drawn long-sleeved and ribbed, with a crew neck (shirt collar showing) and lighter shoulder patches (Handbook pp.121–122 figures). Badges go in “the same position on the uniform jersey”: the shirt positions, moved out by the jersey thickness."
@@ -481,7 +487,7 @@
               "page": "14"
             }
           ],
-          "status": "documented",
+          "status": "verified",
           "modelNote": {
             "zh": "帽章同童軍一樣（手冊 P.102「童軍、空童軍…佩戴」）。顏色跟綱要 P.14 附圖（深灰藍）；方塊人嘅軟帽只係示意形狀。",
             "en": "Same cap badge as Scouts (Handbook p.102 “worn by Scouts, Air Scouts…”). The colour follows the Training Scheme p.14 figure (dark grey-blue); the blocky beret is only an indicative shape."
@@ -507,7 +513,7 @@
               "page": "14"
             }
           ],
-          "status": "documented"
+          "status": "verified"
         },
         {
           "id": "shorts",
@@ -529,7 +535,7 @@
               "page": "14"
             }
           ],
-          "status": "documented"
+          "status": "verified"
         },
         {
           "id": "socks",
@@ -551,7 +557,7 @@
               "page": "14"
             }
           ],
-          "status": "documented"
+          "status": "verified"
         },
         {
           "id": "sweater",
@@ -569,7 +575,7 @@
               "page": "121–122"
             }
           ],
-          "status": "documented",
+          "status": "verified",
           "modelNote": {
             "zh": "手冊 P.121：海童軍／空童軍青少年成員穿深藍色制服毛衣。毛衣畫做長袖、坑紋、圓領（見到恤衫領）、膊頭淺色膊布（手冊 P.121–122 附圖）。徽章「或制服毛衣相同位置」：位置同恤衫一樣，向外移一個毛衣厚度。",
             "en": "Handbook p.121: Sea/Air Scout youth members wear the dark blue jersey. The jersey is drawn long-sleeved and ribbed, with a crew neck (shirt collar showing) and lighter shoulder patches (Handbook pp.121–122 figures). Badges go in “the same position on the uniform jersey”: the shirt positions, moved out by the jersey thickness."
@@ -620,7 +626,7 @@
           "page": "12"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "art": {
         "file": "/badges/world_membership.png",
         "ref": "UH",
@@ -674,7 +680,7 @@
           "page": "12"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "art": {
         "file": "/badges/hong_kong_badge.png",
         "ref": "UH",
@@ -728,7 +734,7 @@
           "page": "12"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "art": {
         "file": "/badges/handbook_example_troop.png",
         "ref": "UH",
@@ -739,7 +745,8 @@
         "zh": "手冊 P.94：新成立旅嘅旅章不小過 8.5 × 2 cm、不大過 10.5 × 2.5 cm；模型用 9 × 2.2 cm。圖案係手冊示例（2222 旅），各旅實際圖案唔同。",
         "en": "Handbook p.94: a new Group's badge is between 8.5 × 2 cm and 10.5 × 2.5 cm; the model uses 9 × 2.2 cm. The artwork is the handbook example (2222th Group); each Group's badge differs."
       },
-      "sweater": true
+      "sweater": true,
+      "dynamic": "troop"
     },
     {
       "id": "region",
@@ -786,7 +793,7 @@
           "page": "12"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "art": {
         "file": "/badges/handbook_example_region.png",
         "ref": "UH",
@@ -844,7 +851,7 @@
           "page": "12"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "art": {
         "file": "/badges/handbook_example_district.png",
         "ref": "UH",
@@ -900,7 +907,7 @@
           "page": "12–14, 199–202"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "art": {
         "file": "/badges/patrols/badger.png",
         "ref": "STS",
@@ -955,7 +962,7 @@
           "page": "12"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "art": {
         "file": "/badges/meritorious_base_blue.png",
         "ref": "UH",

@@ -7,11 +7,12 @@ import { layout, neckerLayout, strapLayout, dressLayout, VEST_T, SWEATER_TOP, PX
 import { useTexture } from '@react-three/drei';
 import { SECTIONS, DISTRICTS, PATROLS } from '../data/rules.js';
 import { resolveArt, rankCap, leaderNeckwear, messCapOf } from '../lib/picks.js';
+import { neckerPalettes } from '../lib/necker.js';
 import { placeAll, placeFor, visible, dynKey } from './badgeLayout.js';
 import { useBadgeTextures, useDynamicTextures, TorsoBadges, SleeveBadges } from './Badges.jsx';
 import {
   headFaces, pigtailFaces, neckFaces, torsoFaces, sleeveFaces, cuffFaces, skinFaces, handFaces, legFaces, shortsFaces, shinFaces,
-  shoeFaces, skirtFaces, vestFaces, hatFaces, brimFaces, shirtPalette, rollFaces, tailCanvas, backTriangleCanvas, plain, material, wogglePaint,
+  shoeFaces, skirtFaces, vestFaces, hatFaces, brimFaces, shirtPalette, neckerRollFaces, neckerTailCanvas, neckerBackCanvas, plain, material, wogglePaint,
   cubTorsoFaces, cubShinFaces, cubCapFaces, scoutWogglePaint, seaCapFaces, shade, brighten, sweaterFaces, sweaterSleeveFaces, sweaterCuffFaces, tieCanvas,
   gilwellWogglePaint, hardHatFaces, dressJacketFaces, messJacketFaces, messTrouserFaces,
 } from './pixels.js';
@@ -342,31 +343,44 @@ function TipDecal({ file, w, h, painted, position }) {
 }
 
 /**
- * 木章（手冊 P.115–117）：皮繩連木珠。皮繩由頸兩邊（top）落到胸前（end），木珠喺 end 下面吊住；
- * 兩邊分木珠（2 顆 = 每邊 1 顆；3 顆 = 左 2 右 1；4 顆 = 每邊 2 顆）。頸後嗰段藏喺領巾下面，唔使畫。
+ * 木章（手冊 P.115–117；擺法跟用戶附相 2026-11-13）：皮繩由頸兩邊（top，喺領巾捲邊下面出嚟）
+ * 斜斜落到胸前中間（knot，約胸袋底高度）打結，結下面兩條短繩吊住木珠；木珠打橫（穿孔喺中間），
+ * 2 顆 = 每邊 1 顆；3 顆 = 左 2 右 1；4 顆 = 每邊 2 顆。木珠疊喺領巾（或者領帶）前面。頸後藏喺領巾下面，唔使畫。
  */
-function WoodBadge({ top, end, beads, painted }) {
+function WoodBadge({ top, knot, beads, painted }) {
   const F = useMemo(
-    () => ({ thong: [0, 1, 2, 3, 4, 5].map(() => plain(1, 1, C.thong)), bead: hatFaces([1.2, 3, 1.2], C.woodBead) }),
+    () => ({ thong: [0, 1, 2, 3, 4, 5].map(() => plain(1, 1, C.thong)), knot: hatFaces([1.4, 1.4, 1], C.thong), bead: hatFaces([3.2, 1.1, 1.1], C.woodBead) }),
     [],
   );
-  const perSide = { 1: Math.ceil(beads / 2), [-1]: Math.floor(beads / 2) };
+  const T = 0.45; // 皮繩粗幼
+  const seg = (a, b, key) => {
+    const dx = b.x - a.x;
+    const dy = b.y - a.y;
+    const dz = b.z - a.z;
+    const len = Math.hypot(dx, dy, dz);
+    return (
+      <group key={key} position={[(a.x + b.x) / 2, (a.y + b.y) / 2, (a.z + b.z) / 2]} rotation={[0, 0, Math.atan2(-dx, dy)]}>
+        <Box size={[T, len, T]} faces={F.thong} painted={painted} position={[0, 0, 0]} rotation={[Math.atan2(dz, Math.hypot(dx, dy)), 0, 0]} />
+      </group>
+    );
+  };
+  // 木珠：由上到下交替左右（穿著者左先），每顆低 1.5 cm
+  const list = Array.from({ length: beads }, (_, k) => {
+    const s = k % 2 === 0 ? 1 : -1;
+    return { s, x: s * 0.55, y: knot.y - 3.4 - k * 1.5, z: knot.z + 0.1 + (s > 0 ? 0.15 : 0) };
+  });
+  const lowest = (s) => list.filter((b) => b.s === s).at(-1);
   return (
     <group>
+      {[1, -1].map((s) => seg({ x: s * top.x, y: top.y, z: top.z }, knot, `up${s}`))}
+      <Box size={[1.4, 1.4, 1]} faces={F.knot} painted={painted} position={[knot.x, knot.y, knot.z + 0.1]} />
       {[1, -1].map((s) => {
-        const dx = s * (top.x - end.x);
-        const dy = top.y - end.y;
-        const len = Math.hypot(dx, dy);
-        const n = perSide[s];
-        return (
-          <group key={s}>
-            <Box size={[0.5, len, 0.4]} faces={F.thong} painted={painted} position={[s * (top.x + end.x) / 2, (top.y + end.y) / 2, (top.z + end.z) / 2]} rotation={[0, 0, Math.atan2(-dx, dy)]} />
-            {Array.from({ length: n }, (_, i) => (
-              <Box key={i} size={[1.2, 3, 1.2]} faces={F.bead} painted={painted} position={[s * end.x + (i - (n - 1) / 2) * 1.4, end.y - 1.7, end.z + 0.3]} />
-            ))}
-          </group>
-        );
+        const b = lowest(s);
+        return b ? seg({ x: knot.x + s * 0.3, y: knot.y - 0.6, z: knot.z }, { x: b.x, y: b.y + 0.4, z: b.z }, `dn${s}`) : null;
       })}
+      {list.map((b, k) => (
+        <Box key={k} size={[3.2, 1.1, 1.1]} faces={F.bead} painted={painted} position={[b.x, b.y, b.z]} />
+      ))}
     </group>
   );
 }
@@ -517,7 +531,7 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
   const U = scout
     ? scoutVariant(outfit.variant)
     : leader
-    ? leaderVariant(['u1', 'u2'].includes(outfit.uniform) ? 'land' : outfit.variant) // 禮服／晚禮服只有陸上款（手冊 P.57–62）
+    ? leaderVariant(['u1', 'u2'].includes(outfit.uniform) ? 'land' : outfit.variant) // 禮服／晚禮服只有一款，海／空童軍領袖都一樣（手冊 P.57–62，用戶確認）
     : section === 'rover'
     ? roverVariant(outfit.variant)
     : venture
@@ -566,8 +580,12 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
   }, [leader, U, RULES, picks.rank, landLeader, skirt, outfit.hatStyle, outfit.ventureLeader, dress, gender]);
   // 成年成員領巾、巾圈、木章
   const LN = useMemo(() => (leader ? leaderNeckwear(RULES, outfit, picks) : null), [leader, RULES, outfit, picks]);
-  const neckerMain = LN ? (LN.necker === 'association' ? C.assocNecker : LN.necker === 'gilwell' ? C.gilwellNecker : outfit.neckerMain) : outfit.neckerMain;
-  const neckerBorder = LN ? (LN.necker === 'association' ? C.assocNecker : LN.necker === 'gilwell' ? C.gilwellNecker : outfit.neckerBorder) : outfit.neckerBorder;
+  // 旅巾花款（素色＋花邊／斜紋、左右唔同色）；會巾、基維爾領巾固定顏色
+  const neckerFixed = LN ? (LN.necker === 'association' ? C.assocNecker : LN.necker === 'gilwell' ? C.gilwellNecker : null) : null;
+  const NP = useMemo(
+    () => neckerPalettes(outfit, neckerFixed),
+    [outfit.neckerPattern, outfit.neckerStripes, outfit.neckerSplit, outfit.neckerMain, outfit.neckerBorder, outfit.neckerThird, outfit.neckerRMain, outfit.neckerRBorder, outfit.neckerRThird, neckerFixed], // eslint-disable-line react-hooks/exhaustive-deps
+  );
 
   // 徽章：位置全部由規則 JSON 計出嚟（學校運動上衣、背心會改位）；區章、地域章、優異旅團章圖案跟用戶揀
   const staticUrls = useMemo(() => placeAll(RULES, gender).map((p) => p.art).filter((a) => a && !a.startsWith('dyn:')), [RULES, gender]);
@@ -697,17 +715,20 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
   // 旅巾（跟顏色、背心變）
   const N = useMemo(() => {
     const G = neckerLayout(L, { vest: vest || sweater });
+    const P = (s) => (s > 0 ? NP.left : NP.right); // s = +1 穿著者左
+    const per = (fn) => ({ 1: fn(1), [-1]: fn(-1) });
     return {
       ...G,
+      split: NP.split,
       roll: {
-        back: rollFaces([G.outer, G.rollH, G.rollT], neckerMain, neckerBorder),
-        side: rollFaces([G.rollT, G.rollH, G.inner + G.rollT + 1.2], neckerMain, neckerBorder),
+        back: NP.split ? per((s) => neckerRollFaces([G.outer / 2, G.rollH, G.rollT], P(s), -s)) : neckerRollFaces([G.outer, G.rollH, G.rollT], NP.left, 1),
+        side: per((s) => neckerRollFaces([G.rollT, G.rollH, G.inner + G.rollT + 1.2], P(s), s)),
       },
-      upperC: tailCanvas(G.tail.w, G.len + 1, neckerMain, neckerBorder, 0),
-      lowerC: tailCanvas(G.tail.w, G.tail.len, neckerMain, neckerBorder, G.tail.tip),
-      backC: backTriangleCanvas(G.back.w, G.back.h, neckerMain, neckerBorder),
+      upperC: per((s) => neckerTailCanvas(G.tail.w, G.len + 1, P(s), 0, s)),
+      lowerC: per((s) => neckerTailCanvas(G.tail.w, G.tail.len, P(s), G.tail.tip, s)),
+      backC: neckerBackCanvas(G.back.w, G.back.h, NP.left, NP.right),
     };
-  }, [L, vest, sweater, neckerMain, neckerBorder]);
+  }, [L, vest, sweater, NP]);
 
   // 童軍：啡色皮巾圈（手冊 P.110）；其他支部：顏色巾圈
   const gilwellWog = !!LN?.gilwellWoggle;
@@ -715,7 +736,7 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
     () => (gilwellWog ? gilwellWogglePaint(GILWELL_WOG, { trainer: LN.trainer }) : leather ? scoutWogglePaint([8, 3, 1.4]) : wogglePaint([8, 2.6, 1.2], outfit.woggle)),
     [outfit.woggle, leather, gilwellWog, LN?.trainer], // eslint-disable-line react-hooks/exhaustive-deps
   );
-  // 木章（手冊 P.116–117）：皮繩由頸兩邊落到胸前，木珠掛喺領巾（或者領帶）前面
+  // 木章（手冊 P.116–117、用戶附相）：皮繩由頸兩邊斜落到胸前中間打結，木珠吊喺結下面
   const wood = useMemo(() => {
     if (!LN?.woodBadge || !invested) return null;
     const N0 = neckerLayout(L);
@@ -723,8 +744,11 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
     const top = tie
       ? { x: B.neck.w / 2 + 1.9, y: L.top + 0.2 + out, z: B.torso.d / 2 + 0.7 + out } // 領帶：皮繩由衣領兩邊落（唔好穿入身）
       : { x: N0.outer / 2 - 0.8, y: L.top + N0.rollH - 0.2, z: N0.front + 0.6 };
-    const end = tie ? { x: 4.6, y: L.top - 13, z: B.torso.d / 2 + 0.7 + out } : { x: 5.4, y: N0.wogY - 4, z: N0.front + 0.9 };
-    return { top, end, beads: LN.beads };
+    // 結喺胸前中間，約胸袋底高度（巾圈下面巾尾長度約 2/3）；木珠吊喺結下面、疊喺巾尾／領帶前面
+    const tailLen = B.necker.tailLen;
+    const knotY = (tie ? L.top - B.necker.wogDrop : N0.wogY) - tailLen * 0.68;
+    const knot = { x: 0, y: knotY, z: (tie ? B.torso.d / 2 + 0.7 + out : N0.front + 0.4) + 0.8 };
+    return { top, knot, beads: LN.beads };
   }, [LN, invested, L, B, tie, dress]);
   // 肩帶（恤衫色，邊深少少）
   // 肩帶：恤衫色；著毛衣就係毛衣膊布色（手冊 P.122 附圖）
@@ -820,14 +844,20 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
         )}
         {invested && !tie && !VL?.bowTie && (
           <group>
-            <Box size={[N.outer, N.rollH, N.rollT]} faces={N.roll.back} painted={painted} position={[0, L.top + N.rollH / 2, -(N.inner / 2 + N.rollT / 2)]} />
+            {N.split ? (
+              [1, -1].map((s) => (
+                <Box key={`rb${s}`} size={[N.outer / 2, N.rollH, N.rollT]} faces={N.roll.back[s]} painted={painted} position={[(s * N.outer) / 4, L.top + N.rollH / 2, -(N.inner / 2 + N.rollT / 2)]} />
+              ))
+            ) : (
+              <Box size={[N.outer, N.rollH, N.rollT]} faces={N.roll.back} painted={painted} position={[0, L.top + N.rollH / 2, -(N.inner / 2 + N.rollT / 2)]} />
+            )}
             {[1, -1].map((s) => (
-              <Box key={s} size={[N.rollT, N.rollH, N.inner + N.rollT + 1.2]} faces={N.roll.side} painted={painted} position={[s * (N.inner / 2 + N.rollT / 2), L.top + N.rollH / 2, 0.6]} />
+              <Box key={s} size={[N.rollT, N.rollH, N.inner + N.rollT + 1.2]} faces={N.roll.side[s]} painted={painted} position={[s * (N.inner / 2 + N.rollT / 2), L.top + N.rollH / 2, 0.6]} />
             ))}
             {[1, -1].map((s) => (
               <group key={s}>
-                <Plane size={[N.tail.w, N.len + 1]} canvas={N.upperC} painted={painted} position={[s * (N.a[0] + N.b[0]) / 2, (N.a[1] + N.b[1]) / 2, N.front + 0.35 + (s > 0 ? 0.08 : 0)]} rotation={[0, 0, -s * N.ang]} />
-                <Plane size={[N.tail.w, N.tail.len]} canvas={N.lowerC} painted={painted} position={[s * N.tail.x, N.tail.top - N.tail.len / 2, N.tailZ(s)]} />
+                <Plane size={[N.tail.w, N.len + 1]} canvas={N.upperC[s]} painted={painted} position={[s * (N.a[0] + N.b[0]) / 2, (N.a[1] + N.b[1]) / 2, N.front + 0.35 + (s > 0 ? 0.08 : 0)]} rotation={[0, 0, -s * N.ang]} />
+                <Plane size={[N.tail.w, N.tail.len]} canvas={N.lowerC[s]} painted={painted} position={[s * N.tail.x, N.tail.top - N.tail.len / 2, N.tailZ(s)]} />
               </group>
             ))}
             {gilwellWog ? (
