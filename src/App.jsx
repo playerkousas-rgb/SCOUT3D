@@ -98,6 +98,23 @@ const SENIOR = new Set(['venture', 'rover']);
 /** 各支部共用嘅設定（轉支部時保留） */
 const SHARED_OUTFIT_KEYS = ['gender', 'finish', 'invested'];
 
+/** v25 外觀（精緻／簡約）：記喺瀏覽器；私隱模式唔記得都照用 */
+const LOOK_KEY = 'scout3d.look';
+function readLook() {
+  try {
+    return window.localStorage.getItem(LOOK_KEY) === 'simple' ? 'simple' : 'detailed';
+  } catch {
+    return 'detailed';
+  }
+}
+function saveLook(v) {
+  try {
+    window.localStorage.setItem(LOOK_KEY, v);
+  } catch {
+    /* 唔記得都照用 */
+  }
+}
+
 // 幼童軍預設：基本徽章全開（手冊 P.26：世界童軍會員章、香港章、地域章、區章、旅章）
 const CUB_BADGES = {
   membership: true,
@@ -1638,6 +1655,14 @@ export default function App() {
   const heightBar = useRef();
   const onHeight = useCallback((y) => heightBar.current?.set(y), []);
   const [exportOpen, setExportOpen] = useState(false);
+  // v25 外觀：精緻（預設）／簡約；記喺瀏覽器
+  const [look, setLook] = useState(readLook);
+  const toggleLook = () =>
+    setLook((x) => {
+      const next = x === 'detailed' ? 'simple' : 'detailed';
+      saveLook(next);
+      return next;
+    });
 
   useEffect(() => {
     if (!toast) return undefined;
@@ -1710,7 +1735,7 @@ export default function App() {
         <section className="stage" aria-label={t('app.title')}>
           {webgl ? (
             <Suspense fallback={<div className="stage__msg">{t('loading')}</div>}>
-              <Scene ref={scene} section={section} outfit={outfit} badges={badges} picks={artPicks} selected={selected} onSelect={onSceneSelect} onHeight={onHeight} />
+              <Scene ref={scene} section={section} look={look} outfit={outfit} badges={badges} picks={artPicks} selected={selected} onSelect={onSceneSelect} onHeight={onHeight} />
             </Suspense>
           ) : (
             <div className="stage__msg">{t('nowebgl')}</div>
@@ -1731,6 +1756,15 @@ export default function App() {
                 onClick={() => scene.current?.view('front')}
               >
                 {t('view.reset')}
+              </button>
+              <button
+                type="button"
+                className="chipbtn chipbtn--look"
+                aria-pressed={look === 'detailed'}
+                title={t('view.lookHint')}
+                onClick={toggleLook}
+              >
+                {t(look === 'detailed' ? 'view.lookDetailed' : 'view.lookSimple')}
               </button>
               <button type="button" className="chipbtn chipbtn--accent" onClick={shot} disabled={busy}>
                 {t('view.shot')}

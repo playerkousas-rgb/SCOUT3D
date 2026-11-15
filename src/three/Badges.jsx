@@ -7,9 +7,11 @@ import { meritCanvas } from '../lib/meritCanvas.js';
 import { nameTagCanvas } from '../lib/nameTagCanvas.js';
 import { troopTapeCanvas } from '../lib/troopTapeCanvas.js';
 import { sleevePose } from './badgeLayout.js';
+import { useDetailed, isMetalBadge, badgeEdge, stitchNormal, BADGE_THICK, BADGE_LIFT } from './look.js';
 
 const EPS = 0.06; // 離布面 0.06 cm，避免閃
 const ACCENT = '#f2791c';
+const STITCH_SCALE = new THREE.Vector2(0.45, 0.45);
 
 /** 一次過載入所有用到嘅圖（drei 會 cache） */
 export function useBadgeTextures(urls) {
@@ -140,6 +142,13 @@ function Patch({ p, tex, painted, selected, onSelect, registry }) {
     strap?.dispose();
   }, [photo, strap, tex]);
   const map = painted && photo ? photo : null;
+  // v25 精緻：布章 = 刺繡針步＋厚度（章面企出 BADGE_LIFT，只改 z）；金屬章 = 金屬反光
+  const detailed = useDetailed();
+  const metal = detailed && isMetalBadge(p);
+  const edge = useMemo(() => (detailed && !metal && !crop && tex ? badgeEdge(tex.image, round) : null), [detailed, metal, crop, tex, round]);
+  const thick = !!edge && (round || edge.opaque);
+  const lift = thick ? BADGE_LIFT : 0;
+  const stitch = detailed && !metal && map ? stitchNormal(w, h) : null;
   return (
     <group>
       {crop && p.strapCm > 0 && (
@@ -170,20 +179,31 @@ function Patch({ p, tex, painted, selected, onSelect, registry }) {
           setHover(true);
         }}
         onPointerOut={() => setHover(false)}
+        position={lift ? [0, 0, lift] : undefined}
         receiveShadow
+        castShadow={thick}
       >
         {round ? <circleGeometry args={[w / 2, 48]} /> : <planeGeometry args={[w, h]} />}
         <meshStandardMaterial
-          key={photo ? photo.uuid : 'none'}
+          key={`${photo ? photo.uuid : 'none'}-${detailed ? (metal ? 'm' : 'd') : 's'}`}
           map={map}
           alphaTest={map ? 0.5 : 0} // 勳章、感謝章等透明底 PNG：透明位唔畫
-          color={painted ? (photo ? '#f2f2f2' : '#9aa0a6') : '#b4b6b9'}
-          roughness={0.8}
-          metalness={0}
+          color={painted ? (photo ? (detailed ? '#ffffff' : '#f2f2f2') : '#9aa0a6') : '#b4b6b9'}
+          roughness={metal ? 0.32 : detailed ? 0.72 : 0.8}
+          metalness={metal ? 0.65 : 0}
+          normalMap={stitch}
+          normalScale={stitch ? STITCH_SCALE : undefined}
           polygonOffset
           polygonOffsetFactor={-2}
         />
       </mesh>
+      {thick && (
+        // 布章厚度：側面用章邊顏色（鎖邊）；背面貼住布（離布面 0.01 cm）
+        <mesh position={[0, 0, (lift - 0.005 - (BADGE_THICK - lift)) / 2]} rotation={round ? [Math.PI / 2, 0, 0] : undefined} castShadow>
+          {round ? <cylinderGeometry args={[w / 2, w / 2, BADGE_THICK - 0.005, 48, 1, true]} /> : <boxGeometry args={[w, h, BADGE_THICK - 0.005]} />}
+          <meshStandardMaterial color={painted ? edge.edge : '#a9abae'} roughness={0.85} />
+        </mesh>
+      )}
       {ring && (
         <mesh position={[0, 0, -EPS / 2]} renderOrder={1}>
           {round ? <ringGeometry args={[w / 2 - 0.05, w / 2 + (selected ? 0.55 : 0.35), 48]} /> : <planeGeometry args={[w + (selected ? 1.1 : 0.7), h + (selected ? 1.1 : 0.7)]} />}

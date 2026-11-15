@@ -17,6 +17,7 @@ import {
   gilwellWogglePaint, hardHatFaces, dressJacketFaces, messJacketFaces, messTrouserFaces,
 } from './pixels.js';
 import { COLOURS as C } from './body.js';
+import { useDetailed, roundedBox, plainBox, MAX_RADIUS, SLEEVE_RADIUS } from './look.js';
 
 const CAP_BADGE = '/badges/cub_cap_badge.png';
 const SCOUT_CAP_BADGE = '/badges/scout_cap_badge.png';
@@ -32,18 +33,24 @@ const LONG_SKIRT_BOTTOM = 13; // 晚禮服黑色長裙腳離地（手冊 P.62 �
 export const BASE_H = 0.045; // 底座高度（米）
 const PIGTAIL_TIE = '#5b3fa0';
 
-function Box({ size, faces, painted, position, rotation, alpha = false }) {
-  const mats = useMemo(() => faces.map((c) => material(c, { painted, alpha })), [faces, painted, alpha]);
+/**
+ * 一個方塊。v25 精緻模式：圓角（平面部分 UV 同普通方塊一樣，貼喺面上嘅章位置唔變）＋布紋材質；
+ * taper = 底面闊度比例（只用喺冇章嘅褲腳、裙腳）；radius = 最大圓角（衫袖用 SLEEVE_RADIUS）。
+ */
+function Box({ size, faces, painted, position, rotation, alpha = false, taper = 1, radius = MAX_RADIUS }) {
+  const detailed = useDetailed();
+  const mats = useMemo(() => faces.map((c) => material(c, { painted, alpha, detailed })), [faces, painted, alpha, detailed]);
   useEffect(() => () => mats.forEach((m) => m.dispose()), [mats]);
-  return (
-    <mesh position={position} rotation={rotation} material={mats} castShadow receiveShadow>
-      <boxGeometry args={size} />
-    </mesh>
+  const geo = useMemo(
+    () => (detailed ? roundedBox(size[0], size[1], size[2], taper, radius) : plainBox(size[0], size[1], size[2])),
+    [detailed, size[0], size[1], size[2], taper, radius],
   );
+  return <mesh position={position} rotation={rotation} material={mats} geometry={geo} castShadow receiveShadow />;
 }
 
 function Plane({ size, canvas, painted, position, rotation }) {
-  const mat = useMemo(() => material(canvas, { painted, alpha: true, double: true }), [canvas, painted]);
+  const detailed = useDetailed();
+  const mat = useMemo(() => material(canvas, { painted, alpha: true, double: true, detailed }), [canvas, painted, detailed]);
   useEffect(() => () => mat.dispose(), [mat]);
   return (
     <mesh position={position} rotation={rotation} material={mat} castShadow receiveShadow>
@@ -76,7 +83,7 @@ function Arm({ L, side, painted, faces, long, children }) {
   return (
     <group position={[s * L.armX, L.shoulderY, 0]} rotation={[0, 0, s * 0.045]}>
       <Box size={[B.upperArm.w, B.upperArm.h, B.upperArm.d]} faces={faces.upper} painted={painted} position={[0, -B.upperArm.h / 2, 0]} />
-      <Box size={sl} faces={long ? faces.sleeveLong : faces.sleeve} painted={painted} position={[0, seam - len / 2, 0]} />
+      <Box size={sl} faces={long ? faces.sleeveLong : faces.sleeve} painted={painted} position={[0, seam - len / 2, 0]} radius={SLEEVE_RADIUS} />
       <group position={[0, -B.upperArm.h, 0]}>
         {long ? (
           <Box size={cuff} faces={faces.cuff} painted={painted} position={[0, -B.lowerArm.h / 2, 0]} />
@@ -895,11 +902,11 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
               <Box size={[B.leg.w - 1, legs.shinH + 2, B.leg.d - 1]} faces={legs.tightsF} painted={painted} position={[s * L.legX, B.leg.y + (legs.shinH + 2) / 2, 0]} />
             ) : shorts ? (
               <>
-                <Box size={legs.shortsSize} faces={legs.shorts} painted={painted} position={[s * (L.legX + (culottes ? 0.4 : 0)), (shortsBottom + B.leg.top) / 2, 0]} />
+                <Box size={legs.shortsSize} faces={legs.shorts} painted={painted} taper={1.05} position={[s * (L.legX + (culottes ? 0.4 : 0)), (shortsBottom + B.leg.top) / 2, 0]} />
                 <Box size={legs.shinSize} faces={legs.shin} painted={painted} position={[s * L.legX, B.leg.y + legs.shinH / 2, 0]} />
               </>
             ) : (
-              <Box size={[B.leg.w, body.legH, B.leg.d]} faces={legs.trousers} painted={painted} position={[s * L.legX, (B.leg.y + B.leg.top) / 2, 0]} />
+              <Box size={[B.leg.w, body.legH, B.leg.d]} faces={legs.trousers} painted={painted} taper={0.9} position={[s * L.legX, (B.leg.y + B.leg.top) / 2, 0]} />
             )}
             {body.pump ? (
               <group position={[s * L.legX, 0, B.shoe.z]}>
@@ -912,7 +919,7 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
             )}
           </group>
         ))}
-        {venture && skirt && <Box size={legs.skirtSize} faces={legs.skirtF} painted={painted} position={[0, (shortsBottom + B.leg.top) / 2, 0]} />}
+        {venture && skirt && <Box size={legs.skirtSize} faces={legs.skirtF} painted={painted} taper={1.08} position={[0, (shortsBottom + B.leg.top) / 2, 0]} />}
         {/* 旅巾 + 巾圈（宣誓後先戴；戴喺衣領／背心外面） */}
         {invested && tie && (
           <group>
