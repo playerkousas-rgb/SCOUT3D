@@ -55,11 +55,12 @@ test('每個勳章選項都有手冊相片下面嗰條勳條（160 × 48）；�
       assert.deepEqual(pngSize(r.file), r.px);
       assert.deepEqual(r.px, [160, 48]);
       if (c.id === 'bronzeWolf') assert.equal(r.user, true);
+      else if (r.ref === 'ACR') assert.equal(r.user, true); // v19：用戶提供官方參考圖，勳條由綬帶顏色砌
       else assert.equal(r.ref, 'UH');
       n++;
     }
   }
-  assert.equal(n, 51);
+  assert.equal(n, 56); // v19 +5：110 銀／銅、童心抗疫、同行未來、110 特別貢獻
   // 頁碼：英勇、獅 P.178；龍、功績 P.179；紀念 P.180；特殊貢獻 P.181–183；長期服務 P.185
   const page = (id, c) => (c ? badge(id).choices.find((x) => x.id === c) : badge(id)).ribbon.page;
   assert.equal(page('gallantry', 'gold'), '178');
@@ -72,7 +73,7 @@ test('每個勳章選項都有手冊相片下面嗰條勳條（160 × 48）；�
   assert.equal(page('specialContribution', 'ten'), '182');
   assert.equal(page('specialStar', 'sixteen'), '183');
   assert.equal(page('longService', 'six'), '185');
-  assert.equal(new Set(ribbonUrls(rules)).size, 51);
+  assert.equal(new Set(ribbonUrls(rules)).size, 56);
 });
 
 test('一般場合：勳章同掛頸勳章全部變勳條，唔會同勳章一齊出現', () => {
@@ -188,12 +189,13 @@ test('介面：勳章及獎勵組有場合切換；規定頁有勳條規則；�
   assert.match(zh, /勳條同勳章唔可以同時戴/);
 });
 
-test('冇手冊相片嘅獎勵唔加（110 周年、童心抗疫、同行未來、亞太基金）', () => {
+test('冇相嘅獎勵唔加（亞太基金）；110 周年紀念星章用戶決定唔加（v19 更新）', () => {
   const names = JSON.stringify(rules.badges.filter((b) => b.group === 'awards').map((b) => [b.zh.name, ...(b.choices || []).map((c) => c.zh.name)]));
-  for (const n of ['110', '童心抗疫', '同行未來', '亞太']) assert.ok(!names.includes(n), n);
+  for (const n of ['亞太', '星章（110']) assert.ok(!names.includes(n), n);
+  assert.ok(!names.includes('紀念星章'));
   const c = rules.conflicts.find((x) => x.id === 'medalPrecedenceGaps');
   assert.match(c.zh, /已逐頁睇過 P\.177–200/);
-  for (const n of ['110 周年', '童心抗疫', '同行未來', '亞太區童軍基金']) assert.ok(c.zh.includes(n), n);
+  for (const n of ['110 周年紀念章', '童心抗疫', '同行未來', '亞太區童軍基金', '110 周年紀念星章']) assert.ok(c.zh.includes(n), n);
   assert.ok(!rules.conflicts.some((x) => x.id === 'ribbonsGeneral'), '勳條已經做咗');
 });
 

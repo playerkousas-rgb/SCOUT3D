@@ -3,7 +3,7 @@
 // 人物面向 +z；穿著者左 = +x。
 import { useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
-import { layout, neckerLayout, strapLayout, dressLayout, VEST_T, SWEATER_TOP, PX, scoutVariant, SCOUT_VARIANTS, ventureVariant, roverVariant, leaderVariant, isSenior, ventureLegwear, leaderLegwear, pumpParts } from './body.js';
+import { layout, neckerLayout, strapLayout, dressLayout, lanyardPoints, VEST_T, SWEATER_TOP, PX, scoutVariant, SCOUT_VARIANTS, ventureVariant, roverVariant, leaderVariant, isSenior, ventureLegwear, leaderLegwear, pumpParts } from './body.js';
 import { useTexture } from '@react-three/drei';
 import { SECTIONS, DISTRICTS, PATROLS } from '../data/rules.js';
 import { resolveArt, rankCap, leaderNeckwear, messCapOf } from '../lib/picks.js';
@@ -479,8 +479,9 @@ function FrontDecal({ file, size, painted, position }) {
 }
 
 /**
- * 嘉許笛繩（手冊 P.184、P.188–189）：由左肩肩帶下面出嚟，吊落再兜返上左胸袋口（笛子由胸袋口右方放入，唔畫）；
- * 晚禮服小型笛繩幼一半、去到左襟領。points = 繩經過嘅點（cm），colours = 一條或兩條繩嘅顏色。可以撳嚟揀。
+ * 嘉許笛繩（手冊 P.184、P.188–189）：由左肩**職級肩章下面**穿出（v19 用戶指正＋相片），兜過膊頭、沿袖窿前面吊落到胸袋下面，
+ * 再兜返上左胸袋口（笛子由胸袋口右方放入，唔畫）；晚禮服小型笛繩幼一半、去到左襟領。
+ * points = 繩經過嘅點（cm，3D），colours = 一條或兩條繩嘅顏色。每段用四元數由 +Y 轉去段嘅方向。可以撳嚟揀。
  */
 function Lanyard({ p, points, colours, thick, painted, selected, onSelect, registry }) {
   const ref = useRef();
@@ -489,12 +490,7 @@ function Lanyard({ p, points, colours, thick, painted, selected, onSelect, regis
     registry.set(p.key, ref.current);
     return () => registry.delete(p.key);
   }, [registry, p.key]);
-  const segs = points.slice(1).map((b, i) => {
-    const a = points[i];
-    const dx = b[0] - a[0];
-    const dy = b[1] - a[1];
-    return { pos: [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2, (a[2] + b[2]) / 2], len: Math.hypot(dx, dy, b[2] - a[2]) + thick, rot: Math.atan2(-dx, dy) };
-  });
+  const segs = useMemo(() => lanyardSegments(points, thick, colours.length), [points, thick, colours.length]);
   return (
     <group
       onClick={(e) => {
@@ -504,7 +500,7 @@ function Lanyard({ p, points, colours, thick, painted, selected, onSelect, regis
     >
       {segs.map((sg, i) =>
         colours.map((c, j) => (
-          <mesh key={`${i}-${j}`} ref={i === 0 && j === 0 ? ref : undefined} position={[sg.pos[0] + (j - (colours.length - 1) / 2) * thick, sg.pos[1], sg.pos[2]]} rotation={[0, 0, sg.rot]} castShadow>
+          <mesh key={`${i}-${j}`} ref={i === 0 && j === 0 ? ref : undefined} position={sg.pos[j]} quaternion={sg.quat} castShadow>
             <boxGeometry args={[thick, sg.len, thick]} />
             <meshStandardMaterial color={painted ? (selected ? '#f2791c' : c) : '#a3a6aa'} roughness={0.6} />
           </mesh>
@@ -512,6 +508,22 @@ function Lanyard({ p, points, colours, thick, painted, selected, onSelect, regis
       )}
     </group>
   );
+}
+/** 笛繩每段：中心（每條繩一個，並排）、長度、四元數（+Y → 段方向）。並排方向 = 段方向 × 前（+Z）；段近乎前後就用 +X。 */
+function lanyardSegments(points, thick, n) {
+  const up = new THREE.Vector3(0, 1, 0);
+  return points.slice(1).map((b, i) => {
+    const a = new THREE.Vector3(...points[i]);
+    const d = new THREE.Vector3(...b).sub(a);
+    const len = d.length();
+    const dir = d.clone().normalize();
+    let side = new THREE.Vector3().crossVectors(dir, new THREE.Vector3(0, 0, 1));
+    if (side.lengthSq() < 0.05) side = new THREE.Vector3(1, 0, 0);
+    side.normalize();
+    const mid = a.clone().addScaledVector(d, 0.5);
+    const pos = Array.from({ length: n }, (_, j) => mid.clone().addScaledVector(side, (j - (n - 1) / 2) * thick).toArray());
+    return { pos, len: len + thick, quat: new THREE.Quaternion().setFromUnitVectors(up, dir) };
+  });
 }
 const LANYARD_COLOURS = { commendation: ['#d98b1e'], high: ['#27346f', '#b9c94a'] }; // 手冊 P.184 相片顏色
 
@@ -611,25 +623,19 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
   const torsoItems = shown.filter((p) => p.mount === 'torso');
   const armItems = (side) => shown.filter((p) => p.mount === side);
   const seamY = L.top - L.shoulderY;
-  // 嘉許笛繩：左肩肩帶下面 → 吊落 → 左胸袋口（禮服、恤衫）；晚禮服小型笛繩去到左襟領
+  // 嘉許笛繩：左肩職級肩章下面 → 兜過膊頭 → 沿袖窿前面吊落 → 兜返上左胸袋口（禮服、恤衫）；晚禮服小型笛繩去到左襟領
   const lanyards = useMemo(() => {
     if (!strap) return [];
+    const slide = all.find((q) => q.key === 'epaulette-l'); // 左肩職級肩章（冇揀都用佢個位）
     return shown
       .filter((p) => p.kind === 'lanyard')
       .map((p) => {
         const z = p.z + 0.3;
-        const A = [strap.inner + 2.6, strap.base - 0.2, z - 0.15];
-        let points;
-        if (p.mini && D?.fleur) {
-          points = [A, [D.fleur.x + 2.2, D.fleur.y - 1.5, z], [D.fleur.x + 0.4, D.fleur.y - 3.5, z]];
-        } else {
-          const P = B.pocket;
-          const flapTop = L.top - P.top;
-          points = [A, [P.x + 1.5, flapTop - 6, z], [P.x - P.w / 2 + 1.5, flapTop + 0.1, z]];
-        }
-        return { p, points, colours: LANYARD_COLOURS[p.choice] ?? LANYARD_COLOURS.commendation, thick: p.mini ? 0.3 : 0.55 };
+        const thick = p.mini ? 0.3 : 0.55;
+        const points = lanyardPoints({ L, strap, D: p.mini ? D : null, z, thick, slideX: slide?.x });
+        return { p, points, colours: LANYARD_COLOURS[p.choice] ?? LANYARD_COLOURS.commendation, thick };
       });
-  }, [shown, strap, D, B, L]);
+  }, [all, shown, strap, D, L]);
 
   // 身體貼圖
   const body = useMemo(() => {

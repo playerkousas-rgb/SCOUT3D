@@ -340,6 +340,38 @@ export function strapLayout(L, { sweater = false } = {}) {
   return { w: S.w, t: S.t, outer, inner, len: outer - inner, base, y: base + S.t / 2, cx: (outer + inner) / 2, boxT: t, boxY: top + t / 2 };
 }
 
+/**
+ * 嘉許笛繩路線（v19，用戶指正＋相片 image-11）：繩由左肩**職級肩章（套喺肩帶膊頭嗰頭）下面**穿過，
+ * 由肩帶前邊出嚟、兜過袖頂前邊，沿袖窿前面吊落到胸袋下面，再兜返上左胸袋口（近中線嗰邊；笛子入袋唔畫）。
+ * 晚禮服（D = dressLayout）：小型笛繩一樣由肩帶起，落去左襟領童軍徽。
+ * slideX = 左肩職級肩章中心 x（冇就用肩章預設位：膊頭 − 0.3 − 半個肩章長）。
+ * 回傳 [[x, y, z], …]（cm，左 = +X、前 = +Z）；第一、二點喺肩章下面（y 低過肩章面）。
+ */
+export function lanyardPoints({ L, strap, D = null, z, thick, slideX = null }) {
+  const { B, top } = L;
+  const sx = slideX ?? strap.outer - 0.3 - RANK_SLIDE_H / 2;
+  const yU = strap.base + strap.t - thick / 2 + 0.02; // 繩面啱啱喺肩章底（肩章 y = 肩帶面 + 0.04）
+  const zFront = strap.w / 2 + 0.15;
+  const under = [[sx, yU, -0.6], [sx, yU, zFront]];
+  if (D?.fleur) return [...under, [D.fleur.x + 2.2, D.fleur.y - 1.5, z], [D.fleur.x + 0.4, D.fleur.y - 3.5, z]];
+  const sleeveFront = B.sleeve.d / 2 + thick / 2 + 0.05;
+  const P = B.pocket;
+  const flapTop = top - P.top;
+  const pocketBottom = flapTop - P.h;
+  const seamX = B.torso.w / 2 - 0.8; // 袖窿前面（身邊）
+  return [
+    ...under,
+    [sx - 0.3, top + thick / 2, B.sleeve.d / 2], // 袖頂前邊
+    [sx - 0.6, top - 1.5, sleeveFront], // 兜落袖前面
+    [seamX, top - 9, z], // 沿袖窿前面
+    [seamX - 0.3, pocketBottom - 2.5, z],
+    [P.x + P.w / 2 + 0.5, pocketBottom - 5, z], // 胸袋外側下面兜返上（斜過胸袋、喺會員章外側經過）
+    [P.x - 1, flapTop + 0.1, z], // 左胸袋口中間偏內（笛子由胸袋口右方放入）
+  ];
+}
+/** 成年成員職級肩章沿肩帶嘅長度（cm，leader_rules epaulette hCm） */
+export const RANK_SLIDE_H = 3.65;
+
 /** 膊頭：袖頂外邊離中線幾遠（cm）；留 0.3 cm 唔好出咗袖邊 */
 export const shoulderTip = (L) => L.armX + L.B.sleeve.w / 2 - 0.3;
 
