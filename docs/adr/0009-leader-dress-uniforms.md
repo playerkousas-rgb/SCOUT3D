@@ -27,7 +27,7 @@ SCOUT3D v1.0 · © SCOUT SYSTEM
 - **擺位**（`badgeLayout.js`）：`anchorBy`（晚禮服用另一個錨點）、`rack`（勳章排，`arrangeRacks()` 按顯示咗邊幾個先計 x 同重疊）、`lanyard`、`lapel: 'belowFleur'`、`band`；`placeFor()` 按 `uniforms` 篩，外套當一層殼（同制服毛衣一樣向外移 `VEST_T`）。`shownReason()` 多咗 `'uniform'`。
 - **3D**：`dressLayout()` 計外套殼；`dressJacketFaces()`／`messJacketFaces()`／`messTrouserFaces()` 畫外套、腰封、褲邊間條；`MessCap`、`BowTie`、`Lanyard`（用三點折線畫，唔用相）。章嘅材質加 `alphaTest`，透明底 PNG 唔再見到底色。
 - **名牌**：`nameTagCanvas()` 喺瀏覽器即時畫；姓名淨係喺用戶部機，唔上載；冇輸入就用手冊示例。
-- **服裝分頁**：制服編號加 1、2；禮服／晚禮服只有陸上款（揀咗海／空會提示）；晚禮服有季節切換，帽開關會顯示硬帽編號；禮服、晚禮服冇制服毛衣。
+- **服裝分頁**：制服編號加 1、2；禮服／晚禮服只有一款（童軍禮服／晚禮服，海／空童軍領袖都一樣；用戶 2026-11-13 確認）；晚禮服有季節切換，帽開關會顯示硬帽編號；禮服、晚禮服冇制服毛衣。
 - **徽章分頁**：只列呢套制服戴嘅章，其他列喺「呢套制服唔戴」；勳章及獎勵摺埋喺一組。
 
 ## Considered Options

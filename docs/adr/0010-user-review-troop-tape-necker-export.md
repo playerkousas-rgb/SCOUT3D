@@ -47,17 +47,24 @@ SCOUT3D v1.0 · © SCOUT SYSTEM
 
 - **PNG：人人用得**。解像度：同螢幕、2×、4×（上限 `min(8192, maxTextureSize)`），可揀透明背景；照樣有版權角標同隱形水印。
 - **3D：GLB（有顏色、徽章貼圖，Blender／手機 AR 開得）同 STL（3D 打印，淨形狀，1:10 毫米）**，要輸入 4 位數字密碼先用得。
-  - 密碼嚟自環境變數 **`VITE_EXPORT_PIN`**（Vercel → Settings → Environment Variables，改完要重新 deploy）。冇設定或者唔係 4 位數字 ＝ 唔顯示 3D 匯出。
-  - 錯 5 次就鎖住（重新載入先解）。
+  - 密碼嚟自**伺服器**環境變數 **`EXPORT_PIN`**（Vercel → Settings → Environment Variables，改完要重新 deploy）。冇設定或者唔係 4 位數字 ＝ 唔顯示 3D 匯出。
+  - 由 Vercel function `/api/export-pin` 驗（`api/export-pin.js`、`api/_pin.js`）：GET 只答 `{ enabled }`，POST `{ pin }` 用定時比較；同一個 IP 15 分鐘內錯 5 次回 429，錯咗慢 0.6 秒先答；全部 `Cache-Control: no-store`。本機 `vite dev`／`preview` 用同一段 code 模擬。
+  - 起初用咗 `VITE_EXPORT_PIN`，用戶指出 `VITE_` 前綴會公開（Vite 會將佢寫入打包 JS），改做冇前綴嘅 `EXPORT_PIN` 加伺服器檢查。
+
+### 7. 用戶附相更正（同日）
+
+- **木章**：皮繩由頸兩邊（領巾捲邊下面）斜落到胸前中間，約胸袋底高度打結（巾圈下面巾尾長度約 2/3），結下面兩條短繩吊住木珠；木珠打橫，由上到下左右交替，疊喺巾尾／領帶前面。
+- **禮服／晚禮服**：童軍禮服同晚禮服只有一款，海童軍、空童軍領袖都著同一款（用戶確認）；提示改寫，唔再叫「陸上款」，亦唔再用警告樣式。
 
 ## 考慮過但冇揀
 
-- **伺服器驗密碼**：要加 serverless function 同 secret，同「無後端」原則（SCOPE）衝突。用戶要求係擋一般用戶，前端檢查已經夠。
+- **前端比較密碼（`VITE_EXPORT_PIN`）**：最簡單，但密碼會喺打包 JS 入面，人人搵得到；用戶否決。
 - **旅條用字型檔**：要多下載一個字型；canvas 用系統粗體無襯線字，細尺寸睇落一樣。
 - **STL 自動加厚薄片**：徽章、巾尾係冇厚度嘅薄片，切片軟件處理更好；喺匯出說明寫明。
 
 ## 後果
 
-- ⚠️ `VITE_EXPORT_PIN` 會喺 build 嗰陣寫入打包後嘅 JS，識睇原始碼嘅人搵得到。佢只係一道門檻，**唔係保安**；唔好用同其他系統一樣嘅密碼。
+- 多咗一個好細嘅伺服器 function，SCOPE「無後端」改做「後端只有驗密碼」。
+- ⚠️ 匯出仍然喺瀏覽器做：密碼擋到一般用戶，但識改前端程式嘅人可以繞過；4 位數字亦有限（限流只係每個 function instance 計）。唔好用同其他系統一樣嘅密碼。
 - STL 冇顏色；GLB 貼圖最大 2048 px。
 - 以後再加待確認項目，要喺 JSON 寫返 `status: pending` 同 `pendingReason`，介面而家唔會顯示狀態標籤，要另外諗點提示。

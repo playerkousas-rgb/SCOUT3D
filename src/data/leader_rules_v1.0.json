@@ -74,8 +74,8 @@
       {
         "date": "2026-11-15",
         "item": "dressScope",
-        "zh": "唔做 1a 夏季禮服（2014 年起取消，過渡期至 2019-10-31）；手冊只有陸上款禮服／晚禮服，揀海／空款時都用陸上款並加提示（用戶確認）",
-        "en": "No 1a summer dress (abolished from 2014, transition to 31 Oct 2019); the Handbook only shows land-style dress / evening dress, so Sea / Air leaders get the land style with a note (user confirmed)"
+        "zh": "唔做 1a 夏季禮服（2014 年起取消，過渡期至 2019-10-31）；童軍禮服／晚禮服只有一款，海童軍、空童軍領袖都著同一款（用戶確認 2026-11-13）",
+        "en": "No 1a summer dress (abolished from 2014, transition to 31 Oct 2019); there is only one Scout dress uniform and one evening dress, worn by Sea and Air Scout leaders too (user confirmed 13 Nov 2026)"
       },
       {
         "date": "2026-11-15",
@@ -88,6 +88,18 @@
         "item": "allChecked",
         "zh": "用戶確認全部內容已核對，介面刪走「待核對」字樣（用戶指示）",
         "en": "The user confirmed every item has been checked; the \"pending review\" labels are removed from the interface (user instruction)"
+      },
+      {
+        "date": "2026-11-13",
+        "item": "dressOneStyle",
+        "zh": "童軍禮服同晚禮服只有一款，海童軍、空童軍領袖都著同一款（用戶確認）",
+        "en": "There is only one Scout dress uniform and one evening dress; Sea and Air Scout leaders wear the same (user confirmed)"
+      },
+      {
+        "date": "2026-11-13",
+        "item": "woodBadgeHang",
+        "zh": "木章皮繩由頸兩邊斜落到胸前中間打結，木珠打橫吊喺結下面（用戶附相）",
+        "en": "The Wood Badge thong runs down from both sides of the neck to a knot at the centre of the chest, with the beads hanging horizontally below it (user's photo)"
       }
     ]
   },
@@ -5417,8 +5429,8 @@
     },
     {
       "id": "noDressSea",
-      "zh": "手冊只有陸上款禮服同晚禮服；揀海童軍／空童軍領袖時，模型都用陸上款（帽、衫褲顏色一樣）。",
-      "en": "The Handbook shows only land-style dress and evening dress; with Sea or Air Scout leaders selected the model still uses the land style (same hats and colours).",
+      "zh": "童軍禮服同晚禮服只有一款：海童軍、空童軍領袖都著同一款（帽、衫褲顏色一樣；用戶確認）。",
+      "en": "There is only one Scout dress uniform and one evening dress: Sea and Air Scout leaders wear the same (same hats and colours; user confirmed).",
       "sources": [
         {
           "ref": "UH",

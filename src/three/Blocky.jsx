@@ -343,31 +343,44 @@ function TipDecal({ file, w, h, painted, position }) {
 }
 
 /**
- * 木章（手冊 P.115–117）：皮繩連木珠。皮繩由頸兩邊（top）落到胸前（end），木珠喺 end 下面吊住；
- * 兩邊分木珠（2 顆 = 每邊 1 顆；3 顆 = 左 2 右 1；4 顆 = 每邊 2 顆）。頸後嗰段藏喺領巾下面，唔使畫。
+ * 木章（手冊 P.115–117；擺法跟用戶附相 2026-11-13）：皮繩由頸兩邊（top，喺領巾捲邊下面出嚟）
+ * 斜斜落到胸前中間（knot，約胸袋底高度）打結，結下面兩條短繩吊住木珠；木珠打橫（穿孔喺中間），
+ * 2 顆 = 每邊 1 顆；3 顆 = 左 2 右 1；4 顆 = 每邊 2 顆。木珠疊喺領巾（或者領帶）前面。頸後藏喺領巾下面，唔使畫。
  */
-function WoodBadge({ top, end, beads, painted }) {
+function WoodBadge({ top, knot, beads, painted }) {
   const F = useMemo(
-    () => ({ thong: [0, 1, 2, 3, 4, 5].map(() => plain(1, 1, C.thong)), bead: hatFaces([1.2, 3, 1.2], C.woodBead) }),
+    () => ({ thong: [0, 1, 2, 3, 4, 5].map(() => plain(1, 1, C.thong)), knot: hatFaces([1.4, 1.4, 1], C.thong), bead: hatFaces([3.2, 1.1, 1.1], C.woodBead) }),
     [],
   );
-  const perSide = { 1: Math.ceil(beads / 2), [-1]: Math.floor(beads / 2) };
+  const T = 0.45; // 皮繩粗幼
+  const seg = (a, b, key) => {
+    const dx = b.x - a.x;
+    const dy = b.y - a.y;
+    const dz = b.z - a.z;
+    const len = Math.hypot(dx, dy, dz);
+    return (
+      <group key={key} position={[(a.x + b.x) / 2, (a.y + b.y) / 2, (a.z + b.z) / 2]} rotation={[0, 0, Math.atan2(-dx, dy)]}>
+        <Box size={[T, len, T]} faces={F.thong} painted={painted} position={[0, 0, 0]} rotation={[Math.atan2(dz, Math.hypot(dx, dy)), 0, 0]} />
+      </group>
+    );
+  };
+  // 木珠：由上到下交替左右（穿著者左先），每顆低 1.5 cm
+  const list = Array.from({ length: beads }, (_, k) => {
+    const s = k % 2 === 0 ? 1 : -1;
+    return { s, x: s * 0.55, y: knot.y - 3.4 - k * 1.5, z: knot.z + 0.1 + (s > 0 ? 0.15 : 0) };
+  });
+  const lowest = (s) => list.filter((b) => b.s === s).at(-1);
   return (
     <group>
+      {[1, -1].map((s) => seg({ x: s * top.x, y: top.y, z: top.z }, knot, `up${s}`))}
+      <Box size={[1.4, 1.4, 1]} faces={F.knot} painted={painted} position={[knot.x, knot.y, knot.z + 0.1]} />
       {[1, -1].map((s) => {
-        const dx = s * (top.x - end.x);
-        const dy = top.y - end.y;
-        const len = Math.hypot(dx, dy);
-        const n = perSide[s];
-        return (
-          <group key={s}>
-            <Box size={[0.5, len, 0.4]} faces={F.thong} painted={painted} position={[s * (top.x + end.x) / 2, (top.y + end.y) / 2, (top.z + end.z) / 2]} rotation={[0, 0, Math.atan2(-dx, dy)]} />
-            {Array.from({ length: n }, (_, i) => (
-              <Box key={i} size={[1.2, 3, 1.2]} faces={F.bead} painted={painted} position={[s * end.x + (i - (n - 1) / 2) * 1.4, end.y - 1.7, end.z + 0.3]} />
-            ))}
-          </group>
-        );
+        const b = lowest(s);
+        return b ? seg({ x: knot.x + s * 0.3, y: knot.y - 0.6, z: knot.z }, { x: b.x, y: b.y + 0.4, z: b.z }, `dn${s}`) : null;
       })}
+      {list.map((b, k) => (
+        <Box key={k} size={[3.2, 1.1, 1.1]} faces={F.bead} painted={painted} position={[b.x, b.y, b.z]} />
+      ))}
     </group>
   );
 }
@@ -518,7 +531,7 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
   const U = scout
     ? scoutVariant(outfit.variant)
     : leader
-    ? leaderVariant(['u1', 'u2'].includes(outfit.uniform) ? 'land' : outfit.variant) // 禮服／晚禮服只有陸上款（手冊 P.57–62）
+    ? leaderVariant(['u1', 'u2'].includes(outfit.uniform) ? 'land' : outfit.variant) // 禮服／晚禮服只有一款，海／空童軍領袖都一樣（手冊 P.57–62，用戶確認）
     : section === 'rover'
     ? roverVariant(outfit.variant)
     : venture
@@ -723,7 +736,7 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
     () => (gilwellWog ? gilwellWogglePaint(GILWELL_WOG, { trainer: LN.trainer }) : leather ? scoutWogglePaint([8, 3, 1.4]) : wogglePaint([8, 2.6, 1.2], outfit.woggle)),
     [outfit.woggle, leather, gilwellWog, LN?.trainer], // eslint-disable-line react-hooks/exhaustive-deps
   );
-  // 木章（手冊 P.116–117）：皮繩由頸兩邊落到胸前，木珠掛喺領巾（或者領帶）前面
+  // 木章（手冊 P.116–117、用戶附相）：皮繩由頸兩邊斜落到胸前中間打結，木珠吊喺結下面
   const wood = useMemo(() => {
     if (!LN?.woodBadge || !invested) return null;
     const N0 = neckerLayout(L);
@@ -731,8 +744,11 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
     const top = tie
       ? { x: B.neck.w / 2 + 1.9, y: L.top + 0.2 + out, z: B.torso.d / 2 + 0.7 + out } // 領帶：皮繩由衣領兩邊落（唔好穿入身）
       : { x: N0.outer / 2 - 0.8, y: L.top + N0.rollH - 0.2, z: N0.front + 0.6 };
-    const end = tie ? { x: 4.6, y: L.top - 13, z: B.torso.d / 2 + 0.7 + out } : { x: 5.4, y: N0.wogY - 4, z: N0.front + 0.9 };
-    return { top, end, beads: LN.beads };
+    // 結喺胸前中間，約胸袋底高度（巾圈下面巾尾長度約 2/3）；木珠吊喺結下面、疊喺巾尾／領帶前面
+    const tailLen = B.necker.tailLen;
+    const knotY = (tie ? L.top - B.necker.wogDrop : N0.wogY) - tailLen * 0.68;
+    const knot = { x: 0, y: knotY, z: (tie ? B.torso.d / 2 + 0.7 + out : N0.front + 0.4) + 0.8 };
+    return { top, knot, beads: LN.beads };
   }, [LN, invested, L, B, tie, dress]);
   // 肩帶（恤衫色，邊深少少）
   // 肩帶：恤衫色；著毛衣就係毛衣膊布色（手冊 P.122 附圖）

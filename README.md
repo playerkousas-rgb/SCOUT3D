@@ -1,7 +1,7 @@
 # SCOUT3D — 香港童軍制服 3D 預覽（小童軍至領袖）
 
 > **一句話**：一個可以轉嚟轉去嘅 3D 公仔，示範香港童軍總會**小童軍、幼童軍、童軍（海／空）、深資童軍（海／空）、樂行童軍（海／空）、成年成員（領袖，編號 1–6，包括禮服、晚禮服同勳章）**制服點穿、必備徽章應該戴喺邊；撳徽章就見到位置描述、原文摘要同文件頁碼。畀家長、新領袖同團長核對用。
-> 類型（P1 三分類）：**工具**（無登入、無後端、無狀態） · 技術棧：Vite 6 + React 18 + three.js / React Three Fiber，部署 Vercel（`hkg1`）
+> 類型（P1 三分類）：**工具**（無登入、無狀態；唯一伺服器部分係驗 3D 匯出密碼嘅 `/api/export-pin`） · 技術棧：Vite 6 + React 18 + three.js / React Three Fiber，部署 Vercel（`hkg1`）
 > 非官方聲明：**非香港童軍總會官方工具**。位置屬示意；徽章圖案取自香港童軍總會《儀容與制服手冊》、各支部訓練綱要及《小童軍活動指引》（第三版），版權屬香港童軍總會。實際穿著請以所屬童軍組織及單位最新指引為準。
 
 更新日期：2026-11-13 · 負責：SCOUT SYSTEM · 授權：保留所有權利（`UNLICENSED`，見 [LICENSE](LICENSE)） · 版本：**SCOUT3D v1.0**
@@ -37,16 +37,17 @@
 - 中文／English 一鍵切換（右上角），記住選擇。
 - 截圖／匯出：PNG（同螢幕／2×／4×、可透明背景），右下角 `© SCOUT SYSTEM · v1.0`，加隱形水印（`SCOUTSYSTEM|v2|S3D1|<日期>|GRHP`），可以用 [`tools/drawscout_decoder_v1.0.html`](tools/drawscout_decoder_v1.0.html) 驗。3D 模型（GLB／STL）要密碼，見下面「3D 匯出密碼」。
 
-## 3D 匯出密碼（`VITE_EXPORT_PIN`）
+## 3D 匯出密碼（`EXPORT_PIN`）
 
 | 步驟 | 做法 |
 |---|---|
-| 設定 | Vercel → Project → Settings → Environment Variables，加 `VITE_EXPORT_PIN` = 你自己揀嘅 4 位數字 |
-| 生效 | 重新 deploy（Vite 喺 build 嗰陣先讀環境變數） |
-| 本機 | `VITE_EXPORT_PIN=1234 npm run dev`，或者寫入 `.env.local`（已 gitignore） |
+| 設定 | Vercel → Project → Settings → Environment Variables，加 `EXPORT_PIN` = 你自己揀嘅 4 位數字。**唔好加 `VITE_` 前綴**：`VITE_` 開頭嘅變數會打包入前端，人人睇到 |
+| 生效 | 重新 deploy |
+| 檢查 | 伺服器 function [`api/export-pin.js`](api/export-pin.js)（邏輯喺 [`api/_pin.js`](api/_pin.js)）：GET 只答「有冇設定」，POST 驗密碼；同一個 IP 15 分鐘內錯 5 次就鎖住，錯咗慢 0.6 秒先答 |
+| 本機 | `EXPORT_PIN=1234 npm run dev`（或者 `npm run preview`），或者寫入 `.env.local`（已 gitignore）；vite 會模擬同一個 `/api/export-pin` |
 | 唔設定 | 匯出面板只有 PNG，唔顯示 3D 匯出 |
 
-⚠️ 純前端網站：密碼會寫入打包後嘅 JS，識睇原始碼嘅人搵得到。只係擋一般用戶，**唔係保安**；唔好用同其他系統一樣嘅密碼。錯 5 次會鎖住，要重新載入。GLB 有顏色同徽章貼圖；STL 係 1:10 毫米、冇顏色，徽章係薄片，打印前喺切片軟件調整。
+密碼唔會出現喺打包後嘅 JS 入面。不過匯出本身喺瀏覽器做，密碼只係一道門檻：4 位數字始終有限，識寫程式嘅人可以繞過前端。唔好用同其他系統一樣嘅密碼。GLB 有顏色同徽章貼圖；STL 係 1:10 毫米、冇顏色，徽章係薄片，打印前喺切片軟件調整。
 
 ## 資料來源
 

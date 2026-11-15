@@ -1,10 +1,28 @@
 // 3D 匯出：GLB（連顏色、徽章貼圖）、STL（3D 打印，淨形狀）— v1.0 · © SCOUT SYSTEM
-// 要密碼先用得（環境變數 VITE_EXPORT_PIN，4 位數字）。注意：純前端網站，密碼會喺打包後嘅 JS 入面，只係擋一般用戶。
+// 要密碼先用得：密碼喺伺服器環境變數 EXPORT_PIN（4 位數字），由 /api/export-pin 檢查，唔會打包入前端 JS。
 
-/** 4 位數字先算有設定；冇設定就唔顯示 3D 匯出 */
-export function exportPin(env = import.meta.env) {
-  const v = String(env?.VITE_EXPORT_PIN ?? '').trim();
-  return /^\d{4}$/.test(v) ? v : null;
+const PIN_API = '/api/export-pin';
+
+/** 有冇設定密碼（冇設定、網絡失敗 → false，唔顯示 3D 匯出） */
+export async function pinStatus(fetchFn = globalThis.fetch) {
+  try {
+    const r = await fetchFn(PIN_API, { headers: { Accept: 'application/json' }, cache: 'no-store' });
+    if (!r.ok) return false;
+    return !!(await r.json())?.enabled;
+  } catch {
+    return false;
+  }
+}
+
+/** 交伺服器驗密碼 → { ok, locked, left } */
+export async function verifyPin(pin, fetchFn = globalThis.fetch) {
+  try {
+    const r = await fetchFn(PIN_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pin: String(pin) }) });
+    const j = await r.json().catch(() => ({}));
+    return { ok: r.ok && j.ok === true, locked: r.status === 429 || !!j.locked, left: j.left ?? null };
+  } catch {
+    return { ok: false, locked: false, left: null, error: true };
+  }
 }
 
 /** GLB：Blender、Windows 3D 檢視器、手機 AR 都開得；單位 = 米 */

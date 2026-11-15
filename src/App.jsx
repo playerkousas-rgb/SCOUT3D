@@ -7,7 +7,6 @@ import { NECKER, WOGGLE, PLAIN } from './palette.js';
 import { shownReason } from './three/badgeLayout.js';
 import { resolveArt, meritYearOk, findDistrict, findPatrol, ranksFor, fixRank, rankRowOf, leaderNeckwear, messCapOf, troopNumber, ordinalSuffix } from './lib/picks.js';
 import { NECKER_THIRD } from './lib/necker.js';
-import { exportPin } from './lib/export3d.js';
 import { leaderUniform, isDress } from './three/body.js';
 import { APP_VERSION } from './version.js';
 
@@ -768,17 +767,26 @@ const HeightBar = forwardRef(function HeightBar({ scene }, ref) {
 
 const PNG_SCALES = [0, 2, 4];
 
-/** 匯出：PNG 所有人用得；GLB／STL 要密碼（VITE_EXPORT_PIN） */
+/** 匯出：PNG 所有人用得；GLB／STL 要密碼（伺服器環境變數 EXPORT_PIN，經 /api/export-pin 驗） */
 function ExportPanel({ scene, variantTag, onClose, toast }) {
   const { t } = useLang();
   const [scale, setScale] = useState(2);
   const [transparent, setTransparent] = useState(false);
   const [pin, setPin] = useState('');
   const [unlocked, setUnlocked] = useState(false);
-  const [tries, setTries] = useState(0);
+  const [locked, setLocked] = useState(false);
+  const [checking, setChecking] = useState(false);
   const [busy, setBusy] = useState(false);
-  const PIN = useMemo(() => exportPin(), []);
-  const locked = tries >= 5;
+  const [PIN, setPinEnabled] = useState(false); // 伺服器有冇設定密碼
+  useEffect(() => {
+    let live = true;
+    import('./lib/export3d.js')
+      .then(({ pinStatus }) => pinStatus())
+      .then((on) => live && setPinEnabled(on));
+    return () => {
+      live = false;
+    };
+  }, []);
   const run = async (fn) => {
     setBusy(true);
     try {
@@ -806,15 +814,19 @@ function ExportPanel({ scene, variantTag, onClose, toast }) {
       const blob = kind === 'glb' ? await exportGlb(obj) : await exportStl(obj);
       downloadBlob(blob, `scout3d_${variantTag}_${APP_VERSION}_${stamp()}.${kind}`);
     });
-  const unlock = (e) => {
+  const unlock = async (e) => {
     e.preventDefault();
-    if (locked || !PIN) return;
-    if (pin === PIN) {
-      setUnlocked(true);
+    if (locked || !PIN || checking) return;
+    setChecking(true);
+    try {
+      const { verifyPin } = await import('./lib/export3d.js');
+      const r = await verifyPin(pin);
       setPin('');
-    } else {
-      setTries((n) => n + 1);
-      toast(t('export.wrongPin'));
+      if (r.ok) setUnlocked(true);
+      else if (r.locked) setLocked(true);
+      else toast(t(r.error ? 'export.netFail' : 'export.wrongPin'));
+    } finally {
+      setChecking(false);
     }
   };
   return (
@@ -862,7 +874,7 @@ function ExportPanel({ scene, variantTag, onClose, toast }) {
                 aria-label={t('export.pin')}
                 onChange={(e) => setPin(e.target.value.replace(/\D/g, ''))}
               />
-              <button type="submit" className="btn btn--ghost" disabled={locked || pin.length !== 4}>
+              <button type="submit" className="btn btn--ghost" disabled={locked || checking || pin.length !== 4}>
                 {t('export.unlock')}
               </button>
               {locked && <p className="muted">{t('export.lockedOut')}</p>}
@@ -1219,7 +1231,7 @@ function LeaderOutfitTab({ outfit, setOutfit, picks }) {
   const girl = outfit.gender === 'girl';
   const uid = leaderUniform(outfit.gender, outfit.uniform);
   const U = R.uniforms.find((x) => x.id === uid);
-  const dress = isDress(uid); // 禮服／晚禮服：只有陸上款（手冊 P.57–62）
+  const dress = isDress(uid); // 禮服／晚禮服：童軍只有一款，海／空童軍領袖都一樣（手冊 P.57–62，用戶確認）
   const evening = uid === 'u2';
   const v = dress ? 'land' : picked;
   const skirt = girl && (uid === 'u1' || uid === 'u3' || uid === 'u4');
@@ -1262,7 +1274,7 @@ function LeaderOutfitTab({ outfit, setOutfit, picks }) {
         options={R.uniforms.filter((x) => x.genders.includes(girl ? 'girl' : 'boy')).map((x) => ({ value: x.id, label: pick(lang, x, 'name') }))}
       />
       {U && <p className="note">{pick(lang, U, 'note')}</p>}
-      {dress && picked !== 'land' && <p className="note note--warn">{t('outfit.dressLandOnly')}</p>}
+      {dress && picked !== 'land' && <p className="note">{t('outfit.dressOneStyle')}</p>}
       {evening && (
         <Segmented
           label={t('outfit.season')}
@@ -1447,7 +1459,7 @@ export default function App() {
   // 成年成員一律已宣誓（冇未宣誓狀態）
   const outfit = section === 'leader' ? { ...outfits[section], invested: true } : outfits[section];
   // 童軍支部嘅款式（海童軍／空童軍）用自己嘅副標題、截圖說明同檔名
-  // 成年成員禮服／晚禮服只有陸上款（手冊 P.57–62）
+  // 成年成員禮服／晚禮服只有一款，海／空童軍領袖都一樣（手冊 P.57–62，用戶確認）
   const dressOn = section === 'leader' && isDress(leaderUniform(outfit.gender, outfit.uniform));
   const variantTag = (section === 'scout' || SENIOR.has(section) || section === 'leader') && !dressOn && outfit.variant && outfit.variant !== 'land' ? `${section}_${outfit.variant}` : section;
   const badges = badgeStates[section];

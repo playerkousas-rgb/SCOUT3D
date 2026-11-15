@@ -4,7 +4,9 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { ordinalSuffix, troopNumber, resolveArt, ranksFor, rankCap, messCapOf, rankRowOf } from '../src/lib/picks.js';
 import { neckerPalettes, stripeIndex, NECKER_THIRD } from '../src/lib/necker.js';
-import { exportPin, scaleStl } from '../src/lib/export3d.js';
+import { pinStatus, verifyPin, scaleStl } from '../src/lib/export3d.js';
+import { configuredPin, pinMatches, createLimiter, handlePin } from '../api/_pin.js';
+import { readdirSync } from 'node:fs';
 
 const read = (p) => JSON.parse(readFileSync(new URL(`../${p}`, import.meta.url), 'utf8'));
 const leader = read('src/data/leader_rules_v1.0.json');
@@ -104,11 +106,81 @@ test('旅巾斜紋：每條顏色輪流出現，左右鏡像', () => {
   assert.ok(stripeIndex(-50, -50, 3) >= 0);
 });
 
-test('匯出密碼：要 4 位數字先開 3D 匯出', () => {
-  assert.equal(exportPin({ VITE_EXPORT_PIN: '1234' }), '1234');
-  assert.equal(exportPin({ VITE_EXPORT_PIN: ' 0042 ' }), '0042');
-  for (const v of ['', '123', '12345', 'abcd', undefined]) assert.equal(exportPin({ VITE_EXPORT_PIN: v }), null, String(v));
-  assert.equal(exportPin(undefined), null);
+test('匯出密碼：伺服器 EXPORT_PIN 要 4 位數字先開；VITE_ 前綴唔算', () => {
+  assert.equal(configuredPin({ EXPORT_PIN: '1234' }), '1234');
+  assert.equal(configuredPin({ EXPORT_PIN: ' 0042 ' }), '0042');
+  for (const v of ['', '123', '12345', 'abcd', undefined]) assert.equal(configuredPin({ EXPORT_PIN: v }), null, String(v));
+  assert.equal(configuredPin({ VITE_EXPORT_PIN: '1234' }), null);
+  assert.ok(pinMatches('1234', '1234'));
+  for (const g of ['1235', '123', '12345', '', null, 1234]) assert.ok(!pinMatches('1234', g), String(g));
+});
+
+test('匯出密碼：前端源碼冇密碼、冇 VITE_EXPORT_PIN', () => {
+  const walk = (d) => readdirSync(new URL(`../${d}/`, import.meta.url), { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? walk(`${d}/${e.name}`) : [`${d}/${e.name}`]));
+  for (const f of walk('src').filter((f) => /\.(js|jsx|mjs)$/.test(f))) {
+    const txt = readFileSync(new URL(`../${f}`, import.meta.url), 'utf8');
+    assert.ok(!/VITE_EXPORT_PIN|import\.meta\.env\.\w*PIN/.test(txt), f);
+  }
+});
+
+test('匯出密碼：錯 5 次鎖 15 分鐘，啱咗清零', () => {
+  let t = 0;
+  const L = createLimiter({ now: () => t });
+  for (let k = 0; k < 4; k++) L.record('a', false);
+  assert.equal(L.locked('a'), false);
+  assert.equal(L.record('a', false).left, 0);
+  assert.equal(L.locked('a'), true);
+  assert.equal(L.locked('b'), false);
+  t = 15 * 60 * 1000 + 1;
+  assert.equal(L.locked('a'), false);
+  L.record('c', false);
+  L.record('c', true);
+  assert.equal(L.record('c', false).left, 4);
+});
+
+const mockRes = () => {
+  const r = { statusCode: 0, headers: {}, body: null };
+  r.setHeader = (k, v) => (r.headers[k.toLowerCase()] = v);
+  r.end = (b) => (r.body = JSON.parse(b));
+  return r;
+};
+const req = (method, body, ip = '9.9.9.9') => ({ method, body, headers: { 'x-forwarded-for': ip }, socket: {} });
+
+test('/api/export-pin：GET 只講有冇設定；POST 驗密碼、唔會 cache', async () => {
+  const env = { EXPORT_PIN: '2468' };
+  let res = mockRes();
+  await handlePin(req('GET'), res, env);
+  assert.deepEqual(res.body, { enabled: true });
+  assert.ok(!JSON.stringify(res.body).includes('2468'));
+  assert.equal(res.headers['cache-control'], 'no-store');
+  res = mockRes();
+  await handlePin(req('GET'), res, {});
+  assert.deepEqual(res.body, { enabled: false });
+  res = mockRes();
+  await handlePin(req('POST', { pin: '2468' }, '1.1.1.1'), res, env, { delayMs: 0 });
+  assert.equal(res.statusCode, 200);
+  assert.equal(res.body.ok, true);
+  res = mockRes();
+  await handlePin(req('POST', { pin: '0000' }, '1.1.1.2'), res, env, { delayMs: 0 });
+  assert.equal(res.statusCode, 403);
+  assert.equal(res.body.left, 4);
+  res = mockRes();
+  await handlePin(req('POST', { pin: '2468' }, '1.1.1.3'), res, {}, { delayMs: 0 });
+  assert.equal(res.statusCode, 404);
+  res = mockRes();
+  await handlePin(req('PUT'), res, env);
+  assert.equal(res.statusCode, 405);
+});
+
+test('前端：pinStatus／verifyPin 跟伺服器回覆；網絡失敗唔顯示 3D', async () => {
+  const fake = (status, body) => async () => ({ ok: status < 300, status, json: async () => body });
+  assert.equal(await pinStatus(fake(200, { enabled: true })), true);
+  assert.equal(await pinStatus(fake(200, { enabled: false })), false);
+  assert.equal(await pinStatus(async () => { throw new Error('offline'); }), false);
+  assert.deepEqual(await verifyPin('1234', fake(200, { ok: true })), { ok: true, locked: false, left: null });
+  assert.equal((await verifyPin('1', fake(403, { ok: false, left: 3 }))).left, 3);
+  assert.equal((await verifyPin('1', fake(429, { ok: false, locked: true }))).locked, true);
+  assert.equal((await verifyPin('1', async () => { throw new Error('x'); })).error, true);
 });
 
 test('STL：頂點按比例放大，法線唔變', () => {
