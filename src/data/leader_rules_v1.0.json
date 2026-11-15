@@ -142,6 +142,12 @@
         "item": "lanyardBack",
         "zh": "嘉許笛繩要畫埋後面一段（用戶指正，v20）",
         "en": "The commendation lanyard needs its back strand drawn too (user correction, v20)"
+      },
+      {
+        "date": "2026-11-15",
+        "item": "lanyardHighColour",
+        "zh": "高級嘉許笛繩係紫色（用戶指正，v20）",
+        "en": "The High Commendation lanyard is purple (user correction, v20)"
       }
     ]
   },
@@ -6455,8 +6461,8 @@
         ]
       },
       "modelNote": {
-        "zh": "笛繩用 3D 繩示意：嘉許 = 橙金色、高級嘉許 = 深藍夾黃綠（P.184 相片顏色）；選單細圖係手冊 P.184 相片。路線（v19 用戶指正＋相片）：由左肩職級肩章（肩帶膊頭嗰頭）下面穿出，兜過袖頂前邊、沿袖窿前面吊落到胸袋下面，再兜返上左胸袋口近中線嗰邊；後面一段（v20）由肩章下面向後、沿袖窿後面落到腋下同前面接埋，成個圈套住左膊。晚禮服小型笛繩幼一半、一樣由肩章下面起，末端去到左襟領。",
-        "en": "The lanyard is a 3D cord: Commendation orange-gold, High Commendation dark blue with yellow-green (colours from the p.184 photos); the menu thumbnails are the p.184 photos. Route (v19 user correction with photo): out from under the rank slide at the shoulder end of the left strap, over the front of the sleeve top, down the front of the armhole to below the pocket, then back up to the inner side of the left pocket mouth; a back strand (v20) runs from under the rank slide down the back of the armhole to the armpit and joins the front, so the cord loops round the left shoulder. The evening-dress miniature is half as thick, also starts under the rank slide and ends at the left lapel."
+        "zh": "笛繩用 3D 繩示意：嘉許 = 橙金色、高級嘉許 = 紫色主繩夾幼米白扭紋（v20 用戶指正）（P.184 相片顏色）；選單細圖係手冊 P.184 相片。路線（v19 用戶指正＋相片）：由左肩職級肩章（肩帶膊頭嗰頭）下面穿出，兜過袖頂前邊、沿袖窿前面吊落到胸袋下面，再兜返上左胸袋口近中線嗰邊；後面一段（v20）由肩章下面向後、沿袖窿後面落到腋下同前面接埋，成個圈套住左膊。晚禮服小型笛繩幼一半、一樣由肩章下面起，末端去到左襟領。",
+        "en": "The lanyard is a 3D cord: Commendation orange-gold, High Commendation purple with a thin cream twist (v20 user correction) (colours from the p.184 photos); the menu thumbnails are the p.184 photos. Route (v19 user correction with photo): out from under the rank slide at the shoulder end of the left strap, over the front of the sleeve top, down the front of the armhole to below the pocket, then back up to the inner side of the left pocket mouth; a back strand (v20) runs from under the rank slide down the back of the armhole to the armpit and joins the front, so the cord loops round the left shoulder. The evening-dress miniature is half as thick, also starts under the rank slide and ends at the left lapel."
       }
     },
     {

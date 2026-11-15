@@ -396,6 +396,25 @@ export function lanyardBackPoints({ L, strap, D = null, z, thick, slideX = null 
   return pts;
 }
 
+/**
+ * 笛繩顏色（手冊 P.184 相片；v20 用戶指正：高級嘉許係紫色）。每條 strand：c = 顏色、w = 粗幼（以笛繩粗幼計）。
+ * 嘉許：橙金色一條；高級嘉許：紫色主繩＋幼米白扭紋（相片見到紫繩纏住一條幼米白線）。
+ */
+export const LANYARD_COLOURS = {
+  commendation: [{ c: '#d98b1e', w: 1 }],
+  high: [{ c: '#5b2d72', w: 1 }, { c: '#e3d5ae', w: 0.35 }],
+};
+/** 並排 strand 嘅中心偏移（以笛繩粗幼計）：全部緊貼、成組置中 */
+export function strandOffsets(ws) {
+  const total = ws.reduce((a, w) => a + w, 0);
+  let x = -total / 2;
+  return ws.map((w) => {
+    const o = x + w / 2;
+    x += w;
+    return Math.round(o * 1000) / 1000;
+  });
+}
+
 /** 成年成員職級肩章沿肩帶嘅長度（cm，leader_rules epaulette hCm） */
 export const RANK_SLIDE_H = 3.65;
 

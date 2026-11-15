@@ -3,7 +3,7 @@
 // 人物面向 +z；穿著者左 = +x。
 import { useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
-import { layout, neckerLayout, strapLayout, dressLayout, lanyardPoints, lanyardBackPoints, VEST_T, SWEATER_TOP, PX, scoutVariant, SCOUT_VARIANTS, ventureVariant, roverVariant, leaderVariant, isSenior, ventureLegwear, leaderLegwear, pumpParts } from './body.js';
+import { layout, neckerLayout, strapLayout, dressLayout, lanyardPoints, lanyardBackPoints, LANYARD_COLOURS, strandOffsets, VEST_T, SWEATER_TOP, PX, scoutVariant, SCOUT_VARIANTS, ventureVariant, roverVariant, leaderVariant, isSenior, ventureLegwear, leaderLegwear, pumpParts } from './body.js';
 import { useTexture } from '@react-three/drei';
 import { SECTIONS, DISTRICTS, PATROLS } from '../data/rules.js';
 import { resolveArt, rankCap, leaderNeckwear, messCapOf } from '../lib/picks.js';
@@ -491,7 +491,8 @@ function Lanyard({ p, paths, colours, thick, painted, selected, onSelect, regist
     registry.set(p.key, ref.current);
     return () => registry.delete(p.key);
   }, [registry, p.key]);
-  const segs = useMemo(() => paths.flatMap((pts) => lanyardSegments(pts, thick, colours.length)), [paths, thick, colours.length]);
+  const offs = useMemo(() => strandOffsets(colours.map((k) => k.w)), [colours]);
+  const segs = useMemo(() => paths.flatMap((pts) => lanyardSegments(pts, thick, offs)), [paths, thick, offs]);
   return (
     <group
       onClick={(e) => {
@@ -500,18 +501,18 @@ function Lanyard({ p, paths, colours, thick, painted, selected, onSelect, regist
       }}
     >
       {segs.map((sg, i) =>
-        colours.map((c, j) => (
+        colours.map((k, j) => (
           <mesh key={`${i}-${j}`} ref={i === 0 && j === 0 ? ref : undefined} position={sg.pos[j]} quaternion={sg.quat} castShadow>
-            <boxGeometry args={[thick, sg.len, thick]} />
-            <meshStandardMaterial color={painted ? (selected ? '#f2791c' : c) : '#a3a6aa'} roughness={0.6} />
+            <boxGeometry args={[thick * k.w, sg.len, thick * k.w]} />
+            <meshStandardMaterial color={painted ? (selected ? '#f2791c' : k.c) : '#a3a6aa'} roughness={0.6} />
           </mesh>
         )),
       )}
     </group>
   );
 }
-/** 笛繩每段：中心（每條繩一個，並排）、長度、四元數（+Y → 段方向）。並排方向 = 段方向 × 前（+Z）；段近乎前後就用 +X。 */
-function lanyardSegments(points, thick, n) {
+/** 笛繩每段：中心（每條繩一個，並排；offs = strandOffsets，以 thick 計）、長度、四元數（+Y → 段方向）。並排方向 = 段方向 × 前（+Z）；段近乎前後就用 +X。 */
+function lanyardSegments(points, thick, offs) {
   const up = new THREE.Vector3(0, 1, 0);
   return points.slice(1).map((b, i) => {
     const a = new THREE.Vector3(...points[i]);
@@ -522,11 +523,10 @@ function lanyardSegments(points, thick, n) {
     if (side.lengthSq() < 0.05) side = new THREE.Vector3(1, 0, 0);
     side.normalize();
     const mid = a.clone().addScaledVector(d, 0.5);
-    const pos = Array.from({ length: n }, (_, j) => mid.clone().addScaledVector(side, (j - (n - 1) / 2) * thick).toArray());
+    const pos = offs.map((o) => mid.clone().addScaledVector(side, o * thick).toArray());
     return { pos, len: len + thick, quat: new THREE.Quaternion().setFromUnitVectors(up, dir) };
   });
 }
-const LANYARD_COLOURS = { commendation: ['#d98b1e'], high: ['#27346f', '#b9c94a'] }; // 手冊 P.184 相片顏色
 
 const SHORTS_BOTTOM = 38; // 短褲腳離地（cm，膝頭上面）
 const BEIGE_SHORTS_BOTTOM = { cub: { boy: 47, girl: 45 }, scout: { boy: 54, girl: 52 } }; // 幼童軍／童軍短褲、裙褲腳離地

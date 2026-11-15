@@ -56,6 +56,21 @@ test('晚禮服小型笛繩：後面一段接埋之後去左襟領（同前面�
 test('Blocky：笛繩畫兩段（前面＋後面），Lanyard 收 paths', () => {
   const src = text('src/three/Blocky.jsx');
   assert.match(src, /const paths = \[lanyardPoints\(args\), lanyardBackPoints\(args\)\]/);
-  assert.match(src, /paths\.flatMap\(\(pts\) => lanyardSegments\(pts, thick, colours\.length\)\)/);
+  assert.match(src, /paths\.flatMap\(\(pts\) => lanyardSegments\(pts, thick, offs\)\)/);
   assert.match(src, /<Lanyard key=\{q\.p\.key\} p=\{q\.p\} paths=\{q\.paths\}/);
+});
+
+test('笛繩顏色：嘉許橙金色一條；高級嘉許紫色主繩＋幼米白扭紋（用戶指正）', async () => {
+  const { LANYARD_COLOURS, strandOffsets } = await import('../src/three/body.js');
+  assert.deepEqual(LANYARD_COLOURS.commendation, [{ c: '#d98b1e', w: 1 }]);
+  const [main, twist] = LANYARD_COLOURS.high;
+  const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+  const [r, g, b] = hex(main.c);
+  assert.ok(b > g && r > g && b >= r * 0.9, `${main.c} 係紫色`);
+  assert.equal(main.w, 1);
+  assert.ok(twist.w < 0.5, '扭紋幼過主繩');
+  assert.deepEqual(strandOffsets([1]), [0]);
+  assert.deepEqual(strandOffsets([1, 0.35]), [-0.175, 0.5]);
+  const rules = JSON.parse(text('src/data/leader_rules_v1.0.json'));
+  assert.match(rules.badges.find((x) => x.id === 'commendation').modelNote.zh, /高級嘉許 = 紫色/);
 });
