@@ -26,8 +26,8 @@
       {
         "date": "2026-11-14",
         "item": "scope",
-        "zh": "先做制服編號 3–6（常規、領帶、男短褲、女長褲）；編號 1 禮服、編號 2 晚禮服之後再做（用戶揀）",
-        "en": "Uniforms No. 3–6 first (regular, tie, men's shorts, women's trousers); No. 1 dress and No. 2 evening dress later (user choice)"
+        "zh": "制服編號 3–6 先做（v10）；之後加埋編號 1 禮服、編號 2 晚禮服（v11，用戶指示「處理埋最後的成人制服」）",
+        "en": "Uniforms No. 3–6 first (v10); then No. 1 dress and No. 2 evening dress (v11, user instruction to finish the last adult uniforms)"
       },
       {
         "date": "2026-11-14",
@@ -58,6 +58,30 @@
         "item": "requiredFirst",
         "zh": "先做必備章，之後先做可選／專科章（用戶指示）",
         "en": "Required badges first, optional / proficiency badges later (user instruction)"
+      },
+      {
+        "date": "2026-11-15",
+        "item": "eveningSeason",
+        "zh": "晚禮服夏季（白上衣、白色金屬肩章）同冬季（黑上衣、黑色金屬肩章）兩款都做，由用戶切換（用戶揀）",
+        "en": "Evening dress in both summer (white jacket, white metal epaulettes) and winter (black jacket, black metal epaulettes), switchable (user choice)"
+      },
+      {
+        "date": "2026-11-15",
+        "item": "dressOptional",
+        "zh": "禮服／晚禮服嘅可選項目全部做：布質名牌、喪禮黑布、木章、勳章及獎章、迷你勳章、嘉許笛繩、感謝章（用戶揀）",
+        "en": "All optional items for dress / evening dress: cloth name tag, mourning band, Wood Badge, medals, miniature medals, commendation lanyards, Thanks Badge (user choice)"
+      },
+      {
+        "date": "2026-11-15",
+        "item": "dressScope",
+        "zh": "唔做 1a 夏季禮服（2014 年起取消，過渡期至 2019-10-31）；手冊只有陸上款禮服／晚禮服，揀海／空款時都用陸上款並加提示（用戶確認）",
+        "en": "No 1a summer dress (abolished from 2014, transition to 31 Oct 2019); the Handbook only shows land-style dress / evening dress, so Sea / Air leaders get the land style with a note (user confirmed)"
+      },
+      {
+        "date": "2026-11-15",
+        "item": "serviceLater",
+        "zh": "服務年資章等其他可選章之後再做（用戶揀）",
+        "en": "Service-year and other optional badges later (user choice)"
       }
     ]
   },
@@ -66,8 +90,8 @@
       "zh": "香港童軍總會《儀容與制服手冊》",
       "en": "SAHK Uniform Handbook (Chinese edition)",
       "edition": {
-        "zh": "網上版（含 2026-01-01 第 04/2026 號通告制服帽修訂）；P.52–56 成年成員制服總覽，P.64–69 制服編號 3–6，P.70–75 海童軍領袖，P.76–81 空童軍領袖，P.88 尺寸，P.92–95 基本徽章，P.97–101 制服帽，P.103–106 職級帽章及肩章，P.107–112 領巾及巾圈，P.113 領帶，P.115–117 基維爾巾圈、基維爾領巾及木章，P.159 優異旅團章，P.172 成年成員徽章佩戴圖",
-        "en": "Online edition incl. Circular 04/2026 (1 Jan 2026) cap amendment; pp.52–56 adult uniform overview, pp.64–69 uniforms No. 3–6, pp.70–75 Sea Scout leaders, pp.76–81 Air Scout leaders, p.88 sizes, pp.92–95 basic badges, pp.97–101 caps, pp.103–106 rank cap badges and epaulettes, pp.107–112 neckerchiefs and woggles, p.113 ties, pp.115–117 Gilwell woggle, Gilwell neckerchief and Wood Badge, p.159 Meritorious Group Badge, p.172 adult badge chart"
+        "zh": "網上版（含 2026-01-01 第 04/2026 號通告制服帽修訂）；P.52–56 成年成員制服總覽，P.57–59 制服編號 1（禮服），P.60–62 制服編號 2（晚禮服），P.64–69 制服編號 3–6，P.70–75 海童軍領袖，P.76–81 空童軍領袖，P.88 尺寸，P.92–95 基本徽章，P.97–101 制服帽，P.103–106 職級帽章及肩章，P.107–112 領巾及巾圈，P.113 領帶，P.115–117 基維爾巾圈、基維爾領巾及木章，P.159 優異旅團章，P.172 成年成員徽章佩戴圖，P.123 活動名牌，P.128 布質名牌，P.162 喪禮黑布，P.175–192 勳章及獎勵，P.203–205 禮服／晚禮服款式，P.206–211 晚禮服黑色硬帽及金屬職級肩章",
+        "en": "Online edition incl. Circular 04/2026 (1 Jan 2026) cap amendment; pp.52–56 adult uniform overview, pp.57–59 uniform No. 1 (dress), pp.60–62 uniform No. 2 (evening dress), pp.64–69 uniforms No. 3–6, pp.70–75 Sea Scout leaders, pp.76–81 Air Scout leaders, p.88 sizes, pp.92–95 basic badges, pp.97–101 caps, pp.103–106 rank cap badges and epaulettes, pp.107–112 neckerchiefs and woggles, p.113 ties, pp.115–117 Gilwell woggle, Gilwell neckerchief and Wood Badge, p.159 Meritorious Group Badge, p.172 adult badge chart, p.123 activity name badge, p.128 cloth name tag, p.162 mourning band, pp.175–192 awards and decorations, pp.203–205 dress / evening dress patterns, pp.206–211 evening dress black hard hats and metal rank epaulettes"
       },
       "url": "https://www.scout.org.hk/uniformhandbook"
     },
@@ -781,6 +805,66 @@
   ],
   "uniforms": [
     {
+      "id": "u1",
+      "number": 1,
+      "genders": [
+        "boy",
+        "girl"
+      ],
+      "neckwear": "tie",
+      "legwear": {
+        "boy": "trousers",
+        "girl": "skirt"
+      },
+      "dress": "jacket",
+      "zh": {
+        "name": "編號 1 禮服",
+        "note": "已宣誓成年成員出席典禮及儀式（會操、週年大會、就職禮、婚禮、喪禮）、國際及社區活動時穿著（主辦單位冇安排就著編號 3）。草青色四袋長袖上衣（有肩帶）、杏色長袖恤衫、深綠色領帶、棕色皮帶；男：草青色長褲、黑短襪、綁帶黑皮鞋；女：草青色半截裙（及膝）、肉色尼龍襪褲、非綁帶黑色中跟皮鞋。只可以戴基本徽章同 P.57 列明嘅可選項目。"
+      },
+      "en": {
+        "name": "No. 1 Dress uniform",
+        "note": "Worn by invested adults at ceremonies (parades, AGMs, investitures, weddings, funerals), international and community events (No. 3 applies if the organiser sets nothing). Grass-green four-pocket long-sleeve jacket (shoulder straps), beige long-sleeve shirt, dark green tie, brown belt; men: grass-green trousers, black short socks, black laced shoes; women: grass-green knee-length skirt, flesh nylon tights, black non-laced medium-heel shoes. Only the basic badges and the optional items listed on p.57."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "52–53, 57–59, 203–204"
+        }
+      ]
+    },
+    {
+      "id": "u2",
+      "number": 2,
+      "genders": [
+        "boy",
+        "girl"
+      ],
+      "neckwear": "bowTie",
+      "legwear": {
+        "boy": "messTrousers",
+        "girl": "messSkirt"
+      },
+      "dress": "mess",
+      "seasons": [
+        "summer",
+        "winter"
+      ],
+      "zh": {
+        "name": "編號 2 晚禮服",
+        "note": "已宣誓成年成員出席童軍領袖聚餐（Mess Night）及餐舞會時穿著；夏季白上衣、冬季黑上衣（請柬列明）。短身晚禮服上衣（翻領各有一個銀色童軍徽，肩帶、袖口有銀色童軍鈕）、白色長袖恤衫（冇花邊）、男黑色煲呔／女黑色女裝領結、紫色絲質腰封；男：黑色長褲（冇袋、兩邊紫色絲質間條）、黑短襪、黑色平面皮鞋；女：黑色長裙、肉色襪褲、黑色平面高跟鞋。黑色硬帽連銀色帽章、金屬職級肩章。"
+      },
+      "en": {
+        "name": "No. 2 Evening dress",
+        "note": "Worn by invested adults at Scouters' Mess Nights and dinner dances; white jacket in summer, black in winter (stated on the invitation). Short mess jacket (a silver Scout emblem on each lapel, silver Scout buttons on the straps and cuffs), white long-sleeve shirt (no frills), men black bow tie / women black ladies' bow, purple silk cummerbund; men: black trousers (no pockets, purple silk side stripes), black short socks, black plain shoes; women: black long skirt, flesh tights, black plain high heels. Black hard hat with silver cap badge, metal rank epaulettes."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "53, 60–62, 91, 205–211"
+        }
+      ]
+    },
+    {
       "id": "u3",
       "number": 3,
       "genders": [
@@ -1097,6 +1181,130 @@
         }
       ],
       "status": "documented"
+    },
+    {
+      "id": "dressJacket",
+      "zh": {
+        "name": "禮服上衣（編號 1）",
+        "rule": "草青色、長袖、前面四個袋（兩個胸袋、兩個下袋，有袋蓋）、四粒鈕、肩帶；入面著杏色長袖恤衫（兩胸袋、肩帶）、深綠色領帶。男女款式一樣，女裝下身係草青色半截裙（側袋、冇褶、及膝）。"
+      },
+      "en": {
+        "name": "Dress jacket (No. 1)",
+        "rule": "Grass green, long sleeves, four front pockets (two chest and two lower, with flaps), four buttons, shoulder straps; worn over the beige long-sleeve shirt (two chest pockets, straps) and dark green tie. Same cut for men and women; women wear the grass-green skirt (side pocket, no pleats, knee length)."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "57–59, 203–204"
+        }
+      ],
+      "status": "documented",
+      "modelNote": {
+        "zh": "方塊人嘅禮服上衣用同褲同一隻草青色（手冊：同布料）；V 位見到恤衫領同領帶，下襬包住褲頭。四個袋同肩帶只係示意。",
+        "en": "The blocky dress jacket uses the same grass green as the trousers (Handbook: same fabric); the V shows the shirt collar and tie and the hem covers the waistband. Pockets and straps are indicative."
+      }
+    },
+    {
+      "id": "messJacket",
+      "zh": {
+        "name": "晚禮服上衣（編號 2）",
+        "rule": "短身上衣：夏季白色、冬季黑色；翻領（青果領）各有一個銀色童軍徽；肩帶同袖口有銀色童軍鈕；前面敞開，見到白色長袖恤衫（冇花邊）同紫色絲質腰封。"
+      },
+      "en": {
+        "name": "Mess jacket (No. 2)",
+        "rule": "Short jacket: white in summer, black in winter; a silver Scout emblem on each (shawl) lapel; silver Scout buttons on the straps and cuffs; worn open over the white long-sleeve shirt (no frills) and purple silk cummerbund."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "60–62, 205"
+        }
+      ],
+      "status": "documented",
+      "modelNote": {
+        "zh": "翻領銀色童軍徽圖案取自手冊 P.208–211 金屬肩章入面嘅銀色童軍徽（P.205 嘅翻領圖太細）。",
+        "en": "The lapel emblem artwork is the silver Scout emblem from the metal epaulettes on pp.208–211 (the p.205 lapel drawing is too small)."
+      }
+    },
+    {
+      "id": "bowTie",
+      "zh": {
+        "name": "煲呔／女裝領結",
+        "rule": "男：黑色煲呔；女：黑色女裝領結。"
+      },
+      "en": {
+        "name": "Bow tie / ladies' bow",
+        "rule": "Men: black bow tie; women: black ladies' bow."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "61–62"
+        }
+      ],
+      "status": "documented"
+    },
+    {
+      "id": "cummerbund",
+      "zh": {
+        "name": "腰封",
+        "rule": "紫色絲質腰封。"
+      },
+      "en": {
+        "name": "Cummerbund",
+        "rule": "Purple silk cummerbund."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "61, 205"
+        }
+      ],
+      "status": "documented"
+    },
+    {
+      "id": "messLegwear",
+      "zh": {
+        "name": "晚禮服長褲／長裙",
+        "rule": "男：黑色長褲（冇袋），兩邊褲側有紫色絲質間條，黑短襪、黑色平面皮鞋；女：黑色長裙、肉色襪褲、黑色平面高跟鞋。"
+      },
+      "en": {
+        "name": "Evening trousers / long skirt",
+        "rule": "Men: black trousers (no pockets) with a purple silk stripe down each side, black short socks, black plain shoes; women: black long skirt, flesh tights, black plain high heels."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "61–62, 205"
+        }
+      ],
+      "status": "documented",
+      "modelNote": {
+        "zh": "女裝高跟鞋沿用方塊人嘅中跟皮鞋造型示意。",
+        "en": "The women's high heels reuse the blocky medium-heel shoe as an indication."
+      }
+    },
+    {
+      "id": "messCap",
+      "zh": {
+        "name": "晚禮服黑色硬帽",
+        "rule": "男：黑色有帽舌硬帽，前面銀色帽章；帽舌邊飾跟職級（銀色橡葉、銀繩、冇邊飾、金色橡葉、金繩），見硬帽編號（UM01–06、LM01–04）。女：黑色有邊硬帽連銀色帽章，編號同男裝一樣但 M 改做 F（例：UM03 → UF03）。"
+      },
+      "en": {
+        "name": "Evening dress black hard hat",
+        "rule": "Men: black peaked hard hat with a silver cap badge in front; the peak trim follows the rank (silver oak leaves, silver cord, plain, gold oak leaves, gold cord) — see hat codes UM01–06, LM01–04. Women: black brimmed hard hat with the silver cap badge; same codes with M changed to F (e.g. UM03 → UF03)."
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "60–62, 206–211"
+        }
+      ],
+      "status": "documented",
+      "modelNote": {
+        "zh": "帽章圖案取自手冊 P.208 硬帽圖；帽舌邊飾按 P.206–211 圖示意（方塊造型）。",
+        "en": "The cap badge artwork is from the p.208 hat drawing; the peak trim is indicated from pp.206–211 (blocky shapes)."
+      }
     }
   ],
   "variants": [
@@ -1392,7 +1600,14 @@
       "modelNote": {
         "zh": "手冊冇寫尺寸；模型用直徑 4 cm（同其他支部一樣）。",
         "en": "No size in the Handbook; the model uses 4 cm diameter (as for the other sections)."
-      }
+      },
+      "uniforms": [
+        "u1",
+        "u3",
+        "u4",
+        "u5",
+        "u6"
+      ]
     },
     {
       "id": "hongKong",
@@ -1440,7 +1655,14 @@
       "modelNote": {
         "zh": "手冊冇寫尺寸；模型用 4 × 5.6 cm（P.93 圖案比例）。成年成員同樂行童軍一樣戴喺右胸袋中央（P.93 第 3 點、P.172 附圖），唔係青少年支部嘅左袋蓋上面。",
         "en": "No size in the Handbook; the model uses 4 × 5.6 cm (p.93 artwork proportions). Adults, like Rover Scouts, wear it centred on the right pocket (p.93 item 3, p.172 figure), not above the left flap as the youth sections do."
-      }
+      },
+      "uniforms": [
+        "u1",
+        "u3",
+        "u4",
+        "u5",
+        "u6"
+      ]
     },
     {
       "id": "hkTitle",
@@ -1494,7 +1716,14 @@
       "modelNote": {
         "zh": "手冊冇寫尺寸；模型用 9 × 2.2 cm（同旅章一樣大，P.94 圖案比例約 4.1 : 1）。",
         "en": "No size in the Handbook; the model uses 9 × 2.2 cm (the same as the Group Badge; the p.94 artwork is about 4.1 : 1)."
-      }
+      },
+      "uniforms": [
+        "u1",
+        "u3",
+        "u4",
+        "u5",
+        "u6"
+      ]
     },
     {
       "id": "troop",
@@ -1546,7 +1775,14 @@
       "modelNote": {
         "zh": "手冊 P.94：新成立旅嘅旅章不小過 8.5 × 2 cm、不大過 10.5 × 2.5 cm；模型用 9 × 2.2 cm。圖案係手冊示例（2222 旅）。",
         "en": "Handbook p.94: a new Group's badge is between 8.5 × 2 cm and 10.5 × 2.5 cm; the model uses 9 × 2.2 cm. The artwork is the handbook example (2222th Group)."
-      }
+      },
+      "uniforms": [
+        "u1",
+        "u3",
+        "u4",
+        "u5",
+        "u6"
+      ]
     },
     {
       "id": "ahq",
@@ -1599,7 +1835,13 @@
       "modelNote": {
         "zh": "手冊冇寫尺寸；模型用 3.8 × 5 cm（同地域章、區章一樣，P.95 圖案比例相近）。只得一個章，放中間（用戶指示）。唔可以戴喺毛衣上。",
         "en": "No size in the Handbook; the model uses 3.8 × 5 cm (as the Region/District Badges; the p.95 artwork is similar). A single badge, centred (user instruction). Not worn on the sweater."
-      }
+      },
+      "uniforms": [
+        "u3",
+        "u4",
+        "u5",
+        "u6"
+      ]
     },
     {
       "id": "region",
@@ -1657,7 +1899,13 @@
       "modelNote": {
         "zh": "香港肩章同旅章一樣高（9 × 2.2 cm），所以兩款都係喺佢下面 2 cm。圖案跟揀咗嘅區轉做所屬地域；地域層級揀所屬地域入面任何一區就得。只得一個（地域層級、總會總部屬下嘅區，或者熄咗區章）就放中間（用戶指示）。",
         "en": "The Hong Kong shoulder title is the same height as the Group Badge (9 × 2.2 cm), so either way it sits 2 cm below. The artwork follows the Region of the picked District; at Region level pick any District in that Region. When it is alone (Region level, a District under AHQ, or the District Badge off) it is centred (user instruction)."
-      }
+      },
+      "uniforms": [
+        "u3",
+        "u4",
+        "u5",
+        "u6"
+      ]
     },
     {
       "id": "district",
@@ -1714,7 +1962,13 @@
       "modelNote": {
         "zh": "可以揀全港所有區；未揀區就用手冊示例色塊。",
         "en": "Every District can be picked; with none picked it uses the handbook example block."
-      }
+      },
+      "uniforms": [
+        "u3",
+        "u4",
+        "u5",
+        "u6"
+      ]
     },
     {
       "id": "epaulette",
@@ -2199,7 +2453,14 @@
       "modelNote": {
         "zh": "手冊冇寫尺寸；模型用 4.6 cm（橫跨肩帶，肩帶闊 4.4 cm）× 3.65 cm（P.103–104 圖案比例）。P.172 袖圖：肩章喺肩帶膊頭嗰頭，徽號向衣領。圖案取自手冊 P.103–104 表格（細圖放大）。",
         "en": "No size in the Handbook; the model uses 4.6 cm (across the 4.4 cm strap) × 3.65 cm (pp.103–104 artwork proportions). P.172 sleeve figure: the epaulette sits at the shoulder end of the strap with the emblem pointing to the collar. Artwork from the Handbook pp.103–104 table (small images enlarged)."
-      }
+      },
+      "uniforms": [
+        "u1",
+        "u3",
+        "u4",
+        "u5",
+        "u6"
+      ]
     },
     {
       "id": "retiredPin",
@@ -2248,7 +2509,14 @@
       "modelNote": {
         "zh": "手冊 P.105 圖：「R」喺肩章徽號下面。模型照圖放喺肩章近膊頭嗰半；尺寸跟圖案比例估計。圖案取自 P.105。",
         "en": "Handbook p.105 figure: the “R” sits below the emblem on the epaulette. The model puts it on the shoulder half of the epaulette as drawn; size estimated from the artwork. Artwork from p.105."
-      }
+      },
+      "uniforms": [
+        "u1",
+        "u3",
+        "u4",
+        "u5",
+        "u6"
+      ]
     },
     {
       "id": "meritorious",
@@ -2301,7 +2569,2743 @@
       "modelNote": {
         "zh": "手冊冇寫尺寸；模型用 9 × 2 cm（P.159 圖案比例）。P.172 附圖：成年成員嘅優異旅團章喺右袖最下。",
         "en": "No size in the Handbook; the model uses 9 × 2 cm (p.159 artwork proportions). P.172 figure: for adults it is lowest on the right sleeve."
+      },
+      "uniforms": [
+        "u3",
+        "u4",
+        "u5",
+        "u6"
+      ]
+    },
+    {
+      "id": "metalEpaulette",
+      "required": true,
+      "side": "both",
+      "uniforms": [
+        "u2"
+      ],
+      "dynamic": "metalRank",
+      "rows": [
+        {
+          "id": "chief",
+          "ranks": [
+            "chiefScout",
+            "deputyChiefScout"
+          ],
+          "cap": "LM01",
+          "art": {
+            "summer": {
+              "file": "/badges/leader/metal_lay_summer.png",
+              "ref": "UH",
+              "page": "209",
+              "example": false
+            },
+            "winter": {
+              "file": "/badges/leader/metal_lay_winter.png",
+              "ref": "UH",
+              "page": "209",
+              "example": false
+            }
+          },
+          "zh": {
+            "epaulette": "金色童軍徽圓章"
+          },
+          "en": {
+            "epaulette": "gold Scout emblem disc"
+          }
+        },
+        {
+          "id": "cc",
+          "ranks": [
+            "chiefCommissioner"
+          ],
+          "cap": "UM01",
+          "art": {
+            "summer": {
+              "file": "/badges/leader/metal_cc_summer.png",
+              "ref": "UH",
+              "page": "206",
+              "example": false
+            },
+            "winter": {
+              "file": "/badges/leader/metal_cc_winter.png",
+              "ref": "UH",
+              "page": "206",
+              "example": false
+            }
+          },
+          "zh": {
+            "epaulette": "紫色圓章、銀星、銀色橡葉環"
+          },
+          "en": {
+            "epaulette": "purple disc, silver star, silver oak wreath"
+          }
+        },
+        {
+          "id": "deputyCc",
+          "ranks": [
+            "deputyChiefCommissioner"
+          ],
+          "cap": "UM01",
+          "art": {
+            "summer": {
+              "file": "/badges/leader/metal_deputy_cc_summer.png",
+              "ref": "UH",
+              "page": "206",
+              "example": false
+            },
+            "winter": {
+              "file": "/badges/leader/metal_deputy_cc_winter.png",
+              "ref": "UH",
+              "page": "206",
+              "example": false
+            }
+          },
+          "zh": {
+            "epaulette": "紫色圓章、銀色橡葉環"
+          },
+          "en": {
+            "epaulette": "purple disc, silver oak wreath"
+          }
+        },
+        {
+          "id": "asstCc",
+          "ranks": [
+            "assistantChiefCommissioner"
+          ],
+          "cap": "UM02",
+          "art": {
+            "summer": {
+              "file": "/badges/leader/metal_asst_cc_summer.png",
+              "ref": "UH",
+              "page": "206",
+              "example": false
+            },
+            "winter": {
+              "file": "/badges/leader/metal_asst_cc_winter.png",
+              "ref": "UH",
+              "page": "206",
+              "example": false
+            }
+          },
+          "zh": {
+            "epaulette": "紫色圓章、紫色橡葉環"
+          },
+          "en": {
+            "epaulette": "purple disc, purple oak wreath"
+          }
+        },
+        {
+          "id": "deputy",
+          "ranks": [
+            "deputyBranchCommissioner",
+            "deputyRegionalCommissioner"
+          ],
+          "cap": "UM03",
+          "art": {
+            "summer": {
+              "file": "/badges/leader/metal_deputy_summer.png",
+              "ref": "UH",
+              "page": "207",
+              "example": false
+            },
+            "winter": {
+              "file": "/badges/leader/metal_deputy_winter.png",
+              "ref": "UH",
+              "page": "207",
+              "example": false
+            }
+          },
+          "zh": {
+            "epaulette": "紫色圓章、三條銀槓"
+          },
+          "en": {
+            "epaulette": "purple disc, three silver bars"
+          }
+        },
+        {
+          "id": "asstDeputy",
+          "ranks": [
+            "assistantBranchCommissioner",
+            "assistantRegionalCommissioner",
+            "districtCommissioner",
+            "leaderTrainerInCharge"
+          ],
+          "cap": "UM03",
+          "art": {
+            "summer": {
+              "file": "/badges/leader/metal_asst_deputy_summer.png",
+              "ref": "UH",
+              "page": "207",
+              "example": false
+            },
+            "winter": {
+              "file": "/badges/leader/metal_asst_deputy_winter.png",
+              "ref": "UH",
+              "page": "207",
+              "example": false
+            }
+          },
+          "zh": {
+            "epaulette": "紫色圓章、兩條銀槓"
+          },
+          "en": {
+            "epaulette": "purple disc, two silver bars"
+          }
+        },
+        {
+          "id": "hqComm",
+          "ranks": [
+            "hqCommissioner",
+            "regionalHqCommissioner",
+            "deputyDistrictCommissioner",
+            "assistantLeaderTrainerInCharge"
+          ],
+          "cap": "UM04",
+          "art": {
+            "summer": {
+              "file": "/badges/leader/metal_hq_comm_summer.png",
+              "ref": "UH",
+              "page": "207",
+              "example": false
+            },
+            "winter": {
+              "file": "/badges/leader/metal_hq_comm_winter.png",
+              "ref": "UH",
+              "page": "207",
+              "example": false
+            }
+          },
+          "zh": {
+            "epaulette": "紫色圓章、一條銀槓"
+          },
+          "en": {
+            "epaulette": "purple disc, one silver bar"
+          }
+        },
+        {
+          "id": "asstHqComm",
+          "ranks": [
+            "assistantHqCommissioner",
+            "assistantRegionalHqCommissioner",
+            "assistantDistrictCommissioner"
+          ],
+          "cap": "UM04",
+          "art": {
+            "summer": {
+              "file": "/badges/leader/metal_asst_hq_comm_summer.png",
+              "ref": "UH",
+              "page": "207",
+              "example": false
+            },
+            "winter": {
+              "file": "/badges/leader/metal_asst_hq_comm_winter.png",
+              "ref": "UH",
+              "page": "207",
+              "example": false
+            }
+          },
+          "zh": {
+            "epaulette": "紫色圓章"
+          },
+          "en": {
+            "epaulette": "purple disc"
+          }
+        },
+        {
+          "id": "districtChief",
+          "ranks": [
+            "districtSectionLeader",
+            "leaderTrainer"
+          ],
+          "cap": "UM05",
+          "art": {
+            "summer": {
+              "file": "/badges/leader/metal_district_chief_summer.png",
+              "ref": "UH",
+              "page": "208",
+              "example": false
+            },
+            "winter": {
+              "file": "/badges/leader/metal_district_chief_winter.png",
+              "ref": "UH",
+              "page": "208",
+              "example": false
+            }
+          },
+          "zh": {
+            "epaulette": "深藍色圓章"
+          },
+          "en": {
+            "epaulette": "dark blue disc"
+          }
+        },
+        {
+          "id": "hqLeader",
+          "ranks": [
+            "hqScouter",
+            "regionalScouter",
+            "districtScouter"
+          ],
+          "cap": "UM05",
+          "art": {
+            "summer": {
+              "file": "/badges/leader/metal_hq_leader_summer.png",
+              "ref": "UH",
+              "page": "208",
+              "example": false
+            },
+            "winter": {
+              "file": "/badges/leader/metal_hq_leader_winter.png",
+              "ref": "UH",
+              "page": "208",
+              "example": false
+            }
+          },
+          "zh": {
+            "epaulette": "灰色圓章"
+          },
+          "en": {
+            "epaulette": "grey disc"
+          }
+        },
+        {
+          "id": "gsl",
+          "ranks": [
+            "groupScoutLeader",
+            "assistantGroupScoutLeader"
+          ],
+          "cap": "UM04",
+          "art": {
+            "summer": {
+              "file": "/badges/leader/metal_gsl_summer.png",
+              "ref": "UH",
+              "page": "208",
+              "example": false
+            },
+            "winter": {
+              "file": "/badges/leader/metal_gsl_winter.png",
+              "ref": "UH",
+              "page": "208",
+              "example": false
+            }
+          },
+          "zh": {
+            "epaulette": "藍色圓章"
+          },
+          "en": {
+            "epaulette": "blue disc"
+          }
+        },
+        {
+          "id": "sl",
+          "ranks": [
+            "sectionLeader"
+          ],
+          "cap": "UM05",
+          "art": {
+            "summer": {
+              "file": "/badges/leader/metal_sl_summer.png",
+              "ref": "UH",
+              "page": "208",
+              "example": false
+            },
+            "winter": {
+              "file": "/badges/leader/metal_sl_winter.png",
+              "ref": "UH",
+              "page": "208",
+              "example": false
+            }
+          },
+          "zh": {
+            "epaulette": "綠色圓章"
+          },
+          "en": {
+            "epaulette": "green disc"
+          }
+        },
+        {
+          "id": "asl",
+          "ranks": [
+            "assistantSectionLeader"
+          ],
+          "cap": "UM05",
+          "art": {
+            "summer": {
+              "file": "/badges/leader/metal_asl_summer.png",
+              "ref": "UH",
+              "page": "208",
+              "example": false
+            },
+            "winter": {
+              "file": "/badges/leader/metal_asl_winter.png",
+              "ref": "UH",
+              "page": "208",
+              "example": false
+            }
+          },
+          "zh": {
+            "epaulette": "紅色圓章"
+          },
+          "en": {
+            "epaulette": "red disc"
+          }
+        },
+        {
+          "id": "asstLeader",
+          "ranks": [
+            "assistantHqScouter",
+            "assistantRegionalScouter",
+            "assistantDistrictScouter",
+            "instructor"
+          ],
+          "cap": "UM05",
+          "art": {
+            "summer": {
+              "file": "/badges/leader/metal_asst_leader_summer.png",
+              "ref": "UH",
+              "page": "208",
+              "example": false
+            },
+            "winter": {
+              "file": "/badges/leader/metal_asst_leader_winter.png",
+              "ref": "UH",
+              "page": "208",
+              "example": false
+            }
+          },
+          "zh": {
+            "epaulette": "黃色圓章"
+          },
+          "en": {
+            "epaulette": "yellow disc"
+          }
+        },
+        {
+          "id": "lay",
+          "ranks": [
+            "layMember"
+          ],
+          "cap": "UM05",
+          "art": {
+            "summer": {
+              "file": "/badges/leader/metal_lay_summer.png",
+              "ref": "UH",
+              "page": "210",
+              "example": false
+            },
+            "winter": {
+              "file": "/badges/leader/metal_lay_winter.png",
+              "ref": "UH",
+              "page": "210",
+              "example": false
+            }
+          },
+          "zh": {
+            "epaulette": "金色童軍徽圓章"
+          },
+          "en": {
+            "epaulette": "gold Scout emblem disc"
+          }
+        },
+        {
+          "id": "professional",
+          "ranks": [
+            "professionalScouter",
+            "salariedStaff"
+          ],
+          "cap": "UM04",
+          "art": {
+            "summer": {
+              "file": "/badges/leader/metal_executive_summer.png",
+              "ref": "UH",
+              "page": "211",
+              "example": false
+            },
+            "winter": {
+              "file": "/badges/leader/metal_executive_winter.png",
+              "ref": "UH",
+              "page": "211",
+              "example": false
+            }
+          },
+          "zh": {
+            "epaulette": "深藍色圓章（專業領袖）"
+          },
+          "en": {
+            "epaulette": "dark blue disc (professional scouters)"
+          }
+        }
+      ],
+      "zh": {
+        "name": "金屬職級肩章（晚禮服）",
+        "place": "雙肩肩帶上，蓋住成條肩帶，銀鈕近衣領。",
+        "quote": "穿著晚禮服時佩戴黑色硬帽連銀色帽章及金屬職級肩章。夏季穿著白色上衣、冬季穿著黑色上衣。",
+        "conditions": "晚禮服先戴；跟所揀職級，顏色跟夏季（白）／冬季（黑）上衣。"
+      },
+      "en": {
+        "name": "Metal rank epaulettes (evening dress)",
+        "place": "On both shoulder straps, covering the strap, silver button toward the collar.",
+        "quote": "With evening dress, wear the black hard hat with the silver cap badge and the metal rank epaulettes. The white jacket is worn in summer and the black jacket in winter.",
+        "conditions": "Evening dress only; follows the picked rank, white or black to match the summer / winter jacket."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 4.6,
+        "hCm": 11.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "shoulder",
+        "side": "both",
+        "upTowards": "collar",
+        "cover": true,
+        "measured": false
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "60, 206–211"
+        }
+      ],
+      "status": "documented",
+      "art": {
+        "file": "/badges/leader/metal_sl_winter.png",
+        "ref": "UH",
+        "page": "208",
+        "example": false
+      },
+      "modelNote": {
+        "zh": "手冊冇寫尺寸；模型用 4.6 cm 闊（橫跨肩帶）× 11.6 cm（P.206–211 圖案比例），由膊頭向衣領蓋住肩帶。圖案取自手冊 P.206–211。手冊冇列「受薪職員」嘅金屬肩章，模型暫用專業領袖（執行幹事）款，待確認。總幹事、副總幹事、助理總幹事戴 UM06 硬帽，模型嘅「專業領袖」用 UM04（執行幹事）。",
+        "en": "No size in the Handbook; the model uses 4.6 cm wide (across the strap) × 11.6 cm (pp.206–211 artwork proportions), covering the strap from the shoulder toward the collar. Artwork from pp.206–211. The Handbook lists no metal epaulette for salaried staff; the model uses the professional (executive officer) one for now, pending confirmation. The Chief / Deputy / Assistant Executive Commissioners wear the UM06 hat; the model's “professional scouter” uses UM04 (executive officers)."
       }
+    },
+    {
+      "id": "nameTag",
+      "required": false,
+      "side": "left",
+      "uniforms": [
+        "u1",
+        "u3",
+        "u4",
+        "u5",
+        "u6"
+      ],
+      "dynamic": "nameTag",
+      "zh": {
+        "name": "布質名牌",
+        "place": "穿著者左胸袋袋蓋中央、鈕扣上面。",
+        "quote": "童軍成員（小童軍除外）可在制服上佩戴繡有中、英文姓名的綠底黃字布質名牌，佩戴在制服恤衫或禮服上衣左胸袋袋蓋中央及鈕扣對上位置，或制服毛衣相同位置。",
+        "conditions": "可選；喺下面輸入姓名。"
+      },
+      "en": {
+        "name": "Cloth name tag",
+        "place": "Centre of the wearer's left chest-pocket flap, above the button.",
+        "quote": "Members (except Grasshopper Scouts) may wear a green cloth name tag embroidered in yellow with their Chinese and English names, centred on the left chest-pocket flap above the button of the uniform shirt or dress jacket, or the same position on the sweater.",
+        "conditions": "Optional; type the name below."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 7.5,
+        "hCm": 1.6,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "side": "left",
+        "pocket": "flap",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "57, 127–128"
+        }
+      ],
+      "status": "documented",
+      "art": {
+        "file": "/badges/leader/name_tag_example.png",
+        "ref": "UH",
+        "page": "128",
+        "example": true
+      },
+      "modelNote": {
+        "zh": "手冊冇寫尺寸；模型用 7.5 × 1.6 cm（P.128 圖案比例）。綠底黃字跟 P.128 示例「童君好 KH TUNG」；輸入嘅姓名用瀏覽器字型畫。活動名牌同樣戴喺左胸袋袋蓋中央（P.123），款式由活動決定，模型冇畫。",
+        "en": "No size in the Handbook; the model uses 7.5 × 1.6 cm (p.128 artwork proportions). Green with yellow lettering as in the p.128 sample “童君好 KH TUNG”; the typed name uses the browser font. The activity name badge goes in the same place (p.123) but its design depends on the event, so it is not drawn."
+      }
+    },
+    {
+      "id": "mourningBand",
+      "required": false,
+      "side": "left",
+      "uniforms": [
+        "u1"
+      ],
+      "zh": {
+        "name": "喪禮黑布",
+        "place": "穿著者左袖、手肘上方，闊 10 cm。",
+        "quote": "童軍成員為表示哀悼或在參加喪禮期間，可在制服恤衫、禮服上衣或制服毛衣左袖手肘上方位置佩戴黑布。成年成員佩戴闊十釐米黑布。",
+        "conditions": "可選；表示哀悼或參加喪禮時。"
+      },
+      "en": {
+        "name": "Mourning band",
+        "place": "Wearer's left sleeve, above the elbow, 10 cm wide.",
+        "quote": "To show mourning or while attending a funeral, members may wear a black band on the left sleeve above the elbow of the uniform shirt, dress jacket or sweater. Adults wear a band 10 cm wide.",
+        "conditions": "Optional; for mourning or funerals."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 10,
+        "hCm": 10,
+        "measured": true,
+        "ref": "UH",
+        "page": "162"
+      },
+      "anchor": {
+        "part": "sleeve",
+        "side": "left",
+        "band": true,
+        "aboveElbowCm": 1,
+        "measured": false
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "57, 162"
+        }
+      ],
+      "status": "documented",
+      "art": {
+        "file": "/badges/leader/mourning_band.png",
+        "ref": "UH",
+        "page": "162",
+        "example": false
+      },
+      "modelNote": {
+        "zh": "闊 10 cm 跟手冊 P.162；「手肘上方」模型用手肘上面 1 cm（手冊冇寫距離）。黑布係一圈套住禮服上衣衫袖。",
+        "en": "The 10 cm width follows p.162; “above the elbow” is modelled as 1 cm above it (no distance in the Handbook). The band goes right round the dress-jacket sleeve."
+      }
+    },
+    {
+      "id": "neckMedal",
+      "required": false,
+      "side": "centre",
+      "uniforms": [
+        "u1",
+        "u2"
+      ],
+      "group": "awards",
+      "zh": {
+        "name": "卓越服務勳章（掛頸）",
+        "place": "繫喺頸上：綬帶由衣領兩邊落，勳章喺喉嚨下面（禮服喺領帶前面、晚禮服喺煲呔下面）。",
+        "quote": "銅獅勳章、銀獅勳章、金獅勳章；青龍勳章、銀龍勳章、金龍勳章：繫在特定顏色的綬帶掛在頸上。假若獲頒多於一個勳章，只佩戴最高級的勳章。晚禮服：卓越服務勳章掛在頸上。",
+        "conditions": "獅勳章頒予領袖及總監，龍勳章頒予會務委員；只戴最高級一個。"
+      },
+      "en": {
+        "name": "Distinguished service decoration (neck)",
+        "place": "Round the neck: the ribbon comes down either side of the collar with the decoration below the throat (in front of the tie on the dress uniform, below the bow tie on evening dress).",
+        "quote": "Bronze, Silver and Gold Lion; Green, Silver and Gold Dragon: hung round the neck on the ribbon of its colour. If more than one is held, wear only the highest. Evening dress: the distinguished service decoration is worn round the neck.",
+        "conditions": "Lions are awarded to scouters and commissioners, Dragons to lay members; wear only the highest."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 9,
+        "hCm": 13,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "neck",
+        "side": "centre",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "177–179, 186, 189"
+        }
+      ],
+      "status": "documented",
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "bronzeLion",
+          "zh": {
+            "name": "銅獅勳章"
+          },
+          "en": {
+            "name": "Bronze Lion"
+          },
+          "art": {
+            "file": "/badges/awards/lionBronze.png",
+            "ref": "UH",
+            "page": "178",
+            "example": false,
+            "px": [
+              150,
+              200
+            ]
+          },
+          "order": 6
+        },
+        {
+          "id": "silverLion",
+          "zh": {
+            "name": "銀獅勳章"
+          },
+          "en": {
+            "name": "Silver Lion"
+          },
+          "art": {
+            "file": "/badges/awards/lionSilver.png",
+            "ref": "UH",
+            "page": "178",
+            "example": false,
+            "px": [
+              142,
+              200
+            ]
+          },
+          "order": 5
+        },
+        {
+          "id": "goldLion",
+          "zh": {
+            "name": "金獅勳章"
+          },
+          "en": {
+            "name": "Gold Lion"
+          },
+          "art": {
+            "file": "/badges/awards/lionGold.png",
+            "ref": "UH",
+            "page": "178",
+            "example": false,
+            "px": [
+              126,
+              198
+            ]
+          },
+          "order": 3
+        },
+        {
+          "id": "greenDragon",
+          "zh": {
+            "name": "青龍勳章"
+          },
+          "en": {
+            "name": "Green Dragon"
+          },
+          "art": {
+            "file": "/badges/awards/dragonGreen.png",
+            "ref": "UH",
+            "page": "179",
+            "example": false,
+            "px": [
+              154,
+              189
+            ]
+          },
+          "order": 6
+        },
+        {
+          "id": "silverDragon",
+          "zh": {
+            "name": "銀龍勳章"
+          },
+          "en": {
+            "name": "Silver Dragon"
+          },
+          "art": {
+            "file": "/badges/awards/dragonSilver.png",
+            "ref": "UH",
+            "page": "179",
+            "example": false,
+            "px": [
+              139,
+              200
+            ]
+          },
+          "order": 5
+        },
+        {
+          "id": "goldDragon",
+          "zh": {
+            "name": "金龍勳章"
+          },
+          "en": {
+            "name": "Gold Dragon"
+          },
+          "art": {
+            "file": "/badges/awards/dragonGold.png",
+            "ref": "UH",
+            "page": "179",
+            "example": false,
+            "px": [
+              127,
+              194
+            ]
+          },
+          "order": 3
+        }
+      ],
+      "default": "none",
+      "art": {
+        "file": "/badges/awards/lionBronze.png",
+        "ref": "UH",
+        "page": "178",
+        "example": false,
+        "px": [
+          150,
+          200
+        ]
+      },
+      "modelNote": {
+        "zh": "勳章連 V 字綬帶相片取自手冊 P.178–179（已去背景），模型當一塊貼喺胸前（9 × 13 cm 入面按比例），唔係真係繞住條頸。",
+        "en": "The photo of the decoration with its V ribbon is from Handbook pp.178–179 (background removed); the model lays it flat on the chest (scaled inside 9 × 13 cm) rather than wrapping it round the neck."
+      },
+      "fit": true
+    },
+    {
+      "id": "gallantry",
+      "required": false,
+      "side": "right",
+      "uniforms": [
+        "u1",
+        "u2"
+      ],
+      "group": "awards",
+      "zh": {
+        "name": "英勇獎勵",
+        "place": "禮服：右胸袋袋蓋上方中央；晚禮服：右襟領童軍徽上方（小型章）。",
+        "quote": "佩戴在制服恤衫或禮服上衣右胸袋袋蓋上方中央位置，圓形牌頂端緊貼袋蓋頂。假若佩戴兩個或以上獎章，則依「按等級排列的童軍勳章及獎勵名單」排列，順序由左至右（由內側至外側）佩戴。假若佩戴四個或以上獎章，用金屬胸針串連重疊起來佩戴，最高等級的獎章在最上面。假若在個別獎勵中獲頒多於一個獎章，只佩戴最高級的獎章。晚禮服：佩戴其他勳章及獎勵的小型章在右襟領童軍徽上方位置。",
+        "conditions": "頒予童軍成員，表揚個人或團體不同程度嘅英勇表現；只戴最高級一個。P.191–192 等級第 1 位。"
+      },
+      "en": {
+        "name": "Gallantry award",
+        "place": "Dress: centred above the right chest-pocket flap; evening dress: above the Scout emblem on the right lapel (miniature).",
+        "quote": "Worn centred above the right chest-pocket flap of the uniform shirt or dress jacket, the top of the round medal against the top of the flap. Two or more are arranged by the order of precedence, from left to right (inside to outside); four or more are joined by a metal brooch and overlapped, the highest on top. If more than one medal of the same award is held, wear only the highest. Evening dress: miniatures of the other awards go above the Scout emblem on the right lapel.",
+        "conditions": "Recognises gallantry by individuals or groups; wear only the highest. No. 1 in the pp.191–192 order of precedence."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3.6,
+        "hCm": 9,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "side": "right",
+        "rack": "pocket",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "178, 187, 191, 193"
+        }
+      ],
+      "status": "documented",
+      "anchorBy": {
+        "u2": {
+          "part": "torso",
+          "side": "right",
+          "rack": "lapel",
+          "measured": true
+        }
+      },
+      "fit": true,
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "bronze",
+          "zh": {
+            "name": "英勇銅十字章"
+          },
+          "en": {
+            "name": "Gallantry Cross (bronze)"
+          },
+          "art": {
+            "file": "/badges/awards/gallantryBronze.png",
+            "ref": "UH",
+            "page": "178",
+            "example": false,
+            "px": [
+              57,
+              150
+            ]
+          },
+          "order": 1
+        },
+        {
+          "id": "silver",
+          "zh": {
+            "name": "英勇銀十字章"
+          },
+          "en": {
+            "name": "Gallantry Cross (silver)"
+          },
+          "art": {
+            "file": "/badges/awards/gallantrySilver.png",
+            "ref": "UH",
+            "page": "178",
+            "example": false,
+            "px": [
+              57,
+              150
+            ]
+          },
+          "order": 1
+        },
+        {
+          "id": "gold",
+          "zh": {
+            "name": "英勇金十字章"
+          },
+          "en": {
+            "name": "Gallantry Cross (gold)"
+          },
+          "art": {
+            "file": "/badges/awards/gallantryGold.png",
+            "ref": "UH",
+            "page": "178",
+            "example": false,
+            "px": [
+              55,
+              150
+            ]
+          },
+          "order": 1
+        }
+      ],
+      "default": "none",
+      "art": {
+        "file": "/badges/awards/gallantryBronze.png",
+        "ref": "UH",
+        "page": "178",
+        "example": false,
+        "px": [
+          57,
+          150
+        ]
+      },
+      "modelNote": {
+        "zh": "禮服：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）。",
+        "en": "Dress uniform: medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed)."
+      }
+    },
+    {
+      "id": "meritAward",
+      "required": false,
+      "side": "right",
+      "uniforms": [
+        "u1",
+        "u2"
+      ],
+      "group": "awards",
+      "zh": {
+        "name": "功績榮譽獎勵",
+        "place": "禮服：右胸袋袋蓋上方中央；晚禮服：右襟領童軍徽上方（小型章）。",
+        "quote": "佩戴在制服恤衫或禮服上衣右胸袋袋蓋上方中央位置，圓形牌頂端緊貼袋蓋頂。假若佩戴兩個或以上獎章，則依「按等級排列的童軍勳章及獎勵名單」排列，順序由左至右（由內側至外側）佩戴。假若佩戴四個或以上獎章，用金屬胸針串連重疊起來佩戴，最高等級的獎章在最上面。假若在個別獎勵中獲頒多於一個獎章，只佩戴最高級的獎章。晚禮服：佩戴其他勳章及獎勵的小型章在右襟領童軍徽上方位置。",
+        "conditions": "頒予成年成員，表揚長期對童軍運動不同程度嘅功績服務；只戴最高級一個。P.191–192 等級：功績榮譽十字章第 9、功績榮譽獎章第 11、優異服務獎章第 13、優良服務獎章第 14。"
+      },
+      "en": {
+        "name": "Meritorious service award",
+        "place": "Dress: centred above the right chest-pocket flap; evening dress: above the Scout emblem on the right lapel (miniature).",
+        "quote": "Worn centred above the right chest-pocket flap of the uniform shirt or dress jacket, the top of the round medal against the top of the flap. Two or more are arranged by the order of precedence, from left to right (inside to outside); four or more are joined by a metal brooch and overlapped, the highest on top. If more than one medal of the same award is held, wear only the highest. Evening dress: miniatures of the other awards go above the Scout emblem on the right lapel.",
+        "conditions": "For long and meritorious service by adults; wear only the highest. Precedence (pp.191–192): Cross No. 9, Medal No. 11, Distinguished Service No. 13, Good Service No. 14."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3.6,
+        "hCm": 9,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "side": "right",
+        "rack": "pocket",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "179, 187, 191, 193"
+        }
+      ],
+      "status": "documented",
+      "anchorBy": {
+        "u2": {
+          "part": "torso",
+          "side": "right",
+          "rack": "lapel",
+          "measured": true
+        }
+      },
+      "fit": true,
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "goodService",
+          "zh": {
+            "name": "優良服務獎章"
+          },
+          "en": {
+            "name": "Good Service Medal"
+          },
+          "art": {
+            "file": "/badges/awards/goodService.png",
+            "ref": "UH",
+            "page": "179",
+            "example": false,
+            "px": [
+              59,
+              150
+            ]
+          },
+          "order": 14
+        },
+        {
+          "id": "distinguishedService",
+          "zh": {
+            "name": "優異服務獎章"
+          },
+          "en": {
+            "name": "Distinguished Service Medal"
+          },
+          "art": {
+            "file": "/badges/awards/distinguishedService.png",
+            "ref": "UH",
+            "page": "179",
+            "example": false,
+            "px": [
+              53,
+              150
+            ]
+          },
+          "order": 13
+        },
+        {
+          "id": "meritMedal",
+          "zh": {
+            "name": "功績榮譽獎章"
+          },
+          "en": {
+            "name": "Medal of Merit"
+          },
+          "art": {
+            "file": "/badges/awards/meritMedal.png",
+            "ref": "UH",
+            "page": "179",
+            "example": false,
+            "px": [
+              58,
+              150
+            ]
+          },
+          "order": 11
+        },
+        {
+          "id": "meritCross",
+          "zh": {
+            "name": "功績榮譽十字章"
+          },
+          "en": {
+            "name": "Cross of Merit"
+          },
+          "art": {
+            "file": "/badges/awards/meritCross.png",
+            "ref": "UH",
+            "page": "179",
+            "example": false,
+            "px": [
+              62,
+              150
+            ]
+          },
+          "order": 9
+        }
+      ],
+      "default": "none",
+      "art": {
+        "file": "/badges/awards/goodService.png",
+        "ref": "UH",
+        "page": "179",
+        "example": false,
+        "px": [
+          59,
+          150
+        ]
+      },
+      "modelNote": {
+        "zh": "禮服：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）。",
+        "en": "Dress uniform: medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed)."
+      }
+    },
+    {
+      "id": "diamondJubilee",
+      "required": false,
+      "side": "right",
+      "uniforms": [
+        "u1",
+        "u2"
+      ],
+      "group": "awards",
+      "zh": {
+        "name": "鑽禧大露營紀念章",
+        "place": "禮服：右胸袋袋蓋上方中央；晚禮服：右襟領童軍徽上方（小型章）。",
+        "quote": "佩戴在制服恤衫或禮服上衣右胸袋袋蓋上方中央位置，圓形牌頂端緊貼袋蓋頂。假若佩戴兩個或以上獎章，則依「按等級排列的童軍勳章及獎勵名單」排列，順序由左至右（由內側至外側）佩戴。假若佩戴四個或以上獎章，用金屬胸針串連重疊起來佩戴，最高等級的獎章在最上面。假若在個別獎勵中獲頒多於一個獎章，只佩戴最高級的獎章。晚禮服：佩戴其他勳章及獎勵的小型章在右襟領童軍徽上方位置。",
+        "conditions": "特別活動紀念徽章：頒予喺特別活動中有貢獻嘅成年成員。P.191–192 等級第 16 位。"
+      },
+      "en": {
+        "name": "Diamond Jubilee Jamboree Medal",
+        "place": "Dress: centred above the right chest-pocket flap; evening dress: above the Scout emblem on the right lapel (miniature).",
+        "quote": "Worn centred above the right chest-pocket flap of the uniform shirt or dress jacket, the top of the round medal against the top of the flap. Two or more are arranged by the order of precedence, from left to right (inside to outside); four or more are joined by a metal brooch and overlapped, the highest on top. If more than one medal of the same award is held, wear only the highest. Evening dress: miniatures of the other awards go above the Scout emblem on the right lapel.",
+        "conditions": "Special event commemorative medal for adults who contributed to the event. No. 16 in the pp.191–192 order of precedence."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3.6,
+        "hCm": 9,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "side": "right",
+        "rack": "pocket",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "180, 187, 192, 193"
+        }
+      ],
+      "status": "documented",
+      "anchorBy": {
+        "u2": {
+          "part": "torso",
+          "side": "right",
+          "rack": "lapel",
+          "measured": true
+        }
+      },
+      "fit": true,
+      "art": {
+        "file": "/badges/awards/diamondJubilee.png",
+        "ref": "UH",
+        "page": "180",
+        "example": false,
+        "px": [
+          61,
+          150
+        ]
+      },
+      "rackOrder": 16,
+      "modelNote": {
+        "zh": "禮服：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）。",
+        "en": "Dress uniform: medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed)."
+      }
+    },
+    {
+      "id": "millennium",
+      "required": false,
+      "side": "right",
+      "uniforms": [
+        "u1",
+        "u2"
+      ],
+      "group": "awards",
+      "zh": {
+        "name": "香港童軍跨世紀大露營紀念章／星章",
+        "place": "禮服：右胸袋袋蓋上方中央；晚禮服：右襟領童軍徽上方（小型章）。",
+        "quote": "佩戴在制服恤衫或禮服上衣右胸袋袋蓋上方中央位置，圓形牌頂端緊貼袋蓋頂。假若佩戴兩個或以上獎章，則依「按等級排列的童軍勳章及獎勵名單」排列，順序由左至右（由內側至外側）佩戴。假若佩戴四個或以上獎章，用金屬胸針串連重疊起來佩戴，最高等級的獎章在最上面。假若在個別獎勵中獲頒多於一個獎章，只佩戴最高級的獎章。晚禮服：佩戴其他勳章及獎勵的小型章在右襟領童軍徽上方位置。",
+        "conditions": "特別活動紀念徽章；星章或紀念章只戴一個。P.191–192 等級第 17 位。"
+      },
+      "en": {
+        "name": "Millennium Jamboree Medal / Star",
+        "place": "Dress: centred above the right chest-pocket flap; evening dress: above the Scout emblem on the right lapel (miniature).",
+        "quote": "Worn centred above the right chest-pocket flap of the uniform shirt or dress jacket, the top of the round medal against the top of the flap. Two or more are arranged by the order of precedence, from left to right (inside to outside); four or more are joined by a metal brooch and overlapped, the highest on top. If more than one medal of the same award is held, wear only the highest. Evening dress: miniatures of the other awards go above the Scout emblem on the right lapel.",
+        "conditions": "Special event commemorative; wear either the star or the medal. No. 17 in the pp.191–192 order of precedence."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3.6,
+        "hCm": 9,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "side": "right",
+        "rack": "pocket",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "180, 187, 192, 193"
+        }
+      ],
+      "status": "documented",
+      "anchorBy": {
+        "u2": {
+          "part": "torso",
+          "side": "right",
+          "rack": "lapel",
+          "measured": true
+        }
+      },
+      "fit": true,
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "medal",
+          "zh": {
+            "name": "紀念章"
+          },
+          "en": {
+            "name": "Medal"
+          },
+          "art": {
+            "file": "/badges/awards/millenniumMedal.png",
+            "ref": "UH",
+            "page": "180",
+            "example": false,
+            "px": [
+              60,
+              150
+            ]
+          },
+          "order": 17
+        },
+        {
+          "id": "star",
+          "zh": {
+            "name": "星章"
+          },
+          "en": {
+            "name": "Star"
+          },
+          "art": {
+            "file": "/badges/awards/millenniumStar.png",
+            "ref": "UH",
+            "page": "180",
+            "example": false,
+            "px": [
+              58,
+              150
+            ]
+          },
+          "order": 17
+        }
+      ],
+      "default": "none",
+      "art": {
+        "file": "/badges/awards/millenniumMedal.png",
+        "ref": "UH",
+        "page": "180",
+        "example": false,
+        "px": [
+          60,
+          150
+        ]
+      },
+      "modelNote": {
+        "zh": "禮服：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）。",
+        "en": "Dress uniform: medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed)."
+      }
+    },
+    {
+      "id": "metroCamp",
+      "required": false,
+      "side": "right",
+      "uniforms": [
+        "u1",
+        "u2"
+      ],
+      "group": "awards",
+      "zh": {
+        "name": "大都會露營徽章",
+        "place": "禮服：右胸袋袋蓋上方中央；晚禮服：右襟領童軍徽上方（小型章）。",
+        "quote": "佩戴在制服恤衫或禮服上衣右胸袋袋蓋上方中央位置，圓形牌頂端緊貼袋蓋頂。假若佩戴兩個或以上獎章，則依「按等級排列的童軍勳章及獎勵名單」排列，順序由左至右（由內側至外側）佩戴。假若佩戴四個或以上獎章，用金屬胸針串連重疊起來佩戴，最高等級的獎章在最上面。假若在個別獎勵中獲頒多於一個獎章，只佩戴最高級的獎章。晚禮服：佩戴其他勳章及獎勵的小型章在右襟領童軍徽上方位置。",
+        "conditions": "特別活動紀念徽章；銀章或銅章只戴一個。P.191–192 等級第 18 位。"
+      },
+      "en": {
+        "name": "Metropolitan Camp Medal",
+        "place": "Dress: centred above the right chest-pocket flap; evening dress: above the Scout emblem on the right lapel (miniature).",
+        "quote": "Worn centred above the right chest-pocket flap of the uniform shirt or dress jacket, the top of the round medal against the top of the flap. Two or more are arranged by the order of precedence, from left to right (inside to outside); four or more are joined by a metal brooch and overlapped, the highest on top. If more than one medal of the same award is held, wear only the highest. Evening dress: miniatures of the other awards go above the Scout emblem on the right lapel.",
+        "conditions": "Special event commemorative; wear either silver or bronze. No. 18 in the pp.191–192 order of precedence."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3.6,
+        "hCm": 9,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "side": "right",
+        "rack": "pocket",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "180, 187, 192, 193"
+        }
+      ],
+      "status": "documented",
+      "anchorBy": {
+        "u2": {
+          "part": "torso",
+          "side": "right",
+          "rack": "lapel",
+          "measured": true
+        }
+      },
+      "fit": true,
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "bronze",
+          "zh": {
+            "name": "銅章"
+          },
+          "en": {
+            "name": "Bronze"
+          },
+          "art": {
+            "file": "/badges/awards/metroBronze.png",
+            "ref": "UH",
+            "page": "180",
+            "example": false,
+            "px": [
+              65,
+              150
+            ]
+          },
+          "order": 18
+        },
+        {
+          "id": "silver",
+          "zh": {
+            "name": "銀章"
+          },
+          "en": {
+            "name": "Silver"
+          },
+          "art": {
+            "file": "/badges/awards/metroSilver.png",
+            "ref": "UH",
+            "page": "180",
+            "example": false,
+            "px": [
+              64,
+              150
+            ]
+          },
+          "order": 18
+        }
+      ],
+      "default": "none",
+      "art": {
+        "file": "/badges/awards/metroBronze.png",
+        "ref": "UH",
+        "page": "180",
+        "example": false,
+        "px": [
+          65,
+          150
+        ]
+      },
+      "modelNote": {
+        "zh": "禮服：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）。",
+        "en": "Dress uniform: medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed)."
+      }
+    },
+    {
+      "id": "centenary",
+      "required": false,
+      "side": "right",
+      "uniforms": [
+        "u1",
+        "u2"
+      ],
+      "group": "awards",
+      "zh": {
+        "name": "香港童軍百周年紀念章",
+        "place": "禮服：右胸袋袋蓋上方中央；晚禮服：右襟領童軍徽上方（小型章）。",
+        "quote": "佩戴在制服恤衫或禮服上衣右胸袋袋蓋上方中央位置，圓形牌頂端緊貼袋蓋頂。假若佩戴兩個或以上獎章，則依「按等級排列的童軍勳章及獎勵名單」排列，順序由左至右（由內側至外側）佩戴。假若佩戴四個或以上獎章，用金屬胸針串連重疊起來佩戴，最高等級的獎章在最上面。假若在個別獎勵中獲頒多於一個獎章，只佩戴最高級的獎章。晚禮服：佩戴其他勳章及獎勵的小型章在右襟領童軍徽上方位置。",
+        "conditions": "特別活動紀念徽章；銀章或銅章只戴一個。P.191–192 等級第 19 位。"
+      },
+      "en": {
+        "name": "Hong Kong Scouting Centenary Medal",
+        "place": "Dress: centred above the right chest-pocket flap; evening dress: above the Scout emblem on the right lapel (miniature).",
+        "quote": "Worn centred above the right chest-pocket flap of the uniform shirt or dress jacket, the top of the round medal against the top of the flap. Two or more are arranged by the order of precedence, from left to right (inside to outside); four or more are joined by a metal brooch and overlapped, the highest on top. If more than one medal of the same award is held, wear only the highest. Evening dress: miniatures of the other awards go above the Scout emblem on the right lapel.",
+        "conditions": "Special event commemorative; wear either silver or bronze. No. 19 in the pp.191–192 order of precedence."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3.6,
+        "hCm": 9,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "side": "right",
+        "rack": "pocket",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "180, 187, 192, 193"
+        }
+      ],
+      "status": "documented",
+      "anchorBy": {
+        "u2": {
+          "part": "torso",
+          "side": "right",
+          "rack": "lapel",
+          "measured": true
+        }
+      },
+      "fit": true,
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "bronze",
+          "zh": {
+            "name": "銅章"
+          },
+          "en": {
+            "name": "Bronze"
+          },
+          "art": {
+            "file": "/badges/awards/centenaryBronze.png",
+            "ref": "UH",
+            "page": "180",
+            "example": false,
+            "px": [
+              55,
+              150
+            ]
+          },
+          "order": 19
+        },
+        {
+          "id": "silver",
+          "zh": {
+            "name": "銀章"
+          },
+          "en": {
+            "name": "Silver"
+          },
+          "art": {
+            "file": "/badges/awards/centenarySilver.png",
+            "ref": "UH",
+            "page": "180",
+            "example": false,
+            "px": [
+              54,
+              150
+            ]
+          },
+          "order": 19
+        }
+      ],
+      "default": "none",
+      "art": {
+        "file": "/badges/awards/centenaryBronze.png",
+        "ref": "UH",
+        "page": "180",
+        "example": false,
+        "px": [
+          55,
+          150
+        ]
+      },
+      "modelNote": {
+        "zh": "禮服：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）。",
+        "en": "Dress uniform: medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed)."
+      }
+    },
+    {
+      "id": "scoutCentre",
+      "required": false,
+      "side": "right",
+      "uniforms": [
+        "u1",
+        "u2"
+      ],
+      "group": "awards",
+      "zh": {
+        "name": "香港童軍中心紀念章",
+        "place": "禮服：右胸袋袋蓋上方中央；晚禮服：右襟領童軍徽上方（小型章）。",
+        "quote": "佩戴在制服恤衫或禮服上衣右胸袋袋蓋上方中央位置，圓形牌頂端緊貼袋蓋頂。假若佩戴兩個或以上獎章，則依「按等級排列的童軍勳章及獎勵名單」排列，順序由左至右（由內側至外側）佩戴。假若佩戴四個或以上獎章，用金屬胸針串連重疊起來佩戴，最高等級的獎章在最上面。假若在個別獎勵中獲頒多於一個獎章，只佩戴最高級的獎章。晚禮服：佩戴其他勳章及獎勵的小型章在右襟領童軍徽上方位置。",
+        "conditions": "特殊貢獻徽章：1995 年捐獻十萬元或以上建設或購置香港童軍中心設施。P.191–192 等級第 23 位。"
+      },
+      "en": {
+        "name": "Hong Kong Scout Centre Commemorative Medal",
+        "place": "Dress: centred above the right chest-pocket flap; evening dress: above the Scout emblem on the right lapel (miniature).",
+        "quote": "Worn centred above the right chest-pocket flap of the uniform shirt or dress jacket, the top of the round medal against the top of the flap. Two or more are arranged by the order of precedence, from left to right (inside to outside); four or more are joined by a metal brooch and overlapped, the highest on top. If more than one medal of the same award is held, wear only the highest. Evening dress: miniatures of the other awards go above the Scout emblem on the right lapel.",
+        "conditions": "Special contribution: donors of HK$100,000 or more to the Hong Kong Scout Centre in 1995. No. 23 in the pp.191–192 order of precedence."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3.6,
+        "hCm": 9,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "side": "right",
+        "rack": "pocket",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "181, 187, 192, 193"
+        }
+      ],
+      "status": "documented",
+      "anchorBy": {
+        "u2": {
+          "part": "torso",
+          "side": "right",
+          "rack": "lapel",
+          "measured": true
+        }
+      },
+      "fit": true,
+      "art": {
+        "file": "/badges/awards/scoutCentre.png",
+        "ref": "UH",
+        "page": "181",
+        "example": false,
+        "px": [
+          65,
+          150
+        ]
+      },
+      "rackOrder": 23,
+      "modelNote": {
+        "zh": "禮服：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）。",
+        "en": "Dress uniform: medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed)."
+      }
+    },
+    {
+      "id": "sp95",
+      "required": false,
+      "side": "right",
+      "uniforms": [
+        "u1",
+        "u2"
+      ],
+      "group": "awards",
+      "zh": {
+        "name": "香港童軍 95 周年暨童軍運動百周年特別貢獻章",
+        "place": "禮服：右胸袋袋蓋上方中央；晚禮服：右襟領童軍徽上方（小型章）。",
+        "quote": "佩戴在制服恤衫或禮服上衣右胸袋袋蓋上方中央位置，圓形牌頂端緊貼袋蓋頂。假若佩戴兩個或以上獎章，則依「按等級排列的童軍勳章及獎勵名單」排列，順序由左至右（由內側至外側）佩戴。假若佩戴四個或以上獎章，用金屬胸針串連重疊起來佩戴，最高等級的獎章在最上面。假若在個別獎勵中獲頒多於一個獎章，只佩戴最高級的獎章。晚禮服：佩戴其他勳章及獎勵的小型章在右襟領童軍徽上方位置。",
+        "conditions": "特殊貢獻徽章（2007 年捐獻）；金章或銀章只戴一個。P.191–192 等級第 24 位。"
+      },
+      "en": {
+        "name": "HK Scouting 95th / World Scouting Centenary Special Contribution Medal",
+        "place": "Dress: centred above the right chest-pocket flap; evening dress: above the Scout emblem on the right lapel (miniature).",
+        "quote": "Worn centred above the right chest-pocket flap of the uniform shirt or dress jacket, the top of the round medal against the top of the flap. Two or more are arranged by the order of precedence, from left to right (inside to outside); four or more are joined by a metal brooch and overlapped, the highest on top. If more than one medal of the same award is held, wear only the highest. Evening dress: miniatures of the other awards go above the Scout emblem on the right lapel.",
+        "conditions": "Special contribution (2007 donations); wear either gold or silver. No. 24 in the pp.191–192 order of precedence."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3.6,
+        "hCm": 9,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "side": "right",
+        "rack": "pocket",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "181, 187, 192, 193"
+        }
+      ],
+      "status": "documented",
+      "anchorBy": {
+        "u2": {
+          "part": "torso",
+          "side": "right",
+          "rack": "lapel",
+          "measured": true
+        }
+      },
+      "fit": true,
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "silver",
+          "zh": {
+            "name": "銀章"
+          },
+          "en": {
+            "name": "Silver"
+          },
+          "art": {
+            "file": "/badges/awards/sp95Silver.png",
+            "ref": "UH",
+            "page": "181",
+            "example": false,
+            "px": [
+              56,
+              150
+            ]
+          },
+          "order": 24
+        },
+        {
+          "id": "gold",
+          "zh": {
+            "name": "金章"
+          },
+          "en": {
+            "name": "Gold"
+          },
+          "art": {
+            "file": "/badges/awards/sp95Gold.png",
+            "ref": "UH",
+            "page": "181",
+            "example": false,
+            "px": [
+              54,
+              150
+            ]
+          },
+          "order": 24
+        }
+      ],
+      "default": "none",
+      "art": {
+        "file": "/badges/awards/sp95Silver.png",
+        "ref": "UH",
+        "page": "181",
+        "example": false,
+        "px": [
+          56,
+          150
+        ]
+      },
+      "modelNote": {
+        "zh": "禮服：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）。",
+        "en": "Dress uniform: medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed)."
+      }
+    },
+    {
+      "id": "sp100",
+      "required": false,
+      "side": "right",
+      "uniforms": [
+        "u1",
+        "u2"
+      ],
+      "group": "awards",
+      "zh": {
+        "name": "香港童軍百周年特別貢獻章",
+        "place": "禮服：右胸袋袋蓋上方中央；晚禮服：右襟領童軍徽上方（小型章）。",
+        "quote": "佩戴在制服恤衫或禮服上衣右胸袋袋蓋上方中央位置，圓形牌頂端緊貼袋蓋頂。假若佩戴兩個或以上獎章，則依「按等級排列的童軍勳章及獎勵名單」排列，順序由左至右（由內側至外側）佩戴。假若佩戴四個或以上獎章，用金屬胸針串連重疊起來佩戴，最高等級的獎章在最上面。假若在個別獎勵中獲頒多於一個獎章，只佩戴最高級的獎章。晚禮服：佩戴其他勳章及獎勵的小型章在右襟領童軍徽上方位置。",
+        "conditions": "特殊貢獻徽章（2011 年捐獻）；只戴最高級一個。P.191–192 等級第 25 位。"
+      },
+      "en": {
+        "name": "HK Scouting Centenary Special Contribution Medal",
+        "place": "Dress: centred above the right chest-pocket flap; evening dress: above the Scout emblem on the right lapel (miniature).",
+        "quote": "Worn centred above the right chest-pocket flap of the uniform shirt or dress jacket, the top of the round medal against the top of the flap. Two or more are arranged by the order of precedence, from left to right (inside to outside); four or more are joined by a metal brooch and overlapped, the highest on top. If more than one medal of the same award is held, wear only the highest. Evening dress: miniatures of the other awards go above the Scout emblem on the right lapel.",
+        "conditions": "Special contribution (2011 donations); wear only the highest. No. 25 in the pp.191–192 order of precedence."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3.6,
+        "hCm": 9,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "side": "right",
+        "rack": "pocket",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "181, 187, 192, 193"
+        }
+      ],
+      "status": "documented",
+      "anchorBy": {
+        "u2": {
+          "part": "torso",
+          "side": "right",
+          "rack": "lapel",
+          "measured": true
+        }
+      },
+      "fit": true,
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "silver",
+          "zh": {
+            "name": "銀章"
+          },
+          "en": {
+            "name": "Silver"
+          },
+          "art": {
+            "file": "/badges/awards/sp100Silver.png",
+            "ref": "UH",
+            "page": "181",
+            "example": false,
+            "px": [
+              57,
+              150
+            ]
+          },
+          "order": 25
+        },
+        {
+          "id": "goldone",
+          "zh": {
+            "name": "一星金章"
+          },
+          "en": {
+            "name": "Gold, one star"
+          },
+          "art": {
+            "file": "/badges/awards/sp100Gold1.png",
+            "ref": "UH",
+            "page": "181",
+            "example": false,
+            "px": [
+              57,
+              150
+            ]
+          },
+          "order": 25
+        },
+        {
+          "id": "goldtwo",
+          "zh": {
+            "name": "二星金章"
+          },
+          "en": {
+            "name": "Gold, two stars"
+          },
+          "art": {
+            "file": "/badges/awards/sp100Gold2.png",
+            "ref": "UH",
+            "page": "181",
+            "example": false,
+            "px": [
+              57,
+              150
+            ]
+          },
+          "order": 25
+        },
+        {
+          "id": "goldthree",
+          "zh": {
+            "name": "三星金章"
+          },
+          "en": {
+            "name": "Gold, three stars"
+          },
+          "art": {
+            "file": "/badges/awards/sp100Gold3.png",
+            "ref": "UH",
+            "page": "181",
+            "example": false,
+            "px": [
+              56,
+              150
+            ]
+          },
+          "order": 25
+        }
+      ],
+      "default": "none",
+      "art": {
+        "file": "/badges/awards/sp100Silver.png",
+        "ref": "UH",
+        "page": "181",
+        "example": false,
+        "px": [
+          57,
+          150
+        ]
+      },
+      "modelNote": {
+        "zh": "禮服：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）。",
+        "en": "Dress uniform: medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed)."
+      }
+    },
+    {
+      "id": "specialContribution",
+      "required": false,
+      "side": "right",
+      "uniforms": [
+        "u1",
+        "u2"
+      ],
+      "group": "awards",
+      "zh": {
+        "name": "特殊貢獻徽章",
+        "place": "禮服：右胸袋袋蓋上方中央；晚禮服：右襟領童軍徽上方（小型章）。",
+        "quote": "佩戴在制服恤衫或禮服上衣右胸袋袋蓋上方中央位置，圓形牌頂端緊貼袋蓋頂。假若佩戴兩個或以上獎章，則依「按等級排列的童軍勳章及獎勵名單」排列，順序由左至右（由內側至外側）佩戴。假若佩戴四個或以上獎章，用金屬胸針串連重疊起來佩戴，最高等級的獎章在最上面。假若在個別獎勵中獲頒多於一個獎章，只佩戴最高級的獎章。晚禮服：佩戴其他勳章及獎勵的小型章在右襟領童軍徽上方位置。",
+        "conditions": "每次捐獻十二萬元或以上；揀返最高嗰次（第一至十次）。P.191–192 等級第 28 位。"
+      },
+      "en": {
+        "name": "Special Contribution Medallion",
+        "place": "Dress: centred above the right chest-pocket flap; evening dress: above the Scout emblem on the right lapel (miniature).",
+        "quote": "Worn centred above the right chest-pocket flap of the uniform shirt or dress jacket, the top of the round medal against the top of the flap. Two or more are arranged by the order of precedence, from left to right (inside to outside); four or more are joined by a metal brooch and overlapped, the highest on top. If more than one medal of the same award is held, wear only the highest. Evening dress: miniatures of the other awards go above the Scout emblem on the right lapel.",
+        "conditions": "Each donation of HK$120,000 or more; pick the latest (1st–10th). No. 28 in the pp.191–192 order of precedence."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3.6,
+        "hCm": 9,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "side": "right",
+        "rack": "pocket",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "182–183, 187, 192, 193"
+        }
+      ],
+      "status": "documented",
+      "anchorBy": {
+        "u2": {
+          "part": "torso",
+          "side": "right",
+          "rack": "lapel",
+          "measured": true
+        }
+      },
+      "fit": true,
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "one",
+          "zh": {
+            "name": "第一次捐獻"
+          },
+          "en": {
+            "name": "1st donation"
+          },
+          "art": {
+            "file": "/badges/awards/special1.png",
+            "ref": "UH",
+            "page": "182",
+            "example": false,
+            "px": [
+              62,
+              150
+            ]
+          },
+          "order": 28
+        },
+        {
+          "id": "two",
+          "zh": {
+            "name": "第二次捐獻"
+          },
+          "en": {
+            "name": "2nd donation"
+          },
+          "art": {
+            "file": "/badges/awards/special2.png",
+            "ref": "UH",
+            "page": "182",
+            "example": false,
+            "px": [
+              60,
+              150
+            ]
+          },
+          "order": 28
+        },
+        {
+          "id": "three",
+          "zh": {
+            "name": "第三次捐獻"
+          },
+          "en": {
+            "name": "3rd donation"
+          },
+          "art": {
+            "file": "/badges/awards/special3.png",
+            "ref": "UH",
+            "page": "182",
+            "example": false,
+            "px": [
+              60,
+              150
+            ]
+          },
+          "order": 28
+        },
+        {
+          "id": "four",
+          "zh": {
+            "name": "第四次捐獻"
+          },
+          "en": {
+            "name": "4th donation"
+          },
+          "art": {
+            "file": "/badges/awards/special4.png",
+            "ref": "UH",
+            "page": "182",
+            "example": false,
+            "px": [
+              60,
+              150
+            ]
+          },
+          "order": 28
+        },
+        {
+          "id": "five",
+          "zh": {
+            "name": "第五次捐獻"
+          },
+          "en": {
+            "name": "5th donation"
+          },
+          "art": {
+            "file": "/badges/awards/special5.png",
+            "ref": "UH",
+            "page": "182",
+            "example": false,
+            "px": [
+              60,
+              150
+            ]
+          },
+          "order": 28
+        },
+        {
+          "id": "six",
+          "zh": {
+            "name": "第六次捐獻"
+          },
+          "en": {
+            "name": "6th donation"
+          },
+          "art": {
+            "file": "/badges/awards/special6.png",
+            "ref": "UH",
+            "page": "182",
+            "example": false,
+            "px": [
+              59,
+              150
+            ]
+          },
+          "order": 28
+        },
+        {
+          "id": "seven",
+          "zh": {
+            "name": "第七次捐獻"
+          },
+          "en": {
+            "name": "7th donation"
+          },
+          "art": {
+            "file": "/badges/awards/special7.png",
+            "ref": "UH",
+            "page": "182",
+            "example": false,
+            "px": [
+              60,
+              150
+            ]
+          },
+          "order": 28
+        },
+        {
+          "id": "eight",
+          "zh": {
+            "name": "第八次捐獻"
+          },
+          "en": {
+            "name": "8th donation"
+          },
+          "art": {
+            "file": "/badges/awards/special8.png",
+            "ref": "UH",
+            "page": "182",
+            "example": false,
+            "px": [
+              60,
+              150
+            ]
+          },
+          "order": 28
+        },
+        {
+          "id": "nine",
+          "zh": {
+            "name": "第九次捐獻"
+          },
+          "en": {
+            "name": "9th donation"
+          },
+          "art": {
+            "file": "/badges/awards/special9.png",
+            "ref": "UH",
+            "page": "182",
+            "example": false,
+            "px": [
+              60,
+              150
+            ]
+          },
+          "order": 28
+        },
+        {
+          "id": "ten",
+          "zh": {
+            "name": "第十次捐獻"
+          },
+          "en": {
+            "name": "10th donation"
+          },
+          "art": {
+            "file": "/badges/awards/special10.png",
+            "ref": "UH",
+            "page": "182",
+            "example": false,
+            "px": [
+              61,
+              150
+            ]
+          },
+          "order": 28
+        }
+      ],
+      "default": "none",
+      "art": {
+        "file": "/badges/awards/special1.png",
+        "ref": "UH",
+        "page": "182",
+        "example": false,
+        "px": [
+          62,
+          150
+        ]
+      },
+      "modelNote": {
+        "zh": "禮服：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）。",
+        "en": "Dress uniform: medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed)."
+      }
+    },
+    {
+      "id": "specialStar",
+      "required": false,
+      "side": "right",
+      "uniforms": [
+        "u1",
+        "u2"
+      ],
+      "group": "awards",
+      "zh": {
+        "name": "特殊貢獻星章",
+        "place": "禮服：右胸袋袋蓋上方中央；晚禮服：右襟領童軍徽上方（小型章）。",
+        "quote": "佩戴在制服恤衫或禮服上衣右胸袋袋蓋上方中央位置，圓形牌頂端緊貼袋蓋頂。假若佩戴兩個或以上獎章，則依「按等級排列的童軍勳章及獎勵名單」排列，順序由左至右（由內側至外側）佩戴。假若佩戴四個或以上獎章，用金屬胸針串連重疊起來佩戴，最高等級的獎章在最上面。假若在個別獎勵中獲頒多於一個獎章，只佩戴最高級的獎章。晚禮服：佩戴其他勳章及獎勵的小型章在右襟領童軍徽上方位置。",
+        "conditions": "第十一次起每次捐獻十二萬元或以上；第十次頒發嘅特殊貢獻徽章可以同星章一齊戴。P.191–192 等級第 27 位。"
+      },
+      "en": {
+        "name": "Special Contribution Star",
+        "place": "Dress: centred above the right chest-pocket flap; evening dress: above the Scout emblem on the right lapel (miniature).",
+        "quote": "Worn centred above the right chest-pocket flap of the uniform shirt or dress jacket, the top of the round medal against the top of the flap. Two or more are arranged by the order of precedence, from left to right (inside to outside); four or more are joined by a metal brooch and overlapped, the highest on top. If more than one medal of the same award is held, wear only the highest. Evening dress: miniatures of the other awards go above the Scout emblem on the right lapel.",
+        "conditions": "From the 11th donation of HK$120,000 or more; the 10th Special Contribution Medallion may be worn with the star. No. 27 in the pp.191–192 order of precedence."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3.6,
+        "hCm": 9,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "side": "right",
+        "rack": "pocket",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "183, 187, 192, 193"
+        }
+      ],
+      "status": "documented",
+      "anchorBy": {
+        "u2": {
+          "part": "torso",
+          "side": "right",
+          "rack": "lapel",
+          "measured": true
+        }
+      },
+      "fit": true,
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "eleven",
+          "zh": {
+            "name": "第十一次捐獻"
+          },
+          "en": {
+            "name": "11th donation"
+          },
+          "art": {
+            "file": "/badges/awards/specialStar11.png",
+            "ref": "UH",
+            "page": "183",
+            "example": false,
+            "px": [
+              61,
+              150
+            ]
+          },
+          "order": 27
+        },
+        {
+          "id": "twelve",
+          "zh": {
+            "name": "第十二次捐獻"
+          },
+          "en": {
+            "name": "12th donation"
+          },
+          "art": {
+            "file": "/badges/awards/specialStar12.png",
+            "ref": "UH",
+            "page": "183",
+            "example": false,
+            "px": [
+              59,
+              150
+            ]
+          },
+          "order": 27
+        },
+        {
+          "id": "thirteen",
+          "zh": {
+            "name": "第十三次捐獻"
+          },
+          "en": {
+            "name": "13th donation"
+          },
+          "art": {
+            "file": "/badges/awards/specialStar13.png",
+            "ref": "UH",
+            "page": "183",
+            "example": false,
+            "px": [
+              60,
+              150
+            ]
+          },
+          "order": 27
+        },
+        {
+          "id": "fourteen",
+          "zh": {
+            "name": "第十四次捐獻"
+          },
+          "en": {
+            "name": "14th donation"
+          },
+          "art": {
+            "file": "/badges/awards/specialStar14.png",
+            "ref": "UH",
+            "page": "183",
+            "example": false,
+            "px": [
+              62,
+              150
+            ]
+          },
+          "order": 27
+        },
+        {
+          "id": "fifteen",
+          "zh": {
+            "name": "第十五次捐獻"
+          },
+          "en": {
+            "name": "15th donation"
+          },
+          "art": {
+            "file": "/badges/awards/specialStar15.png",
+            "ref": "UH",
+            "page": "183",
+            "example": false,
+            "px": [
+              60,
+              150
+            ]
+          },
+          "order": 27
+        },
+        {
+          "id": "sixteen",
+          "zh": {
+            "name": "第十六次捐獻"
+          },
+          "en": {
+            "name": "16th donation"
+          },
+          "art": {
+            "file": "/badges/awards/specialStar16.png",
+            "ref": "UH",
+            "page": "183",
+            "example": false,
+            "px": [
+              61,
+              150
+            ]
+          },
+          "order": 27
+        }
+      ],
+      "default": "none",
+      "art": {
+        "file": "/badges/awards/specialStar11.png",
+        "ref": "UH",
+        "page": "183",
+        "example": false,
+        "px": [
+          61,
+          150
+        ]
+      },
+      "modelNote": {
+        "zh": "禮服：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）。",
+        "en": "Dress uniform: medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed)."
+      }
+    },
+    {
+      "id": "longService",
+      "required": false,
+      "side": "right",
+      "uniforms": [
+        "u1",
+        "u2"
+      ],
+      "group": "awards",
+      "zh": {
+        "name": "長期服務獎章",
+        "place": "禮服：右胸袋袋蓋上方中央；晚禮服：右襟領童軍徽上方（小型章）。",
+        "quote": "佩戴在制服恤衫或禮服上衣右胸袋袋蓋上方中央位置，圓形牌頂端緊貼袋蓋頂。假若佩戴兩個或以上獎章，則依「按等級排列的童軍勳章及獎勵名單」排列，順序由左至右（由內側至外側）佩戴。假若佩戴四個或以上獎章，用金屬胸針串連重疊起來佩戴，最高等級的獎章在最上面。假若在個別獎勵中獲頒多於一個獎章，只佩戴最高級的獎章。晚禮服：佩戴其他勳章及獎勵的小型章在右襟領童軍徽上方位置。",
+        "conditions": "服務實職年資滿十五年；之後每服務滿十年加一星；只戴最高年資一個。P.191–192 等級第 31 位。"
+      },
+      "en": {
+        "name": "Long Service Medal",
+        "place": "Dress: centred above the right chest-pocket flap; evening dress: above the Scout emblem on the right lapel (miniature).",
+        "quote": "Worn centred above the right chest-pocket flap of the uniform shirt or dress jacket, the top of the round medal against the top of the flap. Two or more are arranged by the order of precedence, from left to right (inside to outside); four or more are joined by a metal brooch and overlapped, the highest on top. If more than one medal of the same award is held, wear only the highest. Evening dress: miniatures of the other awards go above the Scout emblem on the right lapel.",
+        "conditions": "15 years' active service, plus a star for every further 10 years; wear only the highest. No. 31 in the pp.191–192 order of precedence."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3.6,
+        "hCm": 9,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "side": "right",
+        "rack": "pocket",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "184–185, 187, 192, 193"
+        }
+      ],
+      "status": "documented",
+      "anchorBy": {
+        "u2": {
+          "part": "torso",
+          "side": "right",
+          "rack": "lapel",
+          "measured": true
+        }
+      },
+      "fit": true,
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "medal",
+          "zh": {
+            "name": "長期服務獎章"
+          },
+          "en": {
+            "name": "Long Service Medal"
+          },
+          "art": {
+            "file": "/badges/awards/longService.png",
+            "ref": "UH",
+            "page": "185",
+            "example": false,
+            "px": [
+              56,
+              150
+            ]
+          },
+          "order": 31
+        },
+        {
+          "id": "one",
+          "zh": {
+            "name": "一星獎章"
+          },
+          "en": {
+            "name": "one star"
+          },
+          "art": {
+            "file": "/badges/awards/longService1.png",
+            "ref": "UH",
+            "page": "185",
+            "example": false,
+            "px": [
+              55,
+              150
+            ]
+          },
+          "order": 31
+        },
+        {
+          "id": "two",
+          "zh": {
+            "name": "二星獎章"
+          },
+          "en": {
+            "name": "two stars"
+          },
+          "art": {
+            "file": "/badges/awards/longService2.png",
+            "ref": "UH",
+            "page": "185",
+            "example": false,
+            "px": [
+              59,
+              150
+            ]
+          },
+          "order": 31
+        },
+        {
+          "id": "three",
+          "zh": {
+            "name": "三星獎章"
+          },
+          "en": {
+            "name": "three stars"
+          },
+          "art": {
+            "file": "/badges/awards/longService3.png",
+            "ref": "UH",
+            "page": "185",
+            "example": false,
+            "px": [
+              60,
+              150
+            ]
+          },
+          "order": 31
+        },
+        {
+          "id": "four",
+          "zh": {
+            "name": "四星獎章"
+          },
+          "en": {
+            "name": "four stars"
+          },
+          "art": {
+            "file": "/badges/awards/longService4.png",
+            "ref": "UH",
+            "page": "185",
+            "example": false,
+            "px": [
+              55,
+              150
+            ]
+          },
+          "order": 31
+        },
+        {
+          "id": "five",
+          "zh": {
+            "name": "五星獎章"
+          },
+          "en": {
+            "name": "five stars"
+          },
+          "art": {
+            "file": "/badges/awards/longService5.png",
+            "ref": "UH",
+            "page": "185",
+            "example": false,
+            "px": [
+              53,
+              150
+            ]
+          },
+          "order": 31
+        },
+        {
+          "id": "six",
+          "zh": {
+            "name": "六星獎章"
+          },
+          "en": {
+            "name": "six stars"
+          },
+          "art": {
+            "file": "/badges/awards/longService6.png",
+            "ref": "UH",
+            "page": "185",
+            "example": false,
+            "px": [
+              53,
+              150
+            ]
+          },
+          "order": 31
+        }
+      ],
+      "default": "none",
+      "art": {
+        "file": "/badges/awards/longService.png",
+        "ref": "UH",
+        "page": "185",
+        "example": false,
+        "px": [
+          56,
+          150
+        ]
+      },
+      "modelNote": {
+        "zh": "禮服：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）。",
+        "en": "Dress uniform: medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed)."
+      }
+    },
+    {
+      "id": "commendation",
+      "required": false,
+      "side": "left",
+      "uniforms": [
+        "u1",
+        "u2"
+      ],
+      "group": "awards",
+      "zh": {
+        "name": "香港總監嘉許／高級嘉許（笛繩）",
+        "place": "笛繩排喺左肩肩帶下面，末端扣喺左胸袋，笛子由胸袋口右邊放入；晚禮服用小型笛繩。",
+        "quote": "香港總監嘉許／高級嘉許笛繩排在制服恤衫或禮服上衣左肩肩帶之下。笛繩末端扣在左胸袋，笛子由胸袋口右方位置放入。假若獲頒香港總監嘉許及高級嘉許，只佩戴高級嘉許笛繩。晚禮服：香港總監嘉許／高級嘉許小型笛繩排在左肩肩帶之下。",
+        "conditions": "嘉許頒予領袖及總監、高級嘉許頒予總監；兩個都有就只戴高級嘉許。"
+      },
+      "en": {
+        "name": "Chief Commissioner's Commendation / High Commendation (lanyard)",
+        "place": "The lanyard runs under the left shoulder strap with its end clipped into the left chest pocket, the whistle going in at the right of the pocket mouth; evening dress uses the miniature lanyard.",
+        "quote": "The commendation lanyard runs under the left shoulder strap of the uniform shirt or dress jacket, its end clipped into the left chest pocket with the whistle entering at the right of the pocket mouth. If both are held, wear only the High Commendation lanyard. Evening dress: the miniature lanyard runs under the left shoulder strap.",
+        "conditions": "The Commendation goes to scouters and commissioners, the High Commendation to commissioners; if both are held wear only the High Commendation."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 1,
+        "hCm": 1,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "side": "left",
+        "lanyard": true,
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "177, 184, 188–189"
+        }
+      ],
+      "status": "documented",
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "commendation",
+          "zh": {
+            "name": "香港總監嘉許"
+          },
+          "en": {
+            "name": "Commendation"
+          },
+          "art": {
+            "file": "/badges/awards/lanyard_commendation.png",
+            "ref": "UH",
+            "page": "184",
+            "example": false,
+            "px": [
+              84,
+              110
+            ]
+          }
+        },
+        {
+          "id": "high",
+          "zh": {
+            "name": "香港總監高級嘉許"
+          },
+          "en": {
+            "name": "High Commendation"
+          },
+          "art": {
+            "file": "/badges/awards/lanyard_high_commendation.png",
+            "ref": "UH",
+            "page": "184",
+            "example": false,
+            "px": [
+              84,
+              110
+            ]
+          }
+        }
+      ],
+      "default": "none",
+      "art": {
+        "file": "/badges/awards/lanyard_commendation.png",
+        "ref": "UH",
+        "page": "184",
+        "example": false,
+        "px": [
+          84,
+          110
+        ]
+      },
+      "modelNote": {
+        "zh": "笛繩用 3D 繩示意：嘉許 = 橙金色、高級嘉許 = 深藍夾黃綠（P.184 相片顏色）；選單細圖係手冊 P.184 相片。晚禮服小型笛繩幼一半、末端去到左襟領。",
+        "en": "The lanyard is a 3D cord: Commendation orange-gold, High Commendation dark blue with yellow-green (colours from the p.184 photos); the menu thumbnails are the p.184 photos. The evening-dress miniature is half as thick and ends at the left lapel."
+      }
+    },
+    {
+      "id": "thanksBadge",
+      "required": false,
+      "side": "right",
+      "uniforms": [
+        "u1",
+        "u2"
+      ],
+      "group": "awards",
+      "zh": {
+        "name": "香港總監感謝章",
+        "place": "禮服：右胸袋袋蓋中央；晚禮服：右襟領童軍徽下面。",
+        "quote": "香港總監感謝章佩戴在西服上衣右面翻領上；假若穿著制服，佩戴在恤衫或禮服上衣右胸袋袋蓋中央位置。晚禮服：佩戴香港總監感謝章在右襟領童軍徽下方位置。",
+        "conditions": "頒予會務委員，表揚忠誠服務。"
+      },
+      "en": {
+        "name": "Chief Commissioner's Thanks Badge",
+        "place": "Dress: centre of the right chest-pocket flap; evening dress: below the Scout emblem on the right lapel.",
+        "quote": "The Thanks Badge goes on the right lapel of a suit; with uniform, centred on the right chest-pocket flap of the shirt or dress jacket. Evening dress: below the Scout emblem on the right lapel.",
+        "conditions": "Awarded to lay members for loyal service."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3,
+        "hCm": 3,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "side": "right",
+        "pocket": "flap",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "177, 184, 188–189"
+        }
+      ],
+      "status": "documented",
+      "anchorBy": {
+        "u2": {
+          "part": "torso",
+          "side": "right",
+          "lapel": "belowFleur",
+          "gapCm": 0.5,
+          "measured": true
+        }
+      },
+      "art": {
+        "file": "/badges/awards/thanks_badge.png",
+        "ref": "UH",
+        "page": "177",
+        "example": false,
+        "px": [
+          96,
+          96
+        ]
+      },
+      "modelNote": {
+        "zh": "手冊冇寫尺寸；模型用 3 × 3 cm。相片取自手冊 P.184（已去背景）。禮服上同時戴勳章時，勳章圓形牌會蓋住部份感謝章（手冊冇講點避開）。",
+        "en": "No size in the Handbook; the model uses 3 × 3 cm. Photo from Handbook p.184 (background removed). When medals are worn on the dress uniform too, the medals partly cover the Thanks Badge (the Handbook does not say how to avoid this)."
+      },
+      "fit": true
     }
   ],
   "notAllowed": [
@@ -2359,6 +5363,50 @@
           "page": "105, 116"
         }
       ]
+    },
+    {
+      "id": "dressOnlyBasic",
+      "zh": "禮服（編號 1）只可以戴世界童軍會員章、香港章、香港肩章／旅章、職級肩章，另可戴活動名牌、布質名牌、喪禮黑布、木章同已頒授嘅勳章及獎勵；唔可以戴其他章（包括地域章、區章、總會總部章、優異旅團章）。",
+      "en": "The dress uniform (No. 1) carries only the World Membership Badge, Hong Kong Badge, Hong Kong shoulder title / Group Badge and rank epaulettes, plus optionally the activity name badge, cloth name tag, mourning band, Wood Badge and awarded decorations; no other badges (including the Region, District, Association Headquarters and Meritorious Group Badges).",
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "57, 92–95"
+        }
+      ]
+    },
+    {
+      "id": "eveningNoBadges",
+      "zh": "晚禮服（編號 2）唔戴任何布章、領巾或領帶；只可以戴金屬職級肩章、黑色硬帽連銀色帽章，同埋可選嘅小型勳章、嘉許小型笛繩、感謝章；附加配件（眼鏡、手錶、結婚戒指除外）唔適用；唔可以戴木章同模範童軍肩帶。",
+      "en": "Evening dress (No. 2) carries no cloth badges, neckerchief or tie; only the metal rank epaulettes and black hard hat with silver cap badge, plus optionally miniature decorations, the miniature commendation lanyard and the Thanks Badge; accessories (except glasses, watch and wedding ring) do not apply; no Wood Badge or Chief Scout's Award sash.",
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "60, 91, 116"
+        }
+      ]
+    },
+    {
+      "id": "noDressSea",
+      "zh": "手冊只有陸上款禮服同晚禮服；揀海童軍／空童軍領袖時，模型都用陸上款（帽、衫褲顏色一樣）。",
+      "en": "The Handbook shows only land-style dress and evening dress; with Sea or Air Scout leaders selected the model still uses the land style (same hats and colours).",
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "57–62, 70–81"
+        }
+      ]
+    },
+    {
+      "id": "no1a",
+      "zh": "制服編號 1a（夏季禮服）由 2014-11-01 起取消（過渡期至 2019-10-31），模型冇做。",
+      "en": "Uniform No. 1a (summer dress) was abolished from 1 Nov 2014 (transition to 31 Oct 2019) and is not modelled.",
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "53"
+        }
+      ]
     }
   ],
   "uninvested": {
@@ -2380,10 +5428,162 @@
       "id": "hongKongPocket",
       "zh": "手冊 P.93：樂行童軍同成年成員嘅香港章戴喺右胸袋中央，青少年支部（幼童軍、童軍、深資童軍）先戴喺左袋蓋上面。",
       "en": "Handbook p.93: Rover Scouts and adults wear the Hong Kong Badge centred on the right pocket; only the youth sections (Cub, Scout, Venture) wear it above the left flap."
+    },
+    {
+      "id": "medalsOnShirt",
+      "zh": "手冊 P.187 講勳章可以戴喺制服恤衫或禮服上衣；模型而家只喺禮服（編號 1）同晚禮服（編號 2，小型章）提供勳章，編號 3–6 恤衫之後再做。",
+      "en": "Handbook p.187 allows medals on the uniform shirt or dress jacket; the model currently offers medals only on the dress uniform (No. 1) and evening dress (No. 2, miniatures); shirts (No. 3–6) come later."
+    },
+    {
+      "id": "medalPrecedenceGaps",
+      "zh": "P.191–192 等級名單有 32 項；模型只提供手冊有相片嘅 HKSA 勳章及獎勵（冇鋼狼、其他童軍會、110 周年、同心抗疫、同行未來、亞太區等）。",
+      "en": "The pp.191–192 list has 32 entries; the model offers only the SAHK awards with photos in the Handbook (no Bronze Wolf, other associations' awards, 110th anniversary, anti-epidemic, Jamboree 2023, Asia-Pacific, etc.)."
     }
   ],
   "artCredit": {
-    "zh": "徽章、帽章、肩章圖案取自香港童軍總會《儀容與制服手冊》（P.92–95、P.103–105、P.109；© 香港童軍總會），只作示意，未經修改設計。",
-    "en": "Badge, cap badge and epaulette artwork from the SAHK Uniform Handbook (pp.92–95, 103–105, 109; © SAHK), for illustration only, design unaltered."
-  }
+    "zh": "徽章、帽章、肩章、勳章圖案取自香港童軍總會《儀容與制服手冊》（P.92–95、P.103–105、P.109、P.128、P.162、P.178–185、P.206–211；© 香港童軍總會），只作示意，未經修改設計（勳章相片只去咗背景）。",
+    "en": "Badge, cap badge, epaulette and medal artwork from the SAHK Uniform Handbook (pp.92–95, 103–105, 109, 128, 162, 178–185, 206–211; © SAHK), for illustration only, design unaltered (medal photos only had their background removed)."
+  },
+  "messCaps": [
+    {
+      "id": "UM01",
+      "trim": "oak2",
+      "metal": "silver",
+      "buttons": "silver",
+      "zh": "香港總監、副香港總監：帽舌兩行銀色橡葉",
+      "en": "Chief Commissioner, Deputy CC: two rows of silver oak leaves on the peak",
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "206"
+        }
+      ]
+    },
+    {
+      "id": "UM02",
+      "trim": "oak1",
+      "metal": "silver",
+      "buttons": "silver",
+      "zh": "助理香港總監：帽舌邊一行銀色橡葉",
+      "en": "Assistant CC: one row of silver oak leaves round the peak",
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "206"
+        }
+      ]
+    },
+    {
+      "id": "UM03",
+      "trim": "cord",
+      "metal": "silver",
+      "buttons": "silver",
+      "zh": "四級、五級總監（副署／副地域總監；助理署／助理地域總監、區總監、領袖訓練主任）：帽舌邊銀繩",
+      "en": "Grade 4–5 commissioners (Deputy Branch / Regional; Assistant Branch / Regional, District Commissioner, Leader Trainer in Charge): silver cord round the peak",
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "207"
+        }
+      ]
+    },
+    {
+      "id": "UM04",
+      "trim": "none",
+      "metal": "silver",
+      "buttons": "silver",
+      "zh": "六級、七級總監、旅長及副旅長、執行幹事及助理執行幹事：冇邊飾、銀鈕",
+      "en": "Grade 6–7 commissioners, Group Scout Leaders and Assistant GSLs, Executive and Assistant Executive Officers: plain peak, silver buttons",
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "207–208, 211"
+        }
+      ]
+    },
+    {
+      "id": "UM05",
+      "trim": "none",
+      "metal": "silver",
+      "buttons": "black",
+      "zh": "其他領袖、其他會務委員：冇邊飾、黑鈕",
+      "en": "Other scouters and other lay members: plain peak, black buttons",
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "208, 210"
+        }
+      ]
+    },
+    {
+      "id": "UM06",
+      "trim": "rim",
+      "metal": "silver",
+      "buttons": "silver",
+      "zh": "總幹事、副總幹事、助理總幹事：帽舌黑邊",
+      "en": "Chief / Deputy / Assistant Executive Commissioner: black-rimmed peak",
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "210"
+        }
+      ]
+    },
+    {
+      "id": "LM01",
+      "trim": "oak2",
+      "metal": "gold",
+      "buttons": "gold",
+      "zh": "總領袖、副總領袖、贊助人、副贊助人、總會會長及名譽會長：帽舌金色橡葉",
+      "en": "Chief Scout, Deputy Chief Scout, patrons, Association President and Honorary Presidents: gold oak leaves on the peak",
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "209"
+        }
+      ]
+    },
+    {
+      "id": "LM02",
+      "trim": "oak1",
+      "metal": "gold",
+      "buttons": "gold",
+      "zh": "總會副會長、執委會主席、司庫及秘書；地域會長及名譽會長：帽舌邊一行金色橡葉",
+      "en": "Association Vice-Presidents, Executive Committee Chairman, Treasurer and Secretary; Regional Presidents and Honorary Presidents: one row of gold oak leaves",
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "209"
+        }
+      ]
+    },
+    {
+      "id": "LM03",
+      "trim": "cord",
+      "metal": "gold",
+      "buttons": "gold",
+      "zh": "總會執委會副主席、功能及其他委員會主席；地域主席及副會長：帽舌邊金繩",
+      "en": "Association Executive Committee Vice-Chairman, chairmen of functional and other committees; Regional Chairmen and Vice-Presidents: gold cord",
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "209"
+        }
+      ]
+    },
+    {
+      "id": "LM04",
+      "trim": "cord",
+      "metal": "gold",
+      "buttons": "gold",
+      "zh": "總會功能及其他委員會副主席；地域副主席、司庫及秘書；區會長、名譽會長及主席：帽舌邊金繩",
+      "en": "Vice-chairmen of Association functional and other committees; Regional Vice-Chairmen, Treasurers and Secretaries; District Presidents, Honorary Presidents and Chairmen: gold cord",
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "210"
+        }
+      ]
+    }
+  ]
 }

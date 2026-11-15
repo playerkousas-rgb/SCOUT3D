@@ -72,6 +72,20 @@ export function resolveArt(badge, picks, data, patrols = null) {
     if (!row) return fallback;
     return { kind: 'image', file: row.art.file, example: false, row };
   }
+  if (badge.dynamic === 'metalRank') {
+    // 晚禮服金屬職級肩章（手冊 P.206–211）：夏季白、冬季黑
+    const row = rankRowOf(badge, picks?.rank);
+    if (!row) return fallback;
+    const season = picks?.season === 'summer' ? 'summer' : 'winter';
+    return { kind: 'image', file: row.art[season].file, example: false, row, season };
+  }
+  if (badge.dynamic === 'nameTag') {
+    // 布質名牌（手冊 P.128）：綠底黃字中英文姓名；未輸入就用手冊示例圖
+    const zh = cleanName(picks?.nameZh, 8);
+    const en = cleanName(picks?.nameEn, 24).toUpperCase();
+    if (!zh && !en) return { ...fallback, example: true };
+    return { kind: 'nameTag', zh, en, example: false };
+  }
   if (badge.dynamic === 'meritorious') {
     const year = Math.trunc(Number(picks?.meritYear));
     const colour = meritColour(year);
@@ -80,6 +94,14 @@ export function resolveArt(badge, picks, data, patrols = null) {
     return { kind: 'merit', year, colour, base: a.file, digits: a.digits, text: a.text, example: false };
   }
   return fallback;
+}
+
+/** 名牌姓名：去走控制字元、頭尾空白，限長度 */
+export function cleanName(v, max) {
+  return String(v ?? '')
+    .replace(/[\u0000-\u001f\u007f<>]/g, '')
+    .trim()
+    .slice(0, max);
 }
 
 /* ---------- 成年成員：單位層級、職級（手冊 P.94–95、P.103–105） ---------- */
@@ -106,6 +128,15 @@ export function rankCap(rules, rankId) {
   return rankRowOf(b, rankId)?.cap ?? null;
 }
 
+/** 晚禮服黑色硬帽（手冊 P.206–211）：揀咗嘅職級用邊個編號（UM01–06、LM01–04）；女裝 M 改 F */
+export function messCapOf(rules, rankId, gender = 'boy') {
+  const b = (rules?.badges || []).find((x) => x.dynamic === 'metalRank');
+  const row = rankRowOf(b, rankId);
+  const cap = (rules?.messCaps || []).find((c) => c.id === row?.cap);
+  if (!cap) return null;
+  return { ...cap, code: gender === 'girl' ? cap.id.replace('M', 'F') : cap.id };
+}
+
 /**
  * 成年成員領巾、巾圈、木章（手冊 P.108–111、P.115–116）：
  * - 旅巾：旅成員；會巾：總會總部／地域／區幹部、會務委員、專業領袖、受薪職員（旅層級唔可以揀）；
@@ -117,7 +148,8 @@ export function rankCap(rules, rankId) {
 export function leaderNeckwear(rules, outfit, picks) {
   const training = ['none', 'basic', 'woodBadge'].includes(outfit?.training) ? outfit.training : 'none';
   const level = picks?.level ?? 'group';
-  const allowed = { association: level !== 'group', gilwell: training === 'woodBadge', gilwellWoggle: training !== 'none', woodBadge: training === 'woodBadge' };
+  const evening = outfit?.uniform === 'u2'; // 晚禮服唔戴木章（手冊 P.116）
+  const allowed = { association: level !== 'group', gilwell: training === 'woodBadge', gilwellWoggle: training !== 'none', woodBadge: training === 'woodBadge' && !evening };
   let necker = outfit?.leaderNecker ?? 'unit';
   if (!['unit', 'association', 'gilwell'].includes(necker) || (necker === 'association' && !allowed.association) || (necker === 'gilwell' && !allowed.gilwell)) {
     necker = 'unit';
@@ -129,7 +161,7 @@ export function leaderNeckwear(rules, outfit, picks) {
     necker,
     allowed,
     gilwellWoggle: gilwell || (allowed.gilwellWoggle && outfit?.leaderWoggle === 'gilwell'),
-    woodBadge: gilwell || (allowed.woodBadge && !!outfit?.woodBadge),
+    woodBadge: !evening && (gilwell || (allowed.woodBadge && !!outfit?.woodBadge)),
     beads: rank?.woodBadgeBeads ?? 2,
     trainer: !!rank?.trainingTeam,
   };

@@ -709,3 +709,142 @@ export function material(c, { painted = true, alpha = false, double = false } = 
     side: double ? THREE.DoubleSide : THREE.FrontSide,
   });
 }
+
+/* ---------------- 禮服、晚禮服（手冊 P.57–62、P.203–205） ---------------- */
+/**
+ * 禮服上衣（編號 1，手冊 P.59 附圖）：草青色、四粒會徽銅鈕、四個有蓋袋（兩胸袋、兩下袋）、翻領；
+ * V 位見到杏色恤衫領同深綠色領帶。D = body.js dressLayout；殼頂（y = 0）高過膊頭 SWEATER_TOP。
+ * 頂面中間透明（衣領同頸穿過），要用 alpha 材質。
+ */
+export function dressJacketFaces(D, B, { colour, shirt, tie, waist }) {
+  const { w, h, d } = D;
+  const cx = w / 2;
+  const dark = shade(colour, 0.78);
+  const lap = shade(colour, 1.06);
+  const { half, depth } = D.opening;
+  const vHalf = (y) => half * (1 - y / depth);
+  const P = B.pocket;
+  const pTop = P.top + (D.top - (B.torso.y + B.torso.h)); // 胸袋頂（同恤衫胸袋一樣高）
+  const pocket = (g, px, top, pw, ph, flap) => {
+    const x0 = px - pw / 2;
+    g.rect(x0, top, pw, ph, dark);
+    g.rect(x0 + 0.4, top + 0.4, pw - 0.8, ph - 0.8, colour);
+    g.rect(x0 - 0.3, top - 0.2, pw + 0.6, flap + 0.4, dark); // 袋蓋
+    g.rect(x0 + 0.1, top + 0.2, pw - 0.2, flap - 0.4, lap);
+    g.rect(px - 0.25, top + flap + 0.2, 0.5, ph - flap - 0.6, shade(colour, 0.88)); // 中間褶
+    g.rect(px - 0.6, top + flap - 1.6, 1.2, 1.2, C.brass); // 銅鈕
+  };
+  const front = (g) => {
+    // 翻領（V 位外面一條斜帶）
+    g.shape((x, y) => {
+      const e = Math.abs(x - cx) - Math.max(0, vHalf(y));
+      return y < depth + 1 && e >= 0 && e < 4.6 - y * 0.14;
+    }, lap);
+    g.shape((x, y) => {
+      const e = Math.abs(x - cx) - Math.max(0, vHalf(y));
+      const o = 4.6 - y * 0.14;
+      return y < depth + 1 && e >= o - 0.4 && e < o;
+    }, dark);
+    // V 位：恤衫 + 領帶
+    g.shape((x, y) => y < depth && Math.abs(x - cx) < vHalf(y), shirt);
+    g.shape((x, y) => y < depth && Math.abs(x - cx) < vHalf(y) && Math.abs(x - cx) > vHalf(y) - 0.4, dark);
+    g.shape((x, y) => y < 4 && Math.abs(x - cx) > 1.7 && Math.abs(x - cx) < vHalf(y) - 0.4 && y > (Math.abs(x - cx) - 1.7) * 0.9, shade(shirt, 0.86)); // 恤衫領尖
+    g.shape((x, y) => y > 0.2 && y < depth && Math.abs(x - cx) < Math.min(vHalf(y) - 0.3, 1.5 + y * 0.03), tie);
+    g.rect(cx - 0.15, depth, 0.3, h - depth - 0.6, dark); // 門襟
+    const first = depth + 1.4;
+    const last = D.top - waist + 2;
+    for (let i = 0; i < 4; i++) g.rect(cx - 0.7, first + ((last - first) * i) / 3, 1.4, 1.4, C.brass);
+    pocket(g, cx + P.x, pTop, P.w, P.h, P.flap); // 穿著者左（望落去右手邊）
+    pocket(g, cx - P.x, pTop, P.w, P.h, P.flap);
+    const lowTop = D.top - waist - 5;
+    const lw = Math.min(14, w / 2 - 3);
+    const lh = Math.min(14, h - 2 - lowTop);
+    for (const s of [1, -1]) pocket(g, cx + s * (w / 2 - 1.5 - lw / 2), lowTop, lw, lh, 4.6);
+    g.rect(0, h - 0.6, w, 0.6, dark);
+  };
+  const side = (ww) => (g) => {
+    g.rect(ww / 2 - 0.15, 0, 0.3, h, shade(colour, 0.9));
+    g.rect(0, h - 0.6, ww, 0.6, dark);
+  };
+  return boxFaces([w, h, d], {
+    pz: front,
+    nz: (g) => {
+      g.rect(cx - B.neck.w / 2 - 2, 0, B.neck.w + 4, 3, lap); // 衣領
+      g.rect(cx - 0.15, h - 16, 0.3, 16, dark); // 背衩
+      g.rect(0, h - 0.6, w, 0.6, dark);
+    },
+    px: side(d),
+    nx: side(d),
+    py: (g) => {
+      const hole = B.neck.w / 2 + 1.75;
+      g.shape((x, y) => Math.abs(x - cx) < hole + 1.2 && Math.abs(y - d / 2) < hole + 1.2, lap);
+      g.clear((x, y) => Math.abs(x - cx) < hole && Math.abs(y - d / 2) < hole);
+    },
+    ny: (g) => g.fill(dark),
+  }, colour);
+}
+
+/**
+ * 晚禮服上衣（編號 2，手冊 P.62 附圖）：短身、前面敞開見到白恤衫（胸前冇花褶）同紫色絲質腰封；兩邊青果領（翻領）。
+ * 夏季白、冬季黑。翻領銀色童軍徽由 Blocky 用手冊圖案貼上去（唔喺呢度畫）。
+ */
+export function messJacketFaces(D, B, { colour, shirt, purple, leg }) {
+  const { w, h, d } = D;
+  const cx = w / 2;
+  const white = colour !== C.messBlack;
+  const line = white ? '#b9b9b2' : '#000000';
+  const lapel = white ? '#fdfdfb' : '#2a2a31';
+  const yh = D.top - D.hem; // 上衣前幅底
+  const yc0 = D.top - D.cummerbund.top;
+  const yc1 = D.top - D.cummerbund.bottom;
+  const open = (y) => D.opening.half + y * 0.05;
+  const lapEnd = D.top - (D.fleur.y - 9);
+  const front = (g) => {
+    // 翻領
+    g.shape((x, y) => y < lapEnd && Math.abs(x - cx) >= open(y) && Math.abs(x - cx) < open(y) + D.lapelW, lapel);
+    g.shape((x, y) => y < lapEnd && Math.abs(Math.abs(x - cx) - open(y) - D.lapelW) < 0.2, line);
+    g.shape((x, y) => Math.abs(y - lapEnd) < 0.2 && Math.abs(x - cx) >= open(y) && Math.abs(x - cx) < open(y) + D.lapelW, line);
+    // 敞開位：白恤衫 + 鈕
+    g.shape((x, y) => y < yh && Math.abs(x - cx) < open(y), shirt);
+    g.shape((x, y) => y < yh && Math.abs(Math.abs(x - cx) - open(y)) < 0.2, line);
+    g.rect(cx - 0.15, 3, 0.3, yc0 - 3, shade(shirt, 0.9));
+    for (let y = 6; y < yc0 - 2; y += 5) g.rect(cx - 0.4, y, 0.8, 0.8, '#26262c');
+    // 腰封：敞開位入面、上衣前幅下面一圈
+    g.shape((x, y) => y >= yc0 && y < yc1 && (Math.abs(x - cx) < open(y) || y >= yh), purple);
+    for (let y = yc0 + 1.5; y < yc1; y += 1.8) g.shape((x, yy) => Math.abs(yy - y) < 0.15 && (Math.abs(x - cx) < open(yy) || yy >= yh), shade(purple, 0.78));
+    g.rect(0, yc1, w, h - yc1, leg);
+    g.shape((x, y) => Math.abs(y - yh) < 0.2 && Math.abs(x - cx) >= open(y), line); // 上衣前幅底
+  };
+  const around = (ww) => (g) => {
+    g.rect(0, yh, ww, yc1 - yh, purple);
+    g.rect(0, yc1, ww, h - yc1, leg);
+    g.rect(0, yh - 0.3, ww, 0.3, line);
+  };
+  return boxFaces([w, h, d], {
+    pz: front,
+    nz: (g) => {
+      g.rect(0, yh, w, h - yh, leg);
+      g.rect(cx - B.neck.w / 2 - 2, 0, B.neck.w + 4, 3, lapel);
+    },
+    px: around(d),
+    nx: around(d),
+    py: (g) => {
+      const hole = B.neck.w / 2 + 1.75;
+      g.clear((x, y) => Math.abs(x - cx) < hole && Math.abs(y - d / 2) < hole);
+    },
+    ny: (g) => g.fill(leg),
+  }, colour);
+}
+
+/** 晚禮服長褲（手冊 P.61）：黑色、兩邊褲側紫色絲質間條 */
+export function messTrouserFaces(size, colour, stripe) {
+  const [w, h, d] = size;
+  const side = (g) => g.rect(d / 2 - 0.5, 0, 1, h - 1, stripe);
+  const hem = (ww) => (g) => g.rect(0, h - 1, ww, 1, shade(colour, 0.7));
+  return boxFaces(size, {
+    px: (g) => { side(g); hem(d)(g); },
+    nx: (g) => { side(g); hem(d)(g); },
+    pz: (g) => { hem(w)(g); g.rect(w / 2 - 0.2, 0, 0.4, h - 1, '#2a2a30'); },
+    nz: hem(w),
+  }, colour);
+}

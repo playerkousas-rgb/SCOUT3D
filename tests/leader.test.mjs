@@ -3,9 +3,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, existsSync, statSync } from 'node:fs';
 import { validateRules } from '../src/data/validate.js';
-import { placeAll, visible, shownReason, levelOk } from '../src/three/badgeLayout.js';
-import { layout, strapLayout, isSenior, leaderUniform, leaderLegwear, LEADER_VARIANTS, COLOURS } from '../src/three/body.js';
-import { ranksFor, fixRank, rankRowOf, rankCap, resolveArt, leaderNeckwear } from '../src/lib/picks.js';
+import { placeAll, placeFor, visible, shownReason, levelOk, arrangeRacks, DISC_CM, MINI } from '../src/three/badgeLayout.js';
+import { layout, strapLayout, isSenior, leaderUniform, leaderLegwear, LEADER_VARIANTS, COLOURS, dressLayout, isDress } from '../src/three/body.js';
+import { ranksFor, fixRank, rankRowOf, rankCap, resolveArt, leaderNeckwear, messCapOf, cleanName } from '../src/lib/picks.js';
 
 const read = (p) => JSON.parse(readFileSync(new URL(`../${p}`, import.meta.url), 'utf8'));
 const leader = read('src/data/leader_rules_v1.0.json');
@@ -150,4 +150,109 @@ test('領袖圖案細（Vercel 唔爆 storage）', () => {
     total += size;
   }
   assert.ok(total < 400_000, `total ${total}`);
+});
+
+
+/* ---------- v11：編號 1 禮服、編號 2 晚禮服（手冊 P.57–62、P.187–197、P.206–211） ---------- */
+
+const idsFor = (gender, uniform, state, extra = {}) =>
+  visible(placeFor(leader, { gender, uniform, invested: true, ...extra }), state, { invested: true, level: 'group' }).map((p) => p.id);
+
+test('禮服／晚禮服：下身、領呔、外套殼（手冊 P.58–62）', () => {
+  assert.ok(isDress('u1') && isDress('u2') && !isDress('u3'));
+  assert.equal(leaderUniform('girl', 'u1'), 'u1');
+  const b1 = leaderLegwear('boy', 'u1');
+  assert.ok(b1.tie && !b1.skirt && b1.laced && b1.dress === 'jacket');
+  const g1 = leaderLegwear('girl', 'u1');
+  assert.ok(g1.skirt && !g1.longSkirt && !g1.laced);
+  const b2 = leaderLegwear('boy', 'u2');
+  assert.ok(b2.bowTie && b2.stripe && !b2.tie && b2.dress === 'mess');
+  const g2 = leaderLegwear('girl', 'u2');
+  assert.ok(g2.longSkirt && g2.skirt && !g2.stripe);
+  const L = layout('boy', 'leader');
+  const D1 = dressLayout(L, 'u1');
+  const D2 = dressLayout(L, 'u2');
+  assert.ok(D1.bottom < L.B.waist, '禮服上衣長過褲頭');
+  assert.ok(D2.cummerbund && D2.fleur && !D1.fleur, '只有晚禮服有腰封同翻領童軍徽');
+  assert.ok(D1.w > L.B.torso.w && D1.d > L.B.torso.d);
+});
+
+test('禮服只戴指定嘅章；晚禮服只得金屬肩章同勳章（手冊 P.57、P.60）', () => {
+  const state = { ...ALL_ON, metalEpaulette: true, nameTag: true, mourningBand: true, thanksBadge: true };
+  const u1 = idsFor('boy', 'u1', state);
+  for (const id of ['membership', 'hongKong', 'troop', 'epaulette', 'nameTag', 'mourningBand', 'thanksBadge']) assert.ok(u1.includes(id), id);
+  for (const id of ['region', 'district', 'meritorious', 'metalEpaulette']) assert.ok(!u1.includes(id), id);
+  const u2 = idsFor('boy', 'u2', state);
+  assert.deepEqual([...new Set(u2)].sort(), ['metalEpaulette', 'thanksBadge']);
+  const u3 = idsFor('boy', 'u3', state);
+  assert.ok(!u3.includes('thanksBadge') && !u3.includes('metalEpaulette') && !u3.includes('mourningBand'));
+  assert.equal(shownReason(leader, { gender: 'boy', uniform: 'u2', invested: true }, state, 'membership'), 'uniform');
+});
+
+test('金屬職級肩章跟職級同季節；晚禮服硬帽編號（手冊 P.206–211）', () => {
+  const b = badge('metalEpaulette');
+  for (const r of leader.ranks) assert.ok(rankRowOf(b, r.id), `${r.id} 有金屬肩章`);
+  for (const row of b.rows) {
+    assert.ok(pub(row.art.summer.file) && pub(row.art.winter.file), row.cap);
+    assert.ok(leader.messCaps.some((c) => c.id === row.cap), row.cap);
+  }
+  const s = resolveArt(b, { rank: 'sectionLeader', season: 'summer' }, null);
+  const w = resolveArt(b, { rank: 'sectionLeader' }, null);
+  assert.match(s.file, /summer/);
+  assert.match(w.file, /winter/);
+  assert.equal(messCapOf(leader, 'chiefScout', 'boy').code, 'LM01');
+  assert.equal(messCapOf(leader, 'chiefScout', 'girl').code, 'LF01');
+  assert.equal(messCapOf(leader, 'chiefCommissioner', 'boy').code, 'UM01');
+  assert.equal(messCapOf(leader, 'sectionLeader', 'boy').code, 'UM05');
+  assert.equal(messCapOf(leader, 'groupScoutLeader', 'girl').code, 'UF04');
+});
+
+test('名牌：清理輸入、冇輸入用手冊示例（手冊 P.128）', () => {
+  const b = badge('nameTag');
+  assert.equal(cleanName('  <童君好>\u0007 ', 8), '童君好');
+  assert.equal(cleanName('一二三四五六七八九十', 8).length, 8);
+  assert.equal(resolveArt(b, {}, null).kind, 'image');
+  const art = resolveArt(b, { nameZh: '陳大文', nameEn: 'chan tai man' }, null);
+  assert.deepEqual([art.kind, art.zh, art.en], ['nameTag', '陳大文', 'CHAN TAI MAN']);
+});
+
+test('勳章排：由內至外按等級，底部齊，四個或以上重疊、最高喺面（手冊 P.187、P.191–193）', () => {
+  const state = { gallantry: 'gallantryBronze', meritAward: 'goodService', diamondJubilee: true };
+  const pick = (st, uniform = 'u1') => visible(placeFor(leader, { gender: 'boy', uniform, invested: true }), st, { invested: true, level: 'group' }).filter((p) => p.rack);
+  for (const b of leader.badges.filter((x) => x.group === 'awards' && x.choices)) {
+    for (const c of b.choices.filter((c) => c.id !== 'none')) assert.ok(pub(c.art.file), `${b.id}/${c.id}`);
+  }
+  const ensure = (st) => {
+    const out = {};
+    for (const [k, v] of Object.entries(st)) {
+      const b = badge(k);
+      out[k] = v === true || !b.choices ? true : b.choices.some((c) => c.id === v) ? v : b.choices.find((c) => c.id !== 'none').id;
+    }
+    return out;
+  };
+  const three = pick(ensure(state));
+  assert.equal(three.length, 3);
+  const byOrder = [...three].sort((a, b) => a.order - b.order);
+  // 右胸 = -X；內側 = 近中線 → 等級高嘅 x 大（較近 0）
+  assert.ok(byOrder[0].x > byOrder[1].x && byOrder[1].x > byOrder[2].x, '由內側到外側');
+  assert.ok(three.every((p) => !p.overlap));
+  const bottoms = three.map((p) => Math.round((p.y - p.h / 2) * 100) / 100);
+  assert.equal(new Set(bottoms).size, 1, '底部同一水平');
+  const five = pick(ensure({ ...state, scoutCentre: true, longService: 'x' }));
+  assert.equal(five.length, 5);
+  assert.ok(five.every((p) => p.overlap));
+  const top = [...five].sort((a, b) => b.z - a.z)[0];
+  assert.equal(top.order, Math.min(...five.map((p) => p.order)), '最高等級喺最上面');
+  const mini = pick(ensure(state), 'u2');
+  assert.ok(mini.every((p) => p.mini), '晚禮服用小型勳章');
+  const full = Object.fromEntries(three.map((p) => [p.id, p.h]));
+  for (const p of mini) assert.ok(Math.abs(p.h - full[p.id] * MINI) < 0.01, p.id);
+  assert.ok(DISC_CM > 3 && DISC_CM < 4.5);
+});
+
+test('晚禮服冇木章、冇領巾；禮服戴領帶（手冊 P.116）', () => {
+  const n2 = leaderNeckwear(leader, { gender: 'boy', uniform: 'u2', training: 'woodBadge', woodBadge: true }, { level: 'group', rank: 'sectionLeader' });
+  assert.ok(!n2.woodBadge, '晚禮服唔戴木章');
+  const n1 = leaderNeckwear(leader, { gender: 'boy', uniform: 'u1', training: 'woodBadge', woodBadge: true }, { level: 'group', rank: 'sectionLeader' });
+  assert.ok(n1.woodBadge, '禮服可以戴木章');
 });
