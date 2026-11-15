@@ -124,6 +124,18 @@
         "item": "woodBadgeHang",
         "zh": "木章皮繩由頸兩邊斜落到胸前中間打結，木珠打橫吊喺結下面（用戶附相）",
         "en": "The Wood Badge thong runs down from both sides of the neck to a knot at the centre of the chest, with the beads hanging horizontally below it (user's photo)"
+      },
+      {
+        "date": "2026-11-15",
+        "item": "lanyardRoute",
+        "zh": "香港總監嘉許／高級嘉許笛繩由左肩職級肩章下面穿過（用戶指正＋相片，v19）",
+        "en": "The Chief Commissioner's Commendation / High Commendation lanyard passes under the rank slide on the left shoulder (user correction with photo, v19)"
+      },
+      {
+        "date": "2026-11-15",
+        "item": "awards110",
+        "zh": "加 110 周年紀念章（銀／銅只戴一個）、110 周年特別貢獻章、童心抗疫徽章、同行未來大露營紀念章（用戶提供官方參考圖並確認）；110 周年紀念星章唔加（用戶揀）",
+        "en": "Added the 110th Anniversary Medallion (silver or bronze, one only), 110th Anniversary Special Contribution Medallion, Scout Health Guard Medallion and Walk Together Jamboree Medallion (official reference images supplied and identified by the user); the 110th Anniversary Star Medallion is not added (user choice)"
       }
     ]
   },
@@ -152,6 +164,15 @@
       "edition": {
         "zh": "手冊冇銅狼圖案；圖片由用戶提供（2026-11-15）；等級跟第 24/2025 號通告第 2 位",
         "en": "Not illustrated in the Handbook; image supplied by the user (2026-11-15); precedence No. 2 per Circular 24/2025"
+      },
+      "url": null
+    },
+    "ACR": {
+      "zh": "香港童軍總會第 24/2025 號通告《按等級排列的童軍勳章及獎勵名單》",
+      "en": "SAHK Circular 24/2025, Order of Precedence of Scout Awards and Decorations",
+      "edition": {
+        "zh": "手冊冇呢幾個獎章嘅相；等級跟通告；勳章圖片由用戶提供（2026-11-15，官方參考圖，只作參考）",
+        "en": "Not illustrated in the Handbook; precedence per the circular; medal images supplied by the user (2026-11-15, official reference sheet, for reference only)"
       },
       "url": null
     }
@@ -4414,6 +4435,327 @@
       }
     },
     {
+      "id": "anniv110",
+      "required": false,
+      "side": "right",
+      "uniforms": [
+        "u1",
+        "u2",
+        "u3",
+        "u4",
+        "u5",
+        "u6"
+      ],
+      "group": "awards",
+      "zh": {
+        "name": "香港童軍110周年紀念章",
+        "place": "禮服同恤衫（編號 1、3–6）：右胸袋袋蓋上方中央；晚禮服：右襟領童軍徽上方（小型章）。",
+        "quote": "佩戴在制服恤衫或禮服上衣右胸袋袋蓋上方中央位置，圓形牌頂端緊貼袋蓋頂。假若佩戴兩個或以上獎章，則依「按等級排列的童軍勳章及獎勵名單」排列，順序由左至右（由內側至外側）佩戴。假若佩戴四個或以上獎章，用金屬胸針串連重疊起來佩戴，最高等級的獎章在最上面。假若在個別獎勵中獲頒多於一個獎章，只佩戴最高級的獎章。晚禮服：佩戴其他勳章及獎勵的小型章在右襟領童軍徽上方位置。",
+        "conditions": "特別活動紀念徽章；銀章或銅章只戴一個（用戶確認，2026-11-15）。第 24/2025 號通告等級：銀章第 20 位、銅章第 30 位。圖片由用戶提供（官方參考圖）。"
+      },
+      "en": {
+        "name": "Hong Kong Scouting 110th Anniversary Medallion",
+        "place": "Dress jacket and shirts (Nos. 1, 3–6): centred above the right chest-pocket flap; evening dress: above the Scout emblem on the right lapel (miniature).",
+        "quote": "Worn centred above the right chest-pocket flap of the uniform shirt or dress jacket, the top of the round medal against the top of the flap. Two or more are arranged by the order of precedence, from left to right (inside to outside); four or more are joined by a metal brooch and overlapped, the highest on top. If more than one medal of the same award is held, wear only the highest. Evening dress: miniatures of the other awards go above the Scout emblem on the right lapel.",
+        "conditions": "Special event commemorative; wear either silver or bronze (user confirmed, 15 Nov 2026). Circular 24/2025 precedence: silver No. 20, bronze No. 30. Images supplied by the user (official reference sheet)."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3.6,
+        "hCm": 9,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "side": "right",
+        "rack": "pocket",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "187, 193"
+        },
+        {
+          "ref": "ACR",
+          "page": "—"
+        }
+      ],
+      "status": "verified",
+      "anchorBy": {
+        "u2": {
+          "part": "torso",
+          "side": "right",
+          "rack": "lapel",
+          "measured": true
+        }
+      },
+      "fit": true,
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "bronze",
+          "zh": {
+            "name": "銅章"
+          },
+          "en": {
+            "name": "Bronze"
+          },
+          "art": {
+            "file": "/badges/awards/anniv110Bronze.png",
+            "ref": "ACR",
+            "page": "—",
+            "example": false,
+            "px": [
+              77,
+              200
+            ],
+            "user": true
+          },
+          "order": 30,
+          "ribbon": {
+            "file": "/badges/ribbons/anniv110_bronze.png",
+            "ref": "ACR",
+            "page": "—",
+            "px": [
+              160,
+              48
+            ],
+            "user": true
+          }
+        },
+        {
+          "id": "silver",
+          "zh": {
+            "name": "銀章"
+          },
+          "en": {
+            "name": "Silver"
+          },
+          "art": {
+            "file": "/badges/awards/anniv110Silver.png",
+            "ref": "ACR",
+            "page": "—",
+            "example": false,
+            "px": [
+              76,
+              200
+            ],
+            "user": true
+          },
+          "order": 20,
+          "ribbon": {
+            "file": "/badges/ribbons/anniv110_silver.png",
+            "ref": "ACR",
+            "page": "—",
+            "px": [
+              160,
+              48
+            ],
+            "user": true
+          }
+        }
+      ],
+      "default": "none",
+      "art": {
+        "file": "/badges/awards/anniv110Bronze.png",
+        "ref": "ACR",
+        "page": "—",
+        "example": false,
+        "px": [
+          77,
+          200
+        ],
+        "user": true
+      },
+      "modelNote": {
+        "zh": "禮服同恤衫（編號 1、3–6）：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）；110 周年、童心抗疫、同行未來嘅相由用戶提供（官方參考圖，已去背景），勳條由相片綬帶顏色砌。",
+        "en": "Dress jacket and shirts (Nos. 1, 3–6): medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed); the 110th Anniversary, Scout Health Guard and Walk Together images were supplied by the user (official reference sheet, background removed), with ribbon bars built from the ribbon colours in those images."
+      }
+    },
+    {
+      "id": "healthGuard",
+      "required": false,
+      "side": "right",
+      "uniforms": [
+        "u1",
+        "u2",
+        "u3",
+        "u4",
+        "u5",
+        "u6"
+      ],
+      "group": "awards",
+      "zh": {
+        "name": "「香港童軍 – 童心抗疫」徽章",
+        "place": "禮服同恤衫（編號 1、3–6）：右胸袋袋蓋上方中央；晚禮服：右襟領童軍徽上方（小型章）。",
+        "quote": "佩戴在制服恤衫或禮服上衣右胸袋袋蓋上方中央位置，圓形牌頂端緊貼袋蓋頂。假若佩戴兩個或以上獎章，則依「按等級排列的童軍勳章及獎勵名單」排列，順序由左至右（由內側至外側）佩戴。假若佩戴四個或以上獎章，用金屬胸針串連重疊起來佩戴，最高等級的獎章在最上面。假若在個別獎勵中獲頒多於一個獎章，只佩戴最高級的獎章。晚禮服：佩戴其他勳章及獎勵的小型章在右襟領童軍徽上方位置。",
+        "conditions": "第 24/2025 號通告等級第 21 位。圖片由用戶提供（官方參考圖）。"
+      },
+      "en": {
+        "name": "“Scout Health Guard” Medallion",
+        "place": "Dress jacket and shirts (Nos. 1, 3–6): centred above the right chest-pocket flap; evening dress: above the Scout emblem on the right lapel (miniature).",
+        "quote": "Worn centred above the right chest-pocket flap of the uniform shirt or dress jacket, the top of the round medal against the top of the flap. Two or more are arranged by the order of precedence, from left to right (inside to outside); four or more are joined by a metal brooch and overlapped, the highest on top. If more than one medal of the same award is held, wear only the highest. Evening dress: miniatures of the other awards go above the Scout emblem on the right lapel.",
+        "conditions": "No. 21 in the Circular 24/2025 order of precedence. Image supplied by the user (official reference sheet)."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3.6,
+        "hCm": 9,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "side": "right",
+        "rack": "pocket",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "187, 193"
+        },
+        {
+          "ref": "ACR",
+          "page": "—"
+        }
+      ],
+      "status": "verified",
+      "anchorBy": {
+        "u2": {
+          "part": "torso",
+          "side": "right",
+          "rack": "lapel",
+          "measured": true
+        }
+      },
+      "fit": true,
+      "art": {
+        "file": "/badges/awards/healthGuard.png",
+        "ref": "ACR",
+        "page": "—",
+        "example": false,
+        "px": [
+          85,
+          200
+        ],
+        "user": true
+      },
+      "rackOrder": 21,
+      "modelNote": {
+        "zh": "禮服同恤衫（編號 1、3–6）：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）；110 周年、童心抗疫、同行未來嘅相由用戶提供（官方參考圖，已去背景），勳條由相片綬帶顏色砌。",
+        "en": "Dress jacket and shirts (Nos. 1, 3–6): medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed); the 110th Anniversary, Scout Health Guard and Walk Together images were supplied by the user (official reference sheet, background removed), with ribbon bars built from the ribbon colours in those images."
+      },
+      "ribbon": {
+        "file": "/badges/ribbons/healthGuard.png",
+        "ref": "ACR",
+        "page": "—",
+        "px": [
+          160,
+          48
+        ],
+        "user": true
+      }
+    },
+    {
+      "id": "walkTogether",
+      "required": false,
+      "side": "right",
+      "uniforms": [
+        "u1",
+        "u2",
+        "u3",
+        "u4",
+        "u5",
+        "u6"
+      ],
+      "group": "awards",
+      "zh": {
+        "name": "同行未來—香港童軍大露營紀念章",
+        "place": "禮服同恤衫（編號 1、3–6）：右胸袋袋蓋上方中央；晚禮服：右襟領童軍徽上方（小型章）。",
+        "quote": "佩戴在制服恤衫或禮服上衣右胸袋袋蓋上方中央位置，圓形牌頂端緊貼袋蓋頂。假若佩戴兩個或以上獎章，則依「按等級排列的童軍勳章及獎勵名單」排列，順序由左至右（由內側至外側）佩戴。假若佩戴四個或以上獎章，用金屬胸針串連重疊起來佩戴，最高等級的獎章在最上面。假若在個別獎勵中獲頒多於一個獎章，只佩戴最高級的獎章。晚禮服：佩戴其他勳章及獎勵的小型章在右襟領童軍徽上方位置。",
+        "conditions": "第 24/2025 號通告等級第 22 位。圖片由用戶提供、用戶確認係呢個獎章（2026-11-15）。"
+      },
+      "en": {
+        "name": "“Walk Together for the Future” Hong Kong Scout Jamboree Medallion",
+        "place": "Dress jacket and shirts (Nos. 1, 3–6): centred above the right chest-pocket flap; evening dress: above the Scout emblem on the right lapel (miniature).",
+        "quote": "Worn centred above the right chest-pocket flap of the uniform shirt or dress jacket, the top of the round medal against the top of the flap. Two or more are arranged by the order of precedence, from left to right (inside to outside); four or more are joined by a metal brooch and overlapped, the highest on top. If more than one medal of the same award is held, wear only the highest. Evening dress: miniatures of the other awards go above the Scout emblem on the right lapel.",
+        "conditions": "No. 22 in the Circular 24/2025 order of precedence. Image supplied and identified by the user (15 Nov 2026)."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3.6,
+        "hCm": 9,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "side": "right",
+        "rack": "pocket",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "187, 193"
+        },
+        {
+          "ref": "ACR",
+          "page": "—"
+        }
+      ],
+      "status": "verified",
+      "anchorBy": {
+        "u2": {
+          "part": "torso",
+          "side": "right",
+          "rack": "lapel",
+          "measured": true
+        }
+      },
+      "fit": true,
+      "art": {
+        "file": "/badges/awards/walkTogether.png",
+        "ref": "ACR",
+        "page": "—",
+        "example": false,
+        "px": [
+          76,
+          200
+        ],
+        "user": true
+      },
+      "rackOrder": 22,
+      "modelNote": {
+        "zh": "禮服同恤衫（編號 1、3–6）：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）；110 周年、童心抗疫、同行未來嘅相由用戶提供（官方參考圖，已去背景），勳條由相片綬帶顏色砌。",
+        "en": "Dress jacket and shirts (Nos. 1, 3–6): medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed); the 110th Anniversary, Scout Health Guard and Walk Together images were supplied by the user (official reference sheet, background removed), with ribbon bars built from the ribbon colours in those images."
+      },
+      "ribbon": {
+        "file": "/badges/ribbons/walkTogether.png",
+        "ref": "ACR",
+        "page": "—",
+        "px": [
+          160,
+          48
+        ],
+        "user": true
+      }
+    },
+    {
       "id": "scoutCentre",
       "required": false,
       "side": "right",
@@ -4829,6 +5171,92 @@
       "modelNote": {
         "zh": "禮服同恤衫（編號 1、3–6）：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）。",
         "en": "Dress jacket and shirts (Nos. 1, 3–6): medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed)."
+      }
+    },
+    {
+      "id": "sp110",
+      "required": false,
+      "side": "right",
+      "uniforms": [
+        "u1",
+        "u2",
+        "u3",
+        "u4",
+        "u5",
+        "u6"
+      ],
+      "group": "awards",
+      "zh": {
+        "name": "香港童軍110周年特別貢獻章",
+        "place": "禮服同恤衫（編號 1、3–6）：右胸袋袋蓋上方中央；晚禮服：右襟領童軍徽上方（小型章）。",
+        "quote": "佩戴在制服恤衫或禮服上衣右胸袋袋蓋上方中央位置，圓形牌頂端緊貼袋蓋頂。假若佩戴兩個或以上獎章，則依「按等級排列的童軍勳章及獎勵名單」排列，順序由左至右（由內側至外側）佩戴。假若佩戴四個或以上獎章，用金屬胸針串連重疊起來佩戴，最高等級的獎章在最上面。假若在個別獎勵中獲頒多於一個獎章，只佩戴最高級的獎章。晚禮服：佩戴其他勳章及獎勵的小型章在右襟領童軍徽上方位置。",
+        "conditions": "特殊貢獻徽章。第 24/2025 號通告等級第 26 位（通告列三星／二星／一星；用戶提供嘅官方參考圖只有一款，模型唔分星數）。圖片由用戶提供（官方參考圖）。"
+      },
+      "en": {
+        "name": "Hong Kong Scouting 110th Anniversary Special Contribution Medallion",
+        "place": "Dress jacket and shirts (Nos. 1, 3–6): centred above the right chest-pocket flap; evening dress: above the Scout emblem on the right lapel (miniature).",
+        "quote": "Worn centred above the right chest-pocket flap of the uniform shirt or dress jacket, the top of the round medal against the top of the flap. Two or more are arranged by the order of precedence, from left to right (inside to outside); four or more are joined by a metal brooch and overlapped, the highest on top. If more than one medal of the same award is held, wear only the highest. Evening dress: miniatures of the other awards go above the Scout emblem on the right lapel.",
+        "conditions": "Special contribution. No. 26 in the Circular 24/2025 order of precedence (the circular lists three-, two- and one-star grades; the official reference image supplied by the user shows a single design, so the model does not distinguish grades). Image supplied by the user (official reference sheet)."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 3.6,
+        "hCm": 9,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "side": "right",
+        "rack": "pocket",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "187, 193"
+        },
+        {
+          "ref": "ACR",
+          "page": "—"
+        }
+      ],
+      "status": "verified",
+      "anchorBy": {
+        "u2": {
+          "part": "torso",
+          "side": "right",
+          "rack": "lapel",
+          "measured": true
+        }
+      },
+      "fit": true,
+      "art": {
+        "file": "/badges/awards/anniv110Special.png",
+        "ref": "ACR",
+        "page": "—",
+        "example": false,
+        "px": [
+          76,
+          200
+        ],
+        "user": true
+      },
+      "rackOrder": 26,
+      "modelNote": {
+        "zh": "禮服同恤衫（編號 1、3–6）：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）；110 周年、童心抗疫、同行未來嘅相由用戶提供（官方參考圖，已去背景），勳條由相片綬帶顏色砌。",
+        "en": "Dress jacket and shirts (Nos. 1, 3–6): medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed); the 110th Anniversary, Scout Health Guard and Walk Together images were supplied by the user (official reference sheet, background removed), with ribbon bars built from the ribbon colours in those images."
+      },
+      "ribbon": {
+        "file": "/badges/ribbons/sp110.png",
+        "ref": "ACR",
+        "page": "—",
+        "px": [
+          160,
+          48
+        ],
+        "user": true
       }
     },
     {
@@ -5929,13 +6357,13 @@
       "group": "awards",
       "zh": {
         "name": "香港總監嘉許／高級嘉許（笛繩）",
-        "place": "笛繩排喺左肩肩帶下面，末端扣喺左胸袋，笛子由胸袋口右邊放入；晚禮服用小型笛繩。",
+        "place": "笛繩排喺左肩肩帶之下、由職級肩章下面穿出，兜過膊頭沿袖窿前面落去，末端扣喺左胸袋，笛子由胸袋口右邊放入；晚禮服用小型笛繩。",
         "quote": "香港總監嘉許／高級嘉許笛繩排在制服恤衫或禮服上衣左肩肩帶之下。笛繩末端扣在左胸袋，笛子由胸袋口右方位置放入。假若獲頒香港總監嘉許及高級嘉許，只佩戴高級嘉許笛繩。晚禮服：香港總監嘉許／高級嘉許小型笛繩排在左肩肩帶之下。",
         "conditions": "嘉許頒予領袖及總監、高級嘉許頒予總監；兩個都有就只戴高級嘉許。"
       },
       "en": {
         "name": "Chief Commissioner's Commendation / High Commendation (lanyard)",
-        "place": "The lanyard runs under the left shoulder strap with its end clipped into the left chest pocket, the whistle going in at the right of the pocket mouth; evening dress uses the miniature lanyard.",
+        "place": "The lanyard runs under the left shoulder strap, coming out from under the rank slide, over the shoulder and down the front of the armhole, with its end clipped into the left chest pocket and the whistle going in at the right of the pocket mouth; evening dress uses the miniature lanyard.",
         "quote": "The commendation lanyard runs under the left shoulder strap of the uniform shirt or dress jacket, its end clipped into the left chest pocket with the whistle entering at the right of the pocket mouth. If both are held, wear only the High Commendation lanyard. Evening dress: the miniature lanyard runs under the left shoulder strap.",
         "conditions": "The Commendation goes to scouters and commissioners, the High Commendation to commissioners; if both are held wear only the High Commendation."
       },
@@ -6021,8 +6449,8 @@
         ]
       },
       "modelNote": {
-        "zh": "笛繩用 3D 繩示意：嘉許 = 橙金色、高級嘉許 = 深藍夾黃綠（P.184 相片顏色）；選單細圖係手冊 P.184 相片。晚禮服小型笛繩幼一半、末端去到左襟領。",
-        "en": "The lanyard is a 3D cord: Commendation orange-gold, High Commendation dark blue with yellow-green (colours from the p.184 photos); the menu thumbnails are the p.184 photos. The evening-dress miniature is half as thick and ends at the left lapel."
+        "zh": "笛繩用 3D 繩示意：嘉許 = 橙金色、高級嘉許 = 深藍夾黃綠（P.184 相片顏色）；選單細圖係手冊 P.184 相片。路線（v19 用戶指正＋相片）：由左肩職級肩章（肩帶膊頭嗰頭）下面穿出，兜過袖頂前邊、沿袖窿前面吊落到胸袋下面，再兜返上左胸袋口近中線嗰邊。晚禮服小型笛繩幼一半、一樣由肩章下面起，末端去到左襟領。",
+        "en": "The lanyard is a 3D cord: Commendation orange-gold, High Commendation dark blue with yellow-green (colours from the p.184 photos); the menu thumbnails are the p.184 photos. Route (v19 user correction with photo): out from under the rank slide at the shoulder end of the left strap, over the front of the sleeve top, down the front of the armhole to below the pocket, then back up to the inner side of the left pocket mouth. The evening-dress miniature is half as thick, also starts under the rank slide and ends at the left lapel."
       }
     },
     {
@@ -6342,8 +6770,8 @@
     },
     {
       "id": "medalPrecedenceGaps",
-      "zh": "P.191–192（第 24/2025 號通告）等級名單有 32 項；模型只提供手冊 P.178–185 有相片（同勳條）嘅：英勇、銅狼（用戶提供圖片）、獅／龍、功績榮譽十字章、功績榮譽獎章、優異／優良服務獎章、鑽禧、跨世紀、大都會、百周年、童軍中心、95 周年及百周年特別貢獻、特殊貢獻星章／徽章、長期服務。已逐頁睇過 P.177–200（v17）：110 周年紀念及特別貢獻、童心抗疫、同行未來、亞太區童軍基金喺手冊冇相亦冇勳條，用戶決定唔加；其他童軍會、英國童軍會、世界／亞太區委員會獎勵亦冇相。",
-      "en": "The pp.191–192 order of precedence (Circular 24/2025) lists 32 items; the model provides those with a photo (and ribbon) on Handbook pp.178–185: gallantry, Bronze Wolf (image supplied by the user), Lions/Dragons, Cross and Medal of Merit, Distinguished and Good Service Medals, Diamond Jubilee, Millennium, Metro Camp, Centenary, Scout Centre, 95th and Centenary Special Contribution, Special Contribution Star/medallions and long service. Pages 177–200 were checked one by one (v17): the 110th Anniversary and 110th Special Contribution medals, the Scouts Fighting the Pandemic medal, the Walking Together medal and the APR Scout Foundation award have no photo or ribbon in the handbook and the user decided not to add them; awards of other associations, The Scout Association (UK) and the World/APR Committees have no photo either."
+      "zh": "P.191–192（第 24/2025 號通告）等級名單有 32 項；模型提供手冊 P.178–185 有相片（同勳條）嘅：英勇、銅狼（用戶提供圖片）、獅／龍、功績榮譽十字章、功績榮譽獎章、優異／優良服務獎章、鑽禧、跨世紀、大都會、百周年、童軍中心、95 周年及百周年特別貢獻、特殊貢獻星章／徽章、長期服務；另加用戶 v19 提供官方參考圖嘅 110 周年紀念章（銀第 20 位、銅第 30 位）、童心抗疫徽章（第 21 位）、同行未來大露營紀念章（第 22 位）、110 周年特別貢獻章（第 26 位，唔分星數）。已逐頁睇過 P.177–200（v17）：110 周年紀念星章唔喺名單、用戶決定唔加；亞太區童軍基金冇相，唔加；其他童軍會、英國童軍會、世界／亞太區委員會獎勵亦冇相。",
+      "en": "The pp.191–192 order of precedence (Circular 24/2025) lists 32 items; the model provides those with a photo (and ribbon) on Handbook pp.178–185: gallantry, Bronze Wolf (image supplied by the user), Lions/Dragons, Cross and Medal of Merit, Distinguished and Good Service Medals, Diamond Jubilee, Millennium, Metro Camp, Centenary, Scout Centre, 95th and Centenary Special Contribution, Special Contribution Star/medallions and long service; plus, from official reference images the user supplied in v19, the 110th Anniversary Medallion (silver No. 20, bronze No. 30), the Scout Health Guard Medallion (No. 21), the Walk Together Jamboree Medallion (No. 22) and the 110th Anniversary Special Contribution Medallion (No. 26, grades not distinguished). Pages 177–200 were checked one by one (v17): the 110th Anniversary Star Medallion is not on the list and the user decided not to add it; the APR Scout Foundation award has no photo and is not added; awards of other associations, The Scout Association (UK) and the World/APR Committees have no photo either."
     },
     {
       "id": "otherAwards",
@@ -6352,8 +6780,8 @@
     }
   ],
   "artCredit": {
-    "zh": "徽章、帽章、肩章、勳章圖案取自香港童軍總會《儀容與制服手冊》（P.92–95、P.103–105、P.109、P.128、P.162、P.178–185、P.206–211；© 香港童軍總會），只作示意，未經修改設計（勳章相片只去咗背景）。",
-    "en": "Badge, cap badge, epaulette and medal artwork from the SAHK Uniform Handbook (pp.92–95, 103–105, 109, 128, 162, 178–185, 206–211; © SAHK), for illustration only, design unaltered (medal photos only had their background removed)."
+    "zh": "徽章、帽章、肩章、勳章圖案取自香港童軍總會《儀容與制服手冊》（P.92–95、P.103–105、P.109、P.128、P.162、P.178–185、P.206–211；© 香港童軍總會），只作示意，未經修改設計（勳章相片只去咗背景）。110 周年紀念章、110 周年特別貢獻章、童心抗疫徽章、同行未來大露營紀念章嘅圖由用戶提供（香港童軍總會官方參考圖，只作參考；已去背景），勳條由圖中綬帶顏色砌成。",
+    "en": "Badge, cap badge, epaulette and medal artwork from the SAHK Uniform Handbook (pp.92–95, 103–105, 109, 128, 162, 178–185, 206–211; © SAHK), for illustration only, design unaltered (medal photos only had their background removed). Images of the 110th Anniversary Medallion, 110th Anniversary Special Contribution Medallion, Scout Health Guard Medallion and Walk Together Jamboree Medallion were supplied by the user (SAHK official reference sheet, for reference only; background removed), with ribbon bars built from the ribbon colours shown."
   },
   "messCaps": [
     {
