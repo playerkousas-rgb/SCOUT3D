@@ -98,6 +98,27 @@ const SENIOR = new Set(['venture', 'rover']);
 /** 各支部共用嘅設定（轉支部時保留） */
 const SHARED_OUTFIT_KEYS = ['gender', 'finish', 'invested'];
 
+/** v25 外觀（精緻／簡約）：記喺瀏覽器；私隱模式唔記得都照用 */
+const LOOK_KEY = 'scout3d.look';
+/** v26：流線（預設，圓滑公仔）→ 精緻（圓角方塊）→ 簡約（像素方塊），撳一下轉下一個 */
+const LOOK_ORDER = ['smooth', 'detailed', 'simple'];
+const LOOK_LABEL = { smooth: 'view.lookSmooth', detailed: 'view.lookDetailed', simple: 'view.lookSimple' };
+function readLook() {
+  try {
+    const v = window.localStorage.getItem(LOOK_KEY);
+    return LOOK_ORDER.includes(v) ? v : LOOK_ORDER[0];
+  } catch {
+    return LOOK_ORDER[0];
+  }
+}
+function saveLook(v) {
+  try {
+    window.localStorage.setItem(LOOK_KEY, v);
+  } catch {
+    /* 唔記得都照用 */
+  }
+}
+
 // 幼童軍預設：基本徽章全開（手冊 P.26：世界童軍會員章、香港章、地域章、區章、旅章）
 const CUB_BADGES = {
   membership: true,
@@ -1638,6 +1659,14 @@ export default function App() {
   const heightBar = useRef();
   const onHeight = useCallback((y) => heightBar.current?.set(y), []);
   const [exportOpen, setExportOpen] = useState(false);
+  // v25 外觀：精緻（預設）／簡約；記喺瀏覽器
+  const [look, setLook] = useState(readLook);
+  const toggleLook = () =>
+    setLook((x) => {
+      const next = LOOK_ORDER[(LOOK_ORDER.indexOf(x) + 1) % LOOK_ORDER.length];
+      saveLook(next);
+      return next;
+    });
 
   useEffect(() => {
     if (!toast) return undefined;
@@ -1710,12 +1739,13 @@ export default function App() {
         <section className="stage" aria-label={t('app.title')}>
           {webgl ? (
             <Suspense fallback={<div className="stage__msg">{t('loading')}</div>}>
-              <Scene ref={scene} section={section} outfit={outfit} badges={badges} picks={artPicks} selected={selected} onSelect={onSceneSelect} onHeight={onHeight} />
+              <Scene ref={scene} section={section} look={look} outfit={outfit} badges={badges} picks={artPicks} selected={selected} onSelect={onSceneSelect} onHeight={onHeight} />
             </Suspense>
           ) : (
             <div className="stage__msg">{t('nowebgl')}</div>
           )}
-          <p className="hint">{t('hint.drag')}</p>
+          <p className="hint hint--mouse">{t('hint.drag')}</p>
+          <p className="hint hint--touch">{t('hint.touch')}</p>
           {webgl && <HeightBar ref={heightBar} scene={scene} />}
           {webgl && exportOpen && <ExportPanel scene={scene} variantTag={variantTag} onClose={() => setExportOpen(false)} toast={setToast} />}
           {webgl && (
@@ -1731,6 +1761,15 @@ export default function App() {
                 onClick={() => scene.current?.view('front')}
               >
                 {t('view.reset')}
+              </button>
+              <button
+                type="button"
+                className="chipbtn chipbtn--look"
+                aria-pressed={look !== 'simple'}
+                title={t('view.lookHint')}
+                onClick={toggleLook}
+              >
+                {t(LOOK_LABEL[look])}
               </button>
               <button type="button" className="chipbtn chipbtn--accent" onClick={shot} disabled={busy}>
                 {t('view.shot')}

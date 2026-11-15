@@ -1,10 +1,11 @@
 // 3D 場景：燈、相機控制、預設視角 — v1.0 · © SCOUT SYSTEM
 import { Suspense, forwardRef, useEffect, useImperativeHandle, useMemo, useRef } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls, ContactShadows, useProgress } from '@react-three/drei';
+import { OrbitControls, ContactShadows, Environment, Lightformer, useProgress } from '@react-three/drei';
 import * as THREE from 'three';
 import Blocky from './Blocky.jsx';
 import { useLang } from '../i18n.jsx';
+import { LookContext, DEFAULT_LOOK } from './look.js';
 
 const TARGET = new THREE.Vector3(0, 0.6, 0);
 /** 幼童軍、童軍、深資童軍高啲（135、155、168 cm vs 117 cm）：望住點同相機一齊升 */
@@ -134,7 +135,67 @@ function Grab({ into }) {
   return null;
 }
 
-const Scene = forwardRef(function Scene({ section = 'grasshopper', outfit, badges, picks, selected, onSelect, onReady, onHeight }, ref) {
+const SHADOW_BOX = {
+  'shadow-camera-left': -0.8,
+  'shadow-camera-right': 0.8,
+  'shadow-camera-top': 1.7,
+  'shadow-camera-bottom': -0.2,
+};
+
+/** 曝光：精緻模式暗少少（環境光已經夠光），顏色先唔會變白 */
+function Exposure({ value }) {
+  const gl = useThree((st) => st.gl);
+  useEffect(() => {
+    gl.toneMappingExposure = value;
+  }, [gl, value]);
+  return null;
+}
+
+/** 簡約：原本嘅燈（v1–v24） */
+function SimpleLights() {
+  return (
+    <>
+      <hemisphereLight args={['#ffffff', '#9aa3ad', 1.5]} />
+      <directionalLight position={[1.1, 2.4, 3.0]} intensity={2.3} castShadow shadow-mapSize={[2048, 2048]} {...SHADOW_BOX} shadow-bias={-0.0004} shadow-normalBias={0.03} />
+      <directionalLight position={[-1.6, 2, -2.4]} intensity={1.5} />
+      <directionalLight position={[-1.6, 1.2, 1.8]} intensity={0.35} />
+    </>
+  );
+}
+
+/**
+ * v25 精緻：影樓燈。環境光由 Lightformer 即場畫（唔使下載 HDR 檔）：頂燈箱、前面主燈箱、兩邊輪廓光，
+ * 金屬章同布面先有反光同柔和明暗；主燈軟陰影。
+ */
+function StudioLights() {
+  return (
+    <>
+      <Environment resolution={256} frames={1} environmentIntensity={0.6}>
+        <color attach="background" args={['#5d636b']} />
+        <Lightformer form="rect" intensity={2.2} position={[0, 4, 0.5]} rotation-x={Math.PI / 2} scale={[6, 6, 1]} />
+        <Lightformer form="rect" intensity={2.6} position={[2.2, 1.6, 3]} scale={[2.5, 2.5, 1]} target={[0, 0.8, 0]} />
+        <Lightformer form="rect" intensity={1.2} position={[-3, 1.4, 1.5]} scale={[1.5, 3, 1]} target={[0, 0.8, 0]} />
+        <Lightformer form="rect" intensity={1.8} position={[0, 1.8, -3.5]} scale={[4, 2, 1]} target={[0, 0.8, 0]} />
+        <Lightformer form="rect" intensity={0.6} position={[0, -1, 2]} rotation-x={-Math.PI / 2} scale={[6, 6, 1]} color="#e8e2d6" />
+      </Environment>
+      <hemisphereLight args={['#ffffff', '#8f8a82', 0.35]} />
+      <directionalLight
+        position={[1.9, 2.6, 2.4]}
+        intensity={2.4}
+        color="#fff6ea"
+        castShadow
+        shadow-mapSize={[2048, 2048]}
+        {...SHADOW_BOX}
+        shadow-bias={-0.0003}
+        shadow-normalBias={0.02}
+        shadow-radius={4}
+      />
+      <directionalLight position={[-1.6, 2, -2.4]} intensity={1.1} color="#e6eeff" />
+    </>
+  );
+}
+
+const Scene = forwardRef(function Scene({ section = 'grasshopper', look = DEFAULT_LOOK, outfit, badges, picks, selected, onSelect, onReady, onHeight }, ref) {
   const rig = useRef();
   const lift = LIFT[section] ?? 0;
   const zoom = ZOOM[section] ?? 1;
@@ -146,6 +207,7 @@ const Scene = forwardRef(function Scene({ section = 'grasshopper', outfit, badge
   const getState = useRef(null);
   const figure = useRef();
   const registry = useMemo(() => new Map(), []);
+  const detailed = look !== 'simple';
 
   useImperativeHandle(ref, () => ({
     view: (name) => rig.current?.view(name, { lift, zoom }),
@@ -225,28 +287,24 @@ const Scene = forwardRef(function Scene({ section = 'grasshopper', outfit, badge
         }}
         onPointerMissed={() => onSelect?.(null)}
       >
-        <color attach="background" args={['#e9edf1']} />
-        <hemisphereLight args={['#ffffff', '#9aa3ad', 1.5]} />
-        <directionalLight
-          position={[1.1, 2.4, 3.0]}
-          intensity={2.3}
-          castShadow
-          shadow-mapSize={[2048, 2048]}
-          shadow-camera-left={-0.8}
-          shadow-camera-right={0.8}
-          shadow-camera-top={1.7}
-          shadow-camera-bottom={-0.2}
-          shadow-bias={-0.0004}
-          shadow-normalBias={0.03}
-        />
-        <directionalLight position={[-1.6, 2, -2.4]} intensity={1.5} />
-        <directionalLight position={[-1.6, 1.2, 1.8]} intensity={0.35} />
+        <color attach="background" args={[detailed ? '#e6eaee' : '#e9edf1']} />
+        {detailed ? <StudioLights /> : <SimpleLights />}
+        <Exposure value={detailed ? 0.92 : 1} />
         <Suspense fallback={null}>
-          <group ref={figure} name="SCOUT3D figure" userData={{ copyright: '© SCOUT SYSTEM · SCOUT3D v1.0' }}>
-            <Blocky section={section} outfit={outfit} badges={badges} picks={picks} selected={selected} onSelect={onSelect} registry={registry} />
-          </group>
+          <LookContext.Provider value={look}>
+            <group ref={figure} name="SCOUT3D figure" userData={{ copyright: '© SCOUT SYSTEM · SCOUT3D v1.0' }}>
+              <Blocky section={section} outfit={outfit} badges={badges} picks={picks} selected={selected} onSelect={onSelect} registry={registry} />
+            </group>
+          </LookContext.Provider>
         </Suspense>
-        <ContactShadows position={[0, 0.001, 0]} scale={1.8} blur={2.6} opacity={0.4} far={0.5} />
+        {detailed ? (
+          <>
+            <ContactShadows position={[0, 0.001, 0]} scale={1.8} blur={3.2} opacity={0.5} far={0.6} resolution={512} />
+            <ContactShadows position={[0, 0.0015, 0]} scale={0.9} blur={1.2} opacity={0.35} far={0.12} resolution={512} />
+          </>
+        ) : (
+          <ContactShadows position={[0, 0.001, 0]} scale={1.8} blur={2.6} opacity={0.4} far={0.5} />
+        )}
         <Rig ref={rig} lift={lift} zoom={zoom} onHeight={onHeight} />
         <Grab into={getState} />
       </Canvas>

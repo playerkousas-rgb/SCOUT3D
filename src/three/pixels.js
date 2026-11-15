@@ -4,6 +4,7 @@
 import * as THREE from 'three';
 import { stripeIndex } from '../lib/necker.js';
 import { PX, COLOURS as C, SHIRT_YOKE } from './body.js';
+import { fineCanvas, fabricNormal, tagKind, KIND_PROPS, canvasCm } from './look.js';
 
 /** 一塊畫布：w × h 厘米。draw(g) 用 g.rect / g.shape / g.px。 */
 export function canvas(wcm, hcm, draw) {
@@ -61,14 +62,16 @@ export function boxFaces([w, h, d], faces, base) {
 }
 
 /* ---------------- 頭 ---------------- */
-export function headFaces(B) {
+function headFacesRaw(B, smooth = false) {
   const { w, h, d } = B.head;
   const long = B.hair === 'pigtails';
   const front = (g) => {
     g.fill(C.skin);
-    // 頭髮 + 陰
-    g.rect(0, 0, w, long ? 5 : 4.5, C.hair);
-    if (long) {
+    // 頭髮 + 陰（v27 流線：頭髮係立體，唔畫）
+    if (!smooth) g.rect(0, 0, w, long ? 5 : 4.5, C.hair);
+    if (smooth) {
+      // 立體頭髮遮住額頭；只畫五官
+    } else if (long) {
       // 女仔：齊陰 + 兩邊長髮
       g.shape((x, y) => y < 6 && (x < 3 || x > w - 3 || (y < 5.5 && Math.floor(x * PX) % 5 !== 0)), C.hair);
       g.rect(0, 0, 2, h, C.hair);
@@ -79,8 +82,10 @@ export function headFaces(B) {
       g.rect(0, 0, 1.5, 8, C.hair);
       g.rect(w - 1.5, 0, 1.5, 8, C.hair);
     }
-    g.px(6, 2, C.hairHi, 3, 1);
-    g.px(22, 3, C.hairHi, 4, 1);
+    if (!smooth) {
+      g.px(6, 2, C.hairHi, 3, 1);
+      g.px(22, 3, C.hairHi, 4, 1);
+    }
     // 眉
     g.rect(4, 7.5, 3, 0.5, C.brow);
     g.rect(w - 7, 7.5, 3, 0.5, C.brow);
@@ -117,6 +122,11 @@ export function headFaces(B) {
     g.px(10, 6, C.hairHi, 6, 1);
     g.px(18, 14, C.hairHi, 5, 1);
   };
+  if (smooth) {
+    // 流線：側面只畫耳仔位嘅陰影都唔要（有立體耳仔），頂底全皮膚（頂俾頭髮遮住）
+    const skin = (g) => g.fill(C.skin);
+    return boxFaces([w, h, d], { px: skin, nx: skin, py: skin, ny: skin, pz: front, nz: skin });
+  }
   return boxFaces([w, h, d], {
     px: side(true),
     nx: side(false),
@@ -128,7 +138,7 @@ export function headFaces(B) {
 }
 
 /** 女仔孖辮 */
-export function pigtailFaces(size, tie) {
+function pigtailFacesRaw(size, tie) {
   const [w, h, d] = size;
   const f = (ww) => (g) => {
     g.fill(C.hair);
@@ -311,9 +321,9 @@ export function brimFaces(size, colour) {
   return boxFaces(size, { ny: (g) => g.fill(dark), py: (g) => { const [w, , d] = size; g.rect(0, 0, w, 0.5, dark); g.rect(0, d - 0.5, w, 0.5, dark); } }, colour);
 }
 
-export const skinFaces = (size) => boxFaces(size, {}, C.skin);
+export const skinFaces = (size) => tagKind(boxFaces(size, {}, C.skin), 'skin');
 
-export function handFaces(size) {
+function handFacesRaw(size) {
   const [w, h, d] = size;
   // 手掌向內（±x 面），手指線喺下半
   const fingers = (g) => { for (let i = 1; i < 4; i++) g.rect((d / 4) * i - 0.25, h - 4, 0.5, 4, C.skinShade); };
@@ -357,7 +367,7 @@ export function shinFaces(size, sockH, sockColour) {
   return boxFaces(size, { px: f(d), nx: f(d), pz: f(w), nz: f(w), ny: (g) => g.fill(sockColour) }, C.skin);
 }
 
-export function shoeFaces(size, { colour = C.shoe, sole: soleC = C.sole, lace = C.lace } = {}) {
+function shoeFacesRaw(size, { colour = C.shoe, sole: soleC = C.sole, lace = C.lace } = {}) {
   const [w, h, d] = size;
   const sole = (ww) => (g) => g.rect(0, h - 1.5, ww, 1.5, soleC);
   // 非綁帶中跟皮鞋（深資／樂行女團員配半截裙）唔用呢個：Blocky 用 body.js pumpParts() 砌
@@ -711,6 +721,20 @@ export function hardHatFaces(size) {
   }, G);
 }
 
+/* ---------------- v25 材質種類標記（皮膚、頭髮、鞋唔要布紋） ---------------- */
+export function headFaces(B, smooth = false) {
+  return tagKind(headFacesRaw(B, smooth), 'skin');
+}
+export function pigtailFaces(size, tie) {
+  return tagKind(pigtailFacesRaw(size, tie), 'hair');
+}
+export function handFaces(size) {
+  return tagKind(handFacesRaw(size), 'skin');
+}
+export function shoeFaces(size, opts) {
+  return tagKind(shoeFacesRaw(size, opts), 'shoe');
+}
+
 /* ---------------- 材質 ---------------- */
 const texCache = new WeakMap();
 function texOf(c) {
@@ -744,15 +768,44 @@ export function greyOf(c) {
   return g;
 }
 
-export function material(c, { painted = true, alpha = false, double = false } = {}) {
+export function material(c, { painted = true, alpha = false, double = false, detailed = false } = {}) {
   // alpha：透明位（例如背心領口）要 alphaTest，唔係會見到黑色
-  return new THREE.MeshStandardMaterial({
-    map: texOf(painted ? c : greyOf(c)),
-    roughness: painted ? 0.85 : 0.6,
+  if (!detailed) {
+    return new THREE.MeshStandardMaterial({
+      map: texOf(painted ? c : greyOf(c)),
+      roughness: painted ? 0.85 : 0.6,
+      metalness: 0,
+      alphaTest: alpha ? 0.5 : 0,
+      side: double ? THREE.DoubleSide : THREE.FrontSide,
+    });
+  }
+  // v25 精緻：放大貼圖（斜邊順滑）＋布紋法線；皮膚、鞋、頭髮、皮革唔要布紋
+  const K = KIND_PROPS[c.kind] ?? KIND_PROPS.cloth;
+  const [wcm, hcm] = canvasCm(c);
+  const m = new THREE.MeshStandardMaterial({
+    map: fineTexOf(fineCanvas(painted ? c : greyOf(c), K.cloth)),
+    roughness: painted ? K.roughness : 0.6,
     metalness: 0,
     alphaTest: alpha ? 0.5 : 0,
     side: double ? THREE.DoubleSide : THREE.FrontSide,
   });
+  if (K.normal > 0) {
+    m.normalMap = fabricNormal(wcm, hcm);
+    m.normalScale = new THREE.Vector2(K.normal, K.normal);
+  }
+  return m;
+}
+
+const fineTexCache = new WeakMap();
+function fineTexOf(c) {
+  if (fineTexCache.has(c)) return fineTexCache.get(c);
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.SRGBColorSpace;
+  t.magFilter = THREE.LinearFilter;
+  t.minFilter = THREE.LinearMipmapLinearFilter;
+  t.anisotropy = 8;
+  fineTexCache.set(c, t);
+  return t;
 }
 
 /* ---------------- 禮服、晚禮服（手冊 P.57–62、P.203–205） ---------------- */

@@ -183,6 +183,11 @@ a {
   color: #fff;
 }
 
+.chipbtn--look[aria-pressed='true'] {
+  border-color: var(--ink-2);
+  box-shadow: inset 0 0 0 1px var(--ink-2);
+}
+
 .chipbtn--lang {
   min-width: 56px;
   flex: none;
@@ -812,11 +817,17 @@ a {
     touch-action: auto;
   }
 
+  /* v26：手機上下掃可以捲頁（之前成個 3D 區食晒手勢，捲唔到落去設定面板）；左右拖照樣轉身、雙指照樣縮放 */
   .stage .scene {
-    height: 56vh !important;
-    min-height: 320px;
+    height: 50vh !important;
+    height: 50svh !important;
+    min-height: 280px;
     max-height: 620px;
-    touch-action: none;
+    touch-action: pan-y;
+  }
+
+  .stage .scene canvas {
+    touch-action: pan-y !important;
   }
 
   .stage__msg {
@@ -1217,4 +1228,88 @@ a {
   color: inherit;
   font-size: 12px;
   cursor: pointer;
+}
+
+/* v26：觸控裝置顯示觸控提示 */
+.hint--touch {
+  display: none;
+}
+
+@media (pointer: coarse) {
+  .hint--mouse {
+    display: none;
+  }
+
+  .hint--touch {
+    display: block;
+  }
+}
+
+/* v26：手機打橫（矮）— 公仔喺左、設定面板喺右，兩邊各自捲 */
+@media (min-width: 600px) and (max-width: 1023px) and (max-height: 560px) and (orientation: landscape) {
+  /* 頂列（約 58 px）以外成個畫面俾公仔同面板；頁尾喺下面，捲落去先見（大手機打橫闊過 900 px 都一樣） */
+  .app {
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .main {
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 46%);
+    grid-template-rows: minmax(0, 1fr);
+    flex: none;
+    height: calc(100vh - 58px);
+    height: calc(100dvh - 58px);
+    min-height: 260px;
+  }
+
+  .views {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding: 6px 8px;
+  }
+
+  .views .chipbtn {
+    flex: none;
+    padding: 4px 9px;
+    font-size: 12px;
+  }
+
+  .heightbar {
+    top: 8px;
+    transform: none;
+  }
+
+  .heightbar__track {
+    height: 90px;
+  }
+
+  .heightbar__track input {
+    width: 80px;
+  }
+
+  .stage {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    border-bottom: 0;
+    border-right: 1px solid var(--line);
+  }
+
+  .stage .scene {
+    flex: 1 1 0;
+    height: auto !important;
+    min-height: 0;
+    max-height: none;
+    touch-action: none;
+  }
+
+  .stage .scene canvas {
+    touch-action: none !important;
+  }
+
+  .panel {
+    overflow-y: auto;
+    min-height: 0;
+  }
 }
