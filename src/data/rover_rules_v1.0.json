@@ -136,6 +136,15 @@
         "en": "Retrieved 2026-11-14"
       },
       "url": "https://www.scout.org.hk/tc/scout-units/regions-districts/index.html"
+    },
+    "VTS": {
+      "zh": "《深資童軍支部訓練綱要》（中英對照）",
+      "en": "Venture Scout Section Training Scheme (bilingual)",
+      "edition": {
+        "zh": "2026 年 8 月 14 日版（第 11 版）；只引用 P.57 樂行童軍先修章（深資童軍支部考取）",
+        "en": "14 August 2026 edition (11th); cited only for p.57, the Rover Scout Link Badge (earned in the Venture Scout Section)"
+      },
+      "url": null
     }
   },
   "garments": [
@@ -1602,6 +1611,66 @@
       "modelNote": {
         "zh": "手冊冇寫尺寸；模型用 2.6 × 2 cm 框（按 P.134 圖案比例）。",
         "en": "No size in the Handbook; the model uses a 2.6 × 2 cm box (p.134 artwork proportions)."
+      },
+      "sweater": false
+    },
+    {
+      "id": "roverLink",
+      "required": false,
+      "side": "right",
+      "group": "extra",
+      "zh": {
+        "name": "樂行童軍先修章",
+        "place": "穿著者右胸袋袋蓋上方（緊貼袋蓋）；同金紫荊／總領袖／榮譽童軍獎章標誌一齊戴時喺佢哋左方（最內側）（綱要 P.12 附圖 ⑧）。",
+        "quote": "樂行童軍先修章之設立旨在幫助適齡之深資童軍支部成員認識樂行童軍支部活動，鼓勵他們晉升為樂行童軍。年滿十九歲之深資童軍支部成員可考取樂行童軍先修章，完成後由其深資童軍團長簽發。",
+        "conditions": "深資童軍支部考獲（深資童軍綱要 P.57）；晉團同獲取會員章後視作已完成樂行童軍肩章（綱要 P.18）。"
+      },
+      "en": {
+        "name": "Rover Scout Link Badge",
+        "place": "On top of the wearer's right pocket flap; to the left (innermost) of the Golden Bauhinia / Chief Scout's / Hong Kong Scout Award Emblems when worn with them (Training Scheme p.12 figure ⑧).",
+        "quote": "The Rover Scout Link Badge helps Venture Scouts of the right age learn about Rover Scout activities and encourages them to move up. Venture Scouts aged 19 or over may earn it; it is signed off by their Venture Scout Leader.",
+        "conditions": "Earned in the Venture Scout Section (Venture Scout Training Scheme p.57); after joining a Crew and gaining the Membership Badge it counts as the Rover Scout Epaulettes (Training Scheme p.18)."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.6,
+        "hCm": 1.7,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "slot": "pocketR",
+        "layer": "flap",
+        "rank": 4,
+        "side": "right",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "RTS",
+          "page": "12, 17–18"
+        },
+        {
+          "ref": "VTS",
+          "page": "57"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/extra/rover_link.png",
+        "ref": "VTS",
+        "page": "57",
+        "example": false,
+        "px": [
+          240,
+          156
+        ]
+      },
+      "modelNote": {
+        "zh": "圖案取自深資童軍綱要 P.57；樂行童軍綱要 P.12 附圖 ⑧ 將佢同支部最高獎章標誌列喺同一位置（右胸袋袋蓋上方）。綱要同手冊都冇寫可以戴幾耐；模型參照其他先修章（晉升後一年）。尺寸用 2.6 × 1.7 cm。",
+        "en": "Artwork from the Venture Scout Training Scheme p.57; the Rover Training Scheme p.12 figure ⑧ lists it with the Highest Award Emblems (above the right pocket flap). Neither document says how long it may be worn; the model follows the other Link Badges (one year after moving up). Size 2.6 × 1.7 cm."
       },
       "sweater": false
     },
@@ -3716,21 +3785,6 @@
           "page": "10–11"
         }
       ]
-    },
-    {
-      "id": "preEntry",
-      "zh": "樂行童軍先修章（綱要 P.12 ⑧）同以前支部嘅服務年星未有示範：手冊同綱要都冇清晰圖案。",
-      "en": "The Rover Scout pre-entry badge (Training Scheme p.12 ⑧) and earlier-section service stars are not shown: neither document has clear artwork.",
-      "sources": [
-        {
-          "ref": "RTS",
-          "page": "12"
-        },
-        {
-          "ref": "UH",
-          "page": "130"
-        }
-      ]
     }
   ],
   "uninvested": {
@@ -3771,7 +3825,7 @@
         {
           "id": "flap",
           "gapCm": 0,
-          "max": 3,
+          "max": 4,
           "from": "outer"
         },
         {
@@ -3781,8 +3835,8 @@
           "from": "inner"
         }
       ],
-      "zh": "穿著者右胸袋袋蓋上方：下層（緊貼袋蓋）支部最高獎章標誌最多三個，由右至左（外側先）；上層（袋蓋上方 3 cm）宗教章／公教章、紀念章最多兩個，宗教章／公教章喺左（內側）。",
-      "en": "Above the wearer's right pocket flap: lower row (on the flap) up to three Highest Award Emblems, right to left (outer first); upper row (3 cm above the flap) up to two of Religious/Catholic Badge and Commemorative Badge, the Religious/Catholic Badge on the left (inner side).",
+      "zh": "穿著者右胸袋袋蓋上方：下層（緊貼袋蓋）支部最高獎章標誌最多三個，由右至左（外側先），樂行童軍先修章喺佢哋左方（最內側）；上層（袋蓋上方 3 cm）宗教章／公教章、紀念章最多兩個，宗教章／公教章喺左（內側）。",
+      "en": "Above the wearer's right pocket flap: lower row (on the flap) up to three Highest Award Emblems, right to left (outer first), with the Rover Scout Link Badge to their left (innermost); upper row (3 cm above the flap) up to two of Religious/Catholic Badge and Commemorative Badge, the Religious/Catholic Badge on the left (inner side).",
       "sources": [
         {
           "ref": "UH",

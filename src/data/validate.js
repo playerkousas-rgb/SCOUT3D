@@ -128,6 +128,8 @@ export function validateRules(rules) {
     for (const l of d.layers || []) {
       if (!l.id || seen.has(l.id)) errors.push(`${w}: layer id 錯或重複`);
       seen.add(l.id);
+      // v24b：liftCm ≥ 0（向上移入上一層）、marginCm ≥ 0（用到袖邊幾近）、pos = { rank: 橫向 cm }
+      if ((l.liftCm != null && !(l.liftCm >= 0)) || (l.marginCm != null && !(l.marginCm >= 0)) || (l.pos != null && (typeof l.pos !== 'object' || Object.values(l.pos).some((v) => !Number.isFinite(v))))) errors.push(`${w}: layer ${l.id} liftCm／marginCm／pos 設定錯`);
       if (!(l.gapCm >= 0) || (l.max != null && !(Number.isInteger(l.max) && l.max > 0)) || (l.from != null && !FROM.has(l.from))) errors.push(`${w}: layer ${l.id} 設定錯`);
     }
     if (d.part === 'sleeve' && d.fromShoulderCm == null && !badgeIds.has(d.belowBadge) && !d.honeycomb) errors.push(`${w}: 袖要有 fromShoulderCm、belowBadge 或 honeycomb`);

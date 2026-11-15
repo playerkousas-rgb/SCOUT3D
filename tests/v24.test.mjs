@@ -70,12 +70,14 @@ test('教導組（綱要 P.146–147）：每個都有原組別嘅同名章', ()
 });
 
 for (const gender of ['boy', 'girl']) {
-  test(`左袖（${gender}）：揀 30 個 → 只顯示 8 個，一行三個、上一行兩個、再上一行三個（綱要 P.12 附圖）`, () => {
+  // v24b 用戶指示：童軍專科徽章可以排滿成隻袖（唔再限 8 個）
+  test(`左袖（${gender}）：揀 30 個 → 排滿成隻袖 18 個，一行三個、上一行兩個……咬合七行（綱要 P.12 附圖）`, () => {
     const list = sleeveOf(show(on(PICK), { gender }));
-    assert.equal(list.length, 8);
+    assert.equal(list.length, 18);
     const rows = [...new Set(list.map((p) => Math.round(p.v * 10)))].sort((a, b) => a - b);
-    assert.equal(rows.length, 3);
-    assert.deepEqual(rows.map((r) => list.filter((p) => Math.round(p.v * 10) === r).length), [3, 2, 3]);
+    assert.equal(rows.length, 7);
+    assert.deepEqual(rows.map((r) => list.filter((p) => Math.round(p.v * 10) === r).length), [3, 2, 3, 2, 3, 2, 3]);
+    assert.ok(Math.min(...list.map((p) => p.v - p.h / 2)) >= 1, '最上一行仲喺袖上面（離膊頭 ≥ 1 cm）');
     for (let i = 0; i < list.length; i++) for (let j = i + 1; j < list.length; j++) assert.ok(diamondApart(list[i], list[j]), `${list[i].id} 同 ${list[j].id} 疊埋`);
     const face = sleeveFace(gender, 'scout');
     for (const p of list) {
@@ -108,8 +110,8 @@ test('只揀 2 個：同一行、喺袖口縫線上面（由袖口排起），�
 });
 
 test('未能顯示嘅數目（用戶指示：放唔落要講明）', () => {
-  assert.deepEqual(profOverflow(scout, on(PICK)), { on: 30, sash: 0, sleeve: 8, hidden: 22 });
-  assert.deepEqual(profOverflow(scout, on(PICK), { sash: true }), { on: 30, sash: 16, sleeve: 8, hidden: 6 });
+  assert.deepEqual(profOverflow(scout, on(PICK)), { on: 30, sash: 0, sleeve: 18, hidden: 12 });
+  assert.deepEqual(profOverflow(scout, on(PICK), { sash: true }), { on: 30, sash: 16, sleeve: 14, hidden: 0 });
   assert.deepEqual(profOverflow(scout, on(PICK.slice(0, 5))), { on: 5, sash: 0, sleeve: 5, hidden: 0 });
   assert.deepEqual(profOverflow(scout, on(PICK.slice(0, 20)), { sash: true }), { on: 20, sash: 16, sleeve: 4, hidden: 0 });
   assert.equal(shownReason(scout, OUTFIT, on(PICK), PICK[29].id), 'slotFull');
@@ -123,8 +125,8 @@ test('專章帶：頭 16 個戴喺帶上（教導 → 服務 → 技能 → 興�
   const order = PICK.slice(0, 16).map((b) => b.id);
   assert.deepEqual(onS.map((p) => p.id), order);
   const sl = sleeveOf(list);
-  assert.equal(sl.length, 8);
-  assert.deepEqual(new Set(sl.map((p) => p.id)), new Set(PICK.slice(16, 24).map((b) => b.id)));
+  assert.equal(sl.length, 14);
+  assert.deepEqual(new Set(sl.map((p) => p.id)), new Set(PICK.slice(16, 30).map((b) => b.id)));
   for (const p of onS) {
     assert.equal(p.mount, 'torso');
     assert.equal(p.slot, undefined);

@@ -157,6 +157,15 @@
         "en": "19 May 2026 edition; pp.10–11 Rover Scout uniforms, p.13 progress award sequence, p.18 Rover Scout Epaulettes"
       },
       "url": null
+    },
+    "VSC": {
+      "zh": "香港深資童軍議會《深資童軍制服佩戴更新》圖（左胸口、左袖、右袖）",
+      "en": "Hong Kong Venture Scout Council uniform update graphics (left chest, left sleeve, right sleeve)",
+      "edition": {
+        "zh": "@hkvscouncil 發佈；用戶 2026 年 11 月提供（docs/ref/v24b-image-17–19）",
+        "en": "Posted by @hkvscouncil; supplied by the user in November 2026 (docs/ref/v24b-image-17–19)"
+      },
+      "url": null
     }
   },
   "garments": [
@@ -742,7 +751,10 @@
         "zh": "手冊冇寫尺寸；模型用直徑 4 cm，按 P.170 附圖同胸袋嘅比例。",
         "en": "No size in the Handbook; the model uses 4 cm diameter, from its proportion to the pocket in the p.170 figure."
       },
-      "sweater": true
+      "sweater": true,
+      "hiddenBy": [
+        "peace"
+      ]
     },
     {
       "id": "hongKong",
@@ -1695,37 +1707,41 @@
     {
       "id": "firstAid",
       "required": false,
-      "side": "right",
+      "side": "left",
       "group": "extra",
       "zh": {
         "name": "深資童軍急救章",
-        "place": "左右兩袖上方中央：右袖喺旅章下面、地域章及區章上面；左袖第一行中間（兩袖位置對稱）。",
-        "quote": "凡獲取本會急救證書或其他根據香港法例第 509 章職業安全及健康條例的勞工處認可的三十小時急救課程證書者，可在證書有效期內佩戴此專章。佩戴在制服恤衫左右兩袖上方中央位置。右袖急救章在旅章下方而在地域章及區章上方位置。左右兩袖上的急救章位置對稱。",
-        "conditions": "持有效急救證書；證書有效期內。一開就兩隻袖都戴。"
+        "place": "穿著者左袖中央，香港青年獎勵計劃獎章同航空／海上活動徽章下面（深資童軍議會「左袖」附圖）；右袖唔再戴。",
+        "quote": "凡獲取本會急救證書或其他根據香港法例第 509 章職業安全及健康條例的勞工處認可的三十小時急救課程證書者，可在證書有效期內佩戴此專章。（深資童軍議會附圖：急救章設計與樂行童軍統一；只戴左袖。）",
+        "conditions": "持有效急救證書；證書有效期內。"
       },
       "en": {
         "name": "Venture Scout First Aid Badge",
-        "place": "Upper centre of both sleeves: on the right below the Group Badge and above the Region and District Badges; on the left in the centre of the first row (matching positions).",
-        "quote": "Holders of the Association's first aid certificate, or a 30-hour first aid certificate recognised by the Labour Department under Cap. 509, may wear it while the certificate is valid. Worn at the upper centre of both sleeves; on the right sleeve below the Group Badge and above the Region and District Badges; the two badges match in position.",
-        "conditions": "Valid first aid certificate; while valid. Worn on both sleeves."
+        "place": "Centre of the wearer's left sleeve, below the HKAYP Award and the Air/Sea Activity Badges (Venture Scout Council “left sleeve” graphic); no longer worn on the right sleeve.",
+        "quote": "Holders of the Association's first aid certificate, or a 30-hour first aid certificate recognised by the Labour Department under Cap. 509, may wear it while the certificate is valid. (Venture Scout Council graphic: the First Aid Badge design is unified with the Rover Scouts'; left sleeve only.)",
+        "conditions": "Valid first aid certificate; while valid."
       },
       "size": {
-        "shape": "circle",
-        "wCm": 3.5,
-        "hCm": 3.5,
+        "shape": "rect",
+        "wCm": 3,
+        "hCm": 3.6,
         "measured": false,
         "ref": null,
         "page": null
       },
       "anchor": {
         "part": "sleeve",
-        "slot": "sleeveR",
+        "slot": "sleeveL",
         "layer": "aid",
         "rank": 1,
-        "side": "right",
+        "side": "left",
         "measured": true
       },
       "sources": [
+        {
+          "ref": "VSC",
+          "page": "左袖、右袖"
+        },
         {
           "ref": "VTS",
           "page": "50, 52"
@@ -1737,63 +1753,59 @@
       ],
       "status": "verified",
       "art": {
-        "file": "/badges/extra/venture_first_aid.png",
-        "ref": "VTS",
-        "page": "50",
+        "file": "/badges/extra/rover_first_aid.png",
+        "ref": "RTS",
+        "page": "33",
         "example": false,
         "px": [
-          256,
-          255
+          160,
+          200
         ]
       },
       "modelNote": {
-        "zh": "圖案取自綱要 P.50；手冊冇寫尺寸，模型用直徑 3.5 cm。一個開關、兩個位置（右袖旅章下面、左袖第一行中間）。右袖急救章同旅章相距用 P.95 嘅 2 cm（附圖冇寫）。",
-        "en": "Artwork from the Training Scheme p.50; no size given, the model uses 3.5 cm diameter. One switch, two positions (right sleeve below the Group Badge, left sleeve centre of the first row). The gap below the Group Badge uses the 2 cm of p.95 (the figure gives none)."
+        "zh": "手冊 P.148／P.170 附圖同綱要 P.50 係舊安排（左右兩袖都戴、圓形圖案）；深資童軍議會最新附圖改為同樂行童軍一樣嘅新圖案（樂行童軍綱要 P.33），只戴左袖。模型用 3 × 3.6 cm（同樂行童軍）。",
+        "en": "Handbook p.148, the p.170 figure and the Training Scheme p.50 show the old arrangement (both sleeves, round artwork); the latest Venture Scout Council graphic switches to the Rover Scouts' new design (Rover Training Scheme p.33), on the left sleeve only. The model uses 3 × 3.6 cm (as for Rover Scouts)."
       },
-      "sweater": false,
-      "alsoAnchor": {
-        "part": "sleeve",
-        "side": "left",
-        "slot": "sleeveL",
-        "layer": "top",
-        "rank": 2,
-        "measured": true
-      }
+      "sweater": false
     },
     {
       "id": "community",
       "required": false,
-      "side": "right",
+      "side": "left",
       "group": "extra",
       "zh": {
         "name": "深資童軍社區參與章",
-        "place": "穿著者右袖、地域章／區章下面一行（手冊 P.170 附圖）；社區參與章、世界童軍組織徽章同「積極公民」獎章最多合共四個。",
+        "place": "穿著者左袖中央，拯溺布章下面（深資童軍議會「左袖」附圖）。",
         "quote": "童軍、深資童軍及樂行童軍佩戴所屬支部的社區參與章在制服恤衫右袖地域章及區章下方中央位置。",
         "conditions": "6 個月內完成總會認許專題研習班同實習（綱要 P.58–59）。"
       },
       "en": {
         "name": "Venture Scout Community Involvement Badge",
-        "place": "Wearer's right sleeve, in the row below the Region/District Badges (Handbook p.170 figure); Community Involvement, WOSM and Active Citizen badges at most four in total.",
+        "place": "Centre of the wearer's left sleeve, below the Life Saving Badge (Venture Scout Council “left sleeve” graphic).",
         "quote": "Scouts, Venture Scouts and Rover Scouts wear their section's Community Involvement Badge centred below the Region and District Badges on the right sleeve.",
         "conditions": "Complete a recognised study course and practical within 6 months (Training Scheme pp.58–59)."
       },
       "size": {
         "shape": "circle",
-        "wCm": 3.5,
-        "hCm": 3.5,
+        "wCm": 4,
+        "hCm": 4,
         "measured": false,
         "ref": null,
         "page": null
       },
       "anchor": {
         "part": "sleeve",
-        "slot": "sleeveR",
-        "layer": "row",
+        "slot": "sleeveL",
+        "layer": "comm",
         "rank": 1,
-        "side": "right",
+        "side": "left",
         "measured": true
       },
       "sources": [
+        {
+          "ref": "VSC",
+          "page": "左袖、右袖"
+        },
         {
           "ref": "VTS",
           "page": "50, 58–59"
@@ -1815,8 +1827,8 @@
         ]
       },
       "modelNote": {
-        "zh": "圖案取自綱要 P.50；手冊附圖佢同（舊）深資童軍世界童軍環境章並排；2026 年綱要第三章冇咗環境章，改為地球部落等世界童軍組織徽章，模型放喺同一行（最多四個，參照樂行童軍綱要 P.12）。",
-        "en": "Artwork from the Training Scheme p.50; the Handbook figure shows it beside the (old) Venture Scout World Scout Environment Badge; the 2026 Training Scheme chapter 3 lists Earth Tribe and other WOSM badges instead, which the model puts in the same row (at most four, as in the Rover Training Scheme p.12)."
+        "zh": "圖案取自綱要 P.50。手冊 P.151／P.170 附圖原本喺右袖地域章及區章下面；深資童軍議會最新附圖改喺左袖拯溺布章下面，並縮細為 4 cm（同樂行童軍綱要 P.12 一樣喺左袖）。",
+        "en": "Artwork from the Training Scheme p.50. Handbook p.151 and the p.170 figure put it below the Region and District Badges on the right sleeve; the latest Venture Scout Council graphic moves it to the left sleeve below the Life Saving Badge and reduces it to 4 cm (left sleeve, as in the Rover Training Scheme p.12)."
       },
       "sweater": false
     },
@@ -1827,20 +1839,20 @@
       "group": "extra",
       "zh": {
         "name": "地球部落徽章",
-        "place": "穿著者右袖、地域章／區章下面一行（手冊 P.170 附圖）；社區參與章、世界童軍組織徽章同「積極公民」獎章最多合共四個。",
+        "place": "穿著者右袖、地域章／區章下面一行（4 cm）；世界童軍組織徽章同「積極公民」獎章最多合共四個（深資童軍議會「右袖」附圖）。",
         "quote": "第三章 世界童軍組織推出的徽章：和平使者章、童軍世界遺產章、寰宇童軍章、地球部落。",
         "conditions": "完成地球部落任何一項挑戰；應同最少一個挑戰徽章一齊戴。"
       },
       "en": {
         "name": "Earth Tribe Badge",
-        "place": "Wearer's right sleeve, in the row below the Region/District Badges (Handbook p.170 figure); Community Involvement, WOSM and Active Citizen badges at most four in total.",
+        "place": "Wearer's right sleeve, in the row below the Region/District Badges (4 cm); WOSM and Active Citizen badges at most four in total (Venture Scout Council “right sleeve” graphic).",
         "quote": "Chapter 3, Badges issued by WOSM: Messengers of Peace, Patrimonito Scout Badge, Scouts of the World Award, Earth Tribe.",
         "conditions": "Complete any Earth Tribe challenge; wear with at least one challenge badge."
       },
       "size": {
         "shape": "rect",
-        "wCm": 3.2,
-        "hCm": 3.2,
+        "wCm": 4,
+        "hCm": 4,
         "measured": false,
         "ref": null,
         "page": null
@@ -1849,11 +1861,15 @@
         "part": "sleeve",
         "slot": "sleeveR",
         "layer": "row",
-        "rank": 2,
+        "rank": 1,
         "side": "right",
         "measured": true
       },
       "sources": [
+        {
+          "ref": "VSC",
+          "page": "右袖"
+        },
         {
           "ref": "VTS",
           "page": "49"
@@ -1874,7 +1890,11 @@
           200
         ]
       },
-      "sweater": false
+      "sweater": false,
+      "modelNote": {
+        "zh": "深資童軍議會附圖：世界童軍組織推出嘅獎章縮細為 4 cm，最多戴四個。四個 4 cm 闊過模型袖外側（15 cm），所以四個一齊戴時模型會稍為縮細（約 3.6 cm）排成一行。",
+        "en": "Venture Scout Council graphic: WOSM badges are reduced to 4 cm, at most four. Four 4 cm badges are wider than the model's outer sleeve face (15 cm), so with four on the model shrinks them slightly (about 3.6 cm) to keep one row."
+      }
     },
     {
       "id": "plasticTide",
@@ -1883,20 +1903,20 @@
       "group": "extra",
       "zh": {
         "name": "走塑達人挑戰徽章",
-        "place": "穿著者右袖、地域章／區章下面一行（手冊 P.170 附圖）；社區參與章、世界童軍組織徽章同「積極公民」獎章最多合共四個。",
+        "place": "穿著者右袖、地域章／區章下面一行（4 cm）；世界童軍組織徽章同「積極公民」獎章最多合共四個（深資童軍議會「右袖」附圖）。",
         "quote": "第三章 世界童軍組織推出的徽章：和平使者章、童軍世界遺產章、寰宇童軍章、地球部落。",
         "conditions": "完成走塑達人挑戰（地球部落）。"
       },
       "en": {
         "name": "Plastic Tide Turners Challenge Badge",
-        "place": "Wearer's right sleeve, in the row below the Region/District Badges (Handbook p.170 figure); Community Involvement, WOSM and Active Citizen badges at most four in total.",
+        "place": "Wearer's right sleeve, in the row below the Region/District Badges (4 cm); WOSM and Active Citizen badges at most four in total (Venture Scout Council “right sleeve” graphic).",
         "quote": "Chapter 3, Badges issued by WOSM: Messengers of Peace, Patrimonito Scout Badge, Scouts of the World Award, Earth Tribe.",
         "conditions": "Complete the Plastic Tide Turners Challenge (Earth Tribe)."
       },
       "size": {
         "shape": "rect",
-        "wCm": 3.2,
-        "hCm": 3.2,
+        "wCm": 4,
+        "hCm": 4,
         "measured": false,
         "ref": null,
         "page": null
@@ -1905,11 +1925,15 @@
         "part": "sleeve",
         "slot": "sleeveR",
         "layer": "row",
-        "rank": 3,
+        "rank": 2,
         "side": "right",
         "measured": true
       },
       "sources": [
+        {
+          "ref": "VSC",
+          "page": "右袖"
+        },
         {
           "ref": "VTS",
           "page": "49"
@@ -1930,7 +1954,11 @@
           200
         ]
       },
-      "sweater": false
+      "sweater": false,
+      "modelNote": {
+        "zh": "深資童軍議會附圖：世界童軍組織推出嘅獎章縮細為 4 cm，最多戴四個。四個 4 cm 闊過模型袖外側（15 cm），所以四個一齊戴時模型會稍為縮細（約 3.6 cm）排成一行。",
+        "en": "Venture Scout Council graphic: WOSM badges are reduced to 4 cm, at most four. Four 4 cm badges are wider than the model's outer sleeve face (15 cm), so with four on the model shrinks them slightly (about 3.6 cm) to keep one row."
+      }
     },
     {
       "id": "natureChampions",
@@ -1939,20 +1967,20 @@
       "group": "extra",
       "zh": {
         "name": "自然守護者挑戰徽章",
-        "place": "穿著者右袖、地域章／區章下面一行（手冊 P.170 附圖）；社區參與章、世界童軍組織徽章同「積極公民」獎章最多合共四個。",
+        "place": "穿著者右袖、地域章／區章下面一行（4 cm）；世界童軍組織徽章同「積極公民」獎章最多合共四個（深資童軍議會「右袖」附圖）。",
         "quote": "第三章 世界童軍組織推出的徽章：和平使者章、童軍世界遺產章、寰宇童軍章、地球部落。",
         "conditions": "完成自然守護者挑戰（地球部落）。"
       },
       "en": {
         "name": "Champions for Nature Challenge Badge",
-        "place": "Wearer's right sleeve, in the row below the Region/District Badges (Handbook p.170 figure); Community Involvement, WOSM and Active Citizen badges at most four in total.",
+        "place": "Wearer's right sleeve, in the row below the Region/District Badges (4 cm); WOSM and Active Citizen badges at most four in total (Venture Scout Council “right sleeve” graphic).",
         "quote": "Chapter 3, Badges issued by WOSM: Messengers of Peace, Patrimonito Scout Badge, Scouts of the World Award, Earth Tribe.",
         "conditions": "Complete the Champions for Nature Challenge (Earth Tribe)."
       },
       "size": {
         "shape": "rect",
-        "wCm": 3.2,
-        "hCm": 3.2,
+        "wCm": 4,
+        "hCm": 4,
         "measured": false,
         "ref": null,
         "page": null
@@ -1961,11 +1989,15 @@
         "part": "sleeve",
         "slot": "sleeveR",
         "layer": "row",
-        "rank": 4,
+        "rank": 3,
         "side": "right",
         "measured": true
       },
       "sources": [
+        {
+          "ref": "VSC",
+          "page": "右袖"
+        },
         {
           "ref": "VTS",
           "page": "49"
@@ -1986,7 +2018,11 @@
           200
         ]
       },
-      "sweater": false
+      "sweater": false,
+      "modelNote": {
+        "zh": "深資童軍議會附圖：世界童軍組織推出嘅獎章縮細為 4 cm，最多戴四個。四個 4 cm 闊過模型袖外側（15 cm），所以四個一齊戴時模型會稍為縮細（約 3.6 cm）排成一行。",
+        "en": "Venture Scout Council graphic: WOSM badges are reduced to 4 cm, at most four. Four 4 cm badges are wider than the model's outer sleeve face (15 cm), so with four on the model shrinks them slightly (about 3.6 cm) to keep one row."
+      }
     },
     {
       "id": "goSolar",
@@ -1995,20 +2031,20 @@
       "group": "extra",
       "zh": {
         "name": "日光善用者挑戰徽章",
-        "place": "穿著者右袖、地域章／區章下面一行（手冊 P.170 附圖）；社區參與章、世界童軍組織徽章同「積極公民」獎章最多合共四個。",
+        "place": "穿著者右袖、地域章／區章下面一行（4 cm）；世界童軍組織徽章同「積極公民」獎章最多合共四個（深資童軍議會「右袖」附圖）。",
         "quote": "第三章 世界童軍組織推出的徽章：和平使者章、童軍世界遺產章、寰宇童軍章、地球部落。",
         "conditions": "完成日光善用者挑戰（地球部落）。"
       },
       "en": {
         "name": "Scouts Go Solar Challenge Badge",
-        "place": "Wearer's right sleeve, in the row below the Region/District Badges (Handbook p.170 figure); Community Involvement, WOSM and Active Citizen badges at most four in total.",
+        "place": "Wearer's right sleeve, in the row below the Region/District Badges (4 cm); WOSM and Active Citizen badges at most four in total (Venture Scout Council “right sleeve” graphic).",
         "quote": "Chapter 3, Badges issued by WOSM: Messengers of Peace, Patrimonito Scout Badge, Scouts of the World Award, Earth Tribe.",
         "conditions": "Complete the Scouts Go Solar Challenge (Earth Tribe)."
       },
       "size": {
         "shape": "rect",
-        "wCm": 3.2,
-        "hCm": 3.2,
+        "wCm": 4,
+        "hCm": 4,
         "measured": false,
         "ref": null,
         "page": null
@@ -2017,11 +2053,15 @@
         "part": "sleeve",
         "slot": "sleeveR",
         "layer": "row",
-        "rank": 5,
+        "rank": 4,
         "side": "right",
         "measured": true
       },
       "sources": [
+        {
+          "ref": "VSC",
+          "page": "右袖"
+        },
         {
           "ref": "VTS",
           "page": "49"
@@ -2042,7 +2082,11 @@
           200
         ]
       },
-      "sweater": false
+      "sweater": false,
+      "modelNote": {
+        "zh": "深資童軍議會附圖：世界童軍組織推出嘅獎章縮細為 4 cm，最多戴四個。四個 4 cm 闊過模型袖外側（15 cm），所以四個一齊戴時模型會稍為縮細（約 3.6 cm）排成一行。",
+        "en": "Venture Scout Council graphic: WOSM badges are reduced to 4 cm, at most four. Four 4 cm badges are wider than the model's outer sleeve face (15 cm), so with four on the model shrinks them slightly (about 3.6 cm) to keep one row."
+      }
     },
     {
       "id": "heritage",
@@ -2051,20 +2095,20 @@
       "group": "extra",
       "zh": {
         "name": "童軍世界遺產章",
-        "place": "穿著者右袖、地域章／區章下面一行（手冊 P.170 附圖）；社區參與章、世界童軍組織徽章同「積極公民」獎章最多合共四個。",
+        "place": "穿著者右袖、地域章／區章下面一行（4 cm）；世界童軍組織徽章同「積極公民」獎章最多合共四個（深資童軍議會「右袖」附圖）。",
         "quote": "第三章 世界童軍組織推出的徽章：和平使者章、童軍世界遺產章、寰宇童軍章、地球部落。",
         "conditions": "喺世界遺產內完成寰宇童軍章嘅自願服務，考獲寰宇童軍章時同時頒發。"
       },
       "en": {
         "name": "Scouts of the World Heritage Badge",
-        "place": "Wearer's right sleeve, in the row below the Region/District Badges (Handbook p.170 figure); Community Involvement, WOSM and Active Citizen badges at most four in total.",
+        "place": "Wearer's right sleeve, in the row below the Region/District Badges (4 cm); WOSM and Active Citizen badges at most four in total (Venture Scout Council “right sleeve” graphic).",
         "quote": "Chapter 3, Badges issued by WOSM: Messengers of Peace, Patrimonito Scout Badge, Scouts of the World Award, Earth Tribe.",
         "conditions": "Awarded with the Scouts of the World Award when the voluntary service was done at a World Heritage site."
       },
       "size": {
         "shape": "rect",
-        "wCm": 3.2,
-        "hCm": 3.2,
+        "wCm": 4,
+        "hCm": 4,
         "measured": false,
         "ref": null,
         "page": null
@@ -2073,11 +2117,15 @@
         "part": "sleeve",
         "slot": "sleeveR",
         "layer": "row",
-        "rank": 6,
+        "rank": 5,
         "side": "right",
         "measured": true
       },
       "sources": [
+        {
+          "ref": "VSC",
+          "page": "右袖"
+        },
         {
           "ref": "VTS",
           "page": "49"
@@ -2098,7 +2146,11 @@
           200
         ]
       },
-      "sweater": false
+      "sweater": false,
+      "modelNote": {
+        "zh": "深資童軍議會附圖：世界童軍組織推出嘅獎章縮細為 4 cm，最多戴四個。四個 4 cm 闊過模型袖外側（15 cm），所以四個一齊戴時模型會稍為縮細（約 3.6 cm）排成一行。",
+        "en": "Venture Scout Council graphic: WOSM badges are reduced to 4 cm, at most four. Four 4 cm badges are wider than the model's outer sleeve face (15 cm), so with four on the model shrinks them slightly (about 3.6 cm) to keep one row."
+      }
     },
     {
       "id": "worldScout",
@@ -2107,20 +2159,20 @@
       "group": "extra",
       "zh": {
         "name": "寰宇童軍章",
-        "place": "穿著者右袖、地域章／區章下面一行（手冊 P.170 附圖）；社區參與章、世界童軍組織徽章同「積極公民」獎章最多合共四個。",
+        "place": "穿著者右袖、地域章／區章下面一行（4 cm）；世界童軍組織徽章同「積極公民」獎章最多合共四個（深資童軍議會「右袖」附圖）。",
         "quote": "第三章 世界童軍組織推出的徽章：和平使者章、童軍世界遺產章、寰宇童軍章、地球部落。",
         "conditions": "完成「世界童軍組織」寰宇童軍計劃（探索＋自願服務）。"
       },
       "en": {
         "name": "Scouts of the World Award",
-        "place": "Wearer's right sleeve, in the row below the Region/District Badges (Handbook p.170 figure); Community Involvement, WOSM and Active Citizen badges at most four in total.",
+        "place": "Wearer's right sleeve, in the row below the Region/District Badges (4 cm); WOSM and Active Citizen badges at most four in total (Venture Scout Council “right sleeve” graphic).",
         "quote": "Chapter 3, Badges issued by WOSM: Messengers of Peace, Patrimonito Scout Badge, Scouts of the World Award, Earth Tribe.",
         "conditions": "Complete the WOSM Scouts of the World programme (Discovery + Voluntary Service)."
       },
       "size": {
         "shape": "rect",
-        "wCm": 3.2,
-        "hCm": 3.2,
+        "wCm": 4,
+        "hCm": 4,
         "measured": false,
         "ref": null,
         "page": null
@@ -2129,11 +2181,15 @@
         "part": "sleeve",
         "slot": "sleeveR",
         "layer": "row",
-        "rank": 7,
+        "rank": 6,
         "side": "right",
         "measured": true
       },
       "sources": [
+        {
+          "ref": "VSC",
+          "page": "右袖"
+        },
         {
           "ref": "VTS",
           "page": "49"
@@ -2154,7 +2210,11 @@
           200
         ]
       },
-      "sweater": false
+      "sweater": false,
+      "modelNote": {
+        "zh": "深資童軍議會附圖：世界童軍組織推出嘅獎章縮細為 4 cm，最多戴四個。四個 4 cm 闊過模型袖外側（15 cm），所以四個一齊戴時模型會稍為縮細（約 3.6 cm）排成一行。",
+        "en": "Venture Scout Council graphic: WOSM badges are reduced to 4 cm, at most four. Four 4 cm badges are wider than the model's outer sleeve face (15 cm), so with four on the model shrinks them slightly (about 3.6 cm) to keep one row."
+      }
     },
     {
       "id": "citizenScam",
@@ -2163,13 +2223,13 @@
       "group": "extra",
       "zh": {
         "name": "防騙先鋒章",
-        "place": "穿著者右袖、地域章／區章下面一行（手冊 P.170 附圖）；社區參與章、世界童軍組織徽章同「積極公民」獎章最多合共四個。",
+        "place": "穿著者右袖、地域章／區章下面一行（手冊 P.170 附圖）；世界童軍組織徽章同「積極公民」獎章最多合共四個。",
         "quote": "「積極公民」獎章系列：透過一系列挑戰，激勵童軍成員積極參與社會事務，發展他們的領導能力和團隊合作能力。",
         "conditions": "「積極公民」獎章系列。"
       },
       "en": {
         "name": "Anti-Scam Pioneer Badge",
-        "place": "Wearer's right sleeve, in the row below the Region/District Badges (Handbook p.170 figure); Community Involvement, WOSM and Active Citizen badges at most four in total.",
+        "place": "Wearer's right sleeve, in the row below the Region/District Badges (Handbook p.170 figure); WOSM and Active Citizen badges at most four in total.",
         "quote": "Active Citizenship Badge Series: a series of challenges encouraging members to take part in community affairs and develop leadership and teamwork.",
         "conditions": "Active Citizen series."
       },
@@ -2185,7 +2245,7 @@
         "part": "sleeve",
         "slot": "sleeveR",
         "layer": "row",
-        "rank": 8,
+        "rank": 7,
         "side": "right",
         "measured": true
       },
@@ -2219,13 +2279,13 @@
       "group": "extra",
       "zh": {
         "name": "保護兒童章",
-        "place": "穿著者右袖、地域章／區章下面一行（手冊 P.170 附圖）；社區參與章、世界童軍組織徽章同「積極公民」獎章最多合共四個。",
+        "place": "穿著者右袖、地域章／區章下面一行（手冊 P.170 附圖）；世界童軍組織徽章同「積極公民」獎章最多合共四個。",
         "quote": "「積極公民」獎章系列：透過一系列挑戰，激勵童軍成員積極參與社會事務，發展他們的領導能力和團隊合作能力。",
         "conditions": "「積極公民」獎章系列。"
       },
       "en": {
         "name": "Child Protection Badge",
-        "place": "Wearer's right sleeve, in the row below the Region/District Badges (Handbook p.170 figure); Community Involvement, WOSM and Active Citizen badges at most four in total.",
+        "place": "Wearer's right sleeve, in the row below the Region/District Badges (Handbook p.170 figure); WOSM and Active Citizen badges at most four in total.",
         "quote": "Active Citizenship Badge Series: a series of challenges encouraging members to take part in community affairs and develop leadership and teamwork.",
         "conditions": "Active Citizen series."
       },
@@ -2241,7 +2301,7 @@
         "part": "sleeve",
         "slot": "sleeveR",
         "layer": "row",
-        "rank": 9,
+        "rank": 8,
         "side": "right",
         "measured": true
       },
@@ -2275,13 +2335,13 @@
       "group": "extra",
       "zh": {
         "name": "禁毒章",
-        "place": "穿著者右袖、地域章／區章下面一行（手冊 P.170 附圖）；社區參與章、世界童軍組織徽章同「積極公民」獎章最多合共四個。",
+        "place": "穿著者右袖、地域章／區章下面一行（手冊 P.170 附圖）；世界童軍組織徽章同「積極公民」獎章最多合共四個。",
         "quote": "「積極公民」獎章系列：透過一系列挑戰，激勵童軍成員積極參與社會事務，發展他們的領導能力和團隊合作能力。",
         "conditions": "「積極公民」獎章系列。"
       },
       "en": {
         "name": "Anti-Drug Badge",
-        "place": "Wearer's right sleeve, in the row below the Region/District Badges (Handbook p.170 figure); Community Involvement, WOSM and Active Citizen badges at most four in total.",
+        "place": "Wearer's right sleeve, in the row below the Region/District Badges (Handbook p.170 figure); WOSM and Active Citizen badges at most four in total.",
         "quote": "Active Citizenship Badge Series: a series of challenges encouraging members to take part in community affairs and develop leadership and teamwork.",
         "conditions": "Active Citizen series."
       },
@@ -2297,7 +2357,7 @@
         "part": "sleeve",
         "slot": "sleeveR",
         "layer": "row",
-        "rank": 10,
+        "rank": 9,
         "side": "right",
         "measured": true
       },
@@ -2331,13 +2391,13 @@
       "group": "extra",
       "zh": {
         "name": "社區應急先鋒章",
-        "place": "穿著者右袖、地域章／區章下面一行（手冊 P.170 附圖）；社區參與章、世界童軍組織徽章同「積極公民」獎章最多合共四個。",
+        "place": "穿著者右袖、地域章／區章下面一行（手冊 P.170 附圖）；世界童軍組織徽章同「積極公民」獎章最多合共四個。",
         "quote": "「積極公民」獎章系列：透過一系列挑戰，激勵童軍成員積極參與社會事務，發展他們的領導能力和團隊合作能力。",
         "conditions": "「積極公民」獎章系列。"
       },
       "en": {
         "name": "Community Emergency Pioneer Badge",
-        "place": "Wearer's right sleeve, in the row below the Region/District Badges (Handbook p.170 figure); Community Involvement, WOSM and Active Citizen badges at most four in total.",
+        "place": "Wearer's right sleeve, in the row below the Region/District Badges (Handbook p.170 figure); WOSM and Active Citizen badges at most four in total.",
         "quote": "Active Citizenship Badge Series: a series of challenges encouraging members to take part in community affairs and develop leadership and teamwork.",
         "conditions": "Active Citizen series."
       },
@@ -2353,7 +2413,7 @@
         "part": "sleeve",
         "slot": "sleeveR",
         "layer": "row",
-        "rank": 11,
+        "rank": 10,
         "side": "right",
         "measured": true
       },
@@ -2387,13 +2447,13 @@
       "group": "extra",
       "zh": {
         "name": "環保先鋒章",
-        "place": "穿著者右袖、地域章／區章下面一行（手冊 P.170 附圖）；社區參與章、世界童軍組織徽章同「積極公民」獎章最多合共四個。",
+        "place": "穿著者右袖、地域章／區章下面一行（手冊 P.170 附圖）；世界童軍組織徽章同「積極公民」獎章最多合共四個。",
         "quote": "「積極公民」獎章系列：透過一系列挑戰，激勵童軍成員積極參與社會事務，發展他們的領導能力和團隊合作能力。",
         "conditions": "「積極公民」獎章系列。"
       },
       "en": {
         "name": "Green Pioneer Badge",
-        "place": "Wearer's right sleeve, in the row below the Region/District Badges (Handbook p.170 figure); Community Involvement, WOSM and Active Citizen badges at most four in total.",
+        "place": "Wearer's right sleeve, in the row below the Region/District Badges (Handbook p.170 figure); WOSM and Active Citizen badges at most four in total.",
         "quote": "Active Citizenship Badge Series: a series of challenges encouraging members to take part in community affairs and develop leadership and teamwork.",
         "conditions": "Active Citizen series."
       },
@@ -2409,7 +2469,7 @@
         "part": "sleeve",
         "slot": "sleeveR",
         "layer": "row",
-        "rank": 12,
+        "rank": 11,
         "side": "right",
         "measured": true
       },
@@ -2443,13 +2503,13 @@
       "group": "extra",
       "zh": {
         "name": "深資童軍宗教章／公教章",
-        "place": "穿著者右胸袋袋蓋上方 3 cm；同和平使者章／紀念章並排時喺左（內側）。",
+        "place": "穿著者右胸袋袋蓋上方 3 cm；同紀念章並排時喺左（內側）。",
         "quote": "青少年成員佩戴所屬支部的宗教章或取得最高段數的公教章在制服恤衫右胸袋袋蓋上方三釐米中央位置。假若與和平使者章／紀念章一起佩戴，兩章並行排列，宗教章／公教章在其左方位置（內側）。不可同時佩戴宗教章與公教章。",
         "conditions": "宗教章：完成其中一項宗教課程（綱要 P.53–56）；公教章：已領洗嘅天主教成員，只戴最高段數。兩樣只可以揀一樣。"
       },
       "en": {
         "name": "Venture Scout Religious Badge / Catholic Badge",
-        "place": "3 cm above the wearer's right pocket flap; left (inner side) when worn with the Messengers of Peace / Commemorative Badge.",
+        "place": "3 cm above the wearer's right pocket flap; left (inner side) when worn with the Commemorative Badge.",
         "quote": "Youth members wear their section's Religious Badge, or the Catholic Badge of the highest stage, centred 3 cm above the right pocket flap. With the Messengers of Peace / Commemorative Badge the two sit side by side, the Religious/Catholic Badge on the left (inner side). The Religious and Catholic Badges may not be worn together.",
         "conditions": "Religious Badge: complete one of the religious courses (Training Scheme pp.53–56); Catholic Badge: baptised Catholics, highest stage only. Only one of the two."
       },
@@ -2606,40 +2666,42 @@
     {
       "id": "peace",
       "required": false,
-      "side": "right",
+      "side": "left",
       "group": "extra",
       "zh": {
-        "name": "和平使者章",
-        "place": "穿著者右胸袋袋蓋上方 3 cm；同宗教章／公教章並排時喺右（外側）。",
-        "quote": "童軍成員在參加已於「世界童軍組織」網站註冊及總會核准的和平使者計劃活動後，可佩戴在制服上。由活動首天起，可佩戴十二個月。假若與宗教章／公教章一起佩戴，兩章並行排列，宗教章／公教章在其左方位置（內側）。",
-        "conditions": "參加已註冊同核准嘅和平使者計劃活動；可戴 12 個月。同紀念章只戴一個。"
+        "name": "和平使者章（結合世界童軍會員章）",
+        "place": "穿著者左胸袋中央，代替世界童軍會員章（深資童軍議會「左胸口」附圖）。",
+        "quote": "童軍成員在參加已於「世界童軍組織」網站註冊及總會核准的和平使者計劃活動後，可佩戴在制服上。由活動首天起，可佩戴十二個月。（深資童軍議會附圖：舊 — 左胸袋中央世界童軍會員章；新 — 同一位置改戴和平使者章。）",
+        "conditions": "參加已註冊同核准嘅和平使者計劃活動；可戴 12 個月。戴咗就唔再另外戴世界童軍會員章。"
       },
       "en": {
-        "name": "Messengers of Peace Badge",
-        "place": "3 cm above the wearer's right pocket flap; right (outer side) when worn with the Religious/Catholic Badge.",
-        "quote": "Members who take part in a Messengers of Peace project registered on the WOSM website and approved by the Association may wear it, for twelve months from the first day. With the Religious/Catholic Badge the two sit side by side, the Religious/Catholic Badge on the left (inner side).",
-        "conditions": "Registered and approved Messengers of Peace project; 12 months. One of this and the Commemorative Badge."
+        "name": "Messengers of Peace Badge (combined with the World Membership Badge)",
+        "place": "Centre of the wearer's left chest pocket, in place of the World Membership Badge (Venture Scout Council “left chest” graphic).",
+        "quote": "Members who take part in a Messengers of Peace project registered on the WOSM website and approved by the Association may wear it, for twelve months from the first day. (Venture Scout Council graphic: old — World Membership Badge at the centre of the left pocket; new — the Messengers of Peace Badge in the same place.)",
+        "conditions": "Registered and approved Messengers of Peace project; 12 months. Replaces the World Membership Badge while worn."
       },
       "size": {
         "shape": "rect",
-        "wCm": 3.6,
-        "hCm": 4.5,
+        "wCm": 4,
+        "hCm": 5.03,
         "measured": false,
         "ref": null,
         "page": null
       },
       "anchor": {
         "part": "torso",
-        "slot": "pocketR",
-        "layer": "upper",
-        "rank": 2,
-        "side": "right",
+        "pocket": "centre",
+        "side": "left",
         "measured": true
       },
       "sources": [
         {
+          "ref": "VSC",
+          "page": "左胸口"
+        },
+        {
           "ref": "UH",
-          "page": "155, 164, 170"
+          "page": "155"
         },
         {
           "ref": "VTS",
@@ -2658,8 +2720,8 @@
         ]
       },
       "modelNote": {
-        "zh": "手冊 P.170 附圖：和平使者章喺右胸袋袋蓋上方、宗教章右邊（深資童軍綱要冇另外改位，唔似樂行童軍綱要咁同世界童軍會員章結合）。圖案取自手冊 P.155。",
-        "en": "Handbook p.170 figure: above the right pocket flap, to the right of the Religious Badge (the Venture Scout Training Scheme does not move it, unlike the Rover Training Scheme which combines it with the World Membership Badge). Artwork from Handbook p.155."
+        "zh": "手冊 P.155／P.170 附圖原本喺右胸袋袋蓋上方；深資童軍議會最新附圖改為同世界童軍會員章結合、戴喺左胸袋中央（同樂行童軍綱要 P.12 一樣）。開咗就唔再顯示世界童軍會員章。圖案取自手冊 P.155。",
+        "en": "Handbook p.155 and the p.170 figure put it above the right pocket flap; the latest Venture Scout Council graphic combines it with the World Membership Badge at the centre of the left pocket (as in the Rover Training Scheme p.12). With it on, the World Membership Badge is not shown. Artwork from Handbook p.155."
       },
       "sweater": false
     },
@@ -2672,13 +2734,13 @@
         "name": "紀念章",
         "place": "穿著者右胸袋袋蓋上方 3 cm；同宗教章／公教章並排時喺右（外側）。",
         "quote": "紀念章佩戴在制服恤衫右胸袋袋蓋上方三釐米中央位置。假若與其他標誌或徽章一起佩戴，兩章並行排列，紀念章在其右方位置。紀念章最大尺寸以七釐米（闊）× 七釐米（高）為限。",
-        "conditions": "只限已獲批准、喺指定期間內佩戴；同一時間只戴一個；同和平使者章只戴一個。"
+        "conditions": "只限已獲批准、喺指定期間內佩戴；同一時間只戴一個。"
       },
       "en": {
         "name": "Commemorative Badge",
         "place": "3 cm above the wearer's right pocket flap; right (outer side) when worn with the Religious/Catholic Badge.",
         "quote": "Worn centred 3 cm above the right pocket flap. With another emblem or badge the two sit side by side, the Commemorative Badge on the right. At most 7 cm wide × 7 cm high.",
-        "conditions": "Approved badges only, within the set period; one at a time; one of this and the Messengers of Peace Badge."
+        "conditions": "Approved badges only, within the set period; one at a time."
       },
       "size": {
         "shape": "rect",
@@ -2714,8 +2776,8 @@
         ]
       },
       "modelNote": {
-        "zh": "圖案係手冊示例色塊，每個紀念章唔同；模型用 5 × 5 cm（上限 7 × 7 cm）。上層最多兩個：同和平使者章一齊開就只顯示和平使者章。",
-        "en": "The artwork is the handbook's example block; each badge differs. The model uses 5 × 5 cm (limit 7 × 7 cm). The upper row holds two: with the Messengers of Peace Badge on, only that one is shown."
+        "zh": "圖案係手冊示例色塊，每個紀念章唔同；模型用 5 × 5 cm（上限 7 × 7 cm）。",
+        "en": "The artwork is the handbook's example block; each badge differs. The model uses 5 × 5 cm (limit 7 × 7 cm)."
       },
       "sweater": false
     },
@@ -2884,6 +2946,66 @@
       "modelNote": {
         "zh": "圖案取自手冊 P.143；手冊冇寫尺寸，模型用 2.6 × 1.7 cm。",
         "en": "Artwork from Handbook p.143; no size given, the model uses 2.6 × 1.7 cm."
+      },
+      "sweater": false
+    },
+    {
+      "id": "roverLink",
+      "required": false,
+      "side": "right",
+      "group": "extra",
+      "zh": {
+        "name": "樂行童軍先修章",
+        "place": "穿著者右胸袋袋蓋上方（緊貼袋蓋）中央；同金紫荊／總領袖獎章標誌、深資童軍先修章一齊戴時喺佢哋左方（最內側）。",
+        "quote": "樂行童軍先修章之設立旨在幫助適齡之深資童軍支部成員認識樂行童軍支部活動，鼓勵他們晉升為樂行童軍。年滿十九歲之深資童軍支部成員可考取樂行童軍先修章，完成後由其深資童軍團長簽發。",
+        "conditions": "年滿十九歲；完成認許嘅樂行童軍啟導班（或同等項目）同參與最少 2 次同一個樂行童軍團嘅活動（綱要 P.57）。"
+      },
+      "en": {
+        "name": "Rover Scout Link Badge",
+        "place": "Centred on top of the wearer's right pocket flap; to the left (innermost) of the Golden Bauhinia / Chief Scout's Award Emblems and the Venture Scout Link Badge when worn with them.",
+        "quote": "The Rover Scout Link Badge helps Venture Scouts of the right age learn about Rover Scout activities and encourages them to move up. Venture Scouts aged 19 or over may earn it; it is signed off by their Venture Scout Leader.",
+        "conditions": "Aged 19 or over; complete a recognised Rover Scout Induction Course (or equivalent) and attend at least 2 activities of the same Rover Scout Crew (Training Scheme p.57)."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.6,
+        "hCm": 1.7,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "slot": "pocketR",
+        "layer": "flap",
+        "rank": 4,
+        "side": "right",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "VTS",
+          "page": "57"
+        },
+        {
+          "ref": "UH",
+          "page": "142–143"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/extra/rover_link.png",
+        "ref": "VTS",
+        "page": "57",
+        "example": false,
+        "px": [
+          240,
+          156
+        ]
+      },
+      "modelNote": {
+        "zh": "圖案取自綱要 P.57。綱要同手冊都冇寫佢戴喺邊；模型跟童軍先修章（手冊 P.142）同深資童軍先修章（P.143）：右胸袋袋蓋上方、支部最高獎章標誌左方（內側）。尺寸用 2.6 × 1.7 cm（同深資童軍先修章）。",
+        "en": "Artwork from the Training Scheme p.57. Neither the Training Scheme nor the Handbook says where it goes; the model follows the Scout Link Badge (Handbook p.142) and the Venture Scout Link Badge (p.143): above the right pocket flap, to the left (inner side) of the Highest Award Emblems. Size 2.6 × 1.7 cm (as the Venture Scout Link Badge)."
       },
       "sweater": false
     },
@@ -3618,13 +3740,13 @@
       "group": "extra",
       "zh": {
         "name": "航空活動徽章（空勤員章）",
-        "place": "穿著者左袖上方第一行，近前面（手冊 P.170 附圖「深資童軍航空活動徽章」）。",
+        "place": "穿著者左袖上方，香港青年獎勵計劃獎章前面一側、低半個章（深資童軍議會「左袖」附圖）。",
         "quote": "「空勤員章課程」分為初級空勤員章、中級空勤員章及高級空勤員章三個階段課程，為深資童軍成員提供全面而富趣味的航空培訓。",
         "conditions": "完成相應階段課程；只戴最高嗰級。深資童軍同樂行童軍用同一個章（用戶確認）。"
       },
       "en": {
         "name": "Air Activity Badge (Aircrew Badge)",
-        "place": "First row on the upper wearer's left sleeve, towards the front (Handbook p.170 figure, “Venture Scout Air Activity Badge”).",
+        "place": "Upper wearer's left sleeve, beside the HKAYP Award towards the front, half a badge lower (Venture Scout Council “left sleeve” graphic).",
         "quote": "The Aircrew Syllabus has three stages — Elementary, Intermediate and Advanced Aircrew Badge — giving Venture Scouts comprehensive and enjoyable aviation training.",
         "conditions": "Complete the matching stage; wear the highest only. Venture and Rover Scouts wear the same badge (user confirmed)."
       },
@@ -3639,12 +3761,16 @@
       "anchor": {
         "part": "sleeve",
         "slot": "sleeveL",
-        "layer": "top",
+        "layer": "pair",
         "rank": 1,
         "side": "left",
         "measured": true
       },
       "sources": [
+        {
+          "ref": "VSC",
+          "page": "左袖"
+        },
         {
           "ref": "VTS",
           "page": "61"
@@ -3735,8 +3861,8 @@
         ]
       },
       "modelNote": {
-        "zh": "綱要 P.61 冇印徽章圖案（只有網址）；模型三級都用高級空勤員章圖案（樂行童軍綱要 P.35）示意，初級、中級標明係示例。位置跟手冊 P.170 附圖：左袖第一行近前面。",
-        "en": "The Training Scheme p.61 prints no artwork (only a link); the model uses the Advanced Air Crew artwork (Rover Training Scheme p.35) for all three levels, marked as an example for Elementary and Intermediate. Position per the Handbook p.170 figure: first row of the left sleeve, towards the front."
+        "zh": "綱要 P.61 冇印徽章圖案（只有網址）；模型三級都用高級空勤員章圖案（樂行童軍綱要 P.35）示意，初級、中級標明係示例。位置跟深資童軍議會附圖：香港青年獎勵計劃獎章前面一側。",
+        "en": "The Training Scheme p.61 prints no artwork (only a link); the model uses the Advanced Air Crew artwork (Rover Training Scheme p.35) for all three levels, marked as an example for Elementary and Intermediate. Position per the Venture Scout Council graphic: beside the HKAYP Award, towards the front."
       },
       "sweater": false
     },
@@ -3747,13 +3873,13 @@
       "group": "extra",
       "zh": {
         "name": "海上活動徽章",
-        "place": "穿著者左袖上方第一行，近後面（手冊 P.170 附圖「深資童軍海上活動徽章」）。",
+        "place": "穿著者左袖上方，香港青年獎勵計劃獎章後面一側、低半個章（深資童軍議會「左袖」附圖）。",
         "quote": "「童軍標準艇課程（深資童軍支部課程）」分為水手長章（三級童軍標準艇證書）、副舵手章（四級童軍標準艇證書）及舵手章（五級童軍標準艇證書）三個階段課程。如由童軍支部成員晉升為深資童軍支部成員，並已考獲三級童軍標準艇證書，在晉升為深資童軍支部成員後，可直接佩戴深資童軍水手長章。",
         "conditions": "完成相應階段課程；只戴最高嗰級。深資童軍同樂行童軍用同一個章（用戶確認）。"
       },
       "en": {
         "name": "Sea Activity Badge",
-        "place": "First row on the upper wearer's left sleeve, towards the back (Handbook p.170 figure, “Venture Scout Sea Activity Badge”).",
+        "place": "Upper wearer's left sleeve, beside the HKAYP Award towards the back, half a badge lower (Venture Scout Council “left sleeve” graphic).",
         "quote": "The Scout Standard Boat Syllabus (Venture Scout Section) has three stages: Boatswain (Level 3 certificate), Coxswain's Mate (Level 4) and Coxswain (Level 5). A Scout who already holds the Level 3 certificate may wear the Venture Scout Boatswain Badge directly after moving up.",
         "conditions": "Complete the matching stage; wear the highest only. Venture and Rover Scouts wear the same badge (user confirmed)."
       },
@@ -3768,12 +3894,16 @@
       "anchor": {
         "part": "sleeve",
         "slot": "sleeveL",
-        "layer": "top",
+        "layer": "pair",
         "rank": 3,
         "side": "left",
         "measured": true
       },
       "sources": [
+        {
+          "ref": "VSC",
+          "page": "左袖"
+        },
         {
           "ref": "VTS",
           "page": "62"
@@ -3876,13 +4006,13 @@
       "group": "extra",
       "zh": {
         "name": "香港青年獎勵計劃獎章",
-        "place": "穿著者左袖上方中央，深資童軍急救章下面（手冊 P.157、P.170 附圖）。",
+        "place": "穿著者左袖上方中央最高位置（深資童軍議會「左袖」附圖）。",
         "quote": "佩戴在制服恤衫左袖上方中央位置。假若與深資童軍急救章一起佩戴，獎章在其下方位置。童軍、深資童軍及樂行童軍假若曾考獲不同等級的獎章，只可佩戴最高等級的一個。",
         "conditions": "只戴最高嗰個（銅、銀、金）。"
       },
       "en": {
         "name": "Hong Kong Award for Young People",
-        "place": "Upper centre of the wearer's left sleeve, below the Venture Scout First Aid Badge (Handbook p.157 and the p.170 figure).",
+        "place": "Top centre of the upper wearer's left sleeve (Venture Scout Council “left sleeve” graphic).",
         "quote": "Worn at the upper centre of the left sleeve; with the Venture Scout First Aid Badge it goes below it. Members holding awards of different levels wear only the highest.",
         "conditions": "Highest only (Bronze, Silver, Gold)."
       },
@@ -3897,12 +4027,16 @@
       "anchor": {
         "part": "sleeve",
         "slot": "sleeveL",
-        "layer": "mid",
+        "layer": "top",
         "rank": 1,
         "side": "left",
         "measured": true
       },
       "sources": [
+        {
+          "ref": "VSC",
+          "page": "左袖"
+        },
         {
           "ref": "UH",
           "page": "157, 170"
@@ -4001,13 +4135,13 @@
       "group": "extra",
       "zh": {
         "name": "童軍拯溺布章",
-        "place": "穿著者左袖，香港青年獎勵計劃獎章下面（手冊 P.170 附圖）。",
+        "place": "穿著者左袖中央，深資童軍急救章下面（深資童軍議會「左袖」附圖）。",
         "quote": "凡考獲中國香港拯溺總會拯溺資格的童軍成員，可佩戴童軍拯溺布章於制服上。",
         "conditions": "持有效拯溺資格；證書有效期內。"
       },
       "en": {
         "name": "Scout Life Saving Cloth Badge",
-        "place": "Wearer's left sleeve, below the HKAYP Award (Handbook p.170 figure).",
+        "place": "Centre of the wearer's left sleeve, below the Venture Scout First Aid Badge (Venture Scout Council “left sleeve” graphic).",
         "quote": "Members holding a Hong Kong China Life Saving Society qualification may wear the Scout Life Saving Cloth Badge.",
         "conditions": "Valid life saving qualification; while valid."
       },
@@ -4028,6 +4162,10 @@
         "measured": true
       },
       "sources": [
+        {
+          "ref": "VSC",
+          "page": "左袖"
+        },
         {
           "ref": "UH",
           "page": "156, 170"
@@ -4151,8 +4289,8 @@
     },
     {
       "id": "preEntry",
-      "zh": "樂行童軍先修章（綱要 P.57：手冊同綱要都冇寫戴喺深資童軍制服邊度）同舊「深資童軍世界童軍環境章」（2026 年綱要已冇）未有示範。",
-      "en": "The Rover Scout Link Badge (Training Scheme p.57: neither document says where it goes on the Venture Scout uniform) and the old Venture Scout World Scout Environment Badge (dropped from the 2026 Training Scheme) are not shown.",
+      "zh": "舊「深資童軍世界童軍環境章」（2026 年綱要已冇）未有示範。",
+      "en": "The old Venture Scout World Scout Environment Badge (dropped from the 2026 Training Scheme) is not shown.",
       "sources": [
         {
           "ref": "UH",
@@ -4160,7 +4298,7 @@
         },
         {
           "ref": "VTS",
-          "page": "49, 57"
+          "page": "49"
         }
       ]
     }
@@ -4189,6 +4327,25 @@
       "id": "v22VentureFigure",
       "zh": "非基本章：2026 年 8 月版綱要（第 11 版）冇佩戴位置圖，所以位置跟手冊 P.170 附圖同 P.129–157 文字；章嘅名稱、圖案同考取次序跟綱要（用戶指示：同樂行童軍一樣以綱要為準）——新段章「活動策劃／社會服務／多元技能／戶外探險」同金帶、深資童軍獎章、榮譽童軍獎章（英文 Dragon Scout Award）、深資童軍急救章新圖案；手冊附圖嘅「深資童軍世界童軍環境章」改為綱要第三章嘅世界童軍組織徽章（地球部落等），同社區參與章一行最多四個（參照樂行童軍綱要 P.12）。兩份文件有矛盾就以綱要為準（較新），綱要冇寫嘅跟手冊（用戶指示）。",
       "en": "Non-basic badges: the August 2026 Training Scheme (11th edition) has no wearing chart, so positions follow the Handbook p.170 figure and pp.129–157 text, while badge names, artwork and the award sequence follow the Training Scheme (user instruction: like the Rover Scouts, the Training Scheme takes precedence) — the new Project / Service / Activity / Exploration Badges and Bars, the Venture Scout Award, the Dragon Scout Award and the new First Aid artwork; the figure's Venture Scout World Scout Environment Badge is replaced by the chapter 3 WOSM badges (Earth Tribe etc.), in one row with the Community Involvement Badge, at most four (as in the Rover Training Scheme p.12). Where the two conflict the Training Scheme (newer) wins; anything it does not cover follows the Handbook (user instruction)."
+    },
+    {
+      "id": "v24bVentureCouncil",
+      "zh": "深資童軍議會最新制服附圖（用戶提供）同手冊 P.148–157／P.170 附圖同綱要 P.50 唔同：和平使者章改戴左胸袋中央代替世界童軍會員章；急救章改用樂行童軍新圖案、只戴左袖（香港青年獎勵計劃獎章同航空／海上活動徽章下面）；拯溺布章喺急救章下面；社區參與章改戴左袖、縮細為 4 cm；右袖地域章／區章下面一行世界童軍組織徽章 4 cm、最多四個。模型跟最新附圖（用戶指示）。",
+      "en": "The latest Venture Scout Council uniform graphics (supplied by the user) differ from Handbook pp.148–157, the p.170 figure and the Training Scheme p.50: the Messengers of Peace Badge goes at the centre of the left pocket in place of the World Membership Badge; the First Aid Badge uses the Rover Scouts' new design on the left sleeve only (below the HKAYP Award and the Air/Sea Activity Badges); the Life Saving Badge sits below it; the Community Involvement Badge moves to the left sleeve at 4 cm; on the right sleeve one row of WOSM badges at 4 cm, at most four, below the Region/District Badges. The model follows the latest graphics (user instruction).",
+      "sources": [
+        {
+          "ref": "VSC",
+          "page": "左胸口、左袖、右袖"
+        },
+        {
+          "ref": "UH",
+          "page": "148–157, 170"
+        },
+        {
+          "ref": "VTS",
+          "page": "50"
+        }
+      ]
     }
   ],
   "artCredit": {
@@ -4203,7 +4360,7 @@
         {
           "id": "flap",
           "gapCm": 0,
-          "max": 3,
+          "max": 4,
           "from": "outer"
         },
         {
@@ -4213,12 +4370,20 @@
           "from": "inner"
         }
       ],
-      "zh": "穿著者右胸袋袋蓋上方：下層（緊貼袋蓋）支部最高獎章標誌（金紫荊、總領袖，由右至左）同深資童軍先修章（喺佢哋左方、內側）；上層（袋蓋上方 3 cm）宗教章／公教章、和平使者章／紀念章最多兩個，宗教章／公教章喺左（內側）。",
-      "en": "Above the wearer's right pocket flap: lower row (on the flap) the Highest Award Emblems (Golden Bauhinia, Chief Scout's; right to left) and the Venture Scout Link Badge to their left (inner side); upper row (3 cm above the flap) up to two of Religious/Catholic Badge and Messengers of Peace/Commemorative Badge, the Religious/Catholic Badge on the left (inner side).",
+      "zh": "穿著者右胸袋袋蓋上方：下層（緊貼袋蓋）支部最高獎章標誌（金紫荊、總領袖，由右至左）同先修章（深資童軍先修章、樂行童軍先修章，喺佢哋左方、內側）；上層（袋蓋上方 3 cm）宗教章／公教章、紀念章，宗教章／公教章喺左（內側）。和平使者章改戴左胸袋中央（深資童軍議會附圖）。",
+      "en": "Above the wearer's right pocket flap: lower row (on the flap) the Highest Award Emblems (Golden Bauhinia, Chief Scout's; right to left) and the Link Badges (Venture Scout, Rover Scout) to their left (inner side); upper row (3 cm above the flap) the Religious/Catholic Badge and the Commemorative Badge, the Religious/Catholic Badge on the left (inner side). The Messengers of Peace Badge now goes at the centre of the left pocket (Venture Scout Council graphic).",
       "sources": [
         {
           "ref": "UH",
-          "page": "134, 138–139, 143, 155, 164–165, 170"
+          "page": "134, 138–139, 143, 164–165, 170"
+        },
+        {
+          "ref": "VTS",
+          "page": "57"
+        },
+        {
+          "ref": "VSC",
+          "page": "左胸口"
         }
       ]
     },
@@ -4260,13 +4425,8 @@
       "belowBadge": "troop",
       "layers": [
         {
-          "id": "aid",
-          "gapCm": 2,
-          "max": 1
-        },
-        {
           "id": "rd",
-          "gapCm": 0.6,
+          "gapCm": 2,
           "max": 2,
           "from": "front",
           "spacingCm": 1
@@ -4275,19 +4435,25 @@
           "id": "row",
           "gapCm": 0.6,
           "max": 4,
-          "from": "front"
+          "from": "front",
+          "spacingCm": 0.1,
+          "marginCm": 0.1
         }
       ],
-      "zh": "穿著者右袖、旅章下面：深資童軍急救章（考獲先有）；跟住地域章（前）、區章（後），相距 1 cm；再下面一行社區參與章、世界童軍組織徽章同「積極公民」獎章，最多合共四個（手冊 P.95、P.148、P.151、P.170 附圖）。冇急救章時地域章、區章喺旅章下 2 cm。",
-      "en": "Wearer's right sleeve, below the Group Badge: the Venture Scout First Aid Badge (when earned); then the Region (front) and District (back) Badges 1 cm apart; then a row of Community Involvement, WOSM and Active Citizen badges, at most four in total (Handbook pp.95, 148, 151 and the p.170 figure). Without the First Aid Badge the Region and District Badges sit 2 cm below the Group Badge.",
+      "zh": "穿著者右袖、旅章下面 2 cm：地域章（前）、區章（後），相距 1 cm；再下面一行世界童軍組織徽章（4 cm）同「積極公民」獎章，最多合共四個（深資童軍議會「右袖」附圖；手冊 P.95）。急救章同社區參與章已改戴左袖。",
+      "en": "Wearer's right sleeve, 2 cm below the Group Badge: the Region (front) and District (back) Badges 1 cm apart; below them one row of WOSM badges (4 cm) and Active Citizen badges, at most four in total (Venture Scout Council “right sleeve” graphic; Handbook p.95). The First Aid and Community Involvement Badges have moved to the left sleeve.",
       "sources": [
         {
+          "ref": "VSC",
+          "page": "右袖"
+        },
+        {
           "ref": "UH",
-          "page": "95, 148, 151, 170"
+          "page": "95"
         },
         {
           "ref": "VTS",
-          "page": "49–52, 58"
+          "page": "49"
         }
       ]
     },
@@ -4299,30 +4465,48 @@
         {
           "id": "top",
           "gapCm": 0,
-          "max": 3,
-          "from": "front"
+          "max": 1
         },
         {
-          "id": "mid",
-          "gapCm": 0.5,
+          "id": "pair",
+          "gapCm": 0,
+          "liftCm": 1.6,
+          "max": 2,
+          "pos": {
+            "1": 3.6,
+            "3": -3.6
+          }
+        },
+        {
+          "id": "aid",
+          "gapCm": 0.4,
           "max": 1
         },
         {
           "id": "low",
-          "gapCm": 0.5,
+          "gapCm": 0.4,
+          "max": 1
+        },
+        {
+          "id": "comm",
+          "gapCm": 0.4,
           "max": 1
         }
       ],
-      "zh": "穿著者左袖上方：第一行航空活動徽章（前）、深資童軍急救章（中，同右袖對稱）、海上活動徽章（後）；下面香港青年獎勵計劃獎章，再下面拯溺布章（手冊 P.148、P.156–157、P.170 附圖）。冇嘅就由上面補上。",
-      "en": "Upper wearer's left sleeve: first row Air Activity Badge (front), Venture Scout First Aid Badge (centre, matching the right sleeve) and Sea Activity Badge (back); below it the HKAYP Award, then the Life Saving Badge (Handbook pp.148, 156–157 and the p.170 figure). Rows move up when one is empty.",
+      "zh": "穿著者左袖上方中央一行落：香港青年獎勵計劃獎章（最高）；航空活動徽章（前）、海上活動徽章（後）喺佢兩側、低半個章；跟住深資童軍急救章（新圖案，同樂行童軍一樣）、拯溺布章、社區參與章（4 cm）。段章同金帶喺兩側（深資童軍議會「左袖」附圖）。冇嘅就由上面補上。",
+      "en": "Down the centre of the upper wearer's left sleeve: the HKAYP Award at the top; the Air Activity (front) and Sea Activity (back) Badges either side of it, half a badge lower; then the Venture Scout First Aid Badge (new design, same as the Rover Scouts'), the Life Saving Badge and the Community Involvement Badge (4 cm). The stage badges and bars sit either side (Venture Scout Council “left sleeve” graphic). Rows move up when one is empty.",
       "sources": [
+        {
+          "ref": "VSC",
+          "page": "左袖"
+        },
         {
           "ref": "UH",
           "page": "148, 156–157, 170"
         },
         {
           "ref": "VTS",
-          "page": "52, 60–62"
+          "page": "50–52, 58, 60–62"
         }
       ]
     }

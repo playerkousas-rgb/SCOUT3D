@@ -85,6 +85,15 @@
         "en": "URL provided by the user; the model's artwork is taken from Training Scheme pp.199–202 (the same official set)"
       },
       "url": "https://scoutsinfohub.org.hk/ScoutTrainingScheme/pdf-zh/Appendix/PatrolAnimalImages.pdf"
+    },
+    "CTS": {
+      "zh": "《幼童軍支部訓練綱要》",
+      "en": "Cub Scout Section Training Scheme",
+      "edition": {
+        "zh": "2026 年 8 月 9 日版；P.6–7 制服及「制服標誌及徽章佩戴」圖，P.8 訓練範疇，P.13–22 會員章及進度性獎章（核心範疇章），P.25–67 幼童軍活動徽章，P.68 宗教章，P.70 童軍先修章，P.72 隊長／副隊長章",
+        "en": "9 August 2026 edition; pp.6–7 uniform and badge chart, p.8 training areas, pp.13–22 Membership Badge and progress awards (core area badges), pp.25–67 Cub Scout activity badges, p.68 Religious Badge, p.70 Scout Link Badge, p.72 Sixer / Second badges"
+      },
+      "url": null
     }
   },
   "garments": [
@@ -1751,6 +1760,66 @@
       "modelNote": {
         "zh": "圖案取自手冊 P.143；手冊冇寫尺寸，模型用 2.6 × 1.7 cm。",
         "en": "Artwork from Handbook p.143; no size given, the model uses 2.6 × 1.7 cm."
+      },
+      "sweater": false
+    },
+    {
+      "id": "scoutLink",
+      "required": false,
+      "side": "right",
+      "group": "extra",
+      "zh": {
+        "name": "童軍先修章",
+        "place": "穿著者右胸袋袋蓋上方（緊貼袋蓋）中央；同金紫荊獎章標誌一齊戴時喺佢左方（內側）（手冊 P.142）。",
+        "quote": "童軍先修章佩戴在制服恤衫右胸袋袋蓋上方中央位置。假若與金紫荊獎章標誌一起佩戴，先修章在其左方位置（內側）。可佩戴至覆蓋成為童軍後一年。",
+        "conditions": "幼童軍支部考獲（幼童軍綱要 P.70）；晉升童軍後可以戴多一年。"
+      },
+      "en": {
+        "name": "Scout Link Badge",
+        "place": "Centred on top of the wearer's right pocket flap; to the left (inner side) of the Golden Bauhinia Award Emblem when worn with it (Handbook p.142).",
+        "quote": "The Scout Link Badge is worn centred above the right pocket flap. With the Golden Bauhinia Award Emblem it goes to its left (inner side). It may be worn until one year after re-investiture as a Scout.",
+        "conditions": "Earned in the Cub Scout Section (Cub Scout Training Scheme p.70); worn for one more year after moving up."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 2.6,
+        "hCm": 1.7,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "slot": "pocketR",
+        "layer": "flap",
+        "rank": 3,
+        "side": "right",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "142"
+        },
+        {
+          "ref": "CTS",
+          "page": "70"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/cub/scout_link.png",
+        "ref": "CTS",
+        "page": "70",
+        "example": false,
+        "px": [
+          96,
+          62
+        ]
+      },
+      "modelNote": {
+        "zh": "圖案取自幼童軍綱要 P.70；手冊冇寫尺寸，模型用 2.6 × 1.7 cm（同深資童軍先修章）。同深資童軍先修章一齊戴時，童軍先修章喺最內側。",
+        "en": "Artwork from the Cub Scout Training Scheme p.70; no size given, the model uses 2.6 × 1.7 cm (as the Venture Scout Link Badge). With the Venture Scout Link Badge, the Scout Link Badge is innermost."
       },
       "sweater": false
     },
@@ -9332,12 +9401,12 @@
         {
           "id": "flap",
           "gapCm": 0,
-          "max": 2,
+          "max": 3,
           "from": "outer"
         }
       ],
-      "zh": "穿著者右胸袋袋蓋上方（緊貼袋蓋）：金紫荊獎章標誌喺右（外側），深資童軍先修章喺左（內側）；只戴一個就置中（綱要 P.12 附圖；手冊 P.134、P.143）。",
-      "en": "On top of the wearer's right pocket flap: the Golden Bauhinia Award Emblem on the right (outer side), the Venture Scout Link Badge on the left (inner side); a single badge is centred (Training Scheme p.12 figure; Handbook pp.134, 143).",
+      "zh": "穿著者右胸袋袋蓋上方（緊貼袋蓋）：金紫荊獎章標誌喺右（外側），先修章（深資童軍先修章、童軍先修章）喺佢左方（內側）；只戴一個就置中（綱要 P.12 附圖；手冊 P.134、P.142–143）。",
+      "en": "On top of the wearer's right pocket flap: the Golden Bauhinia Award Emblem on the right (outer side), the Link Badges (Venture Scout, Scout) to its left (inner side); a single badge is centred (Training Scheme p.12 figure; Handbook pp.134, 142–143).",
       "sources": [
         {
           "ref": "STS",
@@ -9345,7 +9414,7 @@
         },
         {
           "ref": "UH",
-          "page": "134, 143"
+          "page": "134, 142–143"
         }
       ]
     },
@@ -9394,12 +9463,12 @@
         {
           "id": "diamond",
           "gapCm": 0,
-          "max": 8,
+          "max": 18,
           "from": "front"
         }
       ],
-      "zh": "穿著者左袖下方：專科徽章（菱形）由袖口縫線上面排起，一行三個、上一行兩個，咬合排列（綱要 P.12 附圖、手冊 P.169 附圖）；模型排三行（最多 8 個），按教導組 → 服務組 → 技能組 → 興趣組由上排落。用專章帶就頭 16 個戴喺專章帶，第 17 個起先戴喺袖（綱要 P.15）。",
-      "en": "Lower wearer's left sleeve: the diamond proficiency badges start just above the cuff seam, three in a row with two interlocking above (Training Scheme p.12 figure; Handbook p.169 figure); the model uses three rows (at most 8), filled from the top in the order Instructor → Service → Pursuit → Interest. With the sash, the first 16 go on the sash and the 17th onwards on the sleeve (Training Scheme p.15).",
+      "zh": "穿著者左袖：專科徽章（菱形）由袖口縫線上面排起，一行三個、上一行兩個，咬合排列（綱要 P.12 附圖、手冊 P.169 附圖），可以一直排到上面排滿成隻袖（用戶指示）——模型最多七行、18 個，按教導組 → 服務組 → 技能組 → 興趣組由上排落。用專章帶就頭 16 個戴喺專章帶，第 17 個起先戴喺袖（綱要 P.15）。",
+      "en": "Wearer's left sleeve: proficiency badges (diamonds) start above the cuff seam, three in a row and two in the row above, interlocking (Training Scheme p.12 figure, Handbook p.169 figure), and may continue upwards to fill the sleeve (user instruction) — the model fits up to seven rows, 18 badges, Instructor → Service → Pursuit → Interest from the top down. With the sash the first 16 go on the sash and the 17th onwards on the sleeve (Training Scheme p.15).",
       "sources": [
         {
           "ref": "STS",

@@ -833,7 +833,7 @@ function ActivityGrid({ rules, list, badges, set }) {
 
 /**
  * v24 童軍專科徽章（綱要 P.45–47 興趣組、P.84–86 技能組、P.124–125 服務組、P.146–147 教導組）：
- * 按組別分嘅細格仔，撳一下開／熄。左袖排三行（最多 8 個）；專章帶（綱要 P.15–16）再戴多 16 個；
+ * 按組別分嘅細格仔，撳一下開／熄。左袖由袖口排到上面排滿（最多 18 個，v24b）；專章帶（綱要 P.15–16）再戴多 16 個；
  * 放唔落嘅照樣記住，但列明「未能顯示」（用戶指示）。
  */
 function ProficiencyGrid({ rules, list, badges, set, setBadges, outfit, setOutfit }) {

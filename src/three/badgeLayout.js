@@ -135,7 +135,7 @@ export function placeAll(rules, gender, { sweater = false, uniform = null, occas
         else if (def.belowBadge && box[def.belowBadge]) start = box[def.belowBadge].bottom;
         else if (def.honeycomb) start = 0; // v23 六角形活動徽章：由袖口縫線上面排起（arrangeSlot）
         else continue; // 嗰個章唔戴喺呢套制服
-        geo = { kind: 'sleeve', start, frontSign: def.side === 'right' ? 1 : -1, maxW: face.width - 1, cuffSeam: face.cuffSeam };
+        geo = { kind: 'sleeve', start, frontSign: def.side === 'right' ? 1 : -1, maxW: face.width - 1, faceW: face.width, cuffSeam: face.cuffSeam };
         if (def.sash) geo.sash = sashGeo ??= sashLayout(L); // v24 專章帶：頭 sash.max 個章改戴喺帶上（visible 先分）
       }
       const opts = b.choices ? withArt.map((c) => ({ choice: c.id, art: c.art, layer: c.layer ?? a.layer, rank: c.rank ?? a.rank })) : [{ art: b.art, layer: a.layer, rank: a.rank }];
@@ -575,9 +575,14 @@ export function arrangeSlot(items, others) {
     byLayer.forEach(({ L, list }, i) => {
       GAP = L.spacingCm ?? GAP0; // 同一行章與章之間（例：地域章、區章相距 1 cm，手冊 P.95）
       // 袖：上面嘅層冇章就由下一層補上去（用第一層嘅距離），唔留空位
-      const t = prev + ((i === 0 ? def.layers[0].gapCm : L.gapCm) ?? 0);
+      // v24b liftCm：上面有層時向上移入上一層（例：深資童軍航空／海上活動徽章喺香港青年獎勵計劃獎章兩側、低半個章，深資童軍議會附圖）
+      const t = i === 0 ? prev + (def.layers[0].gapCm ?? 0) : prev + (L.gapCm ?? 0) - (L.liftCm ?? 0);
       let bottom = t;
-      for (const { p, off } of rowX(list, L.from === 'back' ? 'outer' : 'inner', geo.maxW)) {
+      // v24b marginCm：呢一行可以用到袖外側邊 marginCm 以內（例：世界童軍組織徽章 4 cm 一行四個）
+      const maxW = L.marginCm != null ? geo.faceW - 2 * L.marginCm : geo.maxW;
+      // v24b pos：按 rank 固定橫向位置（cm，+ = 近前面），淨係得一個都唔會走去中間
+      const row = L.pos ? list.map((p) => ({ p, off: L.pos[String(p.slot.rank)] ?? 0 })) : rowX(list, L.from === 'back' ? 'outer' : 'inner', maxW);
+      for (const { p, off } of row) {
         // 袖：off + = 近前面（from front）；u + = 望住袖外側嘅右手邊（右袖 = 前、左袖 = 後）
         kept.push({ ...p, u: geo.frontSign * off + 0, v: t + p.h / 2 });
         bottom = Math.max(bottom, t + p.h);
