@@ -8,7 +8,7 @@ import { useTexture } from '@react-three/drei';
 import { SECTIONS, DISTRICTS, PATROLS } from '../data/rules.js';
 import { resolveArt, rankCap, leaderNeckwear, messCapOf } from '../lib/picks.js';
 import { neckerPalettes } from '../lib/necker.js';
-import { placeAll, placeFor, visible, dynKey } from './badgeLayout.js';
+import { placeAll, placeFor, visible, dynKey, ribbonUrls } from './badgeLayout.js';
 import { useBadgeTextures, useDynamicTextures, TorsoBadges, SleeveBadges } from './Badges.jsx';
 import {
   headFaces, pigtailFaces, neckFaces, torsoFaces, sleeveFaces, cuffFaces, skinFaces, handFaces, legFaces, shortsFaces, shinFaces,
@@ -588,7 +588,7 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
   );
 
   // 徽章：位置全部由規則 JSON 計出嚟（學校運動上衣、背心會改位）；區章、地域章、優異旅團章圖案跟用戶揀
-  const staticUrls = useMemo(() => placeAll(RULES, gender).map((p) => p.art).filter((a) => a && !a.startsWith('dyn:')), [RULES, gender]);
+  const staticUrls = useMemo(() => [...placeAll(RULES, gender).map((p) => p.art).filter((a) => a && !a.startsWith('dyn:')), ...ribbonUrls(RULES)], [RULES, gender]); // 勳條（一般場合）預先載入
   const fixed = useBadgeTextures(staticUrls);
   const dynArts = useMemo(() => {
     const o = {};

@@ -5,7 +5,7 @@ import { useLang, LangToggle, bi, pick } from './i18n.jsx';
 import { SECTIONS, SECTION_IDS, DISTRICTS, PATROLS, RULE_ERRORS, badgeById, sourceLines } from './data/rules.js';
 import { garmentsFor, variantOf } from './data/validate.js';
 import { NECKER, WOGGLE, PLAIN } from './palette.js';
-import { shownReason } from './three/badgeLayout.js';
+import { shownReason, ribbonsOn } from './three/badgeLayout.js';
 import { resolveArt, meritYearOk, findDistrict, findPatrol, ranksFor, fixRank, rankRowOf, leaderNeckwear, messCapOf, troopNumber, ordinalSuffix } from './lib/picks.js';
 import { NECKER_THIRD } from './lib/necker.js';
 import { leaderUniform, isDress } from './three/body.js';
@@ -85,6 +85,7 @@ const LEADER_OUTFIT = {
   training: 'none',
   woodBadge: false,
   season: 'winter', // 晚禮服：summer = 白上衣、winter = 黑上衣（手冊 P.60）
+  occasion: 'formal', // 重要禮儀場合（勳章）／一般場合（勳條，手冊 P.190）
   neckerMain: '#2e7d4f',
   neckerBorder: '#e9b425',
   woggle: '#1f4e9c',
@@ -444,6 +445,9 @@ function InfoCard({ rules, id, outfit, badges, picks, unavailable, onClose, onFo
   const onNecker = st && outfit.school && ['membership', 'progress', 'grasshopperAward'].includes(id);
   const sizeText = `${b.size.wCm} × ${b.size.hCm} cm（${t(b.size.measured ? 'info.sizeMeasured' : 'info.sizeGuess')}）`;
   const picked = now?.district ?? now?.region;
+  // 一般場合（手冊 P.190）：勳章改戴勳條 —— 資料卡另外顯示勳條同出處
+  const uidI = rules.section.id === 'leader' ? leaderUniform(outfit.gender, outfit.uniform) : null;
+  const ribbon = ribbonsOn(rules, uidI, outfit.occasion) ? (b.choices ? b.choices.find((c) => c.id === badges[b.id])?.ribbon : b.ribbon) : null;
   return (
     <section className="card" aria-live="polite">
       <header className="card__head">
@@ -494,6 +498,14 @@ function InfoCard({ rules, id, outfit, badges, picks, unavailable, onClose, onFo
         <ArtLine rules={rules} art={arts[0]} />
       )}
       {!shown && <p className="note">{t(reason === 'off' ? 'info.hidden' : `badge.why.${reason}`)}</p>}
+      {ribbon && (
+        <div className="note ribbonnote">
+          <strong>{pick(lang, rules.ribbons, 'name')}</strong>
+          <img className="ribbonnote__img" src={ribbon.file} alt={pick(lang, rules.ribbons, 'name')} />
+          <p>{pick(lang, rules.ribbons, 'place')}</p>
+          <ArtLine rules={rules} art={ribbon} />
+        </div>
+      )}
       {onNecker && (
         <div className="note note--warn">
           <strong>{pick(lang, st, 'name')}</strong>
@@ -700,7 +712,7 @@ function NamePicker({ picks, setPicks }) {
   );
 }
 
-function BadgesTab({ rules, section, outfit, badges, setBadges, picks, setPicks, unavailable, selected, onPick }) {
+function BadgesTab({ rules, section, outfit, setOutfit, badges, setBadges, picks, setPicks, unavailable, selected, onPick }) {
   const { t } = useLang();
   const set = (k, v) => setBadges((b) => ({ ...b, [k]: v }));
   // 成年成員：只列呢套制服戴嘅章（手冊 P.57、P.60：禮服／晚禮服只戴指定嘅章）；勳章及獎勵另外一組（編號 1–6 都戴得，用戶 2026-11-15）
@@ -718,6 +730,21 @@ function BadgesTab({ rules, section, outfit, badges, setBadges, picks, setPicks,
       {awards.length > 0 && (
         <details className="awards" open={awards.some((b) => badges[b.id] && badges[b.id] !== 'none')}>
           <summary className="h3">{t(uid === 'u2' ? 'badges.awardsMini' : 'badges.awards')}</summary>
+          {rules.ribbons?.uniforms.includes(uid) && setOutfit && (
+            // 場合（手冊 P.186、P.190）：重要禮儀場合戴勳章；一般場合戴勳條（兩樣唔可以同時戴）
+            <div className="occasion">
+              <Segmented
+                label={t('badges.occasion')}
+                value={outfit.occasion === 'general' ? 'general' : 'formal'}
+                onChange={(x) => setOutfit((o) => ({ ...o, occasion: x }))}
+                options={[
+                  { value: 'formal', label: t('badges.occasionFormal') },
+                  { value: 'general', label: t('badges.occasionGeneral') },
+                ]}
+              />
+              <p className="occasion__note">{t(outfit.occasion === 'general' ? 'badges.occasionGeneralNote' : 'badges.occasionFormalNote')}</p>
+            </div>
+          )}
           <ul className="badgelist">{awards.map(row)}</ul>
         </details>
       )}
@@ -1610,6 +1637,7 @@ export default function App() {
                 rules={RULES}
                 section={section}
                 outfit={outfit}
+                setOutfit={setOutfit}
                 badges={badges}
                 setBadges={setBadges}
                 picks={artPicks}

@@ -54,11 +54,31 @@ export const DISC_CM = 3.6;
 export const MINI = 0.5;
 
 /**
+ * 掛頸勳章（手冊 P.186 插圖：勳章喺胸袋袋蓋附近）：v17 用戶指示「要低D」。
+ * 相片頂嘅 U 形綬帶（STRAP_CROP，相高嘅 8%）唔畫，改由衣領拉落嚟（Badges.jsx 用相片嗰一行拉長），勳章本身向下移 NECK_DROP cm。
+ */
+export const NECK_DROP = { default: 7, u2: 4 };
+export const STRAP_CROP = 0.08;
+
+/** 一般場合勳條模式（手冊 P.190、P.194）：只限 rules.ribbons.uniforms（禮服、恤衫；晚禮服冇勳條） */
+export const ribbonsOn = (rules, uniform, occasion) => !!(rules?.ribbons && occasion === 'general' && uniform && rules.ribbons.uniforms.includes(uniform));
+
+/** 所有勳條圖（預先載入 texture 用） */
+export function ribbonUrls(rules) {
+  const out = [];
+  for (const b of rules.badges || []) {
+    if (b.ribbon?.file) out.push(b.ribbon.file);
+    for (const c of b.choices || []) if (c.ribbon?.file) out.push(c.ribbon.file);
+  }
+  return out;
+}
+
+/**
  * 計出所有徽章嘅位置（就算未開都計，方便測試同聚焦）。
  * uniform = 成年成員制服編號（anchorBy、晚禮服襟領用）
  * @returns {Array<{key,id,mount,shape,w,h,x?,y?,u?,v?,art,step?}>}
  */
-export function placeAll(rules, gender, { sweater = false, uniform = null } = {}) {
+export function placeAll(rules, gender, { sweater = false, uniform = null, occasion = 'formal' } = {}) {
   const section = sectionOf(rules);
   const L = layout(gender, section);
   const { B, top } = L;
@@ -70,6 +90,7 @@ export function placeAll(rules, gender, { sweater = false, uniform = null } = {}
   const dep = (a) => !!(a.belowBadge || a.aboveBadge || a.onBadge);
   const order = [...rules.badges].sort((a, b) => dep(anchorOf(a, uniform)) - dep(anchorOf(b, uniform)));
   const onStrap = {}; // 職級肩章喺肩帶上嘅位置（「R」字樣別針跟住佢）
+  const RB = ribbonsOn(rules, uniform, occasion) ? rules.ribbons : null;
   for (const b of order) {
     const a = anchorOf(b, uniform);
     const { wCm: w, hCm: h, shape } = b.size;
@@ -78,13 +99,32 @@ export function placeAll(rules, gender, { sweater = false, uniform = null } = {}
     const extra = { ...(b.needsInvestiture ? { inv: true } : {}), ...(b.levels ? { levels: b.levels } : {}), ...(b.hiddenBy ? { hiddenBy: b.hiddenBy } : {}), ...(b.limitWhen ? { limitWhen: b.limitWhen } : {}) };
     const sx = a.side === 'left' ? 1 : -1;
     const withArt = (b.choices || []).filter((c) => c.art);
+    if (RB && (a.part === 'neck' || a.rack)) {
+      // 一般場合（手冊 P.190、P.194）：勳章同掛頸勳章全部改戴勳條，一律喺右胸袋袋蓋上方中央；排法喺 arrangeRacks（grid）
+      const P = B.pocket;
+      if (!P) throw new Error(`徽章 ${b.id} 要胸袋先戴到勳條`);
+      const rack = { name: 'ribbon', grid: true, perRow: RB.perRow, cx: -P.x, inward: 1, bottom: top - P.top + RB.aboveFlapCm };
+      const opts = b.choices ? withArt.filter((c) => c.ribbon).map((c) => ({ choice: c.id, file: c.ribbon.file, order: c.order })) : b.ribbon ? [{ file: b.ribbon.file, order: b.rackOrder }] : [];
+      for (const o of opts) {
+        out.push({
+          key: [b.id, o.choice].filter(Boolean).join('-'), id: b.id, ...(o.choice ? { choice: o.choice } : {}), kind: 'ribbon', mount: 'torso', shape: 'rect',
+          w: RB.wCm, h: RB.hCm, x: rack.cx, y: rack.bottom + RB.hCm / 2, z: B.torso.d / 2, art: o.file, rack, order: o.order, ...extra,
+        });
+      }
+      continue;
+    }
     if (a.part === 'neck') {
       // 編號 3、5、6（恤衫＋領巾）：綬帶喺領巾、巾圈同木章前面；編號 4 喺領帶前面（巾圈最出到胸口外 1.7 cm）
       const neckZ = uniform && !isDress(uniform) ? 2.4 : 0.4;
       // 卓越服務勳章（手冊 P.186、P.189）：掛頸，綬帶由衣領兩邊落；相片頂喺膊頭（衣領底）
+      // v17：勳章向下移 drop cm；相片頂 STRAP_CROP 唔畫，綬帶（strapCm）由衣領（top + 0.3）拉落去相片頂
+      const drop = (uniform && NECK_DROP[uniform]) ?? NECK_DROP.default;
       for (const c of withArt) {
         const f = fitPx(c.art.px, w, h);
-        out.push({ key: `${b.id}-${c.id}`, id: b.id, choice: c.id, mount: 'torso', shape, w: f.w, h: f.h, x: 0, y: top + 0.3 - f.h / 2, z: B.torso.d / 2 + neckZ, art: c.art.file, ...extra });
+        const hc = Math.round(f.h * (1 - STRAP_CROP) * 100) / 100;
+        const strapCm = Math.round((f.h * STRAP_CROP + drop) * 100) / 100;
+        const y = Math.round((top + 0.3 - strapCm - hc / 2) * 100) / 100;
+        out.push({ key: `${b.id}-${c.id}`, id: b.id, choice: c.id, mount: 'torso', shape, w: f.w, h: hc, x: 0, y, z: B.torso.d / 2 + neckZ, art: c.art.file, crop: 1 - STRAP_CROP, strapCm, ...extra });
       }
       continue;
     }
@@ -317,7 +357,7 @@ export function placeFor(rules, outfit) {
     const sweater = !dress && !!outfit.sweater;
     const R = { ...rules, badges: rules.badges.filter((b) => (!b.uniforms || b.uniforms.includes(uid)) && (!sweater || LEADER_SWEATER.has(b.id))) };
     const shell = dress || sweater;
-    return placeAll(R, gender, { sweater: shell, uniform: uid }).map((p) => (shell && p.mount === 'torso' && p.facing !== 'up' ? { ...p, z: p.z + VEST_T } : p));
+    return placeAll(R, gender, { sweater: shell, uniform: uid, occasion: outfit.occasion }).map((p) => (shell && p.mount === 'torso' && p.facing !== 'up' ? { ...p, z: p.z + VEST_T } : p));
   }
   if (outfit.school) return placeSchool(rules, gender, outfit.schoolLayout, { vest });
   if (outfit.sweater && hasSweater(rules)) {
@@ -382,6 +422,10 @@ export function arrangeRacks(list) {
   const GAP = 0.15;
   for (const items of groups.values()) {
     const R = items[0].rack;
+    if (R.grid) {
+      for (const p of arrangeRibbons(items)) moved.set(p.key, p);
+      continue;
+    }
     const sorted = [...items].sort((a, b) => a.order - b.order || a.id.localeCompare(b.id));
     const n = sorted.length;
     const steps = sorted.slice(1).map((p, i) => (sorted[i].w + p.w) / 2 + GAP);
@@ -398,6 +442,31 @@ export function arrangeRacks(list) {
     });
   }
   return list.map((p) => moved.get(p.key) ?? p);
+}
+
+/**
+ * 勳條（手冊 P.194–195）：按等級（order 細 = 高）排；每行 perRow 個，緊貼串連（金屬胸針）。
+ * 多出嚟嘅（n % perRow 個，即最高等級嗰幾個）喺最上面一行並置中；下面每行 perRow 個。
+ * 每行由內側（近中線，佩戴者左）至外側（佩戴者右）由高至低 —— 同 P.195 四個例子一致。
+ */
+export function arrangeRibbons(items) {
+  if (!items.length) return [];
+  const R = items[0].rack;
+  const per = R.perRow || 3;
+  const sorted = [...items].sort((a, b) => a.order - b.order || a.id.localeCompare(b.id));
+  const n = sorted.length;
+  const first = n % per || per;
+  const rows = [sorted.slice(0, first)];
+  for (let i = first; i < n; i += per) rows.push(sorted.slice(i, i + per));
+  const out = [];
+  rows.forEach((row, ri) => {
+    const fromBottom = rows.length - 1 - ri;
+    row.forEach((p, k) => {
+      const off = (k - (row.length - 1) / 2) * p.w; // + = 外側
+      out.push({ ...p, x: Math.round((R.cx - R.inward * off) * 100) / 100, y: Math.round((R.bottom + p.h / 2 + fromBottom * p.h) * 100) / 100, row: ri, col: k });
+    });
+  });
+  return out;
 }
 
 /** 袖上並排嘅一對章（地域章喺前、區章喺後，手冊 P.95） */

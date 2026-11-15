@@ -7,7 +7,9 @@ const SHAPES = new Set(['circle', 'square', 'rect']);
 const PARTS = new Set(['torso', 'sleeve', 'shoulder', 'neck']); // shoulder = 套喺肩帶上；neck = 掛頸（卓越服務勳章）
 // rank = 成年成員職級肩章（跟所揀職級）；metalRank = 晚禮服金屬職級肩章（跟職級 + 夏季／冬季）；nameTag = 布質名牌（用戶輸入姓名）
 const DYNAMIC = new Set(['district', 'region', 'meritorious', 'patrol', 'rank', 'metalRank', 'nameTag', 'troop']);
-const ART_FILE = /^\/badges\/((districts|patrols|leader|awards)\/)?[\w-]+\.png$/;
+const ART_FILE = /^\/badges\/((districts|patrols|leader|awards|ribbons)\/)?[\w-]+\.png$/;
+/** 勳條圖：官方相下面嗰條（或者用戶提供），要有來源、頁碼同 px 尺寸 */
+const ribbonOkWith = (sources) => (r) => !!r && ART_FILE.test(r.file || '') && !!sources[r.ref] && !!r.page && r.px?.[0] > 0 && r.px?.[1] > 0;
 const POCKET = new Set(['centre', 'aboveFlap', 'flap']); // flap = 袋蓋中央（布質名牌、感謝章）
 const RACKS = new Set(['pocket', 'lapel']); // 勳章排：禮服右胸袋袋蓋上方／晚禮服右襟領童軍徽上方
 const SEASONS = ['summer', 'winter'];
@@ -42,6 +44,7 @@ export function validateRules(rules) {
   if (!/^v\d+\.\d+(\.\d+)?$/.test(rules.fileVersion || '')) errors.push('fileVersion 格式錯');
   if (rules.copyright !== '© SCOUT SYSTEM') errors.push('copyright 必須係 © SCOUT SYSTEM');
   const sources = rules.sources || {};
+  const ribbonOk = ribbonOkWith(sources);
   if (!Object.keys(sources).length) errors.push('sources 空白');
   if (!rules.review || !STATUSES.has(rules.review.status)) errors.push('review.status 錯');
 
@@ -207,10 +210,13 @@ export function validateRules(rules) {
         if (c.art && (!ART_FILE.test(c.art.file || '') || !sources[c.art.ref] || !c.art.page)) errors.push(`${w}: choice ${c.id} 圖案要寫官方文件來源同頁碼`);
         if (c.art && (b.anchor?.rack || b.anchor?.part === 'neck') && !(c.art.px?.[0] > 0 && c.art.px?.[1] > 0)) errors.push(`${w}: choice ${c.id} 要有 px 尺寸（排勳章用）`);
         if (c.art && b.anchor?.rack && !(Number.isInteger(c.order) && c.order > 0)) errors.push(`${w}: choice ${c.id} 要有 P.191–192 等級 order`);
+        // 一般場合勳條（手冊 P.190、P.194）：有 ribbons 設定嘅支部，每個勳章選項都要有勳條圖（官方相下面嗰條）
+        if (c.art && rules.ribbons && (b.anchor?.rack || b.anchor?.part === 'neck') && !ribbonOk(c.ribbon)) errors.push(`${w}: choice ${c.id} 要有勳條圖（ribbon：來源、頁碼、px）`);
       }
       if (!cids.has(b.default)) errors.push(`${w}: default 要係 choices 其中一個`);
       if (!(b.choices || []).some((c) => !c.art)) errors.push(`${w}: choices 要有一個「冇章」選項`);
     }
+    if (rules.ribbons && b.anchor?.rack && !b.choices && !ribbonOk(b.ribbon)) errors.push(`${w}: 要有勳條圖（ribbon：來源、頁碼、px）`);
     // 圖案一定要來自官方文件（唔可以自己設計）
     const arts = Array.isArray(b.art) ? b.art : b.art ? [b.art] : [];
     if (!arts.length) errors.push(`${w}: 冇徽章圖案（art）`);
@@ -218,6 +224,16 @@ export function validateRules(rules) {
       if (!ART_FILE.test(art.file || '')) errors.push(`${w}: art.file 格式錯`);
       if (!sources[art.ref] || !art.page) errors.push(`${w}: art 要寫官方文件來源同頁碼`);
     }
+  }
+
+  // 一般場合勳條設定（手冊 P.190、P.194–195）
+  const R = rules.ribbons;
+  if (R) {
+    const uids = new Set((rules.uniforms || []).map((u) => u.id));
+    if (!Array.isArray(R.uniforms) || !R.uniforms.length || R.uniforms.some((u) => !uids.has(u))) errors.push('ribbons.uniforms 要係已有嘅制服編號');
+    if (!(R.wCm > 0 && R.hCm > 0 && Number.isInteger(R.perRow) && R.perRow > 0 && R.aboveFlapCm >= 0)) errors.push('ribbons 尺寸／每行數目錯');
+    if (!R.zh?.name || !R.en?.name || !R.zh?.quote || !R.en?.quote) errors.push('ribbons 缺中英名或原文');
+    checkSources(R.sources, sources, 'ribbons', errors);
   }
 
   const st = rules.schoolTop;

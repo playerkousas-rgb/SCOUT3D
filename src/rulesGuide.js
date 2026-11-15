@@ -151,7 +151,7 @@ export const RULES_GUIDE = {
     { title: 'rules.g.wood', items: ['outfit.woodBadgeNote', 'outfit.woodBadgeEvening'] },
     { title: 'rules.g.sweater', items: ['outfit.sweaterNoteLeader'] },
     { title: 'rules.g.badges', items: ['badge.why.sweater', 'pick.nameNote'] },
-    { title: 'rules.g.awards', items: ['badges.awardsNote', 'badges.awardsMiniNote'] },
+    { title: 'rules.g.awards', items: ['badges.awardsNote', 'badges.awardsMiniNote', 'badges.occasionFormalNote', 'badges.occasionGeneralNote'] },
   ],
 };
 

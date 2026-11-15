@@ -1103,3 +1103,21 @@ a {
     width: auto;
   }
 }
+
+/* 勳章及獎勵：場合（重要禮儀場合＝勳章；一般場合＝勳條，手冊 P.190） */
+.occasion {
+  margin: 8px 0 4px;
+}
+.occasion__note {
+  margin: 4px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+.ribbonnote__img {
+  display: block;
+  width: 108px;
+  height: auto;
+  margin: 6px 0;
+  border: 1px solid var(--line, #ccc);
+}

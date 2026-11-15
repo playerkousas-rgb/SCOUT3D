@@ -25,6 +25,12 @@
     "userChecks": [
       {
         "date": "2026-11-15",
+        "item": "ribbons",
+        "zh": "加「一般場合：勳條」模式（重要禮儀場合戴勳章、一般場合戴勳條，兩樣唔同時戴）；勳條顏色取自手冊 P.178–185 每張相下面嘅勳條；獅／龍掛頸勳章掛低啲；冇相嘅獎勵唔加（用戶指示）",
+        "en": "Added the general-occasion ribbon mode (decorations at formal occasions, ribbons at general occasions, never both); ribbon colours from the bars under each photo on Handbook pp.178–185; Lion/Dragon neck decorations hang lower; awards without a handbook photo are not added (user instruction)"
+      },
+      {
+        "date": "2026-11-15",
         "item": "awardsDetail",
         "zh": "銅狼勳章換用戶提供圖片；按手冊 P.177–195 同第 24/2025 號通告逐條覆核勳章及獎勵：加服務段章、長期服務星章年資、特殊貢獻星章同第十次徽章（用戶指示「規定比較多要仔細點查看」）",
         "en": "Bronze Wolf uses the image supplied by the user; decorations and awards re-checked against Handbook pp.177–195 and Circular 24/2025: service bars added, long service star years, Special Contribution Star with the 10th medallion (user instruction to check the detailed rules carefully)"
@@ -3329,7 +3335,16 @@
               200
             ]
           },
-          "order": 6
+          "order": 6,
+          "ribbon": {
+            "file": "/badges/ribbons/neckMedal_bronzeLion.png",
+            "ref": "UH",
+            "page": "178",
+            "px": [
+              160,
+              48
+            ]
+          }
         },
         {
           "id": "silverLion",
@@ -3349,7 +3364,16 @@
               200
             ]
           },
-          "order": 5
+          "order": 5,
+          "ribbon": {
+            "file": "/badges/ribbons/neckMedal_silverLion.png",
+            "ref": "UH",
+            "page": "178",
+            "px": [
+              160,
+              48
+            ]
+          }
         },
         {
           "id": "goldLion",
@@ -3369,7 +3393,16 @@
               198
             ]
           },
-          "order": 3
+          "order": 3,
+          "ribbon": {
+            "file": "/badges/ribbons/neckMedal_goldLion.png",
+            "ref": "UH",
+            "page": "178",
+            "px": [
+              160,
+              48
+            ]
+          }
         },
         {
           "id": "greenDragon",
@@ -3389,7 +3422,16 @@
               189
             ]
           },
-          "order": 6
+          "order": 6,
+          "ribbon": {
+            "file": "/badges/ribbons/neckMedal_greenDragon.png",
+            "ref": "UH",
+            "page": "179",
+            "px": [
+              160,
+              48
+            ]
+          }
         },
         {
           "id": "silverDragon",
@@ -3409,7 +3451,16 @@
               200
             ]
           },
-          "order": 5
+          "order": 5,
+          "ribbon": {
+            "file": "/badges/ribbons/neckMedal_silverDragon.png",
+            "ref": "UH",
+            "page": "179",
+            "px": [
+              160,
+              48
+            ]
+          }
         },
         {
           "id": "goldDragon",
@@ -3429,7 +3480,16 @@
               194
             ]
           },
-          "order": 3
+          "order": 3,
+          "ribbon": {
+            "file": "/badges/ribbons/neckMedal_goldDragon.png",
+            "ref": "UH",
+            "page": "179",
+            "px": [
+              160,
+              48
+            ]
+          }
         },
         {
           "id": "bronzeWolf",
@@ -3450,7 +3510,17 @@
             ],
             "user": true
           },
-          "order": 2
+          "order": 2,
+          "ribbon": {
+            "file": "/badges/ribbons/neckMedal_bronzeWolf.png",
+            "ref": "WOSM",
+            "page": "—",
+            "px": [
+              160,
+              48
+            ],
+            "user": true
+          }
         }
       ],
       "default": "none",
@@ -3553,7 +3623,16 @@
               150
             ]
           },
-          "order": 1
+          "order": 1,
+          "ribbon": {
+            "file": "/badges/ribbons/gallantry_bronze.png",
+            "ref": "UH",
+            "page": "178",
+            "px": [
+              160,
+              48
+            ]
+          }
         },
         {
           "id": "silver",
@@ -3573,7 +3652,16 @@
               150
             ]
           },
-          "order": 1
+          "order": 1,
+          "ribbon": {
+            "file": "/badges/ribbons/gallantry_silver.png",
+            "ref": "UH",
+            "page": "178",
+            "px": [
+              160,
+              48
+            ]
+          }
         },
         {
           "id": "gold",
@@ -3593,7 +3681,16 @@
               150
             ]
           },
-          "order": 1
+          "order": 1,
+          "ribbon": {
+            "file": "/badges/ribbons/gallantry_gold.png",
+            "ref": "UH",
+            "page": "178",
+            "px": [
+              160,
+              48
+            ]
+          }
         }
       ],
       "default": "none",
@@ -3695,7 +3792,16 @@
               150
             ]
           },
-          "order": 14
+          "order": 14,
+          "ribbon": {
+            "file": "/badges/ribbons/meritAward_goodService.png",
+            "ref": "UH",
+            "page": "179",
+            "px": [
+              160,
+              48
+            ]
+          }
         },
         {
           "id": "distinguishedService",
@@ -3715,7 +3821,16 @@
               150
             ]
           },
-          "order": 13
+          "order": 13,
+          "ribbon": {
+            "file": "/badges/ribbons/meritAward_distinguishedService.png",
+            "ref": "UH",
+            "page": "179",
+            "px": [
+              160,
+              48
+            ]
+          }
         },
         {
           "id": "meritMedal",
@@ -3735,7 +3850,16 @@
               150
             ]
           },
-          "order": 11
+          "order": 11,
+          "ribbon": {
+            "file": "/badges/ribbons/meritAward_meritMedal.png",
+            "ref": "UH",
+            "page": "179",
+            "px": [
+              160,
+              48
+            ]
+          }
         },
         {
           "id": "meritCross",
@@ -3755,7 +3879,16 @@
               150
             ]
           },
-          "order": 9
+          "order": 9,
+          "ribbon": {
+            "file": "/badges/ribbons/meritAward_meritCross.png",
+            "ref": "UH",
+            "page": "179",
+            "px": [
+              160,
+              48
+            ]
+          }
         }
       ],
       "default": "none",
@@ -3843,6 +3976,15 @@
       "modelNote": {
         "zh": "禮服同恤衫（編號 1、3–6）：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）。",
         "en": "Dress jacket and shirts (Nos. 1, 3–6): medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed)."
+      },
+      "ribbon": {
+        "file": "/badges/ribbons/diamondJubilee.png",
+        "ref": "UH",
+        "page": "180",
+        "px": [
+          160,
+          48
+        ]
       }
     },
     {
@@ -3928,7 +4070,16 @@
               150
             ]
           },
-          "order": 17
+          "order": 17,
+          "ribbon": {
+            "file": "/badges/ribbons/millennium_medal.png",
+            "ref": "UH",
+            "page": "180",
+            "px": [
+              160,
+              48
+            ]
+          }
         },
         {
           "id": "star",
@@ -3948,7 +4099,16 @@
               150
             ]
           },
-          "order": 17
+          "order": 17,
+          "ribbon": {
+            "file": "/badges/ribbons/millennium_star.png",
+            "ref": "UH",
+            "page": "180",
+            "px": [
+              160,
+              48
+            ]
+          }
         }
       ],
       "default": "none",
@@ -4050,7 +4210,16 @@
               150
             ]
           },
-          "order": 18
+          "order": 18,
+          "ribbon": {
+            "file": "/badges/ribbons/metroCamp_bronze.png",
+            "ref": "UH",
+            "page": "180",
+            "px": [
+              160,
+              48
+            ]
+          }
         },
         {
           "id": "silver",
@@ -4070,7 +4239,16 @@
               150
             ]
           },
-          "order": 18
+          "order": 18,
+          "ribbon": {
+            "file": "/badges/ribbons/metroCamp_silver.png",
+            "ref": "UH",
+            "page": "180",
+            "px": [
+              160,
+              48
+            ]
+          }
         }
       ],
       "default": "none",
@@ -4172,7 +4350,16 @@
               150
             ]
           },
-          "order": 19
+          "order": 19,
+          "ribbon": {
+            "file": "/badges/ribbons/centenary_bronze.png",
+            "ref": "UH",
+            "page": "180",
+            "px": [
+              160,
+              48
+            ]
+          }
         },
         {
           "id": "silver",
@@ -4192,7 +4379,16 @@
               150
             ]
           },
-          "order": 19
+          "order": 19,
+          "ribbon": {
+            "file": "/badges/ribbons/centenary_silver.png",
+            "ref": "UH",
+            "page": "180",
+            "px": [
+              160,
+              48
+            ]
+          }
         }
       ],
       "default": "none",
@@ -4280,6 +4476,15 @@
       "modelNote": {
         "zh": "禮服同恤衫（編號 1、3–6）：勳章排喺右胸袋袋蓋上方中央，由內側（近中線）至外側按 P.191–192 等級排列；兩至三個並排（Swing Mount），四個或以上用金屬胸針串連重疊、最高等級喺最上面，各勳章底部同一水平（P.193）。模型當圓形牌高 3.6 cm：勳章底喺袋蓋頂下 3.6 cm（圓形牌頂端貼住袋蓋頂）。晚禮服：小型章排喺右襟領童軍徽上方（小型章當一半大小，手冊冇寫尺寸）。勳章相片取自手冊 P.178–185（已去背景）。",
         "en": "Dress jacket and shirts (Nos. 1, 3–6): medals hang centred above the right chest-pocket flap, from the inside (centre line) outward in the pp.191–192 order of precedence; two or three side by side (swing mount), four or more joined by a metal brooch and overlapped with the highest on top, all bottoms level (p.193). The model takes the medal disc as 3.6 cm tall: the medal bottoms sit 3.6 cm below the top of the flap (disc top against the flap top). Evening dress: miniatures above the Scout emblem on the right lapel (taken as half size; no size in the Handbook). Medal photos from Handbook pp.178–185 (background removed)."
+      },
+      "ribbon": {
+        "file": "/badges/ribbons/scoutCentre.png",
+        "ref": "UH",
+        "page": "181",
+        "px": [
+          160,
+          48
+        ]
       }
     },
     {
@@ -4365,7 +4570,16 @@
               150
             ]
           },
-          "order": 24
+          "order": 24,
+          "ribbon": {
+            "file": "/badges/ribbons/sp95_silver.png",
+            "ref": "UH",
+            "page": "181",
+            "px": [
+              160,
+              48
+            ]
+          }
         },
         {
           "id": "gold",
@@ -4385,7 +4599,16 @@
               150
             ]
           },
-          "order": 24
+          "order": 24,
+          "ribbon": {
+            "file": "/badges/ribbons/sp95_gold.png",
+            "ref": "UH",
+            "page": "181",
+            "px": [
+              160,
+              48
+            ]
+          }
         }
       ],
       "default": "none",
@@ -4487,7 +4710,16 @@
               150
             ]
           },
-          "order": 25
+          "order": 25,
+          "ribbon": {
+            "file": "/badges/ribbons/sp100_silver.png",
+            "ref": "UH",
+            "page": "181",
+            "px": [
+              160,
+              48
+            ]
+          }
         },
         {
           "id": "goldone",
@@ -4507,7 +4739,16 @@
               150
             ]
           },
-          "order": 25
+          "order": 25,
+          "ribbon": {
+            "file": "/badges/ribbons/sp100_goldone.png",
+            "ref": "UH",
+            "page": "181",
+            "px": [
+              160,
+              48
+            ]
+          }
         },
         {
           "id": "goldtwo",
@@ -4527,7 +4768,16 @@
               150
             ]
           },
-          "order": 25
+          "order": 25,
+          "ribbon": {
+            "file": "/badges/ribbons/sp100_goldtwo.png",
+            "ref": "UH",
+            "page": "181",
+            "px": [
+              160,
+              48
+            ]
+          }
         },
         {
           "id": "goldthree",
@@ -4547,7 +4797,16 @@
               150
             ]
           },
-          "order": 25
+          "order": 25,
+          "ribbon": {
+            "file": "/badges/ribbons/sp100_goldthree.png",
+            "ref": "UH",
+            "page": "181",
+            "px": [
+              160,
+              48
+            ]
+          }
         }
       ],
       "default": "none",
@@ -4649,7 +4908,16 @@
               150
             ]
           },
-          "order": 28
+          "order": 28,
+          "ribbon": {
+            "file": "/badges/ribbons/specialContribution_one.png",
+            "ref": "UH",
+            "page": "182",
+            "px": [
+              160,
+              48
+            ]
+          }
         },
         {
           "id": "two",
@@ -4669,7 +4937,16 @@
               150
             ]
           },
-          "order": 28
+          "order": 28,
+          "ribbon": {
+            "file": "/badges/ribbons/specialContribution_two.png",
+            "ref": "UH",
+            "page": "182",
+            "px": [
+              160,
+              48
+            ]
+          }
         },
         {
           "id": "three",
@@ -4689,7 +4966,16 @@
               150
             ]
           },
-          "order": 28
+          "order": 28,
+          "ribbon": {
+            "file": "/badges/ribbons/specialContribution_three.png",
+            "ref": "UH",
+            "page": "182",
+            "px": [
+              160,
+              48
+            ]
+          }
         },
         {
           "id": "four",
@@ -4709,7 +4995,16 @@
               150
             ]
           },
-          "order": 28
+          "order": 28,
+          "ribbon": {
+            "file": "/badges/ribbons/specialContribution_four.png",
+            "ref": "UH",
+            "page": "182",
+            "px": [
+              160,
+              48
+            ]
+          }
         },
         {
           "id": "five",
@@ -4729,7 +5024,16 @@
               150
             ]
           },
-          "order": 28
+          "order": 28,
+          "ribbon": {
+            "file": "/badges/ribbons/specialContribution_five.png",
+            "ref": "UH",
+            "page": "182",
+            "px": [
+              160,
+              48
+            ]
+          }
         },
         {
           "id": "six",
@@ -4749,7 +5053,16 @@
               150
             ]
           },
-          "order": 28
+          "order": 28,
+          "ribbon": {
+            "file": "/badges/ribbons/specialContribution_six.png",
+            "ref": "UH",
+            "page": "182",
+            "px": [
+              160,
+              48
+            ]
+          }
         },
         {
           "id": "seven",
@@ -4769,7 +5082,16 @@
               150
             ]
           },
-          "order": 28
+          "order": 28,
+          "ribbon": {
+            "file": "/badges/ribbons/specialContribution_seven.png",
+            "ref": "UH",
+            "page": "182",
+            "px": [
+              160,
+              48
+            ]
+          }
         },
         {
           "id": "eight",
@@ -4789,7 +5111,16 @@
               150
             ]
           },
-          "order": 28
+          "order": 28,
+          "ribbon": {
+            "file": "/badges/ribbons/specialContribution_eight.png",
+            "ref": "UH",
+            "page": "182",
+            "px": [
+              160,
+              48
+            ]
+          }
         },
         {
           "id": "nine",
@@ -4809,7 +5140,16 @@
               150
             ]
           },
-          "order": 28
+          "order": 28,
+          "ribbon": {
+            "file": "/badges/ribbons/specialContribution_nine.png",
+            "ref": "UH",
+            "page": "182",
+            "px": [
+              160,
+              48
+            ]
+          }
         },
         {
           "id": "ten",
@@ -4829,7 +5169,16 @@
               150
             ]
           },
-          "order": 28
+          "order": 28,
+          "ribbon": {
+            "file": "/badges/ribbons/specialContribution_ten.png",
+            "ref": "UH",
+            "page": "182",
+            "px": [
+              160,
+              48
+            ]
+          }
         }
       ],
       "default": "none",
@@ -4937,7 +5286,16 @@
               150
             ]
           },
-          "order": 27
+          "order": 27,
+          "ribbon": {
+            "file": "/badges/ribbons/specialStar_eleven.png",
+            "ref": "UH",
+            "page": "183",
+            "px": [
+              160,
+              48
+            ]
+          }
         },
         {
           "id": "twelve",
@@ -4957,7 +5315,16 @@
               150
             ]
           },
-          "order": 27
+          "order": 27,
+          "ribbon": {
+            "file": "/badges/ribbons/specialStar_twelve.png",
+            "ref": "UH",
+            "page": "183",
+            "px": [
+              160,
+              48
+            ]
+          }
         },
         {
           "id": "thirteen",
@@ -4977,7 +5344,16 @@
               150
             ]
           },
-          "order": 27
+          "order": 27,
+          "ribbon": {
+            "file": "/badges/ribbons/specialStar_thirteen.png",
+            "ref": "UH",
+            "page": "183",
+            "px": [
+              160,
+              48
+            ]
+          }
         },
         {
           "id": "fourteen",
@@ -4997,7 +5373,16 @@
               150
             ]
           },
-          "order": 27
+          "order": 27,
+          "ribbon": {
+            "file": "/badges/ribbons/specialStar_fourteen.png",
+            "ref": "UH",
+            "page": "183",
+            "px": [
+              160,
+              48
+            ]
+          }
         },
         {
           "id": "fifteen",
@@ -5017,7 +5402,16 @@
               150
             ]
           },
-          "order": 27
+          "order": 27,
+          "ribbon": {
+            "file": "/badges/ribbons/specialStar_fifteen.png",
+            "ref": "UH",
+            "page": "183",
+            "px": [
+              160,
+              48
+            ]
+          }
         },
         {
           "id": "sixteen",
@@ -5037,7 +5431,16 @@
               150
             ]
           },
-          "order": 27
+          "order": 27,
+          "ribbon": {
+            "file": "/badges/ribbons/specialStar_sixteen.png",
+            "ref": "UH",
+            "page": "183",
+            "px": [
+              160,
+              48
+            ]
+          }
         }
       ],
       "default": "none",
@@ -5297,7 +5700,16 @@
             ]
           },
           "order": 31,
-          "years": 15
+          "years": 15,
+          "ribbon": {
+            "file": "/badges/ribbons/longService_medal.png",
+            "ref": "UH",
+            "page": "185",
+            "px": [
+              160,
+              48
+            ]
+          }
         },
         {
           "id": "one",
@@ -5318,7 +5730,16 @@
             ]
           },
           "order": 31,
-          "years": 25
+          "years": 25,
+          "ribbon": {
+            "file": "/badges/ribbons/longService_one.png",
+            "ref": "UH",
+            "page": "185",
+            "px": [
+              160,
+              48
+            ]
+          }
         },
         {
           "id": "two",
@@ -5339,7 +5760,16 @@
             ]
           },
           "order": 31,
-          "years": 35
+          "years": 35,
+          "ribbon": {
+            "file": "/badges/ribbons/longService_two.png",
+            "ref": "UH",
+            "page": "185",
+            "px": [
+              160,
+              48
+            ]
+          }
         },
         {
           "id": "three",
@@ -5360,7 +5790,16 @@
             ]
           },
           "order": 31,
-          "years": 45
+          "years": 45,
+          "ribbon": {
+            "file": "/badges/ribbons/longService_three.png",
+            "ref": "UH",
+            "page": "185",
+            "px": [
+              160,
+              48
+            ]
+          }
         },
         {
           "id": "four",
@@ -5381,7 +5820,16 @@
             ]
           },
           "order": 31,
-          "years": 55
+          "years": 55,
+          "ribbon": {
+            "file": "/badges/ribbons/longService_four.png",
+            "ref": "UH",
+            "page": "185",
+            "px": [
+              160,
+              48
+            ]
+          }
         },
         {
           "id": "five",
@@ -5402,7 +5850,16 @@
             ]
           },
           "order": 31,
-          "years": 65
+          "years": 65,
+          "ribbon": {
+            "file": "/badges/ribbons/longService_five.png",
+            "ref": "UH",
+            "page": "185",
+            "px": [
+              160,
+              48
+            ]
+          }
         },
         {
           "id": "six",
@@ -5423,7 +5880,16 @@
             ]
           },
           "order": 31,
-          "years": 75
+          "years": 75,
+          "ribbon": {
+            "file": "/badges/ribbons/longService_six.png",
+            "ref": "UH",
+            "page": "185",
+            "px": [
+              160,
+              48
+            ]
+          }
         }
       ],
       "default": "none",
@@ -5748,13 +6214,8 @@
     },
     {
       "id": "medalPrecedenceGaps",
-      "zh": "P.191–192（第 24/2025 號通告）等級名單有 32 項；模型只提供有相片嘅：英勇、銅狼（用戶提供圖片）、獅／龍、功績榮譽十字章、功績榮譽獎章、優異／優良服務獎章、鑽禧、跨世紀、大都會、百周年、童軍中心、95 周年及百周年特別貢獻、特殊貢獻星章／徽章、長期服務。未有：其他童軍會、英國童軍會、世界／亞太區委員會、110 周年紀念及特別貢獻、童心抗疫、同行未來、亞太區童軍基金（手冊冇相）。",
-      "en": "The pp.191–192 list (Circular 24/2025) has 32 entries; the model offers those with photos: gallantry, Bronze Wolf (image supplied by the user), Lion/Dragon, Cross and Medal for Merit, Distinguished and Good Service, Diamond Jubilee, Millennium, Metropolitan Camp, Centenary, Scout Centre, 95th/Centenary special contribution, Special Contribution Star/Medallion and Long Service. Not yet: other associations, The Scout Association (UK), World/Asia-Pacific committees, 110th anniversary medals and special contribution, anti-epidemic, Jamboree 2023, Asia-Pacific Scout Foundation (no photos in the Handbook)."
-    },
-    {
-      "id": "ribbonsGeneral",
-      "zh": "一般場合（日常活動及訓練）可以改戴勳條（P.190、P.194）：模型而家只做重要禮儀場合嘅勳章；勳條同勳章唔可以同時戴。",
-      "en": "For general occasions (everyday activities and training) ribbons may be worn instead (pp.190, 194): the model currently shows only the medals for important ceremonial occasions; ribbons and medals are never worn together."
+      "zh": "P.191–192（第 24/2025 號通告）等級名單有 32 項；模型只提供手冊 P.178–185 有相片（同勳條）嘅：英勇、銅狼（用戶提供圖片）、獅／龍、功績榮譽十字章、功績榮譽獎章、優異／優良服務獎章、鑽禧、跨世紀、大都會、百周年、童軍中心、95 周年及百周年特別貢獻、特殊貢獻星章／徽章、長期服務。已逐頁睇過 P.177–200（v17）：110 周年紀念及特別貢獻、童心抗疫、同行未來、亞太區童軍基金喺手冊冇相亦冇勳條，所以未加；其他童軍會、英國童軍會、世界／亞太區委員會獎勵亦冇相。",
+      "en": "The pp.191–192 order of precedence (Circular 24/2025) lists 32 items; the model provides those with a photo (and ribbon) on Handbook pp.178–185: gallantry, Bronze Wolf (image supplied by the user), Lions/Dragons, Cross and Medal of Merit, Distinguished and Good Service Medals, Diamond Jubilee, Millennium, Metro Camp, Centenary, Scout Centre, 95th and Centenary Special Contribution, Special Contribution Star/medallions and long service. Pages 177–200 were checked one by one (v17): the 110th Anniversary and 110th Special Contribution medals, the Scouts Fighting the Pandemic medal, the Walking Together medal and the APR Scout Foundation award have no photo or ribbon in the handbook, so they are not added; awards of other associations, The Scout Association (UK) and the World/APR Committees have no photo either."
     },
     {
       "id": "otherAwards",
@@ -5907,5 +6368,36 @@
         }
       ]
     }
-  ]
+  ],
+  "ribbons": {
+    "uniforms": [
+      "u1",
+      "u3",
+      "u4",
+      "u5",
+      "u6"
+    ],
+    "wCm": 3.6,
+    "hCm": 1.08,
+    "perRow": 3,
+    "aboveFlapCm": 0.2,
+    "zh": {
+      "name": "一般場合：勳條",
+      "place": "制服恤衫或禮服上衣右胸袋袋蓋上方中央；每行三個，多過三個就喺上面開新一行並置中；由內側（佩戴者左）至外側（佩戴者右）按等級排列。",
+      "quote": "童軍成員出席一般場合，可在制服上佩戴勳條。佩戴所有勳章及獎勵的勳條在制服恤衫或禮服上衣右胸袋袋蓋上方中央位置；長期服務獎勵只佩戴最高年資的勳條。依第 191 至 192 頁「按等級排列的童軍勳章及獎勵名單」排列，順序由左至右（由內側至外側）佩戴。用金屬胸針順序由左至右串連起來佩戴。每行三個勳條；否則在上方開新一行並置中對齊。勳條與勳章及獎勵不可同時佩戴。假若穿西服，不可佩戴勳條。",
+      "conditions": "一般場合指日常活動及訓練。香港總監嘉許／高級嘉許笛繩、感謝章（P.188）同服務段章（P.189）照戴。晚禮服係重要禮儀場合穿著，冇勳條。手冊 P.195 例子：多出嚟嗰幾個（最高等級）喺最上面一行。"
+    },
+    "en": {
+      "name": "General occasions: ribbons",
+      "place": "Centred above the right chest-pocket flap of the uniform shirt or dress jacket; three per row, extra rows above and centred; ordered from inside (wearer's left) to outside (wearer's right) by precedence.",
+      "quote": "At general occasions members may wear ribbons on the uniform. Ribbons of all decorations and awards are worn centred above the right chest-pocket flap of the uniform shirt or dress jacket; for long service only the ribbon of the longest service is worn. They follow the order of precedence on pp.191–192, from left to right (inside to outside), joined left to right on a metal brooch. Three ribbons per row; otherwise a new row is started above and centred. Ribbons are not worn together with decorations and medals, and not on a lounge suit.",
+      "conditions": "General occasions are everyday activities and training. The Chief Commissioner's commendation lanyards, thanks badge (p.188) and service bars (p.189) are still worn. Evening dress is for formal occasions and has no ribbons. Handbook p.195 examples: the extra (highest) ribbons form the top row."
+    },
+    "sources": [
+      {
+        "ref": "UH",
+        "page": "185, 190, 194–195"
+      }
+    ]
+  }
 }

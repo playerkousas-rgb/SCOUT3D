@@ -118,7 +118,8 @@ test('四個或以上勳章重疊、最高等級喺最上面；由內至外按�
 test('文件之間嘅分別：拎走過時嘅「恤衫之後先做」，加勳條同其他獎勵', () => {
   const ids = rules.conflicts.map((c) => c.id);
   assert.ok(!ids.includes('medalsOnShirt'));
-  assert.ok(ids.includes('ribbonsGeneral') && ids.includes('otherAwards'));
+  assert.ok(ids.includes('otherAwards'));
+  assert.ok(!ids.includes('ribbonsGeneral'), 'v17 已做勳條模式');
   const gaps = rules.conflicts.find((c) => c.id === 'medalPrecedenceGaps');
   assert.doesNotMatch(gaps.zh, /冇鋼狼|冇銅狼/);
 });
