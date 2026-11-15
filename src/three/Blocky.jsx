@@ -678,7 +678,7 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
   const unavailable = useMemo(() => RULES.badges.filter((b) => b.dynamic && !dynArts[dynKey(b.id)]).map((b) => b.id), [RULES, dynArts]);
   const all = useMemo(() => placeFor(RULES, outfit), [RULES, outfit]);
   // v24 專章帶（綱要 P.15–16）：只限童軍、整齊制服（唔著毛衣）；專科徽章頭 16 個改戴喺帶上
-  const sashOn = scout && sashActive(RULES, outfit);
+  const sashOn = scout && sashActive(RULES, outfit, badges); // v24c：要有 12 個專科徽章
   const shown = useMemo(
     () => visible(all, badges, { invested, school: outfit.school, unavailable, level: leader ? picks.level : null, sash: sashOn }),
     [all, badges, invested, outfit.school, unavailable, leader, picks.level, sashOn],

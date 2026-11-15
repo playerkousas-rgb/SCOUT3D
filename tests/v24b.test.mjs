@@ -3,7 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, existsSync, statSync } from 'node:fs';
 import { validateRules } from '../src/data/validate.js';
-import { placeFor, visible, shownReason, sleeveFace } from '../src/three/badgeLayout.js';
+import { placeFor, visible, shownReason, sleeveFace, sashActive } from '../src/three/badgeLayout.js';
 import { layout } from '../src/three/body.js';
 
 const read = (p) => JSON.parse(readFileSync(new URL(`../${p}`, import.meta.url), 'utf8'));
@@ -152,8 +152,6 @@ test('深資右袖：世界童軍組織徽章 4 cm、最多四個，一行喺地
   }
   assert.ok(!R.venture.slots.sleeveR.layers.some((l) => l.id === 'aid'));
   const face = sleeveFace('boy', 'venture');
-  const two = show(R.venture, { earthTribe: true, plasticTide: true }).filter((p) => p.slot?.layer === 'row');
-  assert.ok(two.every((p) => p.w === 4), '兩個：照 4 cm');
   const four = show(R.venture, Object.fromEntries(WOSM.map((id) => [id, true]))).filter((p) => p.slot?.layer === 'row');
   assert.equal(four.length, 4);
   const region = one(show(R.venture, {}), 'region');
@@ -178,4 +176,54 @@ test('幼童軍：活動徽章仍然最多 11 個；七個三級制度章同四�
     assert.deepEqual(badge(R.cub, id).choices.map((c) => c.id), ['none', 'bronze', 'silver', 'gold'], id);
     assert.equal(badge(R.cub, id).default, 'none');
   }
+});
+
+// ---------- v24c（用戶指示）----------
+const rowOf = (r, state) => show(r, state).filter((p) => p.mount === 'r' && p.slot?.layer === 'row');
+
+test('v24c 右袖圓形章：四個格位固定，得一個唔會置中；兩個、四個嘅頭兩格位置一樣（幼童軍、童軍、深資、樂行）', () => {
+  const ROW = {
+    cub: ['earthTribe', 'citizenEm', 'citizenNsa', 'plasticTide'],
+    scout: ['earthTribe', 'plasticTide', 'natureChampions', 'goSolar'],
+    venture: ['earthTribe', 'plasticTide', 'natureChampions', 'goSolar'],
+    rover: ['earthTribe', 'plasticTide', 'natureChampions', 'goSolar'],
+  };
+  for (const [s, ids] of Object.entries(ROW)) {
+    const L = R[s].slots.sleeveR.layers.find((l) => l.id === 'row');
+    assert.equal(L.cells, 4, s);
+    for (const id of ids) assert.ok(badge(R[s], id), `${s} ${id}`);
+    const at = (n) => rowOf(R[s], Object.fromEntries(ids.slice(0, n).map((id) => [id, true]))).sort((a, b) => b.u - a.u); // 右袖 u + = 前
+    const [one1, two, four] = [at(1), at(2), at(4)];
+    assert.equal(one1.length, 1, s);
+    assert.equal(four.length, 4, s);
+    assert.ok(Math.abs(one1[0].u) > 1, `${s}：得一個都唔置中（u = ${one1[0].u}）`);
+    assert.ok(one1[0].u > 0, `${s}：第一格近前面`);
+    assert.equal(one1[0].u, four[0].u, `${s}：第一格位置固定`);
+    assert.equal(one1[0].v, four[0].v, `${s}：同一高度`);
+    assert.deepEqual(two.map((p) => p.u), four.slice(0, 2).map((p) => p.u), `${s}：頭兩格一樣`);
+    const face = sleeveFace('boy', s);
+    for (const p of four) assert.ok(Math.abs(p.u) + p.w / 2 <= face.width / 2, `${s} ${p.id} 喺袖面入面`);
+    for (let i = 1; i < four.length; i++) assert.ok(four[i - 1].u - four[i - 1].w / 2 >= four[i].u + four[i].w / 2 - 1e-9, `${s}：唔重疊`);
+  }
+  // 深資：積極公民章（3.2 cm）喺自己格入面置中，格位同 4 cm 嘅世界童軍組織徽章一樣
+  const a = rowOf(R.venture, { earthTribe: true }).at(0);
+  const b = rowOf(R.venture, { citizenScam: true }).at(0);
+  assert.equal(a.u, b.u);
+  assert.equal(a.v, b.v);
+});
+
+test('v24c 專章帶：考獲 12 個先戴（綱要 P.15 第 4.1 項）；位置 1–16 固定，12 個就用頭 12 格（附圖（一））', () => {
+  assert.equal(R.scout.slots.profL.sash.min, 12);
+  const prof = R.scout.badges.filter((b) => b.group === 'proficiency');
+  const st = (n) => Object.fromEntries(prof.slice(0, n).map((b) => [b.id, true]));
+  const out = { ...OUTFIT, sash: true };
+  const sashOf = (n) => visible(placeFor(R.scout, out), { ...BASE, ...st(n) }, { invested: true, sash: sashActive(R.scout, out, st(n)) }).filter((p) => p.onSash);
+  assert.equal(sashActive(R.scout, out, st(11)), false, '11 個：未可以用專章帶');
+  assert.equal(sashOf(11).length, 0);
+  assert.equal(sashActive(R.scout, out, st(12)), true);
+  const s12 = sashOf(12).sort((a, b) => a.sashIndex - b.sashIndex);
+  const s16 = sashOf(16).sort((a, b) => a.sashIndex - b.sashIndex);
+  assert.deepEqual(s12.map((p) => p.sashIndex), [...Array(12).keys()]);
+  assert.deepEqual(s12.map((p) => [p.x, p.y]), s16.slice(0, 12).map((p) => [p.x, p.y]), '12 個嘅位置同 16 個嘅頭 12 格一樣');
+  assert.equal(shownReason(R.scout, out, { ...BASE, ...st(11) }, prof[0].id), null, '11 個：照戴喺左袖');
 });

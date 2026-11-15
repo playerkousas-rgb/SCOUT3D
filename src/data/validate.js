@@ -128,6 +128,8 @@ export function validateRules(rules) {
     for (const l of d.layers || []) {
       if (!l.id || seen.has(l.id)) errors.push(`${w}: layer id 錯或重複`);
       seen.add(l.id);
+      // v24c：cells（固定格數，正整數、要 = max）同 cellCm（格闊 > 0）
+      if (l.cells != null && (!(Number.isInteger(l.cells) && l.cells > 0) || l.cells !== l.max || !(l.cellCm > 0))) errors.push(`${w}: layer ${l.id} cells／cellCm 設定錯`);
       // v24b：liftCm ≥ 0（向上移入上一層）、marginCm ≥ 0（用到袖邊幾近）、pos = { rank: 橫向 cm }
       if ((l.liftCm != null && !(l.liftCm >= 0)) || (l.marginCm != null && !(l.marginCm >= 0)) || (l.pos != null && (typeof l.pos !== 'object' || Object.values(l.pos).some((v) => !Number.isFinite(v))))) errors.push(`${w}: layer ${l.id} liftCm／marginCm／pos 設定錯`);
       if (!(l.gapCm >= 0) || (l.max != null && !(Number.isInteger(l.max) && l.max > 0)) || (l.from != null && !FROM.has(l.from))) errors.push(`${w}: layer ${l.id} 設定錯`);
@@ -137,7 +139,7 @@ export function validateRules(rules) {
     if (d.honeycomb && (d.part !== 'sleeve' || !(d.honeycomb.aboveCuffSeamCm >= 0) || !Array.isArray(d.honeycomb.rows) || !d.honeycomb.rows.length || d.honeycomb.rows.some((n) => !(Number.isInteger(n) && n > 0)) || d.layers?.length !== 1)) errors.push(`${w}: honeycomb 設定錯`);
     // v24：菱形咬合（pitch = 行距 / 章高，0–1）、topFirst（排先嘅章喺最上）；sash = 專章帶（max 正整數）
     if (d.honeycomb && ((d.honeycomb.pitch != null && !(d.honeycomb.pitch > 0 && d.honeycomb.pitch <= 1)) || (d.honeycomb.topFirst != null && typeof d.honeycomb.topFirst !== 'boolean'))) errors.push(`${w}: honeycomb pitch／topFirst 設定錯`);
-    if (d.sash && (d.part !== 'sleeve' || !(Number.isInteger(d.sash.max) && d.sash.max > 0))) errors.push(`${w}: sash 設定錯`);
+    if (d.sash && (d.part !== 'sleeve' || !(Number.isInteger(d.sash.max) && d.sash.max > 0) || (d.sash.min != null && !(Number.isInteger(d.sash.min) && d.sash.min > 0 && d.sash.min <= d.sash.max)))) errors.push(`${w}: sash 設定錯`);
     if (!d.zh || !d.en) errors.push(`${w}: 缺中英說明`);
     checkSources(d.sources, sources, w, errors);
   }

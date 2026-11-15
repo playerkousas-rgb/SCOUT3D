@@ -9427,11 +9427,14 @@
           "id": "row",
           "gapCm": 0.6,
           "max": 4,
-          "from": "front"
+          "from": "front",
+          "cells": 4,
+          "cellCm": 3,
+          "spacingCm": 0.3
         }
       ],
-      "zh": "穿著者右袖、地域章／區章下面一行：世界童軍組織徽章系列（地球部落）同「積極公民」獎章系列，最多合共四個，喺小隊章上面（綱要 P.12–14 附圖）。",
-      "en": "Wearer's right sleeve, one row below the Region/District Badges: WOSM series (Earth Tribe) and Active Citizenship series, at most four in total, above the Patrol Badge (Training Scheme pp.12–14 figures).",
+      "zh": "穿著者右袖、地域章／區章下面一行：世界童軍組織徽章系列（地球部落）同「積極公民」獎章系列，最多合共四個，喺小隊章上面（綱要 P.12–14 附圖）。四個格位固定（由前面排起），只係放咩同放幾多個唔同，唔會因為得一個就置中（用戶指示）。",
+      "en": "Wearer's right sleeve, one row below the Region/District Badges: WOSM series (Earth Tribe) and Active Citizenship series, at most four in total, above the Patrol Badge (Training Scheme pp.12–14 figures). The four positions are fixed (filled from the front); only what goes in them and how many change — a single badge is not centred (user instruction).",
       "sources": [
         {
           "ref": "STS",
@@ -9457,7 +9460,8 @@
         "topFirst": true
       },
       "sash": {
-        "max": 16
+        "max": 16,
+        "min": 12
       },
       "layers": [
         {

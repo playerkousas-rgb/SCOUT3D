@@ -186,12 +186,13 @@ test('專章帶 mesh：前、後、右側、膊頂；u 喺 0–1，頂點貼住�
 });
 
 test('專章帶只限整齊制服：著毛衣就唔戴（綱要 P.15 第 4.2 項）；其他支部冇專章帶', () => {
-  assert.equal(sashActive(scout, { ...OUTFIT, sash: true }), true);
-  assert.equal(sashActive(scout, { ...OUTFIT, sash: true, sweater: true }), false);
-  assert.equal(sashActive(scout, { ...OUTFIT, sash: false }), false);
+  const st = on(PICK);
+  assert.equal(sashActive(scout, { ...OUTFIT, sash: true }, st), true);
+  assert.equal(sashActive(scout, { ...OUTFIT, sash: true, sweater: true }, st), false);
+  assert.equal(sashActive(scout, { ...OUTFIT, sash: false }, st), false);
   for (const id of ['cub', 'venture', 'rover', 'leader', 'grasshopper']) {
     const r = read(`src/data/${id}_rules_v1.0.json`);
-    assert.equal(sashActive(r, { ...OUTFIT, sash: true }), false, id);
+    assert.equal(sashActive(r, { ...OUTFIT, sash: true }, st), false, id);
   }
   // 著毛衣：專章全部唔戴
   const sw = visible(placeFor(scout, { ...OUTFIT, sweater: true }), on(PICK), { invested: true });

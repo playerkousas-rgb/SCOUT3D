@@ -840,7 +840,8 @@ function ProficiencyGrid({ rules, list, badges, set, setBadges, outfit, setOutfi
   const { lang, t } = useLang();
   const on = (b) => !!badges[b.id] && badges[b.id] !== 'none';
   const n = list.filter(on).length;
-  const sash = sashActive(rules, outfit);
+  const sash = sashActive(rules, outfit, badges);
+  const sashMin = rules.slots.profL.sash?.min ?? 0;
   const o = profOverflow(rules, badges, { sash });
   const fill = (s) => s.replace('{n}', o.on).replace('{sash}', o.sash).replace('{sleeve}', o.sleeve).replace('{k}', o.hidden).replace('{max}', rules.slots.profL.layers[0].max);
   const clear = () => setBadges((st) => Object.fromEntries(Object.entries(st).filter(([k]) => !list.some((b) => b.id === k))));
@@ -852,7 +853,7 @@ function ProficiencyGrid({ rules, list, badges, set, setBadges, outfit, setOutfi
         <Switch label={t('badges.sash')} checked={!!outfit.sash} disabled={!!outfit.sweater} onChange={(v) => setOutfit((x) => ({ ...x, sash: v }))} />
       )}
       {outfit.sash && outfit.sweater && <p className="muted">{t('badges.sashSweater')}</p>}
-      {sash && n < 12 && <p className="muted">{t('badges.sashHint')}</p>}
+      {outfit.sash && !outfit.sweater && n < sashMin && <p className="muted">{t('badges.sashHint').replace('{n}', n).replace('{min}', sashMin)}</p>}
       <p className="muted" aria-live="polite">{fill(t(sash ? 'badges.profCountSash' : 'badges.profCount'))}</p>
       {o.hidden > 0 && <p className="prof__hidden" role="status">{fill(t('badges.profHidden'))}</p>}
       {n > 0 && (
