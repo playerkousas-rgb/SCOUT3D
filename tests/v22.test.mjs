@@ -241,3 +241,41 @@ test('說明：其他獎章說明分支部；規定分頁有深資童軍同模�
   const i18n = text('src/i18n.jsx');
   for (const k of ['badges.extraNoteVenture', 'badges.extraNoteScout', 'badge.why.needsStage', 'badge.why.replaced_commendation']) assert.equal(i18n.split(`'${k}'`).length - 1, 2, `${k} 中英都有`);
 });
+
+test('用戶回覆：以前支部嘅服務年星並排（手冊 P.130 附圖）——本支部最內側，向外按支部由高至低', () => {
+  const pairs = [
+    [venture, ['serviceStar', 'serviceStarScout', 'serviceStarCub', 'serviceStarGrasshopper'], [6, 5, 4, 3]],
+    [rover, ['serviceStar', 'serviceStarVenture', 'serviceStarScout', 'serviceStarCub', 'serviceStarGrasshopper'], [7, 6, 5, 4, 3]],
+  ];
+  const { B, top } = layout('boy', 'venture');
+  for (const [r, ids, max] of pairs) {
+    ids.forEach((id, i) => {
+      const b = one(r.badges, id);
+      assert.equal(b.group, 'extra', id);
+      assert.equal(b.choices.length - 1, max[i], `${id} 年數`);
+      assert.equal(b.default, 'none');
+      for (const c of b.choices.slice(1)) assert.ok(existsSync(pub(c.art.file)), c.art.file);
+    });
+    const st = Object.fromEntries(ids.map((id) => [id, 'three']));
+    const on = visible(placeFor(r, OUTFIT), st, { invested: true }).filter((p) => ids.includes(p.id));
+    assert.equal(on.length, ids.length, r.section.id);
+    const xs = ids.map((id) => one(on, id).x);
+    for (let i = 1; i < xs.length; i++) assert.ok(xs[i] > xs[i - 1], `${ids[i]} 喺 ${ids[i - 1]} 外側`);
+    const mid = (xs[0] + xs[xs.length - 1]) / 2;
+    assert.ok(Math.abs(mid - B.pocket.x) < 1e-9, '成行喺袋蓋中央');
+    for (const p of on) assert.ok(Math.abs(p.y - p.h / 2 - (top - B.pocket.top)) < 1e-9, `${p.id} 緊貼袋蓋`);
+  }
+  const [r, g, b] = firstPixel(readFileSync(pub('/badges/extra/service_star_scout_2.png')));
+  assert.ok(g > r && g > b, `綠色 ${r},${g},${b}`);
+  assert.ok(!one(venture.notAllowed, 'preEntry').zh.includes('服務年星'));
+});
+
+test('用戶回覆：空勤員章、海上活動徽章深資同樂行同一個章（唔再標示例）；段章按考獲先後', () => {
+  for (const id of ['airCrew', 'seaBadge']) {
+    const b = one(venture.badges, id);
+    for (const c of b.choices.slice(1)) assert.equal(c.art.example, false, `${id} ${c.id}`);
+    assert.match(b.zh.conditions, /深資童軍同樂行童軍用同一個章/);
+  }
+  for (const k of ['Project', 'Service', 'Activity', 'Exploration']) assert.match(one(venture.badges, `stage${k}`).zh.place, /邊個考先就戴先/);
+  assert.match(one(venture.conflicts, 'v22VentureFigure').zh, /以綱要為準（較新），綱要冇寫嘅跟手冊/);
+});

@@ -112,6 +112,12 @@
         "item": "v22ModelScout",
         "zh": "加模範童軍雞繩（用戶指示）；位置跟手冊 P.158",
         "en": "Add the Model Scout lanyard (user instruction); position per Handbook p.158"
+      },
+      {
+        "date": "2026-11-15",
+        "item": "v22VentureReply",
+        "zh": "段章冇先後次序，邊個考先放邊個先，而家擺法啱；空勤員章、海上活動徽章深資同樂行用同一個；以前支部服務年星跟手冊 P.128–157；綱要同手冊有矛盾以綱要為準，綱要冇寫跟手冊（用戶指示）",
+        "en": "Badges have no fixed order — first earned goes first; current layout is fine. Aircrew and sea badges are the same for Venture and Rover Scouts. Earlier-section service stars follow Handbook pp.128–157. Where the Training Scheme and Handbook conflict the Training Scheme wins; otherwise the Handbook (user instruction)."
       }
     ]
   },
@@ -1221,13 +1227,13 @@
       "group": "extra",
       "zh": {
         "name": "活動策劃段章",
-        "place": "穿著者左袖下方上行近前面（手冊 P.170 附圖「深資童軍段章及金帶」）；金帶喺佢下面。",
+        "place": "穿著者左袖下方上行近前面（手冊 P.170 附圖「深資童軍段章及金帶」）；金帶喺佢下面。段章冇固定次序，邊個考先就戴先（由上至下、由前至後）；模型示範用綱要建議次序（「活動策劃」首個完成）。",
         "quote": "深資童軍在完成「活動策劃」、「社會服務」、「多元技能」及「戶外探險」任何一個段章內之全部項目，便可於制服佩戴該項目之段章。唯建議以「活動策劃」段章為首個完成之段章。",
         "conditions": "完成「活動策劃」段章全部項目（深資童軍獎章）。"
       },
       "en": {
         "name": "Project Badge",
-        "place": "Lower wearer's left sleeve, upper row, towards the front (Handbook p.170 figure, “Venture Scout badges and bars”); its Bar goes beneath it.",
+        "place": "Lower wearer's left sleeve, upper row, towards the front (Handbook p.170 figure, “Venture Scout badges and bars”); its Bar goes beneath it. The badges have no fixed order — the first earned goes first (top to bottom, front to back); the model follows the Training Scheme order (Project recommended first).",
         "quote": "Upon completing any one of the Badges (“Project”, “Service”, “Activity”, and “Exploration”), a Venture Scout may wear the corresponding badge on their uniform. It is highly recommended to complete the “Project” Badge first.",
         "conditions": "Complete all items of the Project Badge (Venture Scout Award)."
       },
@@ -1345,13 +1351,13 @@
       "group": "extra",
       "zh": {
         "name": "社會服務段章",
-        "place": "穿著者左袖下方上行近後面（手冊 P.170 附圖「深資童軍段章及金帶」）；金帶喺佢下面。",
+        "place": "穿著者左袖下方上行近後面（手冊 P.170 附圖「深資童軍段章及金帶」）；金帶喺佢下面。段章冇固定次序，邊個考先就戴先（由上至下、由前至後）；模型示範用綱要建議次序（「活動策劃」首個完成）。",
         "quote": "深資童軍在完成「活動策劃」、「社會服務」、「多元技能」及「戶外探險」任何一個段章內之全部項目，便可於制服佩戴該項目之段章。唯建議以「活動策劃」段章為首個完成之段章。",
         "conditions": "完成「社會服務」段章全部項目（深資童軍獎章）。"
       },
       "en": {
         "name": "Service Badge",
-        "place": "Lower wearer's left sleeve, upper row, towards the back (Handbook p.170 figure, “Venture Scout badges and bars”); its Bar goes beneath it.",
+        "place": "Lower wearer's left sleeve, upper row, towards the back (Handbook p.170 figure, “Venture Scout badges and bars”); its Bar goes beneath it. The badges have no fixed order — the first earned goes first (top to bottom, front to back); the model follows the Training Scheme order (Project recommended first).",
         "quote": "Upon completing any one of the Badges (“Project”, “Service”, “Activity”, and “Exploration”), a Venture Scout may wear the corresponding badge on their uniform. It is highly recommended to complete the “Project” Badge first.",
         "conditions": "Complete all items of the Service Badge (Venture Scout Award)."
       },
@@ -1461,13 +1467,13 @@
       "group": "extra",
       "zh": {
         "name": "多元技能段章",
-        "place": "穿著者左袖下方下行近前面（手冊 P.170 附圖「深資童軍段章及金帶」）；金帶喺佢下面。",
+        "place": "穿著者左袖下方下行近前面（手冊 P.170 附圖「深資童軍段章及金帶」）；金帶喺佢下面。段章冇固定次序，邊個考先就戴先（由上至下、由前至後）；模型示範用綱要建議次序（「活動策劃」首個完成）。",
         "quote": "深資童軍在完成「活動策劃」、「社會服務」、「多元技能」及「戶外探險」任何一個段章內之全部項目，便可於制服佩戴該項目之段章。唯建議以「活動策劃」段章為首個完成之段章。",
         "conditions": "完成「多元技能」段章全部項目（深資童軍獎章）。"
       },
       "en": {
         "name": "Activity Badge",
-        "place": "Lower wearer's left sleeve, lower row, towards the front (Handbook p.170 figure, “Venture Scout badges and bars”); its Bar goes beneath it.",
+        "place": "Lower wearer's left sleeve, lower row, towards the front (Handbook p.170 figure, “Venture Scout badges and bars”); its Bar goes beneath it. The badges have no fixed order — the first earned goes first (top to bottom, front to back); the model follows the Training Scheme order (Project recommended first).",
         "quote": "Upon completing any one of the Badges (“Project”, “Service”, “Activity”, and “Exploration”), a Venture Scout may wear the corresponding badge on their uniform. It is highly recommended to complete the “Project” Badge first.",
         "conditions": "Complete all items of the Activity Badge (Venture Scout Award)."
       },
@@ -1577,13 +1583,13 @@
       "group": "extra",
       "zh": {
         "name": "戶外探險段章",
-        "place": "穿著者左袖下方下行近後面（手冊 P.170 附圖「深資童軍段章及金帶」）；金帶喺佢下面。",
+        "place": "穿著者左袖下方下行近後面（手冊 P.170 附圖「深資童軍段章及金帶」）；金帶喺佢下面。段章冇固定次序，邊個考先就戴先（由上至下、由前至後）；模型示範用綱要建議次序（「活動策劃」首個完成）。",
         "quote": "深資童軍在完成「活動策劃」、「社會服務」、「多元技能」及「戶外探險」任何一個段章內之全部項目，便可於制服佩戴該項目之段章。唯建議以「活動策劃」段章為首個完成之段章。",
         "conditions": "完成「戶外探險」段章全部項目（深資童軍獎章）。"
       },
       "en": {
         "name": "Exploration Badge",
-        "place": "Lower wearer's left sleeve, lower row, towards the back (Handbook p.170 figure, “Venture Scout badges and bars”); its Bar goes beneath it.",
+        "place": "Lower wearer's left sleeve, lower row, towards the back (Handbook p.170 figure, “Venture Scout badges and bars”); its Bar goes beneath it. The badges have no fixed order — the first earned goes first (top to bottom, front to back); the model follows the Training Scheme order (Project recommended first).",
         "quote": "Upon completing any one of the Badges (“Project”, “Service”, “Activity”, and “Exploration”), a Venture Scout may wear the corresponding badge on their uniform. It is highly recommended to complete the “Project” Badge first.",
         "conditions": "Complete all items of the Exploration Badge (Venture Scout Award)."
       },
@@ -2998,13 +3004,13 @@
       "group": "extra",
       "zh": {
         "name": "服務年星",
-        "place": "穿著者左胸袋袋蓋上方（緊貼袋蓋）中央。",
+        "place": "穿著者左胸袋袋蓋上方（緊貼袋蓋）中央；有以前支部嘅服務年星就並排，本支部嗰枚喺最內側（近中線）（手冊 P.130 附圖）。",
         "quote": "各青少年成員在宣誓後服務滿一年者，可在制服上佩戴繡有「1」字的服務年星，兩年則可佩戴繡有「2」字的服務年星，餘此類推。深資童軍：紅色，數目字分別有「1」至「6」。只可佩戴在該支部獲取最高年份的一枚服務年星。",
         "conditions": "宣誓後每服務滿一年；只戴最高年份嗰枚。"
       },
       "en": {
         "name": "Service Star",
-        "place": "Centred on top of the wearer's left pocket flap.",
+        "place": "Centred on top of the wearer's left pocket flap; with earlier-section stars they sit side by side, this section's star innermost (nearest the centre) (Handbook p.130 figure).",
         "quote": "A youth member who has served a full year after investiture wears the star with “1”, two years “2”, and so on. Venture Scouts: red, numbers 1 to 6. Only the highest star of the section is worn.",
         "conditions": "One per full year of service after investiture; highest only."
       },
@@ -3174,6 +3180,438 @@
       "sweater": false
     },
     {
+      "id": "serviceStarScout",
+      "required": false,
+      "side": "left",
+      "group": "extra",
+      "zh": {
+        "name": "童軍服務年星（以前支部）",
+        "place": "穿著者左胸袋袋蓋上方，同深資童軍服務年星並排；由內側（近中線）至外側按支部由高至低（手冊 P.130 附圖）。",
+        "quote": "任何童軍在晉團後（例如由小童軍晉團為幼童軍，或由童軍晉團為深資童軍），仍可佩戴以前的服務年星，直至轉任為成年成員。各支部服務年星按次序由左至右並排佩戴在制服恤衫左胸袋袋蓋上方中央位置。童軍：綠色，數目字分別有「1」至「5」。",
+        "conditions": "喺童軍支部宣誓後服務滿一年先有；每個支部只戴最高年份嗰枚。"
+      },
+      "en": {
+        "name": "Scout Service Star (earlier section)",
+        "place": "Above the wearer's left pocket flap, beside the Venture Scout Service Star; sections run from the inner side (nearest the centre) outwards, newest first (Handbook p.130 figure).",
+        "quote": "After moving up (e.g. Grasshopper to Cub Scout, or Scout to Venture Scout) a member may still wear earlier service stars until becoming an adult member. Each section's star is worn side by side, in order from left to right, centred on top of the left pocket flap. Scout: green, numbers 1 to 5.",
+        "conditions": "One per full year of service in that section; highest of each section only."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 1.5,
+        "hCm": 1.5,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "slot": "pocketL",
+        "layer": "stars",
+        "rank": 2,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "129–130"
+        }
+      ],
+      "status": "verified",
+      "default": "none",
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "one",
+          "zh": {
+            "name": "1 年"
+          },
+          "en": {
+            "name": "1 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_scout_1.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "two",
+          "zh": {
+            "name": "2 年"
+          },
+          "en": {
+            "name": "2 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_scout_2.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "three",
+          "zh": {
+            "name": "3 年"
+          },
+          "en": {
+            "name": "3 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_scout_3.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "four",
+          "zh": {
+            "name": "4 年"
+          },
+          "en": {
+            "name": "4 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_scout_4.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "five",
+          "zh": {
+            "name": "5 年"
+          },
+          "en": {
+            "name": "5 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_scout_5.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        }
+      ],
+      "art": {
+        "file": "/badges/extra/service_star_venture_1.png",
+        "ref": "UH",
+        "page": "129",
+        "example": false,
+        "px": [
+          96,
+          96
+        ]
+      },
+      "modelNote": {
+        "zh": "紅底白星跟手冊 P.129 深資童軍樣式（顏色取樣自 P.129），數字按揀咗嘅年份；手冊冇寫尺寸，模型用 1.5 cm。以前支部嘅服務年星（P.130：晉支部後仍可佩戴，P.170 附圖並排）未有示範。",
+        "en": "Red with a white star as in the Handbook p.129 Venture Scout sample (colour sampled from p.129), numbered for the chosen year; no size given, the model uses 1.5 cm. Stars from earlier sections (still wearable after moving up, p.130; side by side in the p.170 figure) are not shown."
+      },
+      "sweater": false
+    },
+    {
+      "id": "serviceStarCub",
+      "required": false,
+      "side": "left",
+      "group": "extra",
+      "zh": {
+        "name": "幼童軍服務年星（以前支部）",
+        "place": "穿著者左胸袋袋蓋上方，同深資童軍服務年星並排；由內側（近中線）至外側按支部由高至低（手冊 P.130 附圖）。",
+        "quote": "任何童軍在晉團後（例如由小童軍晉團為幼童軍，或由童軍晉團為深資童軍），仍可佩戴以前的服務年星，直至轉任為成年成員。各支部服務年星按次序由左至右並排佩戴在制服恤衫左胸袋袋蓋上方中央位置。幼童軍：黃色，數目字分別有「1」至「4」。",
+        "conditions": "喺幼童軍支部宣誓後服務滿一年先有；每個支部只戴最高年份嗰枚。"
+      },
+      "en": {
+        "name": "Cub Scout Service Star (earlier section)",
+        "place": "Above the wearer's left pocket flap, beside the Venture Scout Service Star; sections run from the inner side (nearest the centre) outwards, newest first (Handbook p.130 figure).",
+        "quote": "After moving up (e.g. Grasshopper to Cub Scout, or Scout to Venture Scout) a member may still wear earlier service stars until becoming an adult member. Each section's star is worn side by side, in order from left to right, centred on top of the left pocket flap. Cub Scout: yellow, numbers 1 to 4.",
+        "conditions": "One per full year of service in that section; highest of each section only."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 1.5,
+        "hCm": 1.5,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "slot": "pocketL",
+        "layer": "stars",
+        "rank": 3,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "129–130"
+        }
+      ],
+      "status": "verified",
+      "default": "none",
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "one",
+          "zh": {
+            "name": "1 年"
+          },
+          "en": {
+            "name": "1 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_cub_1.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "two",
+          "zh": {
+            "name": "2 年"
+          },
+          "en": {
+            "name": "2 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_cub_2.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "three",
+          "zh": {
+            "name": "3 年"
+          },
+          "en": {
+            "name": "3 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_cub_3.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "four",
+          "zh": {
+            "name": "4 年"
+          },
+          "en": {
+            "name": "4 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_cub_4.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        }
+      ],
+      "art": {
+        "file": "/badges/extra/service_star_venture_1.png",
+        "ref": "UH",
+        "page": "129",
+        "example": false,
+        "px": [
+          96,
+          96
+        ]
+      },
+      "modelNote": {
+        "zh": "紅底白星跟手冊 P.129 深資童軍樣式（顏色取樣自 P.129），數字按揀咗嘅年份；手冊冇寫尺寸，模型用 1.5 cm。以前支部嘅服務年星（P.130：晉支部後仍可佩戴，P.170 附圖並排）未有示範。",
+        "en": "Red with a white star as in the Handbook p.129 Venture Scout sample (colour sampled from p.129), numbered for the chosen year; no size given, the model uses 1.5 cm. Stars from earlier sections (still wearable after moving up, p.130; side by side in the p.170 figure) are not shown."
+      },
+      "sweater": false
+    },
+    {
+      "id": "serviceStarGrasshopper",
+      "required": false,
+      "side": "left",
+      "group": "extra",
+      "zh": {
+        "name": "小童軍服務年星（以前支部）",
+        "place": "穿著者左胸袋袋蓋上方，同深資童軍服務年星並排；由內側（近中線）至外側按支部由高至低（手冊 P.130 附圖）。",
+        "quote": "任何童軍在晉團後（例如由小童軍晉團為幼童軍，或由童軍晉團為深資童軍），仍可佩戴以前的服務年星，直至轉任為成年成員。各支部服務年星按次序由左至右並排佩戴在制服恤衫左胸袋袋蓋上方中央位置。小童軍：橙色，數目字分別有「1」至「3」。",
+        "conditions": "喺小童軍支部宣誓後服務滿一年先有；每個支部只戴最高年份嗰枚。小童軍服務年星要晉升幼童軍後先可以戴。"
+      },
+      "en": {
+        "name": "Grasshopper Service Star (earlier section)",
+        "place": "Above the wearer's left pocket flap, beside the Venture Scout Service Star; sections run from the inner side (nearest the centre) outwards, newest first (Handbook p.130 figure).",
+        "quote": "After moving up (e.g. Grasshopper to Cub Scout, or Scout to Venture Scout) a member may still wear earlier service stars until becoming an adult member. Each section's star is worn side by side, in order from left to right, centred on top of the left pocket flap. Grasshopper: orange, numbers 1 to 3.",
+        "conditions": "One per full year of service in that section; highest of each section only. Grasshopper stars may only be worn after moving up to Cub Scouts."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 1.5,
+        "hCm": 1.5,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "slot": "pocketL",
+        "layer": "stars",
+        "rank": 4,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "129–130"
+        }
+      ],
+      "status": "verified",
+      "default": "none",
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "one",
+          "zh": {
+            "name": "1 年"
+          },
+          "en": {
+            "name": "1 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_grasshopper_1.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "two",
+          "zh": {
+            "name": "2 年"
+          },
+          "en": {
+            "name": "2 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_grasshopper_2.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "three",
+          "zh": {
+            "name": "3 年"
+          },
+          "en": {
+            "name": "3 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_grasshopper_3.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        }
+      ],
+      "art": {
+        "file": "/badges/extra/service_star_venture_1.png",
+        "ref": "UH",
+        "page": "129",
+        "example": false,
+        "px": [
+          96,
+          96
+        ]
+      },
+      "modelNote": {
+        "zh": "紅底白星跟手冊 P.129 深資童軍樣式（顏色取樣自 P.129），數字按揀咗嘅年份；手冊冇寫尺寸，模型用 1.5 cm。以前支部嘅服務年星（P.130：晉支部後仍可佩戴，P.170 附圖並排）未有示範。",
+        "en": "Red with a white star as in the Handbook p.129 Venture Scout sample (colour sampled from p.129), numbered for the chosen year; no size given, the model uses 1.5 cm. Stars from earlier sections (still wearable after moving up, p.130; side by side in the p.170 figure) are not shown."
+      },
+      "sweater": false
+    },
+    {
       "id": "airCrew",
       "required": false,
       "side": "left",
@@ -3182,13 +3620,13 @@
         "name": "航空活動徽章（空勤員章）",
         "place": "穿著者左袖上方第一行，近前面（手冊 P.170 附圖「深資童軍航空活動徽章」）。",
         "quote": "「空勤員章課程」分為初級空勤員章、中級空勤員章及高級空勤員章三個階段課程，為深資童軍成員提供全面而富趣味的航空培訓。",
-        "conditions": "完成相應階段課程；只戴最高嗰級。"
+        "conditions": "完成相應階段課程；只戴最高嗰級。深資童軍同樂行童軍用同一個章（用戶確認）。"
       },
       "en": {
         "name": "Air Activity Badge (Aircrew Badge)",
         "place": "First row on the upper wearer's left sleeve, towards the front (Handbook p.170 figure, “Venture Scout Air Activity Badge”).",
         "quote": "The Aircrew Syllabus has three stages — Elementary, Intermediate and Advanced Aircrew Badge — giving Venture Scouts comprehensive and enjoyable aviation training.",
-        "conditions": "Complete the matching stage; wear the highest only."
+        "conditions": "Complete the matching stage; wear the highest only. Venture and Rover Scouts wear the same badge (user confirmed)."
       },
       "size": {
         "shape": "rect",
@@ -3239,7 +3677,7 @@
             "file": "/badges/extra/air_crew.png",
             "ref": "RTS",
             "page": "35",
-            "example": true,
+            "example": false,
             "px": [
               200,
               200
@@ -3258,7 +3696,7 @@
             "file": "/badges/extra/air_crew.png",
             "ref": "RTS",
             "page": "35",
-            "example": true,
+            "example": false,
             "px": [
               200,
               200
@@ -3290,7 +3728,7 @@
         "file": "/badges/extra/air_crew.png",
         "ref": "RTS",
         "page": "35",
-        "example": true,
+        "example": false,
         "px": [
           200,
           200
@@ -3311,13 +3749,13 @@
         "name": "海上活動徽章",
         "place": "穿著者左袖上方第一行，近後面（手冊 P.170 附圖「深資童軍海上活動徽章」）。",
         "quote": "「童軍標準艇課程（深資童軍支部課程）」分為水手長章（三級童軍標準艇證書）、副舵手章（四級童軍標準艇證書）及舵手章（五級童軍標準艇證書）三個階段課程。如由童軍支部成員晉升為深資童軍支部成員，並已考獲三級童軍標準艇證書，在晉升為深資童軍支部成員後，可直接佩戴深資童軍水手長章。",
-        "conditions": "完成相應階段課程；只戴最高嗰級。"
+        "conditions": "完成相應階段課程；只戴最高嗰級。深資童軍同樂行童軍用同一個章（用戶確認）。"
       },
       "en": {
         "name": "Sea Activity Badge",
         "place": "First row on the upper wearer's left sleeve, towards the back (Handbook p.170 figure, “Venture Scout Sea Activity Badge”).",
         "quote": "The Scout Standard Boat Syllabus (Venture Scout Section) has three stages: Boatswain (Level 3 certificate), Coxswain's Mate (Level 4) and Coxswain (Level 5). A Scout who already holds the Level 3 certificate may wear the Venture Scout Boatswain Badge directly after moving up.",
-        "conditions": "Complete the matching stage; wear the highest only."
+        "conditions": "Complete the matching stage; wear the highest only. Venture and Rover Scouts wear the same badge (user confirmed)."
       },
       "size": {
         "shape": "rect",
@@ -3368,7 +3806,7 @@
             "file": "/badges/extra/helmsman.png",
             "ref": "RTS",
             "page": "35",
-            "example": true,
+            "example": false,
             "px": [
               199,
               200
@@ -3387,7 +3825,7 @@
             "file": "/badges/extra/helmsman.png",
             "ref": "RTS",
             "page": "35",
-            "example": true,
+            "example": false,
             "px": [
               199,
               200
@@ -3419,7 +3857,7 @@
         "file": "/badges/extra/helmsman.png",
         "ref": "RTS",
         "page": "35",
-        "example": true,
+        "example": false,
         "px": [
           199,
           200
@@ -3713,12 +4151,12 @@
     },
     {
       "id": "preEntry",
-      "zh": "以前支部嘅服務年星、樂行童軍先修章（綱要 P.57：手冊同綱要都冇寫戴喺深資童軍制服邊度）同舊「深資童軍世界童軍環境章」（2026 年綱要已冇）未有示範。",
-      "en": "Earlier-section service stars, the Rover Scout Link Badge (Training Scheme p.57: neither document says where it goes on the Venture Scout uniform) and the old Venture Scout World Scout Environment Badge (dropped from the 2026 Training Scheme) are not shown.",
+      "zh": "樂行童軍先修章（綱要 P.57：手冊同綱要都冇寫戴喺深資童軍制服邊度）同舊「深資童軍世界童軍環境章」（2026 年綱要已冇）未有示範。",
+      "en": "The Rover Scout Link Badge (Training Scheme p.57: neither document says where it goes on the Venture Scout uniform) and the old Venture Scout World Scout Environment Badge (dropped from the 2026 Training Scheme) are not shown.",
       "sources": [
         {
           "ref": "UH",
-          "page": "130, 170"
+          "page": "170"
         },
         {
           "ref": "VTS",
@@ -3749,8 +4187,8 @@
     },
     {
       "id": "v22VentureFigure",
-      "zh": "非基本章：2026 年 8 月版綱要（第 11 版）冇佩戴位置圖，所以位置跟手冊 P.170 附圖同 P.129–157 文字；章嘅名稱、圖案同考取次序跟綱要（用戶指示：同樂行童軍一樣以綱要為準）——新段章「活動策劃／社會服務／多元技能／戶外探險」同金帶、深資童軍獎章、榮譽童軍獎章（英文 Dragon Scout Award）、深資童軍急救章新圖案；手冊附圖嘅「深資童軍世界童軍環境章」改為綱要第三章嘅世界童軍組織徽章（地球部落等），同社區參與章一行最多四個（參照樂行童軍綱要 P.12）。",
-      "en": "Non-basic badges: the August 2026 Training Scheme (11th edition) has no wearing chart, so positions follow the Handbook p.170 figure and pp.129–157 text, while badge names, artwork and the award sequence follow the Training Scheme (user instruction: like the Rover Scouts, the Training Scheme takes precedence) — the new Project / Service / Activity / Exploration Badges and Bars, the Venture Scout Award, the Dragon Scout Award and the new First Aid artwork; the figure's Venture Scout World Scout Environment Badge is replaced by the chapter 3 WOSM badges (Earth Tribe etc.), in one row with the Community Involvement Badge, at most four (as in the Rover Training Scheme p.12)."
+      "zh": "非基本章：2026 年 8 月版綱要（第 11 版）冇佩戴位置圖，所以位置跟手冊 P.170 附圖同 P.129–157 文字；章嘅名稱、圖案同考取次序跟綱要（用戶指示：同樂行童軍一樣以綱要為準）——新段章「活動策劃／社會服務／多元技能／戶外探險」同金帶、深資童軍獎章、榮譽童軍獎章（英文 Dragon Scout Award）、深資童軍急救章新圖案；手冊附圖嘅「深資童軍世界童軍環境章」改為綱要第三章嘅世界童軍組織徽章（地球部落等），同社區參與章一行最多四個（參照樂行童軍綱要 P.12）。兩份文件有矛盾就以綱要為準（較新），綱要冇寫嘅跟手冊（用戶指示）。",
+      "en": "Non-basic badges: the August 2026 Training Scheme (11th edition) has no wearing chart, so positions follow the Handbook p.170 figure and pp.129–157 text, while badge names, artwork and the award sequence follow the Training Scheme (user instruction: like the Rover Scouts, the Training Scheme takes precedence) — the new Project / Service / Activity / Exploration Badges and Bars, the Venture Scout Award, the Dragon Scout Award and the new First Aid artwork; the figure's Venture Scout World Scout Environment Badge is replaced by the chapter 3 WOSM badges (Earth Tribe etc.), in one row with the Community Involvement Badge, at most four (as in the Rover Training Scheme p.12). Where the two conflict the Training Scheme (newer) wins; anything it does not cover follows the Handbook (user instruction)."
     }
   ],
   "artCredit": {
@@ -3791,7 +4229,9 @@
         {
           "id": "stars",
           "gapCm": 0,
-          "max": 1
+          "max": 4,
+          "spacingCm": 0.1,
+          "from": "inner"
         },
         {
           "id": "middle",
@@ -3805,8 +4245,8 @@
           "max": 1
         }
       ],
-      "zh": "穿著者左胸袋袋蓋上方：服務年星緊貼袋蓋；飛行章／跳傘章喺袋蓋上方 2 cm，香港章喺佢上面（手冊 P.93、P.150、P.170 附圖；只得香港章就喺袋蓋上方 3 cm）。",
-      "en": "Above the wearer's left pocket flap: the Service Star on the flap; the Flying/Parachute Badge 2 cm above the flap with the Hong Kong Badge above it (Handbook pp.93, 150 and the p.170 figure; the Hong Kong Badge alone sits 3 cm above the flap).",
+      "zh": "穿著者左胸袋袋蓋上方：服務年星緊貼袋蓋，以前支部嘅年星並排喺外側（手冊 P.130）；飛行章／跳傘章喺袋蓋上方 2 cm，香港章喺佢上面（手冊 P.93、P.150、P.170 附圖；只得香港章就喺袋蓋上方 3 cm）。",
+      "en": "Above the wearer's left pocket flap: the Service Star on the flap, earlier-section stars beside it towards the outside (Handbook p.130); the Flying/Parachute Badge 2 cm above the flap with the Hong Kong Badge above it (Handbook pp.93, 150 and the p.170 figure; the Hong Kong Badge alone sits 3 cm above the flap).",
       "sources": [
         {
           "ref": "UH",

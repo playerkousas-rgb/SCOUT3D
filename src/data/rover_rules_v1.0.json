@@ -1722,13 +1722,13 @@
       "group": "extra",
       "zh": {
         "name": "服務年星",
-        "place": "穿著者左胸袋袋蓋上方（緊貼袋蓋）中央。",
+        "place": "穿著者左胸袋袋蓋上方（緊貼袋蓋）中央；有以前支部嘅服務年星就並排，本支部嗰枚喺最內側（近中線）（手冊 P.130 附圖）。",
         "quote": "各青少年成員在宣誓後服務滿一年者，可在制服上佩戴繡有「1」字的服務年星，兩年則可佩戴繡有「2」字的服務年星，餘此類推。樂行童軍：藍色，數目字分別有「1」至「7」。只可佩戴在該支部獲取最高年份的一枚服務年星。",
         "conditions": "宣誓後每服務滿一年；只戴最高年份嗰枚。"
       },
       "en": {
         "name": "Service Star",
-        "place": "Centred on top of the wearer's left pocket flap.",
+        "place": "Centred on top of the wearer's left pocket flap; with earlier-section stars they sit side by side, this section's star innermost (nearest the centre) (Handbook p.130 figure).",
         "quote": "A youth member who has served a full year after investiture wears the star with “1”, two years “2”, and so on. Rover Scouts: blue, numbers 1 to 7. Only the highest star of the section is worn.",
         "conditions": "One per full year of service after investiture; highest only."
       },
@@ -1904,6 +1904,620 @@
         }
       ],
       "default": "none",
+      "art": {
+        "file": "/badges/extra/service_star_rover_1.png",
+        "ref": "UH",
+        "page": "129",
+        "example": false,
+        "px": [
+          96,
+          96
+        ]
+      },
+      "modelNote": {
+        "zh": "藍底白星跟手冊 P.129 樂行童軍樣式，數字按揀咗嘅年份重畫；手冊冇寫尺寸，模型用 1.5 cm。以前支部嘅服務年星（手冊 P.130：晉支部後仍可佩戴）未有示範。",
+        "en": "Blue with a white star as in the Handbook p.129 Rover Scout sample, with the number redrawn for the chosen year; no size in the Handbook, the model uses 1.5 cm. Stars from earlier sections (still wearable after moving up, p.130) are not shown."
+      },
+      "sweater": false
+    },
+    {
+      "id": "serviceStarVenture",
+      "required": false,
+      "side": "left",
+      "group": "extra",
+      "zh": {
+        "name": "深資童軍服務年星（以前支部）",
+        "place": "穿著者左胸袋袋蓋上方，同樂行童軍服務年星並排；由內側（近中線）至外側按支部由高至低（手冊 P.130 附圖）。",
+        "quote": "任何童軍在晉團後（例如由小童軍晉團為幼童軍，或由童軍晉團為深資童軍），仍可佩戴以前的服務年星，直至轉任為成年成員。各支部服務年星按次序由左至右並排佩戴在制服恤衫左胸袋袋蓋上方中央位置。深資童軍：紅色，數目字分別有「1」至「6」。",
+        "conditions": "喺深資童軍支部宣誓後服務滿一年先有；每個支部只戴最高年份嗰枚。"
+      },
+      "en": {
+        "name": "Venture Scout Service Star (earlier section)",
+        "place": "Above the wearer's left pocket flap, beside the Rover Scout Service Star; sections run from the inner side (nearest the centre) outwards, newest first (Handbook p.130 figure).",
+        "quote": "After moving up (e.g. Grasshopper to Cub Scout, or Scout to Venture Scout) a member may still wear earlier service stars until becoming an adult member. Each section's star is worn side by side, in order from left to right, centred on top of the left pocket flap. Venture Scout: red, numbers 1 to 6.",
+        "conditions": "One per full year of service in that section; highest of each section only."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 1.5,
+        "hCm": 1.5,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "slot": "pocketL",
+        "layer": "stars",
+        "rank": 2,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "129–130"
+        }
+      ],
+      "status": "verified",
+      "default": "none",
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "one",
+          "zh": {
+            "name": "1 年"
+          },
+          "en": {
+            "name": "1 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_venture_1.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "two",
+          "zh": {
+            "name": "2 年"
+          },
+          "en": {
+            "name": "2 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_venture_2.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "three",
+          "zh": {
+            "name": "3 年"
+          },
+          "en": {
+            "name": "3 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_venture_3.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "four",
+          "zh": {
+            "name": "4 年"
+          },
+          "en": {
+            "name": "4 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_venture_4.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "five",
+          "zh": {
+            "name": "5 年"
+          },
+          "en": {
+            "name": "5 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_venture_5.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "six",
+          "zh": {
+            "name": "6 年"
+          },
+          "en": {
+            "name": "6 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_venture_6.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        }
+      ],
+      "art": {
+        "file": "/badges/extra/service_star_rover_1.png",
+        "ref": "UH",
+        "page": "129",
+        "example": false,
+        "px": [
+          96,
+          96
+        ]
+      },
+      "modelNote": {
+        "zh": "藍底白星跟手冊 P.129 樂行童軍樣式，數字按揀咗嘅年份重畫；手冊冇寫尺寸，模型用 1.5 cm。以前支部嘅服務年星（手冊 P.130：晉支部後仍可佩戴）未有示範。",
+        "en": "Blue with a white star as in the Handbook p.129 Rover Scout sample, with the number redrawn for the chosen year; no size in the Handbook, the model uses 1.5 cm. Stars from earlier sections (still wearable after moving up, p.130) are not shown."
+      },
+      "sweater": false
+    },
+    {
+      "id": "serviceStarScout",
+      "required": false,
+      "side": "left",
+      "group": "extra",
+      "zh": {
+        "name": "童軍服務年星（以前支部）",
+        "place": "穿著者左胸袋袋蓋上方，同樂行童軍服務年星並排；由內側（近中線）至外側按支部由高至低（手冊 P.130 附圖）。",
+        "quote": "任何童軍在晉團後（例如由小童軍晉團為幼童軍，或由童軍晉團為深資童軍），仍可佩戴以前的服務年星，直至轉任為成年成員。各支部服務年星按次序由左至右並排佩戴在制服恤衫左胸袋袋蓋上方中央位置。童軍：綠色，數目字分別有「1」至「5」。",
+        "conditions": "喺童軍支部宣誓後服務滿一年先有；每個支部只戴最高年份嗰枚。"
+      },
+      "en": {
+        "name": "Scout Service Star (earlier section)",
+        "place": "Above the wearer's left pocket flap, beside the Rover Scout Service Star; sections run from the inner side (nearest the centre) outwards, newest first (Handbook p.130 figure).",
+        "quote": "After moving up (e.g. Grasshopper to Cub Scout, or Scout to Venture Scout) a member may still wear earlier service stars until becoming an adult member. Each section's star is worn side by side, in order from left to right, centred on top of the left pocket flap. Scout: green, numbers 1 to 5.",
+        "conditions": "One per full year of service in that section; highest of each section only."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 1.5,
+        "hCm": 1.5,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "slot": "pocketL",
+        "layer": "stars",
+        "rank": 3,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "129–130"
+        }
+      ],
+      "status": "verified",
+      "default": "none",
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "one",
+          "zh": {
+            "name": "1 年"
+          },
+          "en": {
+            "name": "1 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_scout_1.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "two",
+          "zh": {
+            "name": "2 年"
+          },
+          "en": {
+            "name": "2 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_scout_2.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "three",
+          "zh": {
+            "name": "3 年"
+          },
+          "en": {
+            "name": "3 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_scout_3.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "four",
+          "zh": {
+            "name": "4 年"
+          },
+          "en": {
+            "name": "4 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_scout_4.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "five",
+          "zh": {
+            "name": "5 年"
+          },
+          "en": {
+            "name": "5 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_scout_5.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        }
+      ],
+      "art": {
+        "file": "/badges/extra/service_star_rover_1.png",
+        "ref": "UH",
+        "page": "129",
+        "example": false,
+        "px": [
+          96,
+          96
+        ]
+      },
+      "modelNote": {
+        "zh": "藍底白星跟手冊 P.129 樂行童軍樣式，數字按揀咗嘅年份重畫；手冊冇寫尺寸，模型用 1.5 cm。以前支部嘅服務年星（手冊 P.130：晉支部後仍可佩戴）未有示範。",
+        "en": "Blue with a white star as in the Handbook p.129 Rover Scout sample, with the number redrawn for the chosen year; no size in the Handbook, the model uses 1.5 cm. Stars from earlier sections (still wearable after moving up, p.130) are not shown."
+      },
+      "sweater": false
+    },
+    {
+      "id": "serviceStarCub",
+      "required": false,
+      "side": "left",
+      "group": "extra",
+      "zh": {
+        "name": "幼童軍服務年星（以前支部）",
+        "place": "穿著者左胸袋袋蓋上方，同樂行童軍服務年星並排；由內側（近中線）至外側按支部由高至低（手冊 P.130 附圖）。",
+        "quote": "任何童軍在晉團後（例如由小童軍晉團為幼童軍，或由童軍晉團為深資童軍），仍可佩戴以前的服務年星，直至轉任為成年成員。各支部服務年星按次序由左至右並排佩戴在制服恤衫左胸袋袋蓋上方中央位置。幼童軍：黃色，數目字分別有「1」至「4」。",
+        "conditions": "喺幼童軍支部宣誓後服務滿一年先有；每個支部只戴最高年份嗰枚。"
+      },
+      "en": {
+        "name": "Cub Scout Service Star (earlier section)",
+        "place": "Above the wearer's left pocket flap, beside the Rover Scout Service Star; sections run from the inner side (nearest the centre) outwards, newest first (Handbook p.130 figure).",
+        "quote": "After moving up (e.g. Grasshopper to Cub Scout, or Scout to Venture Scout) a member may still wear earlier service stars until becoming an adult member. Each section's star is worn side by side, in order from left to right, centred on top of the left pocket flap. Cub Scout: yellow, numbers 1 to 4.",
+        "conditions": "One per full year of service in that section; highest of each section only."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 1.5,
+        "hCm": 1.5,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "slot": "pocketL",
+        "layer": "stars",
+        "rank": 4,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "129–130"
+        }
+      ],
+      "status": "verified",
+      "default": "none",
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "one",
+          "zh": {
+            "name": "1 年"
+          },
+          "en": {
+            "name": "1 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_cub_1.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "two",
+          "zh": {
+            "name": "2 年"
+          },
+          "en": {
+            "name": "2 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_cub_2.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "three",
+          "zh": {
+            "name": "3 年"
+          },
+          "en": {
+            "name": "3 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_cub_3.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "four",
+          "zh": {
+            "name": "4 年"
+          },
+          "en": {
+            "name": "4 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_cub_4.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        }
+      ],
+      "art": {
+        "file": "/badges/extra/service_star_rover_1.png",
+        "ref": "UH",
+        "page": "129",
+        "example": false,
+        "px": [
+          96,
+          96
+        ]
+      },
+      "modelNote": {
+        "zh": "藍底白星跟手冊 P.129 樂行童軍樣式，數字按揀咗嘅年份重畫；手冊冇寫尺寸，模型用 1.5 cm。以前支部嘅服務年星（手冊 P.130：晉支部後仍可佩戴）未有示範。",
+        "en": "Blue with a white star as in the Handbook p.129 Rover Scout sample, with the number redrawn for the chosen year; no size in the Handbook, the model uses 1.5 cm. Stars from earlier sections (still wearable after moving up, p.130) are not shown."
+      },
+      "sweater": false
+    },
+    {
+      "id": "serviceStarGrasshopper",
+      "required": false,
+      "side": "left",
+      "group": "extra",
+      "zh": {
+        "name": "小童軍服務年星（以前支部）",
+        "place": "穿著者左胸袋袋蓋上方，同樂行童軍服務年星並排；由內側（近中線）至外側按支部由高至低（手冊 P.130 附圖）。",
+        "quote": "任何童軍在晉團後（例如由小童軍晉團為幼童軍，或由童軍晉團為深資童軍），仍可佩戴以前的服務年星，直至轉任為成年成員。各支部服務年星按次序由左至右並排佩戴在制服恤衫左胸袋袋蓋上方中央位置。小童軍：橙色，數目字分別有「1」至「3」。",
+        "conditions": "喺小童軍支部宣誓後服務滿一年先有；每個支部只戴最高年份嗰枚。小童軍服務年星要晉升幼童軍後先可以戴。"
+      },
+      "en": {
+        "name": "Grasshopper Service Star (earlier section)",
+        "place": "Above the wearer's left pocket flap, beside the Rover Scout Service Star; sections run from the inner side (nearest the centre) outwards, newest first (Handbook p.130 figure).",
+        "quote": "After moving up (e.g. Grasshopper to Cub Scout, or Scout to Venture Scout) a member may still wear earlier service stars until becoming an adult member. Each section's star is worn side by side, in order from left to right, centred on top of the left pocket flap. Grasshopper: orange, numbers 1 to 3.",
+        "conditions": "One per full year of service in that section; highest of each section only. Grasshopper stars may only be worn after moving up to Cub Scouts."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 1.5,
+        "hCm": 1.5,
+        "measured": false,
+        "ref": null,
+        "page": null
+      },
+      "anchor": {
+        "part": "torso",
+        "slot": "pocketL",
+        "layer": "stars",
+        "rank": 5,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "129–130"
+        }
+      ],
+      "status": "verified",
+      "default": "none",
+      "choices": [
+        {
+          "id": "none",
+          "zh": {
+            "name": "冇"
+          },
+          "en": {
+            "name": "None"
+          }
+        },
+        {
+          "id": "one",
+          "zh": {
+            "name": "1 年"
+          },
+          "en": {
+            "name": "1 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_grasshopper_1.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "two",
+          "zh": {
+            "name": "2 年"
+          },
+          "en": {
+            "name": "2 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_grasshopper_2.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        },
+        {
+          "id": "three",
+          "zh": {
+            "name": "3 年"
+          },
+          "en": {
+            "name": "3 yr"
+          },
+          "art": {
+            "file": "/badges/extra/service_star_grasshopper_3.png",
+            "ref": "UH",
+            "page": "129",
+            "example": false,
+            "px": [
+              96,
+              96
+            ]
+          }
+        }
+      ],
       "art": {
         "file": "/badges/extra/service_star_rover_1.png",
         "ref": "UH",
@@ -3187,7 +3801,9 @@
         {
           "id": "stars",
           "gapCm": 0,
-          "max": 1
+          "max": 5,
+          "spacingCm": 0.1,
+          "from": "inner"
         },
         {
           "id": "middle",
@@ -3201,8 +3817,8 @@
           "max": 1
         }
       ],
-      "zh": "穿著者左胸袋袋蓋上方：服務年星緊貼袋蓋；飛行章／跳傘章喺袋蓋上方 2 cm，香港章喺佢上面（綱要 P.12 附圖 ②③④；只得香港章就喺袋蓋上方 3 cm）。",
-      "en": "Above the wearer's left pocket flap: the Service Star on the flap; the Flying/Parachute Badge 2 cm above the flap with the Hong Kong Badge above it (Training Scheme p.12 figure ②③④; the Hong Kong Badge alone sits 3 cm above the flap).",
+      "zh": "穿著者左胸袋袋蓋上方：服務年星緊貼袋蓋，以前支部嘅年星並排喺外側（手冊 P.130）；飛行章／跳傘章喺袋蓋上方 2 cm，香港章喺佢上面（綱要 P.12 附圖 ②③④；只得香港章就喺袋蓋上方 3 cm）。",
+      "en": "Above the wearer's left pocket flap: the Service Star on the flap, earlier-section stars beside it towards the outside (Handbook p.130); the Flying/Parachute Badge 2 cm above the flap with the Hong Kong Badge above it (Training Scheme p.12 figure ②③④; the Hong Kong Badge alone sits 3 cm above the flap).",
       "sources": [
         {
           "ref": "UH",
