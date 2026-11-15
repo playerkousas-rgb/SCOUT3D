@@ -29,21 +29,21 @@ test('文件列明嘅尺寸同距離', () => {
   assert.equal(badge('district').anchor.gapCm, 2);
 });
 
-test('未確認嘅項目一定標「待確認」', () => {
-  // 進步獎章左右睇法：用戶 2026-11-14 確認（手冊插圖 = 衣服除下後望住袖外側），所以唔再係待確認
-  assert.equal(badge('progress').status, 'documented');
+test('用戶已逐項核對：全部 verified，有核對日期（2026-11-13）', () => {
+  // 進步獎章左右睇法：用戶 2026-11-14 確認（手冊插圖 = 衣服除下後望住袖外側）
   assert.ok(rules.review.userChecks.some((c) => c.item === 'progress' && c.date === '2026-11-14'));
-  assert.equal(badge('grasshopperAward').status, 'pending');
-  assert.equal(rules.schoolTop.status, 'pending');
-  assert.equal(rules.review.status, 'pending');
-  assert.equal(rules.review.lastChecked, null, '未有人核對之前唔可以填核對日期');
-  assert.ok(!rules.badges.some((b) => b.status === 'verified'), 'v1.0 未經領袖核對，唔可以有 verified');
+  assert.ok(rules.review.userChecks.some((c) => c.item === 'allChecked' && c.date === '2026-11-13'));
+  assert.equal(rules.review.status, 'verified');
+  assert.equal(rules.review.lastChecked, '2026-11-13');
+  assert.ok(rules.badges.every((b) => b.status === 'verified'));
+  assert.equal(rules.schoolTop.status, 'verified');
 });
 
 test('冇來源、冇頁碼、待確認冇原因都會被攔', () => {
   const bad = structuredClone(rules);
   const at = (id) => bad.badges.find((b) => b.id === id);
   at('membership').sources = [];
+  at('grasshopperAward').status = 'pending';
   at('grasshopperAward').pendingReason = null;
   at('progress').sources[0].page = '';
   at('troop').side = 'viewer-left';
@@ -56,6 +56,7 @@ test('冇來源、冇頁碼、待確認冇原因都會被攔', () => {
 
 test('verified 一定要有核對日期', () => {
   const bad = structuredClone(rules);
+  bad.review.lastChecked = null;
   bad.badges[0].status = 'verified';
   assert.ok(validateRules(bad).some((e) => e.includes('lastChecked')));
 });

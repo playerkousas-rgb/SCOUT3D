@@ -1,11 +1,13 @@
 // SCOUT3D 主介面 — v1.0 · © SCOUT SYSTEM
-import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Suspense, forwardRef, lazy, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { useLang, LangToggle, bi, pick } from './i18n.jsx';
 import { SECTIONS, SECTION_IDS, DISTRICTS, PATROLS, RULE_ERRORS, badgeById, sourceLines } from './data/rules.js';
 import { garmentsFor, variantOf } from './data/validate.js';
 import { NECKER, WOGGLE, PLAIN } from './palette.js';
 import { shownReason } from './three/badgeLayout.js';
-import { resolveArt, meritYearOk, findDistrict, findPatrol, ranksFor, fixRank, rankRowOf, leaderNeckwear, messCapOf } from './lib/picks.js';
+import { resolveArt, meritYearOk, findDistrict, findPatrol, ranksFor, fixRank, rankRowOf, leaderNeckwear, messCapOf, troopNumber, ordinalSuffix } from './lib/picks.js';
+import { NECKER_THIRD } from './lib/necker.js';
+import { exportPin } from './lib/export3d.js';
 import { leaderUniform, isDress } from './three/body.js';
 import { APP_VERSION } from './version.js';
 
@@ -123,7 +125,7 @@ const LEADER_BADGES = {
 
 // 用戶自選：所屬區（決定區章、地域章圖案）、優異旅團章年份、童軍小隊；成年成員：單位層級、職級
 // 布質名牌姓名（nameZh／nameEn）只喺瀏覽器入面用，唔會上載
-const DEFAULT_PICKS = { districtId: '', meritYear: new Date().getFullYear(), patrolId: '', level: 'group', rank: 'sectionLeader', nameZh: '', nameEn: '' };
+const DEFAULT_PICKS = { districtId: '', regionId: '', troopNo: '', meritYear: new Date().getFullYear(), patrolId: '', level: 'group', rank: 'sectionLeader', nameZh: '', nameEn: '' };
 
 // 預設：必須佩戴嘅章 + 旅章、區章（同手冊 P.25 附圖一樣）
 const DEFAULT_BADGES = {
@@ -174,8 +176,12 @@ function Segmented({ label, value, options, onChange }) {
   );
 }
 
+const HEX = /^#[0-9a-f]{6}$/i;
+
 function Swatches({ label, value, options, onChange }) {
-  const { lang } = useLang();
+  const { lang, t } = useLang();
+  // 最後一格：用色盤自選顏色（用戶指示）
+  const custom = !!value && !options.some((o) => o.id === value);
   return (
     <div className="field">
       <span className="field__label">{label}</span>
@@ -192,6 +198,9 @@ function Swatches({ label, value, options, onChange }) {
             onClick={() => onChange(o.id)}
           />
         ))}
+        <label className={`swatch swatch--custom${custom ? ' is-on' : ''}`} title={t('swatch.custom')} style={custom ? { background: value } : undefined}>
+          <input type="color" value={HEX.test(value ?? '') ? value : '#888888'} onChange={(e) => onChange(e.target.value)} aria-label={`${label}${lang === 'en' ? ': ' : '：'}${t('swatch.custom')}`} />
+        </label>
       </div>
     </div>
   );
@@ -208,11 +217,6 @@ function Switch({ label, checked, onChange, disabled, note }) {
       {note && <p className="note">{note}</p>}
     </div>
   );
-}
-
-function StatusChip({ status }) {
-  const { t } = useLang();
-  return <span className={`chip chip--${status}`}>{t(`status.${status}`)}</span>;
 }
 
 function Sources({ rules, list }) {
@@ -249,7 +253,7 @@ function ArtLine({ rules, art }) {
 /** 某個章而家嘅圖案（resolveArt 結果）；優異旅團章要即場畫年份，所以有 src 狀態 */
 function useArtSrc(art) {
   const [src, setSrc] = useState(art?.kind === 'image' ? art.file : null);
-  const key = art ? (art.kind === 'merit' ? `m-${art.colour}-${art.year}` : art.kind === 'nameTag' ? `n-${art.zh}-${art.en}` : art.file) : '';
+  const key = art ? (art.kind === 'merit' ? `m-${art.colour}-${art.year}` : art.kind === 'nameTag' ? `n-${art.zh}-${art.en}` : art.kind === 'troopTape' ? `t-${art.no}` : art.file) : '';
   useEffect(() => {
     let alive = true;
     if (!art) setSrc(null);
@@ -257,6 +261,10 @@ function useArtSrc(art) {
     else if (art.kind === 'nameTag')
       import('./lib/nameTagCanvas.js')
         .then((m) => alive && setSrc(m.nameTagCanvas(art, 48).toDataURL('image/png')))
+        .catch(() => alive && setSrc(null));
+    else if (art.kind === 'troopTape')
+      import('./lib/troopTapeCanvas.js')
+        .then((m) => alive && setSrc(m.troopTapeCanvas(art, 60).toDataURL('image/png')))
         .catch(() => alive && setSrc(null));
     else
       import('./lib/meritCanvas.js')
@@ -307,6 +315,52 @@ function DistrictPicker({ picks, setPicks, id }) {
           {!hit.region.badge && ` — ${t('pick.noRegionBadge')}`}
         </p>
       )}
+    </div>
+  );
+}
+
+/** 成年成員地域層級：直接揀地域（只戴地域章，手冊 P.94–95） */
+function RegionPicker({ picks, setPicks, id }) {
+  const { lang, t } = useLang();
+  return (
+    <div className="picker">
+      <label className="field__label" htmlFor={id}>
+        {t('pick.regionPick')}
+      </label>
+      <select id={id} className="select" value={picks.regionId ?? ''} onChange={(e) => setPicks((p) => ({ ...p, regionId: e.target.value }))}>
+        <option value="">{t('pick.none')}</option>
+        {DISTRICTS.regions
+          .filter((r) => r.badge)
+          .map((r) => (
+            <option key={r.id} value={r.id}>
+              {bi(lang, r.zh, r.en)}
+            </option>
+          ))}
+      </select>
+    </div>
+  );
+}
+
+/** 旅條：輸入旅號，英文序數自動轉（1ST、22ND、33RD、44TH） */
+function TroopPicker({ picks, setPicks, id }) {
+  const { t } = useLang();
+  const no = troopNumber(picks.troopNo);
+  return (
+    <div className="picker">
+      <label className="field__label" htmlFor={id}>
+        {t('pick.troopNo')}
+      </label>
+      <input
+        id={id}
+        className="select"
+        type="text"
+        inputMode="numeric"
+        maxLength={8}
+        value={picks.troopNo ?? ''}
+        placeholder="22"
+        onChange={(e) => setPicks((p) => ({ ...p, troopNo: e.target.value }))}
+      />
+      <p className="muted">{no ? `${no}${ordinalSuffix(no)} HONG KONG GROUP · SCOUT ASSOCIATION OF HK` : t('pick.troopNote')}</p>
     </div>
   );
 }
@@ -386,7 +440,7 @@ function InfoCard({ rules, id, outfit, badges, picks, unavailable, onClose, onFo
   const st = rules.schoolTop;
   const onNecker = st && outfit.school && ['membership', 'progress', 'grasshopperAward'].includes(id);
   const sizeText = `${b.size.wCm} × ${b.size.hCm} cm（${t(b.size.measured ? 'info.sizeMeasured' : 'info.sizeGuess')}）`;
-  const picked = now?.district;
+  const picked = now?.district ?? now?.region;
   return (
     <section className="card" aria-live="polite">
       <header className="card__head">
@@ -396,7 +450,6 @@ function InfoCard({ rules, id, outfit, badges, picks, unavailable, onClose, onFo
         </button>
       </header>
       <div className="card__chips">
-        <StatusChip status={b.status} />
         <span className="chip chip--plain">{t(b.required ? 'info.required' : 'info.optional')}</span>
       </div>
       <div className="card__art">
@@ -408,7 +461,13 @@ function InfoCard({ rules, id, outfit, badges, picks, unavailable, onClose, onFo
           arts.map((a) => <img key={a.file} src={a.file} alt={pick(lang, b, 'name')} className={b.size.shape === 'circle' ? 'is-round' : ''} />)
         )}
       </div>
-      {b.dynamic === 'patrol' && now?.patrol ? (
+      {b.dynamic === 'troop' && now?.kind === 'troopTape' ? (
+        <span className="muted">
+          {t('pick.troopNo')}
+          {lang === 'en' ? ': ' : '：'}
+          {`${now.no}${now.suffix} HONG KONG GROUP`}
+        </span>
+      ) : b.dynamic === 'patrol' && now?.patrol ? (
         <span className="muted">
           {t('pick.artPatrol')}
           {lang === 'en' ? ': ' : '：'}
@@ -460,12 +519,6 @@ function InfoCard({ rules, id, outfit, badges, picks, unavailable, onClose, onFo
         <dd>
           <Sources rules={rules} list={b.sources} />
         </dd>
-        {b.pendingReason && (
-          <>
-            <dt>{t('info.why')}</dt>
-            <dd className="why">{bi(lang, b.pendingReason.zh, b.pendingReason.en)}</dd>
-          </>
-        )}
       </dl>
       <button type="button" className="btn btn--ghost" onClick={onFocus} disabled={!shown}>
         {t('info.focus')}
@@ -549,7 +602,6 @@ function BadgeRow({ b, rules, section, outfit, badges, set, picks, setPicks, una
             {pick(lang, b, 'name')}
           </button>
           <div className="badgerow__meta">
-            <StatusChip status={b.status} />
             <span className="chip chip--plain">{t(b.required ? 'info.required' : 'info.optional')}</span>
             {example && <span className="chip chip--plain">{t('badge.example')}</span>}
           </div>
@@ -600,7 +652,8 @@ function BadgeRow({ b, rules, section, outfit, badges, set, picks, setPicks, una
         </label>
       )}
       {b.dynamic === 'district' && <DistrictPicker picks={picks} setPicks={setPicks} id={`pick-district-${section}`} />}
-      {b.dynamic === 'region' && <p className="note">{t('pick.regionAuto')}</p>}
+      {b.dynamic === 'region' && (picks.level === 'region' ? <RegionPicker picks={picks} setPicks={setPicks} id={`pick-region-${section}`} /> : <p className="note">{t('pick.regionAuto')}</p>)}
+      {b.dynamic === 'troop' && <TroopPicker picks={picks} setPicks={setPicks} id={`pick-troop-${section}`} />}
       {b.dynamic === 'meritorious' && <YearPicker picks={picks} setPicks={setPicks} id={`pick-year-${section}`} />}
       {b.dynamic === 'patrol' && <PatrolPicker picks={picks} setPicks={setPicks} id={`pick-patrol-${section}`} />}
       {b.dynamic === 'rank' && rankRowOf(b, picks.rank) && <RankLine rules={rules} row={rankRowOf(b, picks.rank)} picks={picks} />}
@@ -656,10 +709,11 @@ function BadgesTab({ rules, section, outfit, badges, setBadges, picks, setPicks,
   const set = (k, v) => setBadges((b) => ({ ...b, [k]: v }));
   // 成年成員：只列呢套制服戴嘅章（手冊 P.57、P.60：禮服／晚禮服只戴指定嘅章）；勳章及獎勵另外一組
   const uid = section === 'leader' ? leaderUniform(outfit.gender, outfit.uniform) : null;
-  const forUniform = (b) => !uid || !b.uniforms || b.uniforms.includes(uid);
-  const list = rules.badges.filter((b) => forUniform(b) && b.group !== 'awards');
-  const awards = rules.badges.filter((b) => forUniform(b) && b.group === 'awards');
-  const hidden = rules.badges.filter((b) => !forUniform(b));
+  // 唔適用（呢套制服唔戴、呢個層級唔戴）嘅章直接唔列出（用戶指示：唔應該出現就冇開關）
+  const level = levelOf(section, picks);
+  const applies = (b) => (!uid || !b.uniforms || b.uniforms.includes(uid)) && (!level || !b.levels || b.levels.includes(level));
+  const list = rules.badges.filter((b) => applies(b) && b.group !== 'awards');
+  const awards = rules.badges.filter((b) => applies(b) && b.group === 'awards');
   const row = (b) => <BadgeRow key={b.id} b={b} rules={rules} section={section} outfit={outfit} badges={badges} set={set} picks={picks} setPicks={setPicks} unavailable={unavailable} selected={selected} onPick={onPick} />;
   return (
     <div className="tabbody">
@@ -679,12 +733,6 @@ function BadgesTab({ rules, section, outfit, badges, setBadges, picks, setPicks,
           <ul className="badgelist">{awards.map(row)}</ul>
         </details>
       )}
-      {hidden.length > 0 && (
-        <p className="note">
-          {t('badges.notThisUniform')}
-          {hidden.map((b) => pick(lang, b, 'name')).join(lang === 'en' ? ', ' : '、')}
-        </p>
-      )}
       <p className="note">{bi(lang, rules.artCredit.zh, rules.artCredit.en)}</p>
       <p className="note">{bi(lang, DISTRICTS.artCredit.zh, DISTRICTS.artCredit.en)}</p>
       {rules.badges.some((b) => b.dynamic === 'patrol') && <p className="note">{bi(lang, PATROLS.artCredit.zh, PATROLS.artCredit.en)}</p>}
@@ -692,10 +740,202 @@ function BadgesTab({ rules, section, outfit, badges, setBadges, picks, setPicks,
   );
 }
 
+/* ---------- 3D 舞台：上下移動、匯出 ---------- */
+/** 上下移動人物（望住點高度）：拉近之後可以睇唔同高度嘅章 */
+const HeightBar = forwardRef(function HeightBar({ scene }, ref) {
+  const { t } = useLang();
+  const [v, setV] = useState(0.85);
+  useImperativeHandle(ref, () => ({ set: (y) => setV(Math.round(y * 100) / 100) }), []);
+  const go = (y) => {
+    const ny = Math.max(0.1, Math.min(1.7, y));
+    setV(ny);
+    scene.current?.setHeight(ny);
+  };
+  return (
+    <div className="heightbar" role="group" aria-label={t('view.height')}>
+      <button type="button" className="heightbar__btn" onClick={() => go(v + 0.08)} aria-label={t('view.up')} title={t('view.up')}>
+        ▲
+      </button>
+      <div className="heightbar__track">
+        <input type="range" min={0.1} max={1.7} step={0.01} value={v} aria-label={t('view.height')} title={t('view.height')} onChange={(e) => go(Number(e.target.value))} />
+      </div>
+      <button type="button" className="heightbar__btn" onClick={() => go(v - 0.08)} aria-label={t('view.down')} title={t('view.down')}>
+        ▼
+      </button>
+    </div>
+  );
+});
+
+const PNG_SCALES = [0, 2, 4];
+
+/** 匯出：PNG 所有人用得；GLB／STL 要密碼（VITE_EXPORT_PIN） */
+function ExportPanel({ scene, variantTag, onClose, toast }) {
+  const { t } = useLang();
+  const [scale, setScale] = useState(2);
+  const [transparent, setTransparent] = useState(false);
+  const [pin, setPin] = useState('');
+  const [unlocked, setUnlocked] = useState(false);
+  const [tries, setTries] = useState(0);
+  const [busy, setBusy] = useState(false);
+  const PIN = useMemo(() => exportPin(), []);
+  const locked = tries >= 5;
+  const run = async (fn) => {
+    setBusy(true);
+    try {
+      await fn();
+      toast(t('export.done'));
+    } catch {
+      toast(t('export.fail'));
+    } finally {
+      setBusy(false);
+    }
+  };
+  const png = () =>
+    run(async () => {
+      const c = scene.current?.renderImage({ scale, transparent });
+      if (!c) throw new Error('no canvas');
+      const { captureScreenshot, downloadBlob, stamp } = await import('./lib/screenshot.js');
+      const blob = await captureScreenshot(c, t(`shot.caption.${variantTag}`));
+      downloadBlob(blob, `scout3d_${variantTag}_${scale || 'screen'}x_${APP_VERSION}_${stamp()}${transparent ? '_transparent' : ''}.png`);
+    });
+  const model = (kind) =>
+    run(async () => {
+      const obj = scene.current?.figure();
+      if (!obj || !unlocked) throw new Error('locked');
+      const [{ exportGlb, exportStl }, { downloadBlob, stamp }] = await Promise.all([import('./lib/export3d.js'), import('./lib/screenshot.js')]);
+      const blob = kind === 'glb' ? await exportGlb(obj) : await exportStl(obj);
+      downloadBlob(blob, `scout3d_${variantTag}_${APP_VERSION}_${stamp()}.${kind}`);
+    });
+  const unlock = (e) => {
+    e.preventDefault();
+    if (locked || !PIN) return;
+    if (pin === PIN) {
+      setUnlocked(true);
+      setPin('');
+    } else {
+      setTries((n) => n + 1);
+      toast(t('export.wrongPin'));
+    }
+  };
+  return (
+    <section className="exportpanel" aria-label={t('export.title')}>
+      <header className="exportpanel__head">
+        <strong>{t('export.title')}</strong>
+        <button type="button" className="iconbtn" onClick={onClose} aria-label={t('info.close')} title={t('info.close')}>
+          ×
+        </button>
+      </header>
+      <Segmented
+        label={t('export.scale')}
+        value={scale}
+        onChange={setScale}
+        options={PNG_SCALES.map((k) => ({ value: k, label: k ? `${k}×` : t('export.scaleScreen') }))}
+      />
+      <Switch label={t('export.transparent')} checked={transparent} onChange={setTransparent} />
+      <button type="button" className="btn" onClick={png} disabled={busy}>
+        {t('export.png')}
+      </button>
+      {PIN && (
+        <div className="exportpanel__3d">
+          <span className="field__label">{t('export.model')}</span>
+          {unlocked ? (
+            <>
+              <button type="button" className="btn btn--ghost" onClick={() => model('glb')} disabled={busy}>
+                {t('export.glb')}
+              </button>
+              <button type="button" className="btn btn--ghost" onClick={() => model('stl')} disabled={busy}>
+                {t('export.stl')}
+              </button>
+              <p className="muted">{t('export.modelNote')}</p>
+            </>
+          ) : (
+            <form className="exportpanel__pin" onSubmit={unlock}>
+              <input
+                className="select"
+                type="password"
+                inputMode="numeric"
+                autoComplete="off"
+                maxLength={4}
+                value={pin}
+                disabled={locked}
+                placeholder="••••"
+                aria-label={t('export.pin')}
+                onChange={(e) => setPin(e.target.value.replace(/\D/g, ''))}
+              />
+              <button type="submit" className="btn btn--ghost" disabled={locked || pin.length !== 4}>
+                {t('export.unlock')}
+              </button>
+              {locked && <p className="muted">{t('export.lockedOut')}</p>}
+            </form>
+          )}
+        </div>
+      )}
+    </section>
+  );
+}
+
 /* ---------- 服裝分頁 ---------- */
-/** 「旅巾・主色」／「Neckerchief: main colour」 */
-function neckerLabel(t, key) {
-  return t('outfit.neckerPart').replace('{a}', t('outfit.necker')).replace('{b}', t(key));
+/** 旅巾顏色：素色＋花邊／斜紋（2／3 色）、左右唔同顏色、每格都可以自選顏色（用戶指示） */
+function NeckerColours({ outfit, setOutfit }) {
+  const { t } = useLang();
+  const set = (k, v) => setOutfit((o) => ({ ...o, [k]: v }));
+  const stripe = outfit.neckerPattern === 'stripe';
+  const n = outfit.neckerStripes === 2 ? 2 : 3;
+  const split = !!outfit.neckerSplit;
+  const side = (right) => {
+    const key = (b) => (right ? `neckerR${b}` : `necker${b}`);
+    const val = (b) => outfit[key(b)] ?? outfit[`necker${b}`] ?? (b === 'Third' ? NECKER_THIRD : undefined);
+    const pre = split ? t(right ? 'outfit.neckerRightPre' : 'outfit.neckerLeftPre') : '';
+    const parts = stripe
+      ? ['Main', 'Border', 'Third'].slice(0, n).map((b, i) => [b, t('outfit.neckerStripeN').replace('{n}', String(i + 1))])
+      : [
+          ['Main', t('outfit.neckerMain')],
+          ['Border', t('outfit.neckerBorder')],
+        ];
+    return parts.map(([b, lbl]) => (
+      <Swatches key={key(b)} label={t('outfit.neckerPart').replace('{a}', t('outfit.necker')).replace('{b}', `${pre}${lbl}`)} value={val(b)} options={NECKER} onChange={(v) => set(key(b), v)} />
+    ));
+  };
+  return (
+    <>
+      <Segmented
+        label={t('outfit.neckerPattern')}
+        value={stripe ? 'stripe' : 'plain'}
+        onChange={(v) => set('neckerPattern', v)}
+        options={[
+          { value: 'plain', label: t('outfit.neckerPlain') },
+          { value: 'stripe', label: t('outfit.neckerStripe') },
+        ]}
+      />
+      {stripe && (
+        <Segmented
+          label={t('outfit.neckerStripes')}
+          value={n}
+          onChange={(v) => set('neckerStripes', v)}
+          options={[
+            { value: 2, label: t('outfit.stripes2') },
+            { value: 3, label: t('outfit.stripes3') },
+          ]}
+        />
+      )}
+      <Switch
+        label={t('outfit.neckerSplit')}
+        checked={split}
+        onChange={(x) =>
+          setOutfit((o) => ({
+            ...o,
+            neckerSplit: x,
+            // 第一次開：右邊預設主色、花邊對調，一開就見到分別
+            ...(x && !o.neckerRMain ? { neckerRMain: o.neckerBorder, neckerRBorder: o.neckerMain, neckerRThird: o.neckerThird ?? NECKER_THIRD } : {}),
+          }))
+        }
+        note={split ? t('outfit.neckerSplitNote') : null}
+      />
+      {side(false)}
+      {split && side(true)}
+      {stripe && <p className="note">{t('outfit.neckerStripeNote')}</p>}
+    </>
+  );
 }
 
 function OutfitTab({ outfit, setOutfit }) {
@@ -806,18 +1046,7 @@ function OutfitTab({ outfit, setOutfit }) {
       {outfit.vest && <Swatches label={t('outfit.vestColour')} value={outfit.vestColour} options={PLAIN} onChange={(v) => set('vestColour', v)} />}
       {outfit.invested && (
         <>
-          <Swatches
-            label={neckerLabel(t, 'outfit.neckerMain')}
-            value={outfit.neckerMain}
-            options={NECKER}
-            onChange={(v) => set('neckerMain', v)}
-          />
-          <Swatches
-            label={neckerLabel(t, 'outfit.neckerBorder')}
-            value={outfit.neckerBorder}
-            options={NECKER}
-            onChange={(v) => set('neckerBorder', v)}
-          />
+          <NeckerColours outfit={outfit} setOutfit={setOutfit} />
           <Swatches label={t('outfit.woggle')} value={outfit.woggle} options={WOGGLE} onChange={(v) => set('woggle', v)} />
         </>
       )}
@@ -866,18 +1095,7 @@ function CubOutfitTab({ outfit, setOutfit }) {
       <Switch label={t('outfit.sweater')} checked={!!outfit.sweater} onChange={(v) => set('sweater', v)} note={outfit.sweater ? t('outfit.sweaterNoteGreen') : null} />
       {outfit.invested && (
         <>
-          <Swatches
-            label={neckerLabel(t, 'outfit.neckerMain')}
-            value={outfit.neckerMain}
-            options={NECKER}
-            onChange={(v) => set('neckerMain', v)}
-          />
-          <Swatches
-            label={neckerLabel(t, 'outfit.neckerBorder')}
-            value={outfit.neckerBorder}
-            options={NECKER}
-            onChange={(v) => set('neckerBorder', v)}
-          />
+          <NeckerColours outfit={outfit} setOutfit={setOutfit} />
           <Swatches label={t('outfit.woggle')} value={outfit.woggle} options={WOGGLE} onChange={(v) => set('woggle', v)} />
         </>
       )}
@@ -980,8 +1198,7 @@ function ScoutOutfitTab({ section = 'scout', outfit, setOutfit }) {
       )}
       {outfit.invested && !tie && (
         <>
-          <Swatches label={neckerLabel(t, 'outfit.neckerMain')} value={outfit.neckerMain} options={NECKER} onChange={(v) => set('neckerMain', v)} />
-          <Swatches label={neckerLabel(t, 'outfit.neckerBorder')} value={outfit.neckerBorder} options={NECKER} onChange={(v) => set('neckerBorder', v)} />
+          <NeckerColours outfit={outfit} setOutfit={setOutfit} />
           <p className="note">{t('outfit.scoutWoggle')}</p>
         </>
       )}
@@ -1108,8 +1325,7 @@ function LeaderOutfitTab({ outfit, setOutfit, picks }) {
           <p className="note">{t(`outfit.neckerNote_${LN.necker}`)}</p>
           {LN.necker === 'unit' && (
             <>
-              <Swatches label={neckerLabel(t, 'outfit.neckerMain')} value={outfit.neckerMain} options={NECKER} onChange={(x) => set('neckerMain', x)} />
-              <Swatches label={neckerLabel(t, 'outfit.neckerBorder')} value={outfit.neckerBorder} options={NECKER} onChange={(x) => set('neckerBorder', x)} />
+              <NeckerColours outfit={outfit} setOutfit={setOutfit} />
             </>
           )}
           <Segmented
@@ -1236,7 +1452,7 @@ export default function App() {
   const variantTag = (section === 'scout' || SENIOR.has(section) || section === 'leader') && !dressOn && outfit.variant && outfit.variant !== 'land' ? `${section}_${outfit.variant}` : section;
   const badges = badgeStates[section];
   // 圖案要知嘅外觀設定：晚禮服季節（金屬職級肩章白／黑）、人物（女裝硬帽編號 M 改 F）
-  const artPicks = useMemo(() => (section === 'leader' ? { ...picks, season: outfit.season, gender: outfit.gender } : picks), [section, picks, outfit.season, outfit.gender]);
+  const artPicks = useMemo(() => (section === 'leader' ? { ...picks, season: outfit.season, gender: outfit.gender } : { ...picks, level: null }), [section, picks, outfit.season, outfit.gender]);
   // 人物、外觀、宣誓各支部共用
   const setOutfit = useCallback(
     (fn) =>
@@ -1264,6 +1480,9 @@ export default function App() {
   const [busy, setBusy] = useState(false);
   const webgl = useMemo(hasWebGL, []);
   const scene = useRef();
+  const heightBar = useRef();
+  const onHeight = useCallback((y) => heightBar.current?.set(y), []);
+  const [exportOpen, setExportOpen] = useState(false);
 
   useEffect(() => {
     if (!toast) return undefined;
@@ -1306,7 +1525,6 @@ export default function App() {
           <img src="/icons/favicon-32.png" width="28" height="28" alt="" className="brand__icon" />
           <div>
             <h1 className="brand__title">{t('app.title')}</h1>
-            <p className="brand__sub">{t(`app.sub.${variantTag}`)}</p>
           </div>
         </div>
         <div className="sectionswitch seg" role="radiogroup" aria-label={t('section.label')}>
@@ -1336,15 +1554,14 @@ export default function App() {
         <section className="stage" aria-label={t('app.title')}>
           {webgl ? (
             <Suspense fallback={<div className="stage__msg">{t('loading')}</div>}>
-              <Scene ref={scene} section={section} outfit={outfit} badges={badges} picks={artPicks} selected={selected} onSelect={onSceneSelect} />
+              <Scene ref={scene} section={section} outfit={outfit} badges={badges} picks={artPicks} selected={selected} onSelect={onSceneSelect} onHeight={onHeight} />
             </Suspense>
           ) : (
             <div className="stage__msg">{t('nowebgl')}</div>
           )}
-          <div className="pill" role="note">
-            {t('pending.all')}
-          </div>
           <p className="hint">{t('hint.drag')}</p>
+          {webgl && <HeightBar ref={heightBar} scene={scene} />}
+          {webgl && exportOpen && <ExportPanel scene={scene} variantTag={variantTag} onClose={() => setExportOpen(false)} toast={setToast} />}
           {webgl && (
             <div className="views" role="toolbar" aria-label={t('view.group')}>
               {['front', 'back', 'left', 'right'].map((v) => (
@@ -1361,6 +1578,9 @@ export default function App() {
               </button>
               <button type="button" className="chipbtn chipbtn--accent" onClick={shot} disabled={busy}>
                 {t('view.shot')}
+              </button>
+              <button type="button" className="chipbtn" aria-expanded={exportOpen} onClick={() => setExportOpen((x) => !x)}>
+                {t('export.open')}
               </button>
             </div>
           )}

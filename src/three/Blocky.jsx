@@ -7,11 +7,12 @@ import { layout, neckerLayout, strapLayout, dressLayout, VEST_T, SWEATER_TOP, PX
 import { useTexture } from '@react-three/drei';
 import { SECTIONS, DISTRICTS, PATROLS } from '../data/rules.js';
 import { resolveArt, rankCap, leaderNeckwear, messCapOf } from '../lib/picks.js';
+import { neckerPalettes } from '../lib/necker.js';
 import { placeAll, placeFor, visible, dynKey } from './badgeLayout.js';
 import { useBadgeTextures, useDynamicTextures, TorsoBadges, SleeveBadges } from './Badges.jsx';
 import {
   headFaces, pigtailFaces, neckFaces, torsoFaces, sleeveFaces, cuffFaces, skinFaces, handFaces, legFaces, shortsFaces, shinFaces,
-  shoeFaces, skirtFaces, vestFaces, hatFaces, brimFaces, shirtPalette, rollFaces, tailCanvas, backTriangleCanvas, plain, material, wogglePaint,
+  shoeFaces, skirtFaces, vestFaces, hatFaces, brimFaces, shirtPalette, neckerRollFaces, neckerTailCanvas, neckerBackCanvas, plain, material, wogglePaint,
   cubTorsoFaces, cubShinFaces, cubCapFaces, scoutWogglePaint, seaCapFaces, shade, brighten, sweaterFaces, sweaterSleeveFaces, sweaterCuffFaces, tieCanvas,
   gilwellWogglePaint, hardHatFaces, dressJacketFaces, messJacketFaces, messTrouserFaces,
 } from './pixels.js';
@@ -566,8 +567,12 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
   }, [leader, U, RULES, picks.rank, landLeader, skirt, outfit.hatStyle, outfit.ventureLeader, dress, gender]);
   // 成年成員領巾、巾圈、木章
   const LN = useMemo(() => (leader ? leaderNeckwear(RULES, outfit, picks) : null), [leader, RULES, outfit, picks]);
-  const neckerMain = LN ? (LN.necker === 'association' ? C.assocNecker : LN.necker === 'gilwell' ? C.gilwellNecker : outfit.neckerMain) : outfit.neckerMain;
-  const neckerBorder = LN ? (LN.necker === 'association' ? C.assocNecker : LN.necker === 'gilwell' ? C.gilwellNecker : outfit.neckerBorder) : outfit.neckerBorder;
+  // 旅巾花款（素色＋花邊／斜紋、左右唔同色）；會巾、基維爾領巾固定顏色
+  const neckerFixed = LN ? (LN.necker === 'association' ? C.assocNecker : LN.necker === 'gilwell' ? C.gilwellNecker : null) : null;
+  const NP = useMemo(
+    () => neckerPalettes(outfit, neckerFixed),
+    [outfit.neckerPattern, outfit.neckerStripes, outfit.neckerSplit, outfit.neckerMain, outfit.neckerBorder, outfit.neckerThird, outfit.neckerRMain, outfit.neckerRBorder, outfit.neckerRThird, neckerFixed], // eslint-disable-line react-hooks/exhaustive-deps
+  );
 
   // 徽章：位置全部由規則 JSON 計出嚟（學校運動上衣、背心會改位）；區章、地域章、優異旅團章圖案跟用戶揀
   const staticUrls = useMemo(() => placeAll(RULES, gender).map((p) => p.art).filter((a) => a && !a.startsWith('dyn:')), [RULES, gender]);
@@ -697,17 +702,20 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
   // 旅巾（跟顏色、背心變）
   const N = useMemo(() => {
     const G = neckerLayout(L, { vest: vest || sweater });
+    const P = (s) => (s > 0 ? NP.left : NP.right); // s = +1 穿著者左
+    const per = (fn) => ({ 1: fn(1), [-1]: fn(-1) });
     return {
       ...G,
+      split: NP.split,
       roll: {
-        back: rollFaces([G.outer, G.rollH, G.rollT], neckerMain, neckerBorder),
-        side: rollFaces([G.rollT, G.rollH, G.inner + G.rollT + 1.2], neckerMain, neckerBorder),
+        back: NP.split ? per((s) => neckerRollFaces([G.outer / 2, G.rollH, G.rollT], P(s), -s)) : neckerRollFaces([G.outer, G.rollH, G.rollT], NP.left, 1),
+        side: per((s) => neckerRollFaces([G.rollT, G.rollH, G.inner + G.rollT + 1.2], P(s), s)),
       },
-      upperC: tailCanvas(G.tail.w, G.len + 1, neckerMain, neckerBorder, 0),
-      lowerC: tailCanvas(G.tail.w, G.tail.len, neckerMain, neckerBorder, G.tail.tip),
-      backC: backTriangleCanvas(G.back.w, G.back.h, neckerMain, neckerBorder),
+      upperC: per((s) => neckerTailCanvas(G.tail.w, G.len + 1, P(s), 0, s)),
+      lowerC: per((s) => neckerTailCanvas(G.tail.w, G.tail.len, P(s), G.tail.tip, s)),
+      backC: neckerBackCanvas(G.back.w, G.back.h, NP.left, NP.right),
     };
-  }, [L, vest, sweater, neckerMain, neckerBorder]);
+  }, [L, vest, sweater, NP]);
 
   // 童軍：啡色皮巾圈（手冊 P.110）；其他支部：顏色巾圈
   const gilwellWog = !!LN?.gilwellWoggle;
@@ -820,14 +828,20 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
         )}
         {invested && !tie && !VL?.bowTie && (
           <group>
-            <Box size={[N.outer, N.rollH, N.rollT]} faces={N.roll.back} painted={painted} position={[0, L.top + N.rollH / 2, -(N.inner / 2 + N.rollT / 2)]} />
+            {N.split ? (
+              [1, -1].map((s) => (
+                <Box key={`rb${s}`} size={[N.outer / 2, N.rollH, N.rollT]} faces={N.roll.back[s]} painted={painted} position={[(s * N.outer) / 4, L.top + N.rollH / 2, -(N.inner / 2 + N.rollT / 2)]} />
+              ))
+            ) : (
+              <Box size={[N.outer, N.rollH, N.rollT]} faces={N.roll.back} painted={painted} position={[0, L.top + N.rollH / 2, -(N.inner / 2 + N.rollT / 2)]} />
+            )}
             {[1, -1].map((s) => (
-              <Box key={s} size={[N.rollT, N.rollH, N.inner + N.rollT + 1.2]} faces={N.roll.side} painted={painted} position={[s * (N.inner / 2 + N.rollT / 2), L.top + N.rollH / 2, 0.6]} />
+              <Box key={s} size={[N.rollT, N.rollH, N.inner + N.rollT + 1.2]} faces={N.roll.side[s]} painted={painted} position={[s * (N.inner / 2 + N.rollT / 2), L.top + N.rollH / 2, 0.6]} />
             ))}
             {[1, -1].map((s) => (
               <group key={s}>
-                <Plane size={[N.tail.w, N.len + 1]} canvas={N.upperC} painted={painted} position={[s * (N.a[0] + N.b[0]) / 2, (N.a[1] + N.b[1]) / 2, N.front + 0.35 + (s > 0 ? 0.08 : 0)]} rotation={[0, 0, -s * N.ang]} />
-                <Plane size={[N.tail.w, N.tail.len]} canvas={N.lowerC} painted={painted} position={[s * N.tail.x, N.tail.top - N.tail.len / 2, N.tailZ(s)]} />
+                <Plane size={[N.tail.w, N.len + 1]} canvas={N.upperC[s]} painted={painted} position={[s * (N.a[0] + N.b[0]) / 2, (N.a[1] + N.b[1]) / 2, N.front + 0.35 + (s > 0 ? 0.08 : 0)]} rotation={[0, 0, -s * N.ang]} />
+                <Plane size={[N.tail.w, N.tail.len]} canvas={N.lowerC[s]} painted={painted} position={[s * N.tail.x, N.tail.top - N.tail.len / 2, N.tailZ(s)]} />
               </group>
             ))}
             {gilwellWog ? (

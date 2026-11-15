@@ -11,16 +11,16 @@
     "en": "Scout Association of Hong Kong"
   },
   "review": {
-    "status": "pending",
+    "status": "verified",
     "reviewer": {
       "zh": "專案負責人（領袖）",
       "en": "Project owner (leader)"
     },
-    "lastChecked": null,
+    "lastChecked": "2026-11-13",
     "compiledOn": "2026-11-14",
     "note": {
-      "zh": "以下內容由 AI 助手依文件整理，未經核對人逐項確認；確認後請把每項 status 改為 verified 並填 lastChecked。",
-      "en": "Compiled from the documents by an AI assistant and not yet confirmed item by item. After review, set each status to verified and fill lastChecked."
+      "zh": "用戶（專案負責人，領袖）已逐項核對（2026-11-13：「我都對過了」）。",
+      "en": "Checked item by item by the user (project owner, a leader) on 2026-11-13."
     },
     "userChecks": [
       {
@@ -28,6 +28,12 @@
         "item": "lonePairCentred",
         "zh": "地域章／區章只得一個（例如銀禧區）就放中間；之後只得一個總會章嘅制服都係（用戶指示）",
         "en": "If only one of the Region/District Badges is worn (e.g. Silver Jubilee) it is centred; the same later for uniforms with a single HQ badge (user instruction)"
+      },
+      {
+        "date": "2026-11-13",
+        "item": "allChecked",
+        "zh": "用戶確認全部內容已核對，介面刪走「待核對」字樣（用戶指示）",
+        "en": "The user confirmed every item has been checked; the \"pending review\" labels are removed from the interface (user instruction)"
       }
     ]
   },
@@ -82,7 +88,7 @@
           "page": "6–7"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "modelNote": {
         "zh": "帽章圖案取自《幼童軍支部訓練綱要》P.7 附圖（細圖放大，會有啲矇）。",
         "en": "The cap badge artwork is from the Training Scheme p.7 figure (a small image enlarged, so slightly blurry)."
@@ -109,7 +115,7 @@
           "page": "6–7"
         }
       ],
-      "status": "documented"
+      "status": "verified"
     },
     {
       "id": "shorts",
@@ -132,7 +138,7 @@
           "page": "6–7"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "modelNote": {
         "zh": "手冊 P.28 註：舊款短褲／長褲仍可穿著，直至破舊或有需要更換為止。",
         "en": "Handbook p.28 note: the old shorts/trousers may still be worn until worn out."
@@ -159,7 +165,7 @@
           "page": "6–7"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "modelNote": {
         "zh": "皮帶扣只畫銀色方塊示意，冇畫徽號。",
         "en": "The buckle is a plain silver block; the emblem is not drawn."
@@ -186,7 +192,7 @@
           "page": "6–7"
         }
       ],
-      "status": "documented"
+      "status": "verified"
     },
     {
       "id": "shoes",
@@ -209,7 +215,7 @@
           "page": "6–7"
         }
       ],
-      "status": "documented"
+      "status": "verified"
     },
     {
       "id": "necker",
@@ -232,7 +238,7 @@
           "page": "6–7"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "modelNote": {
         "zh": "旅巾顏色由各旅自定，模型可自選；預設跟附圖用綠色。",
         "en": "Neckerchief colours are set by each Group; pick them in the model. Default is green as in the figures."
@@ -254,7 +260,7 @@
           "page": "121–122"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "modelNote": {
         "zh": "毛衣畫做長袖、坑紋、圓領（見到恤衫領）、膊頭淺色膊布（手冊 P.121–122 附圖）。徽章「或制服毛衣相同位置」：位置同恤衫一樣，向外移一個毛衣厚度。",
         "en": "The jersey is drawn long-sleeved and ribbed, with a crew neck (shirt collar showing) and lighter shoulder patches (Handbook pp.121–122 figures). Badges go in “the same position on the uniform jersey”: the shirt positions, moved out by the jersey thickness."
@@ -303,7 +309,7 @@
           "page": "7"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "art": {
         "file": "/badges/world_membership.png",
         "ref": "UH",
@@ -357,7 +363,7 @@
           "page": "7"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "art": {
         "file": "/badges/hong_kong_badge.png",
         "ref": "UH",
@@ -411,7 +417,7 @@
           "page": "7"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "art": {
         "file": "/badges/handbook_example_troop.png",
         "ref": "UH",
@@ -422,7 +428,8 @@
         "zh": "手冊 P.94：新成立旅嘅旅章不小過 8.5 × 2 cm、不大過 10.5 × 2.5 cm；模型用 9 × 2.2 cm。圖案係手冊示例（2222 旅），各旅實際圖案唔同。",
         "en": "Handbook p.94: a new Group's badge is between 8.5 × 2 cm and 10.5 × 2.5 cm; the model uses 9 × 2.2 cm. The artwork is the handbook example (2222th Group); each Group's badge differs."
       },
-      "sweater": true
+      "sweater": true,
+      "dynamic": "troop"
     },
     {
       "id": "region",
@@ -469,7 +476,7 @@
           "page": "7"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "art": {
         "file": "/badges/handbook_example_region.png",
         "ref": "UH",
@@ -527,7 +534,7 @@
           "page": "7"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "art": {
         "file": "/badges/handbook_example_district.png",
         "ref": "UH",
@@ -582,7 +589,7 @@
           "page": "7"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "art": {
         "file": "/badges/meritorious_base_blue.png",
         "ref": "UH",

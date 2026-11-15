@@ -2,6 +2,7 @@
 // 每個方塊 6 面：[+x, -x, +y, -y, +z, -z]（Three.js BoxGeometry 次序）。
 // +z = 前面，+x = 穿著者左。畫圖座標以厘米計，左上角為原點。
 import * as THREE from 'three';
+import { stripeIndex } from '../lib/necker.js';
 import { PX, COLOURS as C } from './body.js';
 
 /** 一塊畫布：w × h 厘米。draw(g) 用 g.rect / g.shape / g.px。 */
@@ -507,6 +508,50 @@ export function tailCanvas(wcm, lcm, main, border, tip = 3.5) {
     g.rect(0.5, 0, 0.5, lcm, border);
     g.rect(wcm - 1, 0, 0.5, lcm, border);
     g.clear((x, y) => y > lcm - tip && Math.abs(x - wcm / 2) > (wcm / 2) * ((lcm - y) / tip));
+  });
+}
+
+/* 旅巾花款（src/lib/necker.js）：P = { pattern, colours }；dir = 斜紋方向（左右鏡像） */
+const paintStripes = (g, P, dir) => {
+  const n = P.colours.length;
+  g.fill(P.colours[0]);
+  for (let i = 1; i < n; i++) g.shape((x, y) => stripeIndex(x, y, n, dir) === i, P.colours[i]);
+};
+
+/** 巾尾（跟花款）：素色＝兩邊花邊；斜紋＝成條斜紋 */
+export function neckerTailCanvas(wcm, lcm, P, tip = 3.5, dir = 1) {
+  if (P.pattern !== 'stripe') return tailCanvas(wcm, lcm, P.colours[0], P.colours[1], tip);
+  return canvas(wcm, lcm, (g) => {
+    paintStripes(g, P, dir);
+    g.clear((x, y) => y > lcm - tip && Math.abs(x - wcm / 2) > (wcm / 2) * ((lcm - y) / tip));
+  });
+}
+
+/** 卷起嘅旅巾（跟花款） */
+export function neckerRollFaces(size, P, dir = 1) {
+  if (P.pattern !== 'stripe') return rollFaces(size, P.colours[0], P.colours[1]);
+  const st = (g) => paintStripes(g, P, dir);
+  return boxFaces(size, { px: st, nx: st, pz: st, nz: st, py: (g) => g.fill(P.colours[0]), ny: (g) => g.fill(P.colours[0]) });
+}
+
+/**
+ * 背後三角（跟花款，左右可以唔同色）：畫布左半 = 穿著者左（平面轉咗 180°）。
+ * 素色：斜邊一條花邊；斜紋：斜邊由外到內色 2、色 3 平行色邊（用戶附圖）。
+ */
+export function neckerBackCanvas(wcm, hcm, PL, PR = PL) {
+  return canvas(wcm, hcm, (g) => {
+    const half = (y) => (wcm / 2) * (1 - y / hcm);
+    for (const [P, onSide] of [[PL, (x) => x < wcm / 2], [PR, (x) => x >= wcm / 2]]) {
+      const inside = (x, y) => onSide(x) && Math.abs(x - wcm / 2) < half(y);
+      const edge = (x, y) => half(y) - Math.abs(x - wcm / 2);
+      g.shape(inside, P.colours[0]);
+      if (P.pattern !== 'stripe') {
+        g.shape((x, y) => { const e = edge(x, y); return inside(x, y) && e > 0.5 && e < 1.1; }, P.colours[1]);
+      } else {
+        P.colours.slice(1).forEach((c, i) => g.shape((x, y) => { const e = edge(x, y); return inside(x, y) && e > 0.5 + i * 1.2 && e < 1.7 + i * 1.2; }, c));
+      }
+    }
+    g.clear((x, y) => Math.abs(x - wcm / 2) >= half(y));
   });
 }
 

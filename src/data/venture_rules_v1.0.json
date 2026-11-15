@@ -11,16 +11,16 @@
     "en": "Scout Association of Hong Kong"
   },
   "review": {
-    "status": "pending",
+    "status": "verified",
     "reviewer": {
       "zh": "專案負責人（領袖）",
       "en": "Project owner (leader)"
     },
-    "lastChecked": null,
+    "lastChecked": "2026-11-13",
     "compiledOn": "2026-11-14",
     "note": {
-      "zh": "以下內容由 AI 助手依文件整理，未經核對人逐項確認；確認後請把每項 status 改為 verified 並填 lastChecked。",
-      "en": "Compiled from the documents by an AI assistant and not yet confirmed item by item. After review, set each status to verified and fill lastChecked."
+      "zh": "用戶（專案負責人，領袖）已逐項核對（2026-11-13：「我都對過了」）。",
+      "en": "Checked item by item by the user (project owner, a leader) on 2026-11-13."
     },
     "userChecks": [
       {
@@ -94,6 +94,12 @@
         "item": "skirtNoSeam",
         "zh": "半截裙中間唔可以有線（會似短褲）（用戶指正）",
         "en": "No centre line on the skirt (it looks like shorts) (user correction)"
+      },
+      {
+        "date": "2026-11-13",
+        "item": "allChecked",
+        "zh": "用戶確認全部內容已核對，介面刪走「待核對」字樣（用戶指示）",
+        "en": "The user confirmed every item has been checked; the \"pending review\" labels are removed from the interface (user instruction)"
       }
     ]
   },
@@ -147,7 +153,7 @@
           "page": "14–15"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "modelNote": {
         "zh": "帽章圖案取自手冊 P.102 相片；方塊人嘅軟帽只係示意形狀。",
         "en": "Cap badge artwork from the Handbook p.102 photo; the blocky beret is only an indicative shape."
@@ -173,7 +179,7 @@
           "page": "14–15"
         }
       ],
-      "status": "documented"
+      "status": "verified"
     },
     {
       "id": "trousers",
@@ -195,7 +201,7 @@
           "page": "14–15"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "modelNote": {
         "zh": "模型預設半截裙（一件過，中間冇線），女團員可以喺服裝分頁改長褲。",
         "en": "The model defaults to the skirt (one piece, no centre line); girls can switch to trousers in the Outfit tab."
@@ -221,7 +227,7 @@
           "page": "14–15"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "modelNote": {
         "zh": "皮帶扣只畫銀色方塊示意。",
         "en": "The buckle is a plain silver block."
@@ -247,7 +253,7 @@
           "page": "14–15"
         }
       ],
-      "status": "documented"
+      "status": "verified"
     },
     {
       "id": "shoes",
@@ -269,7 +275,7 @@
           "page": "14–15"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "modelNote": {
         "zh": "半截裙配非綁帶中跟皮鞋：用方塊砌，後面一舊中跟、前面鞋掌貼地，中間腳弓位係空；鞋面開口大，見到肉色襪褲，黑色只係鞋邊同鞋頭（用戶指正）。長褲配綁帶皮鞋。",
         "en": "With the skirt: non-laced medium-heel shoes built from blocks — a heel block at the back, the sole on the ground at the front and a hollow under the arch; a wide opening shows the flesh-coloured tights, with black only round the edge and toe (user correction). With trousers: laced shoes."
@@ -295,7 +301,7 @@
           "page": "14–15"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "modelNote": {
         "zh": "旅巾顏色由各旅自定，模型可自選；巾圈畫做啡色皮巾圈（手冊 P.110）。",
         "en": "Neckerchief colours are set by each Group; pick them in the model. The woggle is drawn as the brown leather Scout woggle (Handbook p.110)."
@@ -321,7 +327,7 @@
           "page": "14–15"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "modelNote": {
         "zh": "同旅巾一樣，宣誓後先戴（用戶確認）。",
         "en": "Like the neckerchief, worn only after investiture (user confirmed)."
@@ -343,7 +349,7 @@
           "page": "121–122"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "modelNote": {
         "zh": "毛衣畫做長袖、坑紋、圓領（見到恤衫領）、膊頭淺色膊布（手冊 P.121–122 附圖）。徽章「或制服毛衣相同位置」：位置同恤衫一樣，向外移一個毛衣厚度。",
         "en": "The jersey is drawn long-sleeved and ribbed, with a crew neck (shirt collar showing) and lighter shoulder patches (Handbook pp.121–122 figures). Badges go in “the same position on the uniform jersey”: the shirt positions, moved out by the jersey thickness."
@@ -414,7 +420,7 @@
               "page": "14–15"
             }
           ],
-          "status": "documented",
+          "status": "verified",
           "modelNote": {
             "zh": "帽章圖案取自手冊 P.102 相片（細圖放大），按 P.101 附圖放喺帽前黑色帽帶中央。方塊人嘅白頂帽只係示意形狀：男裝白頂較闊、黑色帽舌；女裝白頂細啲、後面向上翹、帽舌短啲。",
             "en": "Cap badge artwork from the Handbook p.102 photo (a small image enlarged), placed at the front centre of the black band as in the p.101 figure. The blocky caps are only indicative: the men's cap has a wider white top and a black peak; the women's has a smaller top tilted up at the back and a shorter peak."
@@ -440,7 +446,7 @@
               "page": "14–15"
             }
           ],
-          "status": "documented"
+          "status": "verified"
         },
         {
           "id": "trousers",
@@ -462,7 +468,7 @@
               "page": "14–15"
             }
           ],
-          "status": "documented"
+          "status": "verified"
         },
         {
           "id": "tie",
@@ -484,7 +490,7 @@
               "page": "14–15"
             }
           ],
-          "status": "documented",
+          "status": "verified",
           "modelNote": {
             "zh": "同旅巾一樣，宣誓後先戴（用戶確認）。",
             "en": "Like the neckerchief, worn only after investiture (user confirmed)."
@@ -506,7 +512,7 @@
               "page": "121–122"
             }
           ],
-          "status": "documented",
+          "status": "verified",
           "modelNote": {
             "zh": "手冊 P.121：海童軍／空童軍青少年成員穿深藍色制服毛衣；深資海童軍、深資空童軍都係（用戶確認）。毛衣畫做長袖、坑紋、圓領（見到恤衫領）、膊頭淺色膊布（手冊 P.121–122 附圖）。徽章「或制服毛衣相同位置」：位置同恤衫一樣，向外移一個毛衣厚度。",
             "en": "Handbook p.121: Sea/Air Scout youth members wear the dark blue jersey; Venture Sea and Venture Air Scouts are included (user confirmed). The jersey is drawn long-sleeved and ribbed, with a crew neck (shirt collar showing) and lighter shoulder patches (Handbook pp.121–122 figures). Badges go in “the same position on the uniform jersey”: the shirt positions, moved out by the jersey thickness."
@@ -555,7 +561,7 @@
               "page": "14–15"
             }
           ],
-          "status": "documented",
+          "status": "verified",
           "modelNote": {
             "zh": "手冊 P.40、P.102 寫「童軍帽章」；綱要 P.14–15 寫「成員帽章」。模型跟手冊。",
             "en": "Handbook pp.40, 102 say “Scout cap badge”; Training Scheme pp.14–15 says “member's cap badge”. The model follows the Handbook."
@@ -581,7 +587,7 @@
               "page": "14–15"
             }
           ],
-          "status": "documented"
+          "status": "verified"
         },
         {
           "id": "trousers",
@@ -603,7 +609,7 @@
               "page": "14–15"
             }
           ],
-          "status": "documented"
+          "status": "verified"
         },
         {
           "id": "tie",
@@ -625,7 +631,7 @@
               "page": "14–15"
             }
           ],
-          "status": "documented",
+          "status": "verified",
           "modelNote": {
             "zh": "同旅巾一樣，宣誓後先戴（用戶確認）。",
             "en": "Like the neckerchief, worn only after investiture (user confirmed)."
@@ -647,7 +653,7 @@
               "page": "121–122"
             }
           ],
-          "status": "documented",
+          "status": "verified",
           "modelNote": {
             "zh": "手冊 P.121：海童軍／空童軍青少年成員穿深藍色制服毛衣；深資海童軍、深資空童軍都係（用戶確認）。毛衣畫做長袖、坑紋、圓領（見到恤衫領）、膊頭淺色膊布（手冊 P.121–122 附圖）。徽章「或制服毛衣相同位置」：位置同恤衫一樣，向外移一個毛衣厚度。",
             "en": "Handbook p.121: Sea/Air Scout youth members wear the dark blue jersey; Venture Sea and Venture Air Scouts are included (user confirmed). The jersey is drawn long-sleeved and ribbed, with a crew neck (shirt collar showing) and lighter shoulder patches (Handbook pp.121–122 figures). Badges go in “the same position on the uniform jersey”: the shirt positions, moved out by the jersey thickness."
@@ -698,7 +704,7 @@
           "page": "14–15"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "art": {
         "file": "/badges/world_membership.png",
         "ref": "UH",
@@ -752,7 +758,7 @@
           "page": "14–15"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "art": {
         "file": "/badges/hong_kong_badge.png",
         "ref": "UH",
@@ -806,7 +812,7 @@
           "page": "14–15"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "art": {
         "file": "/badges/handbook_example_troop.png",
         "ref": "UH",
@@ -817,7 +823,8 @@
         "zh": "手冊 P.94：新成立旅嘅旅章不小過 8.5 × 2 cm、不大過 10.5 × 2.5 cm；模型用 9 × 2.2 cm。圖案係手冊示例（2222 旅），各旅實際圖案唔同。",
         "en": "Handbook p.94: a new Group's badge is between 8.5 × 2 cm and 10.5 × 2.5 cm; the model uses 9 × 2.2 cm. The artwork is the handbook example (2222th Group); each Group's badge differs."
       },
-      "sweater": true
+      "sweater": true,
+      "dynamic": "troop"
     },
     {
       "id": "region",
@@ -864,7 +871,7 @@
           "page": "14–15"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "art": {
         "file": "/badges/handbook_example_region.png",
         "ref": "UH",
@@ -922,7 +929,7 @@
           "page": "14–15"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "art": {
         "file": "/badges/handbook_example_district.png",
         "ref": "UH",
@@ -975,7 +982,7 @@
           "page": "8, 19"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "art": {
         "file": "/badges/venture_epaulette.png",
         "ref": "UH",
@@ -1054,7 +1061,7 @@
           "page": "159, 170"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "art": {
         "file": "/badges/meritorious_base_blue.png",
         "ref": "UH",

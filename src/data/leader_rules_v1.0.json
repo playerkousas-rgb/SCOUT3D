@@ -11,16 +11,16 @@
     "en": "Scout Association of Hong Kong"
   },
   "review": {
-    "status": "pending",
+    "status": "verified",
     "reviewer": {
       "zh": "專案負責人（領袖）",
       "en": "Project owner (leader)"
     },
-    "lastChecked": null,
+    "lastChecked": "2026-11-13",
     "compiledOn": "2026-11-14",
     "note": {
-      "zh": "以下內容由 AI 助手依文件整理，未經核對人逐項確認；確認後請把每項 status 改為 verified 並填 lastChecked。",
-      "en": "Compiled from the documents by an AI assistant and not yet confirmed item by item. After review, set each status to verified and fill lastChecked."
+      "zh": "用戶（專案負責人，領袖）已逐項核對（2026-11-13：「我都對過了」）。",
+      "en": "Checked item by item by the user (project owner, a leader) on 2026-11-13."
     },
     "userChecks": [
       {
@@ -82,6 +82,12 @@
         "item": "serviceLater",
         "zh": "服務年資章等其他可選章之後再做（用戶揀）",
         "en": "Service-year and other optional badges later (user choice)"
+      },
+      {
+        "date": "2026-11-13",
+        "item": "allChecked",
+        "zh": "用戶確認全部內容已核對，介面刪走「待核對」字樣（用戶指示）",
+        "en": "The user confirmed every item has been checked; the \"pending review\" labels are removed from the interface (user instruction)"
       }
     ]
   },
@@ -276,6 +282,26 @@
       },
       "levels": [
         "hq"
+      ],
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "95, 103–104, 108"
+        }
+      ]
+    },
+    {
+      "id": "regionalCommissioner",
+      "zh": {
+        "name": "地域總監",
+        "note": "職級同助理香港總監：肩章、帽章一樣（用戶指示）"
+      },
+      "en": {
+        "name": "Regional Commissioner",
+        "note": "Same rank as Assistant Chief Commissioner: same epaulette and cap badge (user instruction)"
+      },
+      "levels": [
+        "region"
       ],
       "sources": [
         {
@@ -986,7 +1012,7 @@
           "page": "64–69, 97–100, 103–105"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "modelNote": {
         "zh": "職級帽章 = 帽章頂嘅顏色帽纓，顏色跟職級（P.103–104）；圖案取自手冊 P.103–104 表格（細圖放大）。方塊人嘅軟帽、硬帽只係示意形狀：硬帽係深綠色方盒、頂邊同帽邊有金邊。",
         "en": "The rank cap badge is the coloured plume above the cap badge, its colour set by rank (pp.103–104); artwork from the Handbook pp.103–104 table (small images enlarged). The blocky beret and hard hat are only indicative: the hard hat is a dark green box with gold edging round the top and brim."
@@ -1008,7 +1034,7 @@
           "page": "64–69"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "modelNote": {
         "zh": "短袖約喺手踭上 5 釐米（P.88）。",
         "en": "Short sleeves end about 5 cm above the elbow (p.88)."
@@ -1030,7 +1056,7 @@
           "page": "64–69"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "modelNote": {
         "zh": "短褲約喺膝頭中間上 10 釐米（P.88）。半截裙一件過，中間冇線。",
         "en": "Shorts end about 10 cm above mid-knee (p.88). The skirt is one piece with no centre line."
@@ -1052,7 +1078,7 @@
           "page": "64–69"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "modelNote": {
         "zh": "皮帶扣只畫銀色方塊示意。",
         "en": "The buckle is a plain silver block."
@@ -1074,7 +1100,7 @@
           "page": "64–69"
         }
       ],
-      "status": "documented"
+      "status": "verified"
     },
     {
       "id": "shoes",
@@ -1092,7 +1118,7 @@
           "page": "64–69"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "modelNote": {
         "zh": "中跟皮鞋沿用深資／樂行童軍嘅方塊造型（腳弓位留空、鞋面見肉色襪褲）。",
         "en": "The medium-heel shoe reuses the Venture/Rover block build (hollow arch, tights showing on top)."
@@ -1114,7 +1140,7 @@
           "page": "64, 68, 107–112, 115"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "modelNote": {
         "zh": "會巾領巾尖嘅香港章用手冊 P.93 香港章圖案示意；基維爾領巾尖嘅格仔布取自手冊 P.109 圖。旅巾顏色可以喺服裝分頁揀。",
         "en": "The Hong Kong Badge at the Association neckerchief point uses the Handbook p.93 artwork; the tartan patch on the Gilwell neckerchief is from the Handbook p.109 figure. The Group neckerchief colours can be picked in the Outfit tab."
@@ -1136,7 +1162,7 @@
           "page": "110–111, 115–116"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "modelNote": {
         "zh": "基維爾巾圈（土耳其結）用啡色方塊加結紋示意；斧頭木標誌用銀色小方塊示意。",
         "en": "The Gilwell woggle (Turk's head) is a brown block with a knot pattern; the axe-and-log emblem is a small silver block."
@@ -1158,7 +1184,7 @@
           "page": "115–117"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "modelNote": {
         "zh": "木珠數目跟職級自動轉。",
         "en": "The number of beads follows the rank automatically."
@@ -1180,7 +1206,7 @@
           "page": "66–67, 113"
         }
       ],
-      "status": "documented"
+      "status": "verified"
     },
     {
       "id": "dressJacket",
@@ -1198,7 +1224,7 @@
           "page": "57–59, 203–204"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "modelNote": {
         "zh": "方塊人嘅禮服上衣用同褲同一隻草青色（手冊：同布料）；V 位見到恤衫領同領帶，下襬包住褲頭。四個袋同肩帶只係示意。",
         "en": "The blocky dress jacket uses the same grass green as the trousers (Handbook: same fabric); the V shows the shirt collar and tie and the hem covers the waistband. Pockets and straps are indicative."
@@ -1220,7 +1246,7 @@
           "page": "60–62, 205"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "modelNote": {
         "zh": "翻領銀色童軍徽圖案取自手冊 P.208–211 金屬肩章入面嘅銀色童軍徽（P.205 嘅翻領圖太細）。",
         "en": "The lapel emblem artwork is the silver Scout emblem from the metal epaulettes on pp.208–211 (the p.205 lapel drawing is too small)."
@@ -1242,7 +1268,7 @@
           "page": "61–62"
         }
       ],
-      "status": "documented"
+      "status": "verified"
     },
     {
       "id": "cummerbund",
@@ -1260,7 +1286,7 @@
           "page": "61, 205"
         }
       ],
-      "status": "documented"
+      "status": "verified"
     },
     {
       "id": "messLegwear",
@@ -1278,7 +1304,7 @@
           "page": "61–62, 205"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "modelNote": {
         "zh": "女裝高跟鞋沿用方塊人嘅中跟皮鞋造型示意。",
         "en": "The women's high heels reuse the blocky medium-heel shoe as an indication."
@@ -1300,7 +1326,7 @@
           "page": "60–62, 206–211"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "modelNote": {
         "zh": "帽章圖案取自手冊 P.208 硬帽圖；帽舌邊飾按 P.206–211 圖示意（方塊造型）。",
         "en": "The cap badge artwork is from the p.208 hat drawing; the peak trim is indicated from pp.206–211 (blocky shapes)."
@@ -1359,7 +1385,7 @@
               "page": "70–75, 101, 105–106"
             }
           ],
-          "status": "documented",
+          "status": "verified",
           "modelNote": {
             "zh": "海童軍領袖帽章（唔係職級帽章）圖案取自手冊 P.105。方塊人嘅白頂帽只係示意形狀。",
             "en": "The Sea Scout leader cap badge (not a rank cap badge) artwork is from Handbook p.105. The blocky cap is only indicative."
@@ -1381,7 +1407,7 @@
               "page": "70–75"
             }
           ],
-          "status": "documented"
+          "status": "verified"
         },
         {
           "id": "trousers",
@@ -1399,7 +1425,7 @@
               "page": "70–75"
             }
           ],
-          "status": "documented"
+          "status": "verified"
         },
         {
           "id": "socks",
@@ -1417,7 +1443,7 @@
               "page": "70–75"
             }
           ],
-          "status": "documented"
+          "status": "verified"
         },
         {
           "id": "tie",
@@ -1435,7 +1461,7 @@
               "page": "72–73, 113"
             }
           ],
-          "status": "documented"
+          "status": "verified"
         }
       ]
     },
@@ -1472,7 +1498,7 @@
               "page": "76–81, 99, 105"
             }
           ],
-          "status": "documented",
+          "status": "verified",
           "modelNote": {
             "zh": "方塊人嘅軟帽只係示意形狀。",
             "en": "The blocky beret is only indicative."
@@ -1494,7 +1520,7 @@
               "page": "76–81"
             }
           ],
-          "status": "documented"
+          "status": "verified"
         },
         {
           "id": "trousers",
@@ -1512,7 +1538,7 @@
               "page": "76–81"
             }
           ],
-          "status": "documented"
+          "status": "verified"
         },
         {
           "id": "socks",
@@ -1530,7 +1556,7 @@
               "page": "76–81"
             }
           ],
-          "status": "documented"
+          "status": "verified"
         },
         {
           "id": "tie",
@@ -1548,7 +1574,7 @@
               "page": "78–79, 113"
             }
           ],
-          "status": "documented"
+          "status": "verified"
         }
       ]
     }
@@ -1590,7 +1616,7 @@
           "page": "64–81, 92, 172"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "art": {
         "file": "/badges/world_membership.png",
         "ref": "UH",
@@ -1645,7 +1671,7 @@
           "page": "64–81, 93, 172"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "art": {
         "file": "/badges/hong_kong_badge.png",
         "ref": "UH",
@@ -1701,7 +1727,7 @@
           "page": "64–81, 94"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "art": {
         "file": "/badges/leader/hong_kong_shoulder_title.png",
         "ref": "UH",
@@ -1762,7 +1788,7 @@
           "page": "64–81, 94, 172"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "art": {
         "file": "/badges/handbook_example_troop.png",
         "ref": "UH",
@@ -1782,7 +1808,8 @@
         "u4",
         "u5",
         "u6"
-      ]
+      ],
+      "dynamic": "troop"
     },
     {
       "id": "ahq",
@@ -1822,7 +1849,7 @@
           "page": "64–81, 95"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "art": {
         "file": "/badges/leader/ahq_badge.png",
         "ref": "UH",
@@ -1883,7 +1910,7 @@
           "page": "64–81, 95, 172"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "art": {
         "file": "/badges/handbook_example_region.png",
         "ref": "UH",
@@ -1947,7 +1974,7 @@
           "page": "64–81, 95, 172"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "art": {
         "file": "/badges/handbook_example_district.png",
         "ref": "UH",
@@ -2006,7 +2033,7 @@
           "page": "103–106, 172"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "art": {
         "file": "/badges/leader/epaulette_sl.png",
         "ref": "UH",
@@ -2097,7 +2124,8 @@
         {
           "id": "asstcc",
           "ranks": [
-            "assistantChiefCommissioner"
+            "assistantChiefCommissioner",
+            "regionalCommissioner"
           ],
           "art": {
             "file": "/badges/leader/epaulette_asst_cc.png",
@@ -2499,7 +2527,7 @@
           "page": "105"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "art": {
         "file": "/badges/leader/retired_r_pin.png",
         "ref": "UH",
@@ -2555,7 +2583,7 @@
           "page": "159, 172"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "art": {
         "file": "/badges/meritorious_base_blue.png",
         "ref": "UH",
@@ -2671,7 +2699,8 @@
         {
           "id": "asstCc",
           "ranks": [
-            "assistantChiefCommissioner"
+            "assistantChiefCommissioner",
+            "regionalCommissioner"
           ],
           "cap": "UM02",
           "art": {
@@ -3070,7 +3099,7 @@
           "page": "60, 206–211"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "art": {
         "file": "/badges/leader/metal_sl_winter.png",
         "ref": "UH",
@@ -3126,7 +3155,7 @@
           "page": "57, 127–128"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "art": {
         "file": "/badges/leader/name_tag_example.png",
         "ref": "UH",
@@ -3178,7 +3207,7 @@
           "page": "57, 162"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "art": {
         "file": "/badges/leader/mourning_band.png",
         "ref": "UH",
@@ -3230,7 +3259,7 @@
           "page": "177–179, 186, 189"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "choices": [
         {
           "id": "none",
@@ -3420,7 +3449,7 @@
           "page": "178, 187, 191, 193"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "anchorBy": {
         "u2": {
           "part": "torso",
@@ -3558,7 +3587,7 @@
           "page": "179, 187, 191, 193"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "anchorBy": {
         "u2": {
           "part": "torso",
@@ -3716,7 +3745,7 @@
           "page": "180, 187, 192, 193"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "anchorBy": {
         "u2": {
           "part": "torso",
@@ -3783,7 +3812,7 @@
           "page": "180, 187, 192, 193"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "anchorBy": {
         "u2": {
           "part": "torso",
@@ -3901,7 +3930,7 @@
           "page": "180, 187, 192, 193"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "anchorBy": {
         "u2": {
           "part": "torso",
@@ -4019,7 +4048,7 @@
           "page": "180, 187, 192, 193"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "anchorBy": {
         "u2": {
           "part": "torso",
@@ -4137,7 +4166,7 @@
           "page": "181, 187, 192, 193"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "anchorBy": {
         "u2": {
           "part": "torso",
@@ -4204,7 +4233,7 @@
           "page": "181, 187, 192, 193"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "anchorBy": {
         "u2": {
           "part": "torso",
@@ -4322,7 +4351,7 @@
           "page": "181, 187, 192, 193"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "anchorBy": {
         "u2": {
           "part": "torso",
@@ -4480,7 +4509,7 @@
           "page": "182–183, 187, 192, 193"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "anchorBy": {
         "u2": {
           "part": "torso",
@@ -4758,7 +4787,7 @@
           "page": "183, 187, 192, 193"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "anchorBy": {
         "u2": {
           "part": "torso",
@@ -4956,7 +4985,7 @@
           "page": "184–185, 187, 192, 193"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "anchorBy": {
         "u2": {
           "part": "torso",
@@ -5174,7 +5203,7 @@
           "page": "177, 184, 188–189"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "choices": [
         {
           "id": "none",
@@ -5281,7 +5310,7 @@
           "page": "177, 184, 188–189"
         }
       ],
-      "status": "documented",
+      "status": "verified",
       "anchorBy": {
         "u2": {
           "part": "torso",

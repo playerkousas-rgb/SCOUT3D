@@ -133,24 +133,9 @@ a {
   color: var(--ink-2);
 }
 
-.pill {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  max-width: calc(100% - 20px);
-  padding: 4px 10px;
-  border-radius: 999px;
-  background: var(--pending-bg);
-  color: var(--pending);
-  border: 1px solid #f0d58f;
-  font-size: 12.5px;
-  font-weight: 600;
-  pointer-events: none;
-}
-
 .hint {
   position: absolute;
-  top: 40px;
+  top: 10px;
   left: 12px;
   right: 12px;
   margin: 0;
@@ -961,5 +946,133 @@ a {
 
   .sectionswitch .seg__btn {
     flex: 1 1 30%;
+  }
+}
+
+/* 自選顏色（色盤） */
+.swatch--custom {
+  position: relative;
+  overflow: hidden;
+  background: conic-gradient(#e53935, #fdd835, #43a047, #00acc1, #1e88e5, #8e24aa, #e53935);
+}
+
+.swatch--custom input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+}
+
+/* 上下移動人物 */
+.heightbar {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  z-index: 2;
+}
+
+.heightbar__btn {
+  appearance: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--card);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.heightbar__track {
+  position: relative;
+  width: 36px;
+  height: 180px;
+}
+
+/* 橫向 range 轉 90°：用絕對定位置中，唔好撐闊外框 */
+.heightbar__track input {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 170px;
+  margin: 0;
+  transform: translate(-50%, -50%) rotate(-90deg);
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+/* 匯出 */
+.exportpanel {
+  position: absolute;
+  right: 8px;
+  bottom: 56px;
+  width: min(320px, calc(100% - 16px));
+  max-height: calc(100% - 70px);
+  overflow: auto;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 14px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.exportpanel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.exportpanel__3d {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+}
+
+.exportpanel__pin {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.exportpanel__pin input {
+  flex: 1;
+  min-width: 90px;
+  letter-spacing: 0.3em;
+}
+
+@media (max-width: 899px) {
+  .heightbar {
+    top: 12px;
+    transform: none;
+  }
+
+  .heightbar__track {
+    height: 140px;
+  }
+
+  .heightbar__track input {
+    width: 130px;
+  }
+
+  .exportpanel {
+    bottom: auto;
+    top: 8px;
+    left: 8px;
+    right: 54px;
+    width: auto;
   }
 }

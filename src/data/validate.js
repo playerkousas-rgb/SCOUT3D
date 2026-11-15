@@ -6,7 +6,7 @@ const SIDES = new Set(['left', 'right', 'centre', 'both']); // both = 雙肩（�
 const SHAPES = new Set(['circle', 'square', 'rect']);
 const PARTS = new Set(['torso', 'sleeve', 'shoulder', 'neck']); // shoulder = 套喺肩帶上；neck = 掛頸（卓越服務勳章）
 // rank = 成年成員職級肩章（跟所揀職級）；metalRank = 晚禮服金屬職級肩章（跟職級 + 夏季／冬季）；nameTag = 布質名牌（用戶輸入姓名）
-const DYNAMIC = new Set(['district', 'region', 'meritorious', 'patrol', 'rank', 'metalRank', 'nameTag']);
+const DYNAMIC = new Set(['district', 'region', 'meritorious', 'patrol', 'rank', 'metalRank', 'nameTag', 'troop']);
 const ART_FILE = /^\/badges\/((districts|patrols|leader|awards)\/)?[\w-]+\.png$/;
 const POCKET = new Set(['centre', 'aboveFlap', 'flap']); // flap = 袋蓋中央（布質名牌、感謝章）
 const RACKS = new Set(['pocket', 'lapel']); // 勳章排：禮服右胸袋袋蓋上方／晚禮服右襟領童軍徽上方

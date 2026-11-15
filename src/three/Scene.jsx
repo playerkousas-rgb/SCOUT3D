@@ -23,12 +23,17 @@ export const VIEWS = {
 // 防止相機入咗公仔：身體大約係半徑 0.26 嘅圓柱
 const BODY_R = 0.32;
 const BODY_TOP = 1.3;
-const MIN_DIST = 0.45;
+const MIN_DIST = 0.28; // 可以拉好近睇章
 const MAX_DIST = 3.9;
 
-const Rig = forwardRef(function Rig({ lift: liftProp = 0, zoom: zoomProp = 1 }, ref) {
+/** 上下移動範圍（望住點 y，米）：腳 → 頭頂 */
+export const HEIGHT_MIN = 0.1;
+export const heightMax = (lift) => 1.35 + lift;
+
+const Rig = forwardRef(function Rig({ lift: liftProp = 0, zoom: zoomProp = 1, onHeight }, ref) {
   const controls = useRef();
   const goal = useRef(null);
+  const lastH = useRef(null);
   const { camera } = useThree();
 
   useImperativeHandle(ref, () => ({
@@ -38,6 +43,17 @@ const Rig = forwardRef(function Rig({ lift: liftProp = 0, zoom: zoomProp = 1 }, 
       const zoom = opts.zoom ?? zoomProp;
       const p = VIEWS[name] ?? VIEWS.front;
       goal.current = { pos: new THREE.Vector3(p[0] * zoom, p[1] + lift, p[2] * zoom), target: TARGET.clone().setY(TARGET.y + lift) };
+    },
+    /** 上下移動：望住點同相機一齊升降（唔轉角度），等用戶拉近之後睇到唔同高度嘅章 */
+    setHeight(y) {
+      const c = controls.current;
+      if (!c) return;
+      goal.current = null;
+      const ny = THREE.MathUtils.clamp(y, HEIGHT_MIN, heightMax(liftProp));
+      const dy = ny - c.target.y;
+      c.target.y += dy;
+      camera.position.y += dy;
+      c.update();
     },
     focus(point, normal) {
       const target = point.clone();
@@ -86,6 +102,14 @@ const Rig = forwardRef(function Rig({ lift: liftProp = 0, zoom: zoomProp = 1 }, 
       maxPolarAngle={Math.PI * 0.62}
       minPolarAngle={0.15}
       panSpeed={0.6}
+      zoomToCursor
+      onChange={() => {
+        const y = controls.current?.target.y;
+        if (y != null && Math.abs(y - (lastH.current ?? -9)) > 0.005) {
+          lastH.current = y;
+          onHeight?.(y);
+        }
+      }}
       onStart={() => {
         goal.current = null;
       }}
@@ -104,7 +128,13 @@ function Loading() {
   );
 }
 
-const Scene = forwardRef(function Scene({ section = 'grasshopper', outfit, badges, picks, selected, onSelect, onReady }, ref) {
+/** 攞返 R3F 狀態（匯出時要 gl、scene、camera） */
+function Grab({ into }) {
+  into.current = useThree((s) => s.get);
+  return null;
+}
+
+const Scene = forwardRef(function Scene({ section = 'grasshopper', outfit, badges, picks, selected, onSelect, onReady, onHeight }, ref) {
   const rig = useRef();
   const lift = LIFT[section] ?? 0;
   const zoom = ZOOM[section] ?? 1;
@@ -113,6 +143,8 @@ const Scene = forwardRef(function Scene({ section = 'grasshopper', outfit, badge
     rig.current?.view('front', { lift, zoom });
   }, [section, lift, zoom]);
   const glRef = useRef();
+  const getState = useRef(null);
+  const figure = useRef();
   const registry = useMemo(() => new Map(), []);
 
   useImperativeHandle(ref, () => ({
@@ -135,6 +167,47 @@ const Scene = forwardRef(function Scene({ section = 'grasshopper', outfit, badge
       return true;
     },
     canvas: () => glRef.current?.domElement ?? null,
+    setHeight: (y) => rig.current?.setHeight(y),
+    heightRange: () => [HEIGHT_MIN, heightMax(lift)],
+    /** 公仔 group（GLB／STL 匯出用；唔包燈、地影） */
+    figure: () => figure.current ?? null,
+    /**
+     * 用指定解像度重畫一次再抄出嚟（PNG 匯出）。scale = 每個 CSS 像素幾多格（0 = 跟螢幕）；
+     * transparent = 透明背景。畫完即刻還原。
+     */
+    renderImage({ scale = 0, transparent = false } = {}) {
+      const st = getState.current?.();
+      if (!st) return null;
+      const { gl, scene, camera, size } = st;
+      const prevPR = gl.getPixelRatio();
+      const prevBg = scene.background;
+      const prevColour = new THREE.Color();
+      gl.getClearColor(prevColour);
+      const prevAlpha = gl.getClearAlpha();
+      const maxSide = Math.min(8192, gl.capabilities.maxTextureSize || 4096);
+      const want = scale > 0 ? scale : prevPR;
+      const pr = Math.max(0.5, Math.min(want, maxSide / Math.max(size.width, size.height)));
+      try {
+        gl.setPixelRatio(pr);
+        gl.setSize(size.width, size.height, false);
+        if (transparent) {
+          scene.background = null;
+          gl.setClearColor(0x000000, 0);
+        }
+        gl.render(scene, camera);
+        const out = document.createElement('canvas');
+        out.width = gl.domElement.width;
+        out.height = gl.domElement.height;
+        out.getContext('2d').drawImage(gl.domElement, 0, 0);
+        return out;
+      } finally {
+        scene.background = prevBg;
+        gl.setClearColor(prevColour, prevAlpha);
+        gl.setPixelRatio(prevPR);
+        gl.setSize(size.width, size.height, false);
+        gl.render(scene, camera);
+      }
+    },
   }));
 
   return (
@@ -169,10 +242,13 @@ const Scene = forwardRef(function Scene({ section = 'grasshopper', outfit, badge
         <directionalLight position={[-1.6, 2, -2.4]} intensity={1.5} />
         <directionalLight position={[-1.6, 1.2, 1.8]} intensity={0.35} />
         <Suspense fallback={null}>
-          <Blocky section={section} outfit={outfit} badges={badges} picks={picks} selected={selected} onSelect={onSelect} registry={registry} />
+          <group ref={figure} name="SCOUT3D figure" userData={{ copyright: '© SCOUT SYSTEM · SCOUT3D v1.0' }}>
+            <Blocky section={section} outfit={outfit} badges={badges} picks={picks} selected={selected} onSelect={onSelect} registry={registry} />
+          </group>
         </Suspense>
         <ContactShadows position={[0, 0.001, 0]} scale={1.8} blur={2.6} opacity={0.4} far={0.5} />
-        <Rig ref={rig} lift={lift} zoom={zoom} />
+        <Rig ref={rig} lift={lift} zoom={zoom} onHeight={onHeight} />
+        <Grab into={getState} />
       </Canvas>
       <Loading />
     </>

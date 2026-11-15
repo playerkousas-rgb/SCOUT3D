@@ -5,6 +5,7 @@ import { useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 import { meritCanvas } from '../lib/meritCanvas.js';
 import { nameTagCanvas } from '../lib/nameTagCanvas.js';
+import { troopTapeCanvas } from '../lib/troopTapeCanvas.js';
 import { sleevePose } from './badgeLayout.js';
 
 const EPS = 0.06; // 離布面 0.06 cm，避免閃
@@ -55,6 +56,11 @@ export function useDynamicTextures(arts) {
         try {
           if (a.kind === 'nameTag') {
             const t = prep(new THREE.CanvasTexture(nameTagCanvas(a)));
+            made.push(t);
+            return [k, t];
+          }
+          if (a.kind === 'troopTape') {
+            const t = prep(new THREE.CanvasTexture(troopTapeCanvas(a)));
             made.push(t);
             return [k, t];
           }
