@@ -38,11 +38,12 @@ test('現有公仔有五官同頭髮（唔係人台）；人台用自己嘅網�
   for (const f of ['src/three/Blocky.jsx', 'src/three/body.js', 'src/three/look.js', 'src/App.jsx', 'src/i18n.jsx']) assert.doesNotMatch(src(f), /figureLayout|HEAD_A|torsoA|figureA|PROFILE_A/, f);
 });
 
-test('人台檔：10 個身形、同一套三角形、區域表；檔案細（< 1.2 MB）', () => {
+test('人台檔：10 個身形、同一套三角形、區域表；檔案細（v33 真人＋衫褲＋貼圖 < 3.8 MB）', () => {
   const files = readdirSync(new URL('../public/models/mannequin/', import.meta.url));
   let total = 0;
   for (const f of files) total += statSync(new URL(`../public/models/mannequin/${f}`, import.meta.url)).size;
-  assert.ok(total < 1.2e6, `${total} B`);
+  for (const f of readdirSync(new URL('../public/models/mannequin/tex/', import.meta.url))) total += statSync(new URL(`../public/models/mannequin/tex/${f}`, import.meta.url)).size;
+  assert.ok(total < 3.8e6, `${total} B`);
   assert.ok(files.includes('LICENSE.md'), '授權說明（CC0 身體 + Apache-2.0 工具）');
   assert.match(src('public/models/mannequin/LICENSE.md'), /CC0/);
   assert.match(IDX.source, /CC0/);
@@ -69,7 +70,8 @@ test('人台身高同膊頂對齊 body.js（章嘅厘米位置照用）', () => 
       let top = -Infinity, bot = Infinity;
       for (let i = 1; i < pos.length; i += 3) { top = Math.max(top, pos[i]); bot = Math.min(bot, pos[i]); }
       assert.ok(Math.abs(bot) < 1.5, `${s} ${g} 腳底喺地（${bot}）`);
-      assert.ok(Math.abs(top - L.B.height) < 3, `${s} ${g} 身高 ${top} vs ${L.B.height}`);
+      // v33：MakeHuman 真人比例（細路頭大啲）：對齊膊頂，身高容許 ±7 cm
+      assert.ok(Math.abs(top - L.B.height) < 7, `${s} ${g} 身高 ${top} vs ${L.B.height}`);
       const F = armFrame(IDX.bodies[bodyKey(s, g)].joints, 'l', L.top);
       assert.ok(Number.isFinite(F.seamY));
       // 膊頭關節喺膊頂（L.top）下面少少；縫線喺關節上面
@@ -79,24 +81,12 @@ test('人台身高同膊頂對齊 body.js（章嘅厘米位置照用）', () => 
   }
 });
 
-test('無面容：眼縫、口填平（眼嘅高度，前面同一行頂點深淺差 < 1.2 cm；原本眼窩 2.6 cm）', () => {
+test('v33 有五官：眼、眉、眼睫毛（用戶：面部 OK），皮膚有貼圖', () => {
   for (const key of ['venture_boy', 'grasshopper_girl', 'leader_girl', 'cub_boy']) {
-    const pos = body(key);
-    const head = [];
-    for (let i = 0; i < REGIONS.length; i++) if (REGIONS[i] === REGION.head) head.push(i);
-    let top = -Infinity, bot = Infinity, nose = -Infinity;
-    for (const i of head) { top = Math.max(top, pos[i * 3 + 1]); bot = Math.min(bot, pos[i * 3 + 1]); nose = Math.max(nose, pos[i * 3 + 2]); }
-    const hh = top - bot;
-    const rows = new Map();
-    for (const i of head) {
-      const x = Math.abs(pos[i * 3]), y = pos[i * 3 + 1], z = pos[i * 3 + 2];
-      if (x < 2.5 || x > 4 || z < nose - 6 || y > top - 0.4 * hh || y < top - 0.6 * hh) continue;
-      const k = Math.floor(y * 2);
-      const r = rows.get(k) ?? [Infinity, -Infinity];
-      rows.set(k, [Math.min(r[0], z), Math.max(r[1], z)]);
-    }
-    assert.ok(rows.size >= 6, key);
-    for (const [k, [lo, hi]] of rows) assert.ok(hi - lo < 1.2, `${key} y=${k / 2}: ${(hi - lo).toFixed(2)}`);
+    for (const k of ['eyes', 'brows', 'lashes']) assert.ok(IDX.bodies[key].items.includes(k), `${key} ${k}`);
+  }
+  for (const f of ['skin_boy.jpg', 'skin_girl.jpg', 'eyes.jpg', 'brows.webp', 'hair_short.webp', 'hair_bob.webp']) {
+    assert.ok(statSync(new URL(`../public/models/mannequin/tex/${f}`, import.meta.url)).size > 1000, f);
   }
 });
 

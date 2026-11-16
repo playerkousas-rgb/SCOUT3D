@@ -1097,7 +1097,7 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
                 {strapEl}
                 {fleurEl}
                 {bowTieEl}
-                {collarEl}
+                {/* v33：真衫本身有衣領，唔再加方塊企領 */}
                 {neckwearEl}
                 {/* 肩章（平放喺肩帶上）、領巾尖嘅章（向後）：跟方塊位置擺，再一齊變形 */}
                 {torsoItems

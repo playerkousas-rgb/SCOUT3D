@@ -3,6 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { decodePositions, vertexNormals, REGION, shell, bodyWarp, garmentRules, heightField, warpPolyline, inflateSmooth } from '../src/three/mannequin.js';
+import { shirtLayer, decodeItem } from '../src/three/mh.js';
 import { layout, strapLayout, shoulderTip, neckerLayout, lanyardPoints, lanyardBackPoints } from '../src/three/body.js';
 
 const D = new URL('../public/models/mannequin/', import.meta.url);
@@ -19,12 +20,14 @@ function setup(key, outer = null) {
   const L = layout(g, sec);
   const B = L.B, t = B.torso, body = idx.bodies[key];
   const G = garmentRules({ pos, regions, joints: body.joints, L, long: false, sleeveLen: B.sleeve.len, pantsHem: 4, trousers: true, sockTop: 0, shoeTop: 6, outer });
-  const sh = shell(pos, nrm, faces, G.shirt.keep, G.shirt.offset);
+  // v33：恤衫層 = MakeHuman 真衫（同 Mannequin.jsx 一樣切）
+  const rd = (f) => { const x = fs.readFileSync(new URL(f, D)); return x.buffer.slice(x.byteOffset, x.byteOffset + x.length); };
+  const suit = decodeItem({ src: rd('shirt_src.bin'), faces: rd('shirt_faces.bin'), uv: rd('shirt_uv.bin'), regions: rd('shirt_regions.bin'), pos: rd(`${key}_shirt.bin`) }, idx.unit, decodePositions, vertexNormals);
+  const fr = G.shirt.frames;
+  const tucked = sec !== 'grasshopper';
+  const { sh, isSleeve } = shirtLayer(suit, { bottom: tucked ? body.waist : body.waist - 9, sleeve: { frames: fr, end: { l: fr.l.seamY - B.sleeve.len, r: fr.r.seamY - B.sleeve.len } } });
   const torsoIdx = [];
-  for (let i = 0; i < sh.index.length; i += 3) {
-    if ([0, 1, 2].every((q) => armR.has(regions[sh.src[sh.index[i + q]]]))) continue;
-    torsoIdx.push(sh.index[i], sh.index[i + 1], sh.index[i + 2]);
-  }
+  for (let i = 0; i < sh.index.length; i += 3) if (!isSleeve(sh.index[i], sh.index[i + 1], sh.index[i + 2])) torsoIdx.push(sh.index[i], sh.index[i + 1], sh.index[i + 2]);
   const nS = sh.position.length / 3;
   const both = new Float32Array(sh.position.length + pos.length);
   both.set(sh.position);
@@ -74,7 +77,8 @@ test('v31 人台笛繩：前後兩段連續（每步 < 3.5 cm）、前面落袋�
     for (const p of front) {
       if (p[1] > L.top - 6) continue;
       const f = W.F.at(p[0], p[1]);
-      if (f !== null && f > 0) assert.ok(p[2] >= f - 0.05, `${key} 陷入 ${p.map((v) => v.toFixed(1))} F ${f.toFixed(1)}`);
+      // v33 真衫有摺痕（高度圖雙線性）：容許陷入 0.5 cm（第二輪重新貼笛繩）
+      if (f !== null && f > 0) assert.ok(p[2] >= f - 0.5, `${key} 陷入 ${p.map((v) => v.toFixed(1))} F ${f.toFixed(1)}`);
     }
   }
 });

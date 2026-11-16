@@ -1,5 +1,5 @@
 // SCOUT3D v1.0 · © SCOUT SYSTEM
-// 真人人台（v30 試做 B、v31 定做第二款人形；Anny／MakeHuman CC0 身體）＋由身體表面推出嚟嘅衫褲殼；章照用 badgeLayout.js 嘅厘米位置，
+// 真人人台（v30 試做 B、v31 定做第二款人形；v33 起 MakeHuman CC0 身體，真衫褲見 mh.js）＋由身體表面推出嚟嘅殼（襪、絲襪、外衣）；章照用 badgeLayout.js 嘅厘米位置，
 // 再由正面（袖就由側面）投影貼返落衫面（ADR-0027）。呢個檔只有純計算（冇 React），node 測試得到。
 import { planarUV } from './look.js';
 
@@ -215,7 +215,7 @@ export function clothify(sh, { thick = 0.3, band = 1.5, lift = 0.18, smooth = 0 
  * 所以 pixels.js 畫好嘅恤衫貼圖（胸袋、袋蓋、鈕、皮帶）照用，位置同方塊公仔一樣（厘米）。
  * isSleeve(三個舊頂點 index) → 用第 7 種材質（素色袖）。回傳非索引 geometry 數據 + groups。
  */
-export function torsoGroups(sh, box, isSleeve) {
+export function torsoGroups(sh, box, isSleeve, { plainOutside = false } = {}) {
   const { w, h, d, cy } = box;
   const lists = [[], [], [], [], [], [], []];
   const p = sh.position;
@@ -232,9 +232,18 @@ export function torsoGroups(sh, box, isSleeve) {
     let f = m === ax[0] ? (n[0] > 0 ? 0 : 1) : m === ax[1] ? (n[1] > 0 ? 2 : 3) : n[2] > 0 ? 4 : 5;
     // 膊頭向上嘅位：方塊頂面貼圖有領口圈（真人膊頭斜，會變咗一撻白），改用前／後幅
     if (f === 2) f = p[a + 2] + p[b + 2] + p[c + 2] >= 0 ? 4 : 5;
+    // v33 真衫（比方塊闊／長）：方塊以外（兩側、衫腳下面、側面、底）用素色，唔好拉長貼圖邊（一條條橫紋）
+    if (plainOutside) {
+      const mx = Math.max(Math.abs(p[a]), Math.abs(p[b]), Math.abs(p[c]));
+      const my = Math.min(p[a + 1], p[b + 1], p[c + 1]);
+      if (f < 4 || mx > w / 2 - 0.3 || my < cy - h / 2) {
+        lists[6].push(t);
+        continue;
+      }
+    }
     lists[f].push(t);
   }
-  const P = [], U = [], A = [], N = [];
+  const P = [], U = [], A = [], N = [], U2 = [];
   const groups = [];
   let start = 0;
   lists.forEach((list, f) => {
@@ -245,6 +254,7 @@ export function torsoGroups(sh, box, isSleeve) {
         P.push(x, y, z);
         N.push(sh.normal[i * 3], sh.normal[i * 3 + 1], sh.normal[i * 3 + 2]);
         A.push(sh.alpha[i]);
+        if (sh.uv2) U2.push(sh.uv2[i * 2], sh.uv2[i * 2 + 1]); // v33：真衫嘅摺痕明暗圖 UV
         // 前後幅：膊頭斜位（高過方塊頂）用頂下面 2.5 cm 嗰行顏色，唔好拉長衣領線
         const yy = f === 4 || f === 5 ? Math.min(y - cy, h / 2 - 2.5) : y - cy;
         U.push(...(f < 6 ? planarUV(f, x, yy, z, w, h, d) : [0.5, 0.5]));
@@ -253,7 +263,7 @@ export function torsoGroups(sh, box, isSleeve) {
     groups.push({ start, count: list.length * 3, materialIndex: f });
     start += list.length * 3;
   });
-  return { position: new Float32Array(P), normal: new Float32Array(N), uv: new Float32Array(U), alpha: new Float32Array(A), groups };
+  return { position: new Float32Array(P), normal: new Float32Array(N), uv: new Float32Array(U), alpha: new Float32Array(A), uv2: sh.uv2 ? new Float32Array(U2) : null, groups };
 }
 
 /**

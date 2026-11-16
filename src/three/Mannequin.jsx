@@ -1,5 +1,5 @@
 // SCOUT3D v1.0 · © SCOUT SYSTEM
-// 人台（v30 試做 B，ADR-0027；v31 定做第二款人形，ADR-0028）：Anny／MakeHuman CC0 身體＋衫褲殼＋同一套厘米章位。
+// 人台（v30 試做 B，ADR-0027；v31 定做第二款人形，ADR-0028；v33 換做 MakeHuman 真人＋真衫褲，ADR-0030）＋同一套厘米章位。
 // v31：帽跟人台個頭（headBox）；旅巾、衣領、領帶、木章、肩帶用 Warped 由方塊位置變形貼身（bodyWarp）；笛繩、專章帶直接貼。
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
@@ -8,8 +8,8 @@ import { COLOURS as C, shoulderTip } from './body.js';
 import { material, plain } from './pixels.js';
 import { skinMaterial } from './Anatomy.jsx';
 import { TorsoBadges, SleeveBadges } from './Badges.jsx';
-import { MANNEQUIN_DIR, bodyKey, decodePositions, vertexNormals, shell, torsoGroups, heightField, meshSurface, garmentRules, skirtRings, REGION, headBox, bodyWarp, neckField, tessellate, hairRules, clothify, beltRing } from './mannequin.js';
-import { hairDrop } from './anatomy.js';
+import { MANNEQUIN_DIR, bodyKey, decodePositions, vertexNormals, shell, torsoGroups, heightField, meshSurface, garmentRules, REGION, headBox, bodyWarp, neckField, tessellate, clothify, beltRing } from './mannequin.js';
+import { expand, decodeUV, keepDistance, pushOut, hiddenBody, visibleFaces, armSideOf, cutItem, shirtLayer, decodeItem } from './mh.js';
 
 const cache = new Map();
 function load(url, kind) {
@@ -25,18 +25,29 @@ function load(url, kind) {
   return cache.get(url);
 }
 
-/** 載入人台（同一套拓撲：faces、regions 只載一次；身形按支部、性別） */
+/** 載入人台（同一套拓撲：faces、regions 只載一次；身形按支部、性別）
+ * v33：MakeHuman 真人身體（有 UV 縫嘅渲染版本＋皮膚貼圖）＋真衫褲、頭髮、鞋、眼、眉（每個身形 bake 好姿勢） */
 export function useMannequin(section, gender) {
   const key = bodyKey(section, gender);
   const [data, setData] = useState(null);
   useEffect(() => {
     let live = true;
-    Promise.all([load(`${MANNEQUIN_DIR}index.json`, 'json'), load(`${MANNEQUIN_DIR}faces.bin`), load(`${MANNEQUIN_DIR}regions.bin`), load(`${MANNEQUIN_DIR}${key}.bin`)])
-      .then(([index, f, r, b]) => {
+    const D = MANNEQUIN_DIR;
+    Promise.all([load(`${D}index.json`, 'json'), load(`${D}faces.bin`), load(`${D}regions.bin`), load(`${D}${key}.bin`), load(`${D}body_render_src.bin`), load(`${D}body_render_faces.bin`), load(`${D}body_uv.bin`)])
+      .then(async ([index, f, r, b, rs, rf, uv]) => {
+        const body = index.bodies[key];
+        const items = {};
+        await Promise.all(
+          body.items.map(async (k) => {
+            const [src, fc, iuv, reg, ip, hides] = await Promise.all([load(`${D}${k}_src.bin`), load(`${D}${k}_faces.bin`), load(`${D}${k}_uv.bin`), load(`${D}${k}_regions.bin`), load(`${D}${key}_${k}.bin`), index.items[k].hides ? load(`${D}${k}_hides.bin`) : null]);
+            items[k] = decodeItem({ src, faces: fc, uv: iuv, regions: reg, pos: ip, hides }, index.unit, decodePositions, vertexNormals);
+          }),
+        );
         if (!live) return;
         const faces = new Uint16Array(f);
         const pos = decodePositions(new Int16Array(b), index.unit);
-        setData({ key, faces, regions: new Uint8Array(r), pos, nrm: vertexNormals(pos, faces), body: index.bodies[key] });
+        const render = { src: new Uint16Array(rs), faces: new Uint16Array(rf), uv: decodeUV(new Uint16Array(uv)) };
+        setData({ key, faces, regions: new Uint8Array(r), pos, nrm: vertexNormals(pos, faces), body, items, render });
       })
       .catch((e) => console.warn('mannequin', e));
     return () => {
@@ -44,6 +55,58 @@ export function useMannequin(section, gender) {
     };
   }, [key]);
   return data && data.key === key ? data : null;
+}
+
+// v33 貼圖（皮膚、眼、髮、眉、衫褲鞋摺痕明暗）：灰階圖用線性（乘返顏色）
+const texCache = new Map();
+function mhTex(name, srgb = false, fill = '#ffffff') {
+  if (!texCache.has(name)) {
+    // 未載完先用一格底色（唔會一陣黑色皮膚／黑色衫）
+    const c = typeof document !== 'undefined' ? document.createElement('canvas') : null;
+    if (c) {
+      c.width = c.height = 1;
+      const g = c.getContext('2d');
+      g.fillStyle = fill;
+      g.fillRect(0, 0, 1, 1);
+    }
+    const t = new THREE.Texture(c ?? undefined);
+    t.colorSpace = srgb ? THREE.SRGBColorSpace : THREE.NoColorSpace;
+    t.anisotropy = 4;
+    t.needsUpdate = !!c;
+    new THREE.TextureLoader().load(`${MANNEQUIN_DIR}tex/${name}`, (img) => {
+      t.image = img.image;
+      t.needsUpdate = true;
+    });
+    texCache.set(name, t);
+  }
+  return texCache.get(name);
+}
+
+/** 喺原有材質（例如恤衫方塊貼圖：袋、鈕、肩章）上面再乘真衫嘅摺痕明暗（geometry 要有 uvShade） */
+function shaded(m, tex) {
+  m.onBeforeCompile = (sh) => {
+    sh.uniforms.shadeMap = { value: tex };
+    sh.vertexShader = sh.vertexShader
+      .replace('#include <common>', '#include <common>\nattribute vec2 uvShade;\nvarying vec2 vShade;')
+      .replace('#include <uv_vertex>', '#include <uv_vertex>\nvShade = uvShade;');
+    sh.fragmentShader = sh.fragmentShader
+      .replace('#include <common>', '#include <common>\nuniform sampler2D shadeMap;\nvarying vec2 vShade;')
+      .replace('#include <map_fragment>', '#include <map_fragment>\ndiffuseColor.rgb *= texture2D(shadeMap, vShade).rgb;');
+  };
+  m.customProgramCacheKey = () => 'scout3d-shade';
+  return m;
+}
+
+/** 真衫褲：切好嘅 attrs → BufferGeometry（uv → uvShade） */
+function clippedGeometry(c) {
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(c.attrs.position[0], 3));
+  g.setAttribute('normal', new THREE.BufferAttribute(c.attrs.normal[0], 3));
+  if (c.attrs.uv) {
+    g.setAttribute('uv', new THREE.BufferAttribute(c.attrs.uv[0], 2));
+    g.setAttribute('uvShade', new THREE.BufferAttribute(c.attrs.uv[0], 2));
+  }
+  return g;
 }
 
 function alphaColour(alpha) {
@@ -173,22 +236,44 @@ export default function Mannequin({ section, gender, L, painted, shirtFaces, sle
   const t = B.torso;
   const built = useMemo(() => {
     if (!M) return null;
-    const { pos, nrm, faces, regions, body } = M;
-    const G = garmentRules({ pos, regions, joints: body.joints, L, long, sleeveLen: B.sleeve.len, pantsHem, trousers, sockTop, shoeTop: Math.max(5, B.shoe.h + 1), tucked: section !== 'grasshopper', tights: !!skirt, outer: outer && { bottom: outer.bottom, neckUp: outer.neckUp, sleeves: outer.sleeves, extra: outer.extra } });
-    // 皮膚
-    const skin = new THREE.BufferGeometry();
-    skin.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    skin.setAttribute('normal', new THREE.BufferAttribute(nrm, 3));
-    skin.setIndex(new THREE.BufferAttribute(faces, 1));
-    // 恤衫：上身用恤衫貼圖（上身方塊平面投影），袖素色
-    // v31b 真衫：布跨過身體凹位（只向外平滑）、幾何切邊、摺邊、0.3 cm 厚
-    const sh = clothify(shell(pos, nrm, faces, G.shirt.keep, G.shirt.offset), { smooth: 8 });
+    const { pos, nrm, faces, regions, body, items, render } = M;
+    const tucked = section !== 'grasshopper';
+    // v33：腰（褲頭／裙頭）跟真人身（大髀關節上面），唔再跟方塊公仔
+    const waist = body.waist;
+    const shirtBottom = tucked ? waist : waist - 9; // 小童軍唔塞：衫腳蓋過褲頭
+    const G = garmentRules({ pos, regions, joints: body.joints, L, long, sleeveLen: B.sleeve.len, pantsHem, trousers, sockTop, shoeTop: Math.max(5, B.shoe.h + 1), tucked, tights: !!skirt, outer: outer && { bottom: outer.bottom, neckUp: outer.neckUp, sleeves: outer.sleeves, extra: outer.extra } });
+    const frames = G.frames;
     const armR = new Set([REGION.upperarmL, REGION.upperarmR, REGION.lowerarmL, REGION.lowerarmR]);
-    const isSleeve = (a, b, c) => armR.has(regions[sh.src[a]]) && armR.has(regions[sh.src[b]]) && armR.has(regions[sh.src[c]]);
-    const tg = torsoGroups(sh, { w: t.w, h: t.h, d: t.d, cy: t.y + t.h / 2 }, isSleeve);
+    const sleeveEnd = { l: long ? frames.l.wristY + 1.5 : frames.l.seamY - B.sleeve.len, r: long ? frames.r.wristY + 1.5 : frames.r.seamY - B.sleeve.len };
+    const shirtRule = { bottom: shirtBottom, sleeve: { frames, end: sleeveEnd } };
+    const culottes = !!skirt?.pleats?.length;
+    const pantsRule = { top: shirtBottom, bottom: pantsHem, noArms: true };
+    const skirtRule = skirt && { top: waist + 0.5, bottom: skirt.hem, noArms: true };
+    const shoeTop = body.joints.ankleL[1] + 2.5;
+    // 皮膚：MakeHuman 渲染 mesh（有 UV 縫）＋貼圖；件衫入面嗰啲三角形收埋（衫切短咗嘅位照畫）
+    const suit = items.shirt;
+    const covers = [];
+    if (suit?.hides) {
+      const Ks = keepDistance(pos, regions, shirtRule);
+      const Kp = keepDistance(pos, regions, pantsRule);
+      const K = skirt ? Ks : Ks.map((k, i) => Math.max(k, Kp[i]));
+      covers.push({ hides: suit.hides, K });
+    }
+    if (skirt && items.skirt?.hides) covers.push({ hides: items.skirt.hides, K: keepDistance(pos, regions, skirtRule) });
+    if (items.shoes?.hides) covers.push({ hides: items.shoes.hides, K: keepDistance(pos, regions, { top: shoeTop }) });
+    const hid = hiddenBody(pos.length / 3, covers);
+    const skin = new THREE.BufferGeometry();
+    skin.setAttribute('position', new THREE.BufferAttribute(expand(pos, render.src), 3));
+    skin.setAttribute('normal', new THREE.BufferAttribute(expand(nrm, render.src), 3));
+    skin.setAttribute('uv', new THREE.BufferAttribute(render.uv, 2));
+    skin.setIndex(new THREE.BufferAttribute(visibleFaces(render.faces, render.src, hid), 1));
+    // 恤衫：真衫（有領、有袖、有摺痕）按袖長、衫腳切；上身照用恤衫方塊貼圖（袋、鈕、肩章），再乘真衫明暗
+    const { sh, isSleeve } = shirtLayer(suit, shirtRule);
+    const tg = torsoGroups(sh, { w: t.w, h: t.h, d: t.d, cy: t.y + t.h / 2 }, isSleeve, { plainOutside: true });
     const shirt = new THREE.BufferGeometry();
     shirt.setAttribute('position', new THREE.BufferAttribute(tg.position, 3));
     shirt.setAttribute('uv', new THREE.BufferAttribute(tg.uv, 2));
+    shirt.setAttribute('uvShade', new THREE.BufferAttribute(tg.uv2, 2));
     shirt.setAttribute('normal', new THREE.BufferAttribute(tg.normal, 3));
     shirt.setAttribute('color', alphaColour(tg.alpha));
     tg.groups.forEach((g) => shirt.addGroup(g.start, g.count, g.materialIndex));
@@ -198,7 +283,7 @@ export default function Mannequin({ section, gender, L, painted, shirtFaces, sle
     let box = { w: t.w, d: t.d, y0: t.y, top: L.top };
     let outerGeo = null;
     if (outer && G.outer) {
-      const os = clothify(shell(pos, nrm, faces, G.outer.keep, G.outer.offset), { smooth: 8, lift: 0.25 });
+      const os = clothify(shell(pos, nrm, faces, G.outer.keep, (i) => G.outer.offset(i) + 0.8), { smooth: 8, lift: 0.25 });
       const isO = (a, b, c) => armR.has(regions[os.src[a]]) && armR.has(regions[os.src[b]]) && armR.has(regions[os.src[c]]);
       const og = torsoGroups(os, { w: outer.box[0], h: outer.box[1], d: outer.box[2], cy: outer.cy }, isO);
       outerGeo = new THREE.BufferGeometry();
@@ -219,40 +304,51 @@ export default function Mannequin({ section, gender, L, painted, shirtFaces, sle
     const sleeves = {};
     const sleeveLayer = outer && !outer.sleeves ? sh : layer; // 背心冇袖：章喺恤衫袖
     for (const side of ['l', 'r']) {
-      const F = G.frames[side];
+      const F = frames[side];
       const sg = side === 'l' ? 1 : -1;
-      // 袖外側：成件衫（膊頭係上身部分）由手臂外面望入去，最外層 = 袖面
       const field = heightField(sleeveLayer.position, sleeveLayer.index, { axis: 'x', sign: sg, min: [-9, F.wristY - 2], max: [9, F.seamY + 6], transform: F.toLocal });
       sleeves[side] = { frame: F, surf: meshSurface(field, { axis: 'x', sign: sg, plane: B.sleeve.w / 2 }), matrix: new THREE.Matrix4().fromArray(F.matrix) };
     }
-    const pants = shellGeometry(clothify(shell(pos, nrm, faces, G.pants.keep, G.pants.offset), { smooth: 6, band: 2.5, lift: 0.2 }));
-    const socks = sockTop > 0 ? shellGeometry(clothify(shell(pos, nrm, faces, G.socks.keep, G.socks.offset), { thick: 0.15, band: 2, lift: 0.12 })) : null;
-    // v31：鞋向外平滑（腳趾罅填平，唔再似黑色光腳）；v31b 鞋口有厚度
-    const shoes = shellGeometry(clothify(shell(pos, nrm, faces, G.shoes.keep, G.shoes.offset), { smooth: 24, thick: 0.35, band: 0.8, lift: 0.1 }));
+    // 褲：真褲（同件衫一齊嗰條牛仔褲）由褲頭切到褲腳；褲頭位推出少少（似褲頭）
+    let pants = null;
+    let tights = null;
+    if (!skirt) {
+      const top = shirtBottom;
+      const pp = pushOut(suit.pos, suit.nrm, 0.35, (i) => 1 + Math.max(0, Math.min(1, (suit.pos[i * 3 + 1] - (top - 3.5)) / 1.5)) * 0.6);
+      pants = clippedGeometry(cutItem({ ...suit, pos: pp }, keepDistance(suit.pos, suit.regions, pantsRule)));
+    } else if (!culottes) {
+      // 半截裙：肉色絲襪（貼身，由身體推出）
+      tights = shellGeometry(clothify(shell(pos, nrm, faces, G.pants.keep, (i) => 0.08), { thick: 0.1, band: 0, lift: 0 }));
+    }
     let skirtGeo = null;
+    if (skirt && items.skirt) {
+      const S = items.skirt;
+      // 條裙（.mhclo）兩腳之間會拉低一個尖：裙腳最低去到兩側嘅裙腳
+      let side = Infinity;
+      for (let i = 0; i < S.pos.length / 3; i++) if (Math.abs(S.pos[i * 3]) > 6 && !armSideOf(S.regions[i])) side = Math.min(side, S.pos[i * 3 + 1]);
+      const rule = { ...skirtRule, bottom: Math.max(skirt.hem, side === Infinity ? -1e3 : side + 0.3) };
+      skirtGeo = clippedGeometry(cutItem(S, keepDistance(S.pos, S.regions, rule), 0.4));
+    }
+    const socks = sockTop > 0 ? shellGeometry(clothify(shell(pos, nrm, faces, G.socks.keep, G.socks.offset), { thick: 0.15, band: 2, lift: 0.12 })) : null;
+    const shoes = items.shoes ? clippedGeometry(cutItem(items.shoes, keepDistance(items.shoes.pos, items.shoes.regions, { top: shoeTop }), 0.1)) : null;
+    // 皮帶（幼童軍）：褲頭外面
     let beltGeo = null;
     let buckle = null;
-    if (skirt) {
-      // v31b：裙頭喺皮帶下面、包住恤衫衫腳（恤衫塞入裙，離身 2 cm）；腰頭 2 cm；裙褲（弓字褶）前後各兩條直摺；半截裙（手冊：無褶）直身
-      const sk = skirtRings(pos, regions, { top: (B.waist ?? t.y + 3) + 2, ease: 2.1, hem: skirt.hem, pleats: skirt.pleats ?? [], flare: skirt.pleats?.length ? 0.06 : 0.02 });
-      skirtGeo = new THREE.BufferGeometry();
-      skirtGeo.setAttribute('position', new THREE.BufferAttribute(sk.position, 3));
-      skirtGeo.setAttribute('normal', new THREE.BufferAttribute(sk.normal, 3));
-      skirtGeo.setIndex(sk.index);
-    }
-    // v31b：皮帶（以前畫喺身體貼圖；而家褲／裙係獨立布料包住咗 → 喺褲頭／裙頭外面另起一條 3 cm 皮帶＋扣）
-    if (belt && B.waist != null && !(outer && outer.bottom < B.waist + 1.6)) { // 冷衫／外套蓋住就唔使
+    if (belt && !(outer && outer.bottom < waist + 1.6)) {
       const src = skirtGeo ?? pants;
-      const br = beltRing(src.getAttribute('position').array, { top: B.waist + 1.6, h: 3 });
-      if (br) {
-        beltGeo = new THREE.BufferGeometry();
-        beltGeo.setAttribute('position', new THREE.BufferAttribute(br.position, 3));
-        beltGeo.setAttribute('normal', new THREE.BufferAttribute(br.normal, 3));
-        beltGeo.setIndex(br.index);
-        buckle = br.buckle;
+      if (src) {
+        const P = src.getAttribute('position').array;
+        const br = beltRing(P, { top: waist + 0.6, h: 3, ease: 0.35 });
+        if (br) {
+          beltGeo = new THREE.BufferGeometry();
+          beltGeo.setAttribute('position', new THREE.BufferAttribute(br.position, 3));
+          beltGeo.setAttribute('normal', new THREE.BufferAttribute(br.normal, 3));
+          beltGeo.setIndex(br.index);
+          buckle = br.buckle;
+        }
       }
     }
-    // v31：方塊位置 → 人台嘅變形（旅巾、衣領、笛繩、專章帶…）。上身殼（唔包袖）；膊頂包埋袖同頸、上身皮膚；頸用頸、上身皮膚＋恤衫
+    // 方塊位置 → 人台嘅變形（旅巾、衣領、笛繩、專章帶…）
     const nS = layer.position.length / 3;
     const both = new Float32Array(layer.position.length + pos.length);
     both.set(layer.position);
@@ -260,7 +356,6 @@ export default function Mannequin({ section, gender, L, painted, shirtFaces, sle
     const skinIdx = [];
     for (let f = 0; f < faces.length; f += 3) {
       const r0 = regions[faces[f]], r1 = regions[faces[f + 1]], r2 = regions[faces[f + 2]];
-      // 皮膚：頸、上身、上臂（女仔頸區去到膊頭，恤衫殼嗰度有窿）；一個角喺呢啲區就要
       const ok = (r) => r === REGION.neck || r === REGION.torso || r === REGION.upperarmL || r === REGION.upperarmR;
       if (ok(r0) || ok(r1) || ok(r2)) skinIdx.push(faces[f] + nS, faces[f + 1] + nS, faces[f + 2] + nS);
     }
@@ -271,77 +366,42 @@ export default function Mannequin({ section, gender, L, painted, shirtFaces, sle
       joints: body.joints, torso: box, neck: { w: B.neck.w, d: B.neck.d },
       shoulder: { box: shoulderTip(L) + 0.5, body: Math.abs(body.joints.shoulderL[0]) + 3 },
     });
-    // 帽：人台個頭嘅「方塊」（位置、大細）＋真實半徑（由頭中軸水平射出去量；帽帶、軟帽貼頭皮）
+    // 帽：人台個頭嘅「方塊」＋真實半徑
     const hb = headBox(pos, regions);
     const headIdx = [];
     for (let f = 0; f < faces.length; f += 3) if (regions[faces[f]] === REGION.head && regions[faces[f + 1]] === REGION.head && regions[faces[f + 2]] === REGION.head) headIdx.push(faces[f], faces[f + 1], faces[f + 2]);
     const HF = neckField(pos, headIdx, { neck: [hb.cx, hb.top - hb.h, hb.z], head: [hb.cx, hb.top, hb.z], y0: hb.top - hb.h * 0.6, y1: hb.top - 0.5, maxR: hb.d });
     const cy = hb.y + hb.h / 2;
-    // 眉：人台眼大約喺下巴同頭頂正中，眉再高 1.5 cm（軟帽膠邊離眉 2 cm）
     const head = { ...hb, key: `m:${M.key}`, brow: hb.y + hb.h * 0.5 + 1.5, radiusAt: (th, y) => HF.at(th, cy + y) ?? 0 };
-    return { skin, shirt, outer: outerGeo, pants, socks, shoes, skirt: skirtGeo, belt: beltGeo, buckle, torsoSurf, sleeves, warp: BW.warp, neckWarp: BW.neckWarp, frontWarp: BW.frontWarp, warpSurf: { snap: BW.warp, route: BW.route, mesh: true }, head };
+    // 眼、眉、眼睫毛
+    const face = ['eyes', 'brows', 'lashes'].filter((k) => items[k]).map((k) => [k, clippedGeometry(cutItem(items[k], null))]);
+    return { skin, shirt, outer: outerGeo, pants, tights, socks, shoes, skirt: skirtGeo, belt: beltGeo, buckle, torsoSurf, sleeves, warp: BW.warp, neckWarp: BW.neckWarp, frontWarp: BW.frontWarp, warpSurf: { snap: BW.warp, route: BW.route, mesh: true }, head, face };
   }, [M, L, long, pantsHem, trousers, sockTop, skirt?.hem, skirt?.pleats?.length, B.sleeve.len, B.shoe.h, t.w, t.h, t.d, t.y, outer?.key, belt]); // eslint-disable-line react-hooks/exhaustive-deps
-  // v31：頭髮 = 頭皮外面一層殼（髮腳同現有公仔一樣 hairDrop；戴帽就帽口以上冇頭髮）
+  // v33：頭髮 = MakeHuman 真頭髮（男仔短髮、女仔齊肩 bob）；戴帽就帽口以上切走（唔會穿出帽）
   const hairGeo = useMemo(() => {
     if (!M || !hair || !built) return null;
-    const { pos, nrm, faces, regions } = M;
+    const it = M.items[M.body.hair];
+    if (!it) return null;
     const hb = built.head;
-    // 人台頂帽係跟眉擺（帽口離眉 2 cm；後面帽口高啲），人台個頭又高過方塊頭：戴帽就眉上 3 cm 以上收埋（唔會穿出帽、帽口下面唔會露頭皮）
     const cut = hair.hatCut > 0 ? Math.max(hair.hatCut, hb.top - hb.brow - 3) : 0;
-    const R = hairRules({ pos, regions, head: hb, drop: (th) => hairDrop(th, hair.style, hb.h), hatCut: cut });
-    // 人台個頭啲三角形大（1–2 cm）：切細到 0.5 cm，再加一撮撮由頭頂梳落嚟嘅坑紋同深淺（唔係一嚿黑色頭盔）
-    const g0 = shellGeometry(shell(pos, nrm, faces, R.keep, R.offset));
-    const g1 = g0.toNonIndexed();
-    g0.dispose();
-    const attrs = {};
-    for (const k of ['position', 'normal', 'color']) {
-      const a = g1.getAttribute(k);
-      attrs[k] = { array: Float32Array.from(a.array), itemSize: a.itemSize };
-    }
-    g1.dispose();
-    const tg = tessellate({ attrs, groups: [] }, 0.5);
-    const P = tg.attrs.position.array, Nn = tg.attrs.normal.array, Cc = tg.attrs.color.array;
-    // 灰色模式（未上色）：同現有公仔一樣灰色頭髮
-    const dark = new THREE.Color(painted ? C.hair : '#6f7277'), hi = new THREE.Color(painted ? C.hairHi ?? C.hair : '#9a9da2');
-    for (let i = 0, v = 0; i < P.length; i += 3, v += 4) {
-      const th = Math.atan2(P[i] - hb.cx, P[i + 2] - hb.z);
-      const fromTop = hb.top - P[i + 1];
-      const swirl = th * 34 + fromTop * 0.5;
-      const clump = Math.pow(Math.abs(Math.sin(swirl)), 0.6);
-      const fine = 0.5 + 0.5 * Math.sin(th * 97 + fromTop * 3.1);
-      const off = (0.22 * clump + 0.05 * fine) * Math.min(1, fromTop / 3, cut > 0 ? Math.max(0, (fromTop - cut) / 1.5) : 1);
-      const n = Math.hypot(Nn[i], Nn[i + 1], Nn[i + 2]) || 1;
-      for (let q = 0; q < 3; q++) P[i + q] += (Nn[i + q] / n) * off;
-      const k = 0.25 + 0.75 * clump * (0.7 + 0.3 * fine);
-      Cc[v] = dark.r + (hi.r - dark.r) * k;
-      Cc[v + 1] = dark.g + (hi.g - dark.g) * k;
-      Cc[v + 2] = dark.b + (hi.b - dark.b) * k;
-    }
-    const g = new THREE.BufferGeometry();
-    g.setAttribute('position', new THREE.BufferAttribute(P, 3));
-    g.setAttribute('color', new THREE.BufferAttribute(Cc, 4));
-    // 法線用切細時插值嘅（平滑），坑紋靠輪廓同深淺
-    for (let i = 0; i < Nn.length; i += 3) {
-      const n = Math.hypot(Nn[i], Nn[i + 1], Nn[i + 2]) || 1;
-      Nn[i] /= n; Nn[i + 1] /= n; Nn[i + 2] /= n;
-    }
-    g.setAttribute('normal', new THREE.BufferAttribute(Nn, 3));
-    return g;
-  }, [M, built, hair?.style, hair?.hatCut, painted]); // eslint-disable-line react-hooks/exhaustive-deps
+    const K = cut > 0 ? keepDistance(it.pos, it.regions, { top: hb.top - cut }) : null;
+    return clippedGeometry(cutItem(it, K));
+  }, [M, built, hair?.hatCut]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => () => hairGeo?.dispose(), [hairGeo]);
-  const hairMat = useMemo(() => cloth('#ffffff', painted, { roughness: 0.45, metalness: 0.05, normalMap: null }), [painted]);
-  useEffect(() => () => hairMat.dispose(), [hairMat]);
-  useEffect(() => () => built && ['skin', 'shirt', 'outer', 'pants', 'socks', 'shoes', 'skirt', 'belt'].forEach((k) => built[k]?.dispose()), [built]);
+  useEffect(() => () => built && ['skin', 'shirt', 'outer', 'pants', 'tights', 'socks', 'shoes', 'skirt', 'belt'].forEach((k) => built[k]?.dispose()), [built]);
+  useEffect(() => () => built?.face.forEach(([, g]) => g.dispose()), [built]);
 
+  const skinKey = M?.body.skin ?? 'boy';
   const mats = useMemo(() => {
+    const suitShade = mhTex('shade_suit.jpg');
     const shirtMats = shirtFaces.map((c) => {
-      const m = material(c, { painted });
+      const m = shaded(material(c, { painted }), suitShade);
       m.vertexColors = true;
       m.alphaTest = 0.5;
       m.side = THREE.DoubleSide;
       return m;
     });
-    shirtMats.push(cloth(sleeveColour, painted));
+    shirtMats.push(shaded(cloth(sleeveColour, painted), suitShade));
     const outerMats = outer
       ? [
           ...outer.faces.map((c) => {
@@ -355,27 +415,39 @@ export default function Mannequin({ section, gender, L, painted, shirtFaces, sle
           cloth(outer.sleeveColour, painted),
         ]
       : null;
+    const hairCol = new THREE.Color(painted ? C.hair : '#6f7277').multiplyScalar(2);
+    const grey = (name, alphaTest) => new THREE.MeshStandardMaterial({ map: mhTex(name, false, '#00000000'), color: hairCol, alphaTest, side: THREE.DoubleSide, roughness: 0.55 });
+    const skinMat = painted ? new THREE.MeshStandardMaterial({ map: mhTex(`skin_${skinKey}.jpg`, true, C.skin), roughness: 0.58 }) : skinMaterial(false);
     return {
       outer: outerMats,
-      skin: skinMaterial(painted, true),
+      skin: skinMat,
       shirt: shirtMats,
-      pants: cloth(pantsColour, painted),
+      pants: shaded(cloth(pantsColour, painted, { vertexColors: false, alphaTest: 0, normalMap: null }), suitShade),
+      tights: cloth(C.tights, painted),
       socks: cloth(sockColour, painted),
-      shoes: cloth(C.shoeBlack ?? '#1c1c20', painted, { roughness: 0.38, normalMap: null }),
-      skirt: skirt ? cloth(skirt.colour, painted, { vertexColors: false, alphaTest: 0 }) : null,
+      shoes: shaded(cloth(C.shoeBlack ?? '#1c1c20', painted, { vertexColors: false, alphaTest: 0, roughness: 0.4, normalMap: null }), mhTex('shade_shoes.jpg')),
+      skirt: skirt ? shaded(cloth(skirt.colour, painted, { vertexColors: false, alphaTest: 0, normalMap: null }), mhTex('shade_skirt.jpg')) : null,
+      hair: grey(M?.body.hair === 'hairBob' ? 'hair_bob.webp' : 'hair_short.webp', 0.45),
+      eyes: new THREE.MeshStandardMaterial({ map: painted ? mhTex('eyes.jpg', true, '#f4f1ec') : null, color: painted ? '#ffffff' : '#9a9da2', roughness: 0.25 }),
+      brows: grey('brows.webp', 0.4),
+      lashes: grey('lashes.webp', 0.4),
     };
-  }, [shirtFaces, sleeveColour, pantsColour, sockColour, painted, skirt?.colour, outer?.faces, outer?.sleeveColour]); // eslint-disable-line react-hooks/exhaustive-deps
-  useEffect(() => () => [mats.skin, ...mats.shirt, ...(mats.outer ?? []), mats.pants, mats.socks, mats.shoes, mats.skirt].forEach((m) => m?.dispose()), [mats]);
+  }, [shirtFaces, sleeveColour, pantsColour, sockColour, painted, skirt?.colour, outer?.faces, outer?.sleeveColour, skinKey, M?.body.hair]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => () => [mats.skin, ...mats.shirt, ...(mats.outer ?? []), mats.pants, mats.tights, mats.socks, mats.shoes, mats.skirt, mats.hair, mats.eyes, mats.brows, mats.lashes].forEach((m) => m?.dispose()), [mats]);
 
   if (!built) return null;
   return (
-    <group name="SCOUT3D mannequin (Anny · MakeHuman CC0)">
+    <group name="SCOUT3D mannequin (MakeHuman CC0)">
       <mesh geometry={built.skin} material={mats.skin} castShadow receiveShadow />
+      {built.face.map(([k, g]) => (
+        <mesh key={k} geometry={g} material={mats[k]} />
+      ))}
       <mesh geometry={built.shirt} material={mats.shirt} castShadow receiveShadow />
       {built.outer && mats.outer && <mesh geometry={built.outer} material={mats.outer} castShadow receiveShadow />}
-      <mesh geometry={built.pants} material={mats.pants} castShadow receiveShadow />
+      {built.pants && <mesh geometry={built.pants} material={mats.pants} castShadow receiveShadow />}
+      {built.tights && <mesh geometry={built.tights} material={mats.tights} castShadow receiveShadow />}
       {built.socks && <mesh geometry={built.socks} material={mats.socks} castShadow receiveShadow />}
-      <mesh geometry={built.shoes} material={mats.shoes} castShadow receiveShadow />
+      {built.shoes && <mesh geometry={built.shoes} material={mats.shoes} castShadow receiveShadow />}
       {built.skirt && mats.skirt && <mesh geometry={built.skirt} material={mats.skirt} castShadow receiveShadow />}
       {built.belt && (
         <>
@@ -391,7 +463,7 @@ export default function Mannequin({ section, gender, L, painted, shirtFaces, sle
       {torsoItems.map((p) => (
         <TorsoBadges key={p.key} items={[p]} surf={built.torsoSurf} selected={selected === p.id} {...patchProps} />
       ))}
-      {hairGeo && <mesh geometry={hairGeo} material={hairMat} castShadow receiveShadow />}
+      {hairGeo && <mesh geometry={hairGeo} material={mats.hair} castShadow receiveShadow />}
       {hats && hats({ ...B, head: built.head })}
       {warped && (
         <Warped warp={built.warp} neckWarp={built.neckWarp} frontWarp={built.frontWarp}>

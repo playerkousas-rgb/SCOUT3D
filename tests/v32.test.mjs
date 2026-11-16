@@ -14,46 +14,7 @@ const load = (key) => {
   return decodePositions(new Int16Array(b.buffer, b.byteOffset, b.length / 2), idx.unit);
 };
 
-test('v32 所有支部、男女都用同一個「童軍中性底」', () => {
-  assert.equal(idx.base.name, 'scout-neutral-v31b');
-  assert.equal(idx.base.phenotype.gender, 0.5);
-  assert.equal(idx.base.phenotype.cupsize, 0);
-  assert.ok(idx.base.phenotype.age > 0.34 && idx.base.phenotype.age < 0.37, '約 12 歲（Anny：1/3 = 11 歲、2/3 = 25 歲）');
-  for (const [key, b] of Object.entries(idx.bodies)) {
-    assert.equal(b.base, 'scout-neutral-v31b', key);
-    assert.equal(b.years, 12, key);
-  }
-});
-
-test('v32 頭身比約 1:6.5、腿身約 1:1（童軍／深資／領袖）', () => {
-  for (const key of ['scout_boy', 'scout_girl', 'venture_boy', 'venture_girl', 'leader_boy', 'leader_girl']) {
-    const m = idx.bodies[key].measure;
-    assert.ok(m.headRatio >= 6.3 && m.headRatio <= 6.8, `${key} headRatio ${m.headRatio}`);
-    assert.ok(m.crotchRatio >= 0.48 && m.crotchRatio <= 0.52, `${key} crotchRatio ${m.crotchRatio}`);
-  }
-});
-
-test('v32 男女人台一樣（中性底，只係頭髮唔同）', () => {
-  const a = load('scout_boy'), b = load('scout_girl');
-  let d = 0;
-  for (let i = 0; i < a.length; i++) d = Math.max(d, Math.abs(a[i] - b[i]));
-  assert.ok(d < 0.1, `max diff ${d}`);
-});
-
-test('v32 膊頭闊約等於盤骨闊、胸／肚／臀最少', () => {
-  const pos = load('scout_girl');
-  const R = REGION;
-  let x0 = Infinity, x1 = -Infinity, hx0 = Infinity, hx1 = -Infinity;
-  let zf = -Infinity, zb = Infinity;
-  for (let i = 0; i < regions.length; i++) {
-    const r = regions[i], x = pos[i * 3], z = pos[i * 3 + 2];
-    if (r === R.torso) { x0 = Math.min(x0, x); x1 = Math.max(x1, x); zf = Math.max(zf, z); zb = Math.min(zb, z); }
-    if (r === R.pelvis) { hx0 = Math.min(hx0, x); hx1 = Math.max(hx1, x); zf = Math.max(zf, z); zb = Math.min(zb, z); }
-  }
-  const sh = x1 - x0, hip = hx1 - hx0;
-  assert.ok(sh >= hip * 0.95 && sh <= hip * 1.45, `shoulder ${sh.toFixed(1)} hip ${hip.toFixed(1)}`);
-  assert.ok(zf - zb < 20, `上身前後深 ${(zf - zb).toFixed(1)} cm`);
-});
+// v33（ADR-0030）：「童軍中性底」身形測試已退役 — 人台改用 MakeHuman 真人身體（見 tests/v33.test.mjs）
 
 function shirtShell(key) {
   const pos = load(key);
