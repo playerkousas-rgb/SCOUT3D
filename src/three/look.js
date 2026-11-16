@@ -12,7 +12,7 @@ export const DEFAULT_LOOK = 'smooth';
  * v29c 人形試做：current = 現有流線公仔；a = 修正比例／關節／皮膚（程式砌）；b = 真人人台（Anny／MakeHuman CC0 模型）。
  * 只係預覽，徽章位置一樣由 badgeLayout.js 以厘米計。
  */
-export const FIGURES = ['current', 'a', 'b'];
+export const FIGURES = ['current', 'b'];
 export const DEFAULT_FIGURE = 'current';
 export const FigureContext = createContext(DEFAULT_FIGURE);
 export const useFigure = () => useContext(FigureContext);
@@ -298,17 +298,6 @@ export const SLEEVE_RC_K = 0.42;
 export const SLEEVE_RE_TOP = 0.32; // 膊頭（袖頂）收圓 = 0.32 × 袖闊；袖章喺圓位會屈返貼住
 /** 上身闊度（由頂 t = 0 到底 t = 1）：胸口最闊、腰收窄、下擺少少放返 */
 export const TORSO_PROFILE = [[0, 1], [0.3, 1], [0.72, 0.93], [1, 0.95]];
-/**
- * v30 試做 A：修正比例同關節（程式砌）。上身膊頭收圓多啲、腰收窄多啲；
- * 手臂、腳有手踭／膝頭收窄、二頭肌／小腿脹位；前臂向前屈 12°。
- */
-export const TORSO_PROFILE_A = [[0, 1], [0.3, 1], [0.7, 0.9], [1, 0.93]];
-export const TORSO_RE_TOP_A = 3.6;
-export const UPPERARM_PROFILE_A = [[0, 1], [0.45, 1], [1, 0.8]];
-export const FOREARM_PROFILE_A = [[0, 0.84], [0.22, 1], [0.6, 0.84], [1, 0.68]];
-export const SHIN_PROFILE_A = [[0, 0.9], [0.1, 0.9], [0.32, 1], [0.78, 0.7], [1, 0.68]];
-export const TROUSER_PROFILE_A = [[0, 1], [0.5, 0.9], [1, 0.82]];
-export const ELBOW_BEND_A = (12 * Math.PI) / 180;
 /** 闊度比例 k(t)：profile 線性插值 */
 export function profileAt(profile, t) {
   if (!profile) return 1;
@@ -327,7 +316,6 @@ export function partShape(part, w, h, d) {
   const m = Math.min(w, d);
   switch (part) {
     case 'torso': return { rc: TORSO_RC_K * Math.min(w, d), reTop: TORSO_RE_TOP, reBot: 0.6, profile: TORSO_PROFILE };
-    case 'torsoA': return { rc: TORSO_RC_K * Math.min(w, d), reTop: TORSO_RE_TOP_A, reBot: 0.6, profile: TORSO_PROFILE_A };
     case 'sleeve': return { rc: SLEEVE_RC_K * Math.min(w, d), reTop: SLEEVE_RE_TOP * Math.min(w, d), reBot: 0.5 };
     case 'head': return { rc: 0.47 * m, reTop: 0.42 * h, reBot: 0.26 * h };
     case 'neck': return { rc: 0.48 * m, reTop: 0.3, reBot: 0.3 };

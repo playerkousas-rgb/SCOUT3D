@@ -71,7 +71,7 @@ test('所有支部、男女：袖章最多只係喺圓角邊浮起 0.03 cm（袖
 test('收窄／放闊只用喺冇章嘅褲腳、短褲、半截裙', () => {
   const b = src('src/three/Blocky.jsx');
   const lines = b.split('\n').filter((l) => /taper=\{/.test(l));
-  // v30：只剩流線；手臂、袖口、小腿、褲、短褲、半截裙收窄／放闊（試做 A 用 profile），全部冇章
+  // v30：只剩流線；手臂、袖口、小腿、褲、短褲、半截裙收窄／放闊，全部冇章
   assert.equal(lines.length, 7);
   for (const l of lines) assert.match(l, /B\.(upperArm|lowerArm)|cuff\[0\]|legs\.(shinSize|trousers|shorts|skirtF)/);
 });
@@ -96,7 +96,8 @@ test('金屬章：勳章、別針、金屬肩章；布章唔係', () => {
 test('v30：外觀掣已刪；改做人形試做掣（中英文字都有；記喺瀏覽器；?figure= 可直接開）', () => {
   const i18n = src('src/i18n.jsx');
   for (const k of ['view.lookDetailed', 'view.lookSimple', 'view.lookHint']) assert.equal(i18n.split(`'${k}'`).length - 1, 0, k);
-  for (const k of ['view.figureCurrent', 'view.figureA', 'view.figureB', 'view.figureHint']) assert.equal(i18n.split(`'${k}'`).length - 1, 2, k);
+  for (const k of ['view.figureCurrent', 'view.figureB', 'view.figureHint']) assert.equal(i18n.split(`'${k}'`).length - 1, 2, k);
+  assert.equal(i18n.split("'view.figureA'").length - 1, 0, 'v31：A 已刪');
   const app = src('src/App.jsx');
   assert.doesNotMatch(app, /scout3d\.look/);
   assert.match(app, /scout3d\.figure/);

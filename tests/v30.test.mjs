@@ -1,10 +1,9 @@
-// v30：外觀只留「流線」；人形試做 A（修正比例）同 B（真人人台）俾用戶比較（ADR-0027）
+// v30：外觀只留「流線」；人形試做 B（真人人台）（ADR-0027）。v31：A 已刪，只留 現有／人台（ADR-0028）
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, statSync, readdirSync } from 'node:fs';
-import { layout, figureLayout, HEAD_A } from '../src/three/body.js';
+import { layout } from '../src/three/body.js';
 import { LOOKS, FIGURES, DEFAULT_FIGURE } from '../src/three/look.js';
-import { headSdf } from '../src/three/anatomy.js';
 import {
   bodyKey, REGION, decodePositions, vertexNormals, armFrame, shell, heightField, meshSurface, garmentRules, skirtRings,
 } from '../src/three/mannequin.js';
@@ -20,9 +19,9 @@ const body = (key) => {
 };
 const SECTIONS = ['grasshopper', 'cub', 'scout', 'venture', 'leader'];
 
-test('外觀只留「流線」；人形有 現有／A／B 三款，預設現有', () => {
+test('外觀只留「流線」；人形有 現有／人台 兩款（v31 刪咗 A），預設現有', () => {
   assert.deepEqual(LOOKS, ['smooth']);
-  assert.deepEqual(FIGURES, ['current', 'a', 'b']);
+  assert.deepEqual(FIGURES, ['current', 'b']);
   assert.equal(DEFAULT_FIGURE, 'current');
   const app = src('src/App.jsx');
   assert.doesNotMatch(app, /toggleLook|scout3d\.look/);
@@ -31,32 +30,12 @@ test('外觀只留「流線」；人形有 現有／A／B 三款，預設現有'
   }
 });
 
-test('試做 A：頭窄啲（真人比例），章位置唔變（figureLayout 只改個頭）', () => {
-  for (const s of SECTIONS) {
-    for (const g of ['boy', 'girl']) {
-      const L = layout(g, s);
-      const A = figureLayout(L, 'a');
-      assert.equal(figureLayout(L, 'current'), L);
-      assert.equal(figureLayout(L, 'b'), L);
-      assert.ok(A.B.head.w < L.B.head.w && A.B.head.d < L.B.head.d);
-      assert.equal(A.B.head.h, L.B.head.h, '頭高唔變（帽、頭髮位置照計）');
-      assert.equal(A.B.head.profile, HEAD_A.profile);
-      assert.equal(A.top, L.top);
-      assert.deepEqual(A.B.torso, L.B.torso, '上身唔變 → 章位置一樣');
-    }
-  }
-  // 下巴收窄：頭底嗰截入面嘅點喺 A 頭外面
-  const h = { ...figureLayout(layout('boy', 'scout'), 'a').B.head };
-  const x = h.w / 2 - 0.3;
-  assert.ok(headSdf([x, -h.h / 2 + 1, 0], h) > 0, '下巴收窄');
-  assert.ok(headSdf([x, 0, 0], h) < 0, '頭中間唔收');
-});
-
-test('試做 A 有五官同頭髮（唔係人台）；B 用自己嘅網格', () => {
+test('現有公仔有五官同頭髮（唔係人台）；人台用自己嘅網格；A 已刪', () => {
   const b = src('src/three/Blocky.jsx');
   assert.match(b, /head: headFaces\(B\)/);
   assert.match(b, /figure === 'b'/);
   assert.match(b, /<Mannequin\b/);
+  for (const f of ['src/three/Blocky.jsx', 'src/three/body.js', 'src/three/look.js', 'src/App.jsx', 'src/i18n.jsx']) assert.doesNotMatch(src(f), /figureLayout|HEAD_A|torsoA|figureA|PROFILE_A/, f);
 });
 
 test('人台檔：10 個身形、同一套三角形、區域表；檔案細（< 1.2 MB）', () => {
@@ -158,7 +137,7 @@ test('章貼衫面：高度圖 + meshSurface 將方塊面上嘅點搬去衫面',
 
 test('i18n：人形掣中英文都有，字短（唔會擠爆掣列）', () => {
   const i18n = src('src/i18n.jsx');
-  for (const k of ['view.figureCurrent', 'view.figureA', 'view.figureB']) {
+  for (const k of ['view.figureCurrent', 'view.figureB']) {
     const vals = [...i18n.matchAll(new RegExp(`'${k.replace('.', '\\.')}': '([^']+)'`, 'g'))].map((m) => m[1]);
     assert.equal(vals.length, 2, k);
     for (const v of vals) assert.ok(v.length <= 18, `${k}: ${v}`);

@@ -58,7 +58,8 @@ test('Blocky：笛繩畫兩段（前面＋後面），Lanyard 收 paths', () => 
   assert.match(src, /const paths = \[lanyardPoints\(args\), lanyardBackPoints\(args\)\]/);
   assert.match(src, /paths\.flatMap\(\(pts\) => lanyardSegments\(alt \? subdivide\(pts, ALT_CM\) : pts, thick, offs\)\)/); // v22：扭紋切細
   assert.match(src, /<Lanyard key=\{q\.p\.key\} p=\{q\.p\} paths=\{q\.paths\}/);
-  assert.match(src, /lanyardsShown\.map\(\(q\) =>/); // v26：流線模式先貼返圓滑上身
+  assert.match(src, /lanyardsFor\(lanyardsShown, torsoSurf\)/); // v26：流線模式先貼返圓滑上身（v31：現有公仔同人台共用 lanyardsFor）
+  assert.match(src, /shown\.map\(\(q\) =>/);
 });
 
 test('笛繩顏色：嘉許橙金色一條；高級嘉許紫色主繩＋幼米白扭紋（用戶指正）', async () => {

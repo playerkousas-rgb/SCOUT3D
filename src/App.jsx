@@ -99,12 +99,12 @@ const SENIOR = new Set(['venture', 'rover']);
 const SHARED_OUTFIT_KEYS = ['gender', 'finish', 'invested'];
 
 /**
- * v29c 人形試做：現有（流線）→ A 修正（比例、關節、皮膚）→ B 真人人台（Anny／MakeHuman CC0）。
- * 只係俾用戶比較；記喺瀏覽器。網址加 ?figure=a／b 可以直接開（截圖用）。外觀只留「流線」（精緻／簡約已刪）。
+ * v31 人形：現有（流線公仔）↔ 真人人台（Anny／MakeHuman CC0）。v31 刪咗試做 A。
+ * 記喺瀏覽器；網址加 ?figure=b 可以直接開（截圖用）。外觀只留「流線」。
  */
 const FIGURE_KEY = 'scout3d.figure';
-const FIGURE_ORDER = ['current', 'a', 'b'];
-const FIGURE_LABEL = { current: 'view.figureCurrent', a: 'view.figureA', b: 'view.figureB' };
+const FIGURE_ORDER = ['current', 'b'];
+const FIGURE_LABEL = { current: 'view.figureCurrent', b: 'view.figureB' };
 function readFigure() {
   try {
     const q = new URLSearchParams(window.location.search).get('figure');

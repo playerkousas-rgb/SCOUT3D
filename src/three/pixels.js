@@ -697,7 +697,7 @@ export function greyOf(c) {
 export function material(c, { painted = true, alpha = false, double = false, rich = false } = {}) {
   // alpha：透明位（例如背心領口）要 alphaTest，唔係會見到黑色
   // v25 精緻：放大貼圖（斜邊順滑）＋布紋法線；皮膚、鞋、頭髮、皮革唔要布紋
-  // v30 試做 A／B（rich）：皮膚用有柔光（sheen）嘅物理材質
+  // 人台（rich）：皮膚用有柔光（sheen）嘅物理材質
   const K = KIND_PROPS[c.kind] ?? KIND_PROPS.cloth;
   const [wcm, hcm] = canvasCm(c);
   const Mat = rich && c.kind === 'skin' ? THREE.MeshPhysicalMaterial : THREE.MeshStandardMaterial;

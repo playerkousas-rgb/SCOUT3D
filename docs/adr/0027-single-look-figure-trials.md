@@ -2,7 +2,7 @@
 
 SCOUT3D v1.0 · © SCOUT SYSTEM
 
-- Status: trial（2026-11-16）— A／B 等用戶揀；揀咗之後另開 ADR 定案，冇揀嘅一款會刪走
+- Status: superseded in part by ADR-0028（v31：用戶揀 B，A 已刪走；「只留流線」照舊有效）
 
 用戶 v30 三個決定：
 

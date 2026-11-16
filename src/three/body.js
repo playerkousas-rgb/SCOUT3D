@@ -481,17 +481,6 @@ export function pumpParts({ w, h, d }) {
   ];
 }
 
-/**
- * v30 試做 A：頭改返真人比例（闊 × 0.76、前後 × 0.9，例如深資 21 → 16 cm），下巴收窄（profile：由頂到底嘅闊度比例）。
- * 頭高唔變（帽、眉位照舊）；只改頭，身體、章位全部一樣。
- */
-export const HEAD_A = { w: 0.76, d: 0.9, profile: [[0, 1], [0.5, 1], [0.76, 0.9], [1, 0.7]] };
-export function figureLayout(L, figure) {
-  if (figure !== 'a') return L;
-  const h = L.B.head;
-  return { ...L, B: { ...L.B, head: { ...h, w: +(h.w * HEAD_A.w).toFixed(2), d: +(h.d * HEAD_A.d).toFixed(2), profile: HEAD_A.profile } } };
-}
-
 /** 計出每個部件嘅大細同位置（cm）。 */
 export function layout(gender, section = 'grasshopper') {
   const set = BODIES[section] ?? BODY;
