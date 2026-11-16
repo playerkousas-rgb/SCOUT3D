@@ -30,7 +30,9 @@ test('呢版只有制服頁徽章（手冊 P.30：會員章、香港章、地域
   assert.deepEqual(scout.badges.filter((b) => b.group && b.group !== 'proficiency').map((b) => b.id), [
     'modelScout', 'leaderBar', 'serviceStar', 'serviceStarCub', 'serviceStarGrasshopper',
     // v23b：綱要 P.12 附圖嘅右袋蓋、和平使者章同右袖一行
-    'emblemBauhinia', 'ventureLink', 'scoutLink', 'peace', 'earthTribe', 'plasticTide', 'natureChampions', 'goSolar',
+    'emblemBauhinia', 'ventureLink', 'scoutLink', 'peace',
+    // v29b：紀念章（用戶：童軍都會用到；手冊 P.163）
+    'commemorative', 'earthTribe', 'plasticTide', 'natureChampions', 'goSolar',
     'citizenScam', 'citizenChild', 'citizenDrug', 'citizenEmergency', 'citizenGreen',
   ]);
   for (const id of ['membership', 'hongKong', 'troop', 'region', 'district', 'patrol']) assert.equal(badge(id).required, true, `${id} 係必備`);

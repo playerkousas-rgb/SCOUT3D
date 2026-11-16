@@ -94,6 +94,15 @@
         "en": "9 August 2026 edition; pp.6–7 uniform and badge chart, p.8 training areas, pp.13–22 Membership Badge and progress awards (core area badges), pp.25–67 Cub Scout activity badges, p.68 Religious Badge, p.70 Scout Link Badge, p.72 Sixer / Second badges"
       },
       "url": null
+    },
+    "RALLY": {
+      "zh": "香港童軍總會大會操第 03/2026 號通告《2026 年香港童軍大會操（三）》",
+      "en": "SAHK Rally Circular 03/2026, 2026 Hong Kong Scout Rally (3)",
+      "edition": {
+        "zh": "2026 年 9 月 1 日；紀念章 7 cm（闊）× 5.1 cm（高），綠邊／金邊兩款，參加者獲派綠邊款式；2026 年 11 月 1 日起佩戴 6 個月；縫喺右胸袋冚上方。圖片由用戶提供（2026-11-16），由金邊款式原圖按通告綠邊款式轉色",
+        "en": "1 September 2026; commemorative badge 7 cm wide × 5.1 cm high, green-edge and gold-edge styles, participants receive the green-edge style; worn for 6 months from 1 November 2026; sewn above the right pocket flap. Image supplied by the user (2026-11-16), recoloured from the gold-edge artwork to the circular's green-edge style"
+      },
+      "url": "https://scout.org.hk/uploads/tc/circulars/26009/rcr0326c.pdf"
     }
   },
   "garments": [
@@ -1881,6 +1890,67 @@
       },
       "sweater": false,
       "fit": true
+    },
+    {
+      "id": "commemorative",
+      "required": false,
+      "side": "right",
+      "group": "extra",
+      "zh": {
+        "name": "紀念章",
+        "place": "穿著者右胸袋袋蓋上方 3 cm 中央（手冊 P.163）；喺金紫荊獎章標誌、先修章（緊貼袋蓋）上面。",
+        "quote": "紀念章佩戴在制服恤衫右胸袋袋蓋上方三釐米中央位置。假若與其他標誌或徽章一起佩戴，兩章並行排列，紀念章在其右方位置。紀念章最大尺寸以七釐米（闊）× 七釐米（高）為限。",
+        "conditions": "只限已獲批准、喺指定期間內佩戴；同一時間只戴一個。"
+      },
+      "en": {
+        "name": "Commemorative Badge",
+        "place": "Centred 3 cm above the wearer's right pocket flap (Handbook p.163); above the Golden Bauhinia Award Emblem and Link Badges (which sit on the flap).",
+        "quote": "Worn centred 3 cm above the right pocket flap. With another emblem or badge the two sit side by side, the Commemorative Badge on the right. At most 7 cm wide × 7 cm high.",
+        "conditions": "Approved badges only, within the set period; one at a time."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 7,
+        "hCm": 5.1,
+        "measured": true,
+        "ref": "RALLY",
+        "page": "1"
+      },
+      "anchor": {
+        "part": "torso",
+        "slot": "pocketR",
+        "layer": "upper",
+        "rank": 1,
+        "side": "right",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "163–164"
+        },
+        {
+          "ref": "RALLY",
+          "page": "1"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/rally2026_green.png",
+        "ref": "RALLY",
+        "page": "1",
+        "example": true,
+        "px": [
+          280,
+          203
+        ],
+        "user": true
+      },
+      "modelNote": {
+        "zh": "圖案用 2026 年香港童軍大會操紀念章（綠邊款式，7 × 5.1 cm，大會操第 03/2026 號通告）做示例；每個紀念章唔同，上限 7 × 7 cm。",
+        "en": "The artwork uses the 2026 Hong Kong Scout Rally commemorative badge (green-edge style, 7 × 5.1 cm, Rally Circular 03/2026) as the example; each badge differs, limit 7 × 7 cm."
+      },
+      "sweater": false
     },
     {
       "id": "earthTribe",
@@ -9403,10 +9473,15 @@
           "gapCm": 0,
           "max": 3,
           "from": "outer"
+        },
+        {
+          "id": "upper",
+          "gapCm": 3,
+          "max": 1
         }
       ],
-      "zh": "穿著者右胸袋袋蓋上方（緊貼袋蓋）：金紫荊獎章標誌喺右（外側），先修章（深資童軍先修章、童軍先修章）喺佢左方（內側）；只戴一個就置中（綱要 P.12 附圖；手冊 P.134、P.142–143）。",
-      "en": "On top of the wearer's right pocket flap: the Golden Bauhinia Award Emblem on the right (outer side), the Link Badges (Venture Scout, Scout) to its left (inner side); a single badge is centred (Training Scheme p.12 figure; Handbook pp.134, 142–143).",
+      "zh": "穿著者右胸袋袋蓋上方（緊貼袋蓋）：金紫荊獎章標誌喺右（外側），先修章（深資童軍先修章、童軍先修章）喺佢左方（內側）；只戴一個就置中（綱要 P.12 附圖；手冊 P.134、P.142–143）。紀念章喺袋蓋上方 3 cm 中央，喺佢哋上面（手冊 P.163）。",
+      "en": "On top of the wearer's right pocket flap: the Golden Bauhinia Award Emblem on the right (outer side), the Link Badges (Venture Scout, Scout) to its left (inner side); a single badge is centred (Training Scheme p.12 figure; Handbook pp.134, 142–143). The Commemorative Badge is centred 3 cm above the flap, above them (Handbook p.163).",
       "sources": [
         {
           "ref": "STS",
@@ -9414,7 +9489,7 @@
         },
         {
           "ref": "UH",
-          "page": "134, 142–143"
+          "page": "134, 142–143, 163"
         }
       ]
     },

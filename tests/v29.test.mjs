@@ -172,7 +172,7 @@ test('紀念章示例：2026 香港童軍大會操紀念章（綠邊，7 × 5.1 
   assert.ok(statSync(pub('/badges/rally2026_green.png')).size < 30_000);
   const png = readFileSync(pub('/badges/rally2026_green.png'));
   assert.deepEqual([png.readUInt32BE(16), png.readUInt32BE(20)], [280, 203]);
-  for (const id of ['cub', 'grasshopper', 'leader', 'rover', 'venture']) {
+  for (const id of ['cub', 'grasshopper', 'leader', 'rover', 'venture', 'scout']) {
     const R = read(`src/data/${id}_rules_v1.0.json`);
     assert.match(R.sources.RALLY.url, /rcr0326c\.pdf$/);
     const b = R.badges.find((x) => x.id === 'commemorative');
@@ -185,4 +185,86 @@ test('紀念章示例：2026 香港童軍大會操紀念章（綠邊，7 × 5.1 
   }
   for (const id of ['cub', 'grasshopper', 'leader', 'rover', 'venture', 'scout']) assert.ok(!src(`src/data/${id}_rules_v1.0.json`).includes('handbook_example_commemorative'));
   assert.match(src('scripts/guard.mjs'), /const DIST_MAX_MB = 10;/, '用戶 v29：dist 上限 10 MB');
+});
+
+// v29b
+test('童軍支部都有紀念章：右胸袋袋蓋上方 3 cm 中央，喺金紫荊獎章標誌、先修章（緊貼袋蓋）上面，唔重疊', () => {
+  const S = read('src/data/scout_rules_v1.0.json');
+  const b = S.badges.find((x) => x.id === 'commemorative');
+  assert.equal(b.anchor.slot, 'pocketR');
+  assert.equal(b.anchor.layer, 'upper');
+  assert.ok(S.slots.pocketR.layers.some((L) => L.id === 'upper' && L.gapCm === 3));
+  for (const gender of ['boy', 'girl']) {
+    const L = layout(gender, 'scout');
+    const st = { commemorative: true, emblemBauhinia: true, scoutLink: true, ventureLink: true, membership: true, hongKong: true };
+    const out = visible(placeFor(S, { gender, invested: true }), st, { invested: true });
+    const c = out.find((p) => p.id === 'commemorative');
+    assert.ok(c, gender);
+    assert.equal(c.w, 7);
+    const flapTop = L.top - L.B.pocket.top;
+    assert.ok(Math.abs(c.y - c.h / 2 - (flapTop + 3)) < 0.01, `${gender} 袋蓋上方 3 cm`);
+    assert.ok(Math.abs(c.x + L.B.pocket.x) < 0.01, '右胸袋中央');
+    for (const id of ['emblemBauhinia', 'scoutLink', 'ventureLink']) {
+      const q = out.find((p) => p.id === id);
+      assert.ok(q, id);
+      assert.ok(q.y + q.h / 2 < c.y - c.h / 2, `${id} 喺紀念章下面`);
+    }
+  }
+});
+
+test('領袖香港特區章（政策通告第 04/2024 號）：7.5 × 5 cm，左胸袋上方，章頂高過所有其他胸前徽章／勳章', async () => {
+  const { existsSync } = await import('node:fs');
+  const { liftTopmost, TOPMOST_CLEAR, NECKER_GAP, neckerEdgeAt } = await import('../src/three/badgeLayout.js');
+  const R = read('src/data/leader_rules_v1.0.json');
+  assert.match(R.sources.HKSAR.url, /policycircular_042024/);
+  const b = R.badges.find((x) => x.id === 'hksarFlag');
+  assert.deepEqual([b.size.wCm, b.size.hCm], [7.5, 5]);
+  assert.equal(b.side, 'left');
+  assert.equal(b.required, false);
+  assert.ok(b.topmost);
+  assert.deepEqual(b.uniforms, ['u3', 'u4', 'u5', 'u6'], '同其他成年成員非基本章一樣：恤衫制服');
+  assert.ok(existsSync(new URL(`../public${b.art.file}`, import.meta.url)));
+  assert.ok(Math.abs(b.art.px[0] / b.art.px[1] - 1.5) < 0.01, '區旗 3:2');
+  for (const id of ['cub', 'grasshopper', 'rover', 'venture', 'scout']) assert.ok(!read(`src/data/${id}_rules_v1.0.json`).badges.some((x) => x.id === 'hksarFlag'), '今次淨係領袖');
+  const chest = (q) => q.mount === 'torso' && !q.facing && !q.strapCm && q.kind !== 'lanyard' && q.z > 0;
+  const cases = [
+    { hksarFlag: true, membership: true, nameTag: true },
+    { hksarFlag: true, worldScout: true, wings: 'flying', commemorative: true, membership: true },
+    { hksarFlag: true, worldScout: true, wings: 'parachute', commemorative: true, nameTag: true },
+    { hksarFlag: true, commemorative: true, peace: true, centenary: true, anniv110: true, diamondJubilee: true, millennium: true },
+  ];
+  for (const gender of ['boy', 'girl']) {
+    const L = layout(gender, 'leader');
+    for (const uniform of ['u3', 'u6']) {
+      for (const st of cases) {
+        const out = visible(placeFor(R, { gender, invested: true, uniform }), st, { invested: true });
+        const f = out.find((p) => p.id === 'hksarFlag');
+        assert.ok(f, `${gender} ${uniform}`);
+        const P = L.B.pocket;
+        assert.ok(f.x - f.w / 2 >= P.x - P.w / 2 && f.x + f.w / 2 <= P.x + P.w / 2 + 0.01, '喺左胸袋闊度之內');
+        assert.ok(f.x + f.w / 2 <= L.B.torso.w / 2 - 2 + 0.01, '離上身邊 ≥ 2 cm');
+        const atMax = Math.abs(f.x + f.w / 2 - (L.B.torso.w / 2 - 2)) < 0.01;
+        if (!atMax) assert.ok(f.x - f.w / 2 >= neckerEdgeAt(f.clear, f.y + f.h / 2) + NECKER_GAP - 0.01, `${gender} ${uniform} 唔俾旅巾遮`);
+        assert.deepEqual([f.w, f.h], [7.5, 5]);
+        const top = f.y + f.h / 2;
+        for (const q of out.filter((p) => p !== f && chest(p))) assert.ok(top >= q.y + q.h / 2 + TOPMOST_CLEAR - 0.01, `${gender} ${uniform} 高過 ${q.id}`);
+        assert.ok(f.y - f.h / 2 >= L.top - L.B.pocket.top + 2, '喺袋蓋上面');
+        assert.ok(top < L.top - 1.5, `${gender} ${uniform} 唔超出膊頭`);
+        for (const q of out.filter((p) => p !== f && chest(p) && p.x > 0)) {
+          const overlap = Math.abs(q.x - f.x) < (q.w + f.w) / 2 && Math.abs(q.y - f.y) < (q.h + f.h) / 2;
+          assert.ok(!overlap, `唔同 ${q.id} 重疊`);
+        }
+      }
+    }
+  }
+  // 冇其他章就唔使升；有就升到高過最高嗰個
+  const a = { id: 'x', mount: 'torso', z: 1, x: -9, y: 130, w: 7, h: 5 };
+  const f0 = { id: 'hksarFlag', topmost: true, mount: 'torso', z: 1, x: 9, y: 120, w: 7.5, h: 5 };
+  assert.equal(liftTopmost([f0])[0].y, 120);
+  assert.equal(liftTopmost([f0, a])[0].y, 130.5);
+  // 飛行章唔會因為上面有特區章而改用 2 cm
+  const out = visible(placeFor(R, { gender: 'boy', invested: true, uniform: 'u3' }), { hksarFlag: true, wings: 'flying' }, { invested: true });
+  const w = out.find((p) => p.id === 'wings');
+  const L = layout('boy', 'leader');
+  assert.ok(Math.abs(w.y - w.h / 2 - (L.top - L.B.pocket.top + 3)) < 0.01);
 });

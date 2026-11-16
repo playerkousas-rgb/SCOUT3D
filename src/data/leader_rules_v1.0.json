@@ -217,6 +217,15 @@
         "en": "1 September 2026; commemorative badge 7 cm wide × 5.1 cm high, green-edge and gold-edge styles, participants receive the green-edge style; worn for 6 months from 1 November 2026; sewn above the right pocket flap. Image supplied by the user (2026-11-16), recoloured from the gold-edge artwork to the circular's green-edge style"
       },
       "url": "https://scout.org.hk/uploads/tc/circulars/26009/rcr0326c.pdf"
+    },
+    "HKSAR": {
+      "zh": "香港童軍總會政策通告第 04/2024 號《佩戴香港特別行政區區旗布章（香港特區章）》",
+      "en": "SAHK Policy Circular 04/2024, Wearing the HKSAR Regional Flag Cloth Badge (HKSAR Badge)",
+      "edition": {
+        "zh": "2024 年 5 月 1 日；尺寸 7.5 cm × 5 cm；佩戴喺左胸袋上方，頂部要高過其他胸前徽章或勳章；只限經批准嘅國際或內地交流活動",
+        "en": "1 May 2024; size 7.5 cm × 5 cm; worn above the left chest pocket, its top higher than any other badge or medal on the chest; approved international or Mainland exchange activities only"
+      },
+      "url": "https://www.scout.org.hk/uploads/tc/circulars/16350/policycircular_042024_c_v2.pdf"
     }
   },
   "levels": [
@@ -7257,6 +7266,68 @@
       ]
     },
     {
+      "id": "hksarFlag",
+      "required": false,
+      "side": "left",
+      "group": "extra",
+      "topmost": true,
+      "zh": {
+        "name": "香港特區章（區旗布章）",
+        "place": "穿著者左胸袋上方；章頂要高過所有其他胸前徽章同勳章（政策通告第 04/2024 號）。",
+        "quote": "成員只可於獲批准的指定活動（國際或內地交流活動）佩戴總會指定的香港特區章。香港特區章尺寸為 7.5 釐米 × 5 釐米，佩戴於制服左胸袋上方，其頂部須高於其他胸前徽章或勳章。",
+        "conditions": "選擇性佩戴；只限經總會及香港特區政府批准嘅國際或內地交流活動（經助理香港總監向國際總監申請），只可以用總會指定嘅章，要符合《區旗及區徽條例》。"
+      },
+      "en": {
+        "name": "HKSAR Badge (regional flag cloth badge)",
+        "place": "Above the wearer's left chest pocket; its top must be higher than every other badge and medal on the chest (Policy Circular 04/2024).",
+        "quote": "Members may wear the Association-designated HKSAR Badge only at approved designated activities (international or Mainland exchanges). The badge measures 7.5 cm × 5 cm and is worn above the left chest pocket of the uniform, its top higher than any other badge or medal on the chest.",
+        "conditions": "Optional; only at international or Mainland exchange activities approved by SAHK and the HKSAR Government (applied for through the Assistant Chief Commissioner to the International Commissioner); Association-designated badge only, in line with the Regional Flag and Regional Emblem Ordinance."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 7.5,
+        "hCm": 5,
+        "measured": true,
+        "ref": "HKSAR",
+        "page": "1"
+      },
+      "anchor": {
+        "part": "torso",
+        "slot": "pocketL",
+        "layer": "flag",
+        "rank": 1,
+        "side": "left",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "HKSAR",
+          "page": "1"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/hksar_flag.png",
+        "ref": "HKSAR",
+        "page": "1",
+        "example": true,
+        "px": [
+          300,
+          200
+        ]
+      },
+      "modelNote": {
+        "zh": "圖案用香港特別行政區區旗（3:2，維基共享資源公有領域圖）做示意，總會指定嘅布章可能有邊框；模型按通告用 7.5 × 5 cm，放喺左胸袋上方最高嗰層，再自動升到高過其他胸前章同勳章 0.5 cm。",
+        "en": "The artwork shows the HKSAR regional flag (3:2, public-domain Wikimedia Commons image) for illustration; the Association-designated cloth badge may have a border. The model uses 7.5 × 5 cm per the circular, on the top layer above the left pocket, raised automatically to sit 0.5 cm above every other chest badge and medal."
+      },
+      "uniforms": [
+        "u3",
+        "u4",
+        "u5",
+        "u6"
+      ]
+    },
+    {
       "id": "hkayp",
       "required": false,
       "side": "left",
@@ -7587,8 +7658,8 @@
     }
   ],
   "artCredit": {
-    "zh": "徽章、帽章、肩章、勳章圖案取自香港童軍總會《儀容與制服手冊》（P.92–95、P.103–105、P.109、P.128、P.162、P.178–185、P.206–211；© 香港童軍總會），只作示意，未經修改設計（勳章相片只去咗背景）。110 周年紀念章、110 周年特別貢獻章、童心抗疫徽章、同行未來大露營紀念章嘅圖由用戶提供（香港童軍總會官方參考圖，只作參考；已去背景），勳條由圖中綬帶顏色砌成。",
-    "en": "Badge, cap badge, epaulette and medal artwork from the SAHK Uniform Handbook (pp.92–95, 103–105, 109, 128, 162, 178–185, 206–211; © SAHK), for illustration only, design unaltered (medal photos only had their background removed). Images of the 110th Anniversary Medallion, 110th Anniversary Special Contribution Medallion, Scout Health Guard Medallion and Walk Together Jamboree Medallion were supplied by the user (SAHK official reference sheet, for reference only; background removed), with ribbon bars built from the ribbon colours shown."
+    "zh": "徽章、帽章、肩章、勳章圖案取自香港童軍總會《儀容與制服手冊》（P.92–95、P.103–105、P.109、P.128、P.162、P.178–185、P.206–211；© 香港童軍總會），只作示意，未經修改設計（勳章相片只去咗背景）。110 周年紀念章、110 周年特別貢獻章、童心抗疫徽章、同行未來大露營紀念章嘅圖由用戶提供（香港童軍總會官方參考圖，只作參考；已去背景），勳條由圖中綬帶顏色砌成。香港特區章用香港特別行政區區旗圖（維基共享資源，公有領域）示意。",
+    "en": "Badge, cap badge, epaulette and medal artwork from the SAHK Uniform Handbook (pp.92–95, 103–105, 109, 128, 162, 178–185, 206–211; © SAHK), for illustration only, design unaltered (medal photos only had their background removed). Images of the 110th Anniversary Medallion, 110th Anniversary Special Contribution Medallion, Scout Health Guard Medallion and Walk Together Jamboree Medallion were supplied by the user (SAHK official reference sheet, for reference only; background removed), with ribbon bars built from the ribbon colours shown. The HKSAR Badge uses the HKSAR regional flag image (Wikimedia Commons, public domain) for illustration."
   },
   "messCaps": [
     {
@@ -7800,14 +7871,24 @@
           "gapCm": 3,
           "max": 2,
           "from": "inner"
+        },
+        {
+          "id": "flag",
+          "gapCm": 3,
+          "max": 1,
+          "noBelowGap": true
         }
       ],
-      "zh": "穿著者左胸袋袋蓋上方：飛行章、跳傘章或寰宇童軍章單獨戴喺袋蓋上方 3 cm；跳傘章同寰宇童軍章並排（跳傘章喺右、內側）；飛行章同寰宇童軍章一齊戴時飛行章喺袋蓋上方 2 cm、寰宇童軍章喺佢上面（手冊 P.150、P.154、P.166–167）。",
-      "en": "Above the wearer's left pocket flap: the Flying, Parachute or Scouts of the World badge alone sits 3 cm above the flap; the Parachute Badge and Scouts of the World Award sit side by side (Parachute on the right, inner side); with the Flying Badge and the Scouts of the World Award, the wings go 2 cm above the flap and the award above them (Handbook pp.150, 154, 166–167).",
+      "zh": "穿著者左胸袋袋蓋上方：飛行章、跳傘章或寰宇童軍章單獨戴喺袋蓋上方 3 cm；跳傘章同寰宇童軍章並排（跳傘章喺右、內側）；飛行章同寰宇童軍章一齊戴時飛行章喺袋蓋上方 2 cm、寰宇童軍章喺佢上面（手冊 P.150、P.154、P.166–167）。香港特區章喺最上面，章頂要高過其他胸前徽章或勳章（政策通告第 04/2024 號）。",
+      "en": "Above the wearer's left pocket flap: the Flying, Parachute or Scouts of the World badge alone sits 3 cm above the flap; the Parachute Badge and Scouts of the World Award sit side by side (Parachute on the right, inner side); with the Flying Badge and the Scouts of the World Award, the wings go 2 cm above the flap and the award above them (Handbook pp.150, 154, 166–167). The HKSAR Badge goes on top, its top higher than any other chest badge or medal (Policy Circular 04/2024).",
       "sources": [
         {
           "ref": "UH",
           "page": "150, 154, 166–167, 172"
+        },
+        {
+          "ref": "HKSAR",
+          "page": "1"
         }
       ]
     },

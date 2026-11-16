@@ -87,7 +87,10 @@ export function placeAll(rules, gender, { sweater = false, uniform = null, occas
   const { B, top } = L;
   const face = sleeveFace(gender, section);
   const out = [];
-  const box = {}; // 每個章喺袖上面佔嘅 v 範圍：{ top, bottom }
+  const box = {};
+  // v29b 香港特區章（topmost）：升高之後可能撞到旅巾上段 —— 俾 liftTopmost 旅巾外邊條線同上身邊位
+  const NK = neckerLayout(L, { vest: sweater });
+  const clear = { ax: NK.a[0], ay: NK.a[1], bx: NK.b[0], by: NK.b[1], half: NK.tail.w / 2 / Math.cos(NK.ang), maxX: B.torso.w / 2 - 2 }; // 每個章喺袖上面佔嘅 v 範圍：{ top, bottom }
 
   // 先擺唔靠其他章嘅，再擺「喺某個章下面／上面」嘅
   const dep = (a) => !!(a.belowBadge || a.aboveBadge || a.onBadge || (a.slot && rules.slots?.[a.slot]?.belowBadge));
@@ -102,7 +105,7 @@ export function placeAll(rules, gender, { sweater = false, uniform = null, occas
     const { wCm: w, hCm: h, shape } = b.size;
     const art = b.dynamic ? dynKey(b.id) : Array.isArray(b.art) ? null : b.art?.file ?? null;
     const fit = b.dynamic === 'district' || b.dynamic === 'region' || b.dynamic === 'nameTag'; // 各區圖案比例唔同：喺 w × h 入面置中縮放
-    const extra = { ...(b.needsInvestiture ? { inv: true } : {}), ...(b.levels ? { levels: b.levels } : {}), ...(b.hiddenBy ? { hiddenBy: b.hiddenBy } : {}), ...(b.limitWhen ? { limitWhen: b.limitWhen } : {}), ...(b.requires ? { requires: b.requires } : {}) };
+    const extra = { ...(b.needsInvestiture ? { inv: true } : {}), ...(b.levels ? { levels: b.levels } : {}), ...(b.hiddenBy ? { hiddenBy: b.hiddenBy } : {}), ...(b.limitWhen ? { limitWhen: b.limitWhen } : {}), ...(b.requires ? { requires: b.requires } : {}), ...(b.topmost ? { topmost: true, clear } : {}) };
     const sx = a.side === 'left' ? 1 : -1;
     const withArt = (b.choices || []).filter((c) => c.art);
     if (RB && (a.part === 'neck' || a.rack)) {
@@ -464,9 +467,36 @@ export function visible(placements, state, { invested, school = false, unavailab
   // 跟住另一個章嘅（「R」字樣別針喺職級肩章上）：嗰個章冇顯示就唔顯示
   const ids = new Set(first.map((p) => p.id));
   const shown = first.filter((p) => !p.requires || ids.has(p.requires));
-  const out = arrangeSlots(arrangeRacks(centreLonePair(placements, sash ? onSash(shown) : shown)));
+  const out = liftTopmost(arrangeSlots(arrangeRacks(centreLonePair(placements, sash ? onSash(shown) : shown))));
   return sash ? underSash(out, shown) : out;
 }
+
+/** 胸前徽章／勳章（唔計背面、肩章、掛頸勳章、雞繩） */
+const onChest = (q) => q.mount === 'torso' && !q.facing && !q.strapCm && q.kind !== 'lanyard' && q.z > 0;
+export const TOPMOST_CLEAR = 0.5;
+/**
+ * v29b 香港特區章（政策通告第 04/2024 號）：章頂要高過其他胸前徽章或勳章 ——
+ * 排好之後，佢個頂唔夠高就成個升上去（高過最高嗰個 TOPMOST_CLEAR cm）。
+ */
+export function liftTopmost(list) {
+  const tops = list.filter((p) => p.topmost);
+  if (!tops.length) return list;
+  const maxTop = Math.max(-Infinity, ...list.filter((q) => !q.topmost && onChest(q)).map((q) => q.y + q.h / 2));
+  return list.map((p) => {
+    if (!p.topmost) return p;
+    let q = p;
+    if (p.y + p.h / 2 < maxTop + TOPMOST_CLEAR) q = { ...p, y: Math.round((maxTop + TOPMOST_CLEAR - p.h / 2) * 100) / 100, lifted: true };
+    // 旅巾上段（由頸邊斜落巾圈）越高越闊：章內邊要喺旅巾外邊 NECKER_GAP cm 以外，唔夠就向外移（最多去到上身邊 2 cm）
+    const C = q.clear;
+    if (C && q.x > 0) {
+      const want = neckerEdgeAt(C, q.y + q.h / 2) + NECKER_GAP + q.w / 2;
+      if (q.x < want) q = { ...q, x: Math.round(Math.min(want, C.maxX - q.w / 2) * 100) / 100, nudged: true };
+    }
+    return q;
+  });
+}
+export const NECKER_GAP = 0.3;
+export const neckerEdgeAt = (C, y) => C.bx + ((C.ax - C.bx) * (Math.min(C.ay, y) - C.by)) / (C.ay - C.by) + C.half;
 
 /**
  * v29：專章帶喺上身章前面（用戶：遮住香港章）—— 前面嘅上身章同帶有重疊就標 underSash：
@@ -562,7 +592,8 @@ export function arrangeSlot(items, others) {
     let prevTop = -Infinity;
     byLayer.forEach(({ L, list }, i) => {
       GAP = L.spacingCm ?? GAP0;
-      const gap = L.gapIfAboveCm != null && i < byLayer.length - 1 ? L.gapIfAboveCm : L.gapCm;
+      // v29b noBelowGap：呢層（例：香港特區章）喺上面唔會令下面層改用 gapIfAboveCm（手冊淨係講寰宇童軍章喺飛行章上面）
+      const gap = L.gapIfAboveCm != null && byLayer.slice(i + 1).some((x) => !x.L.noBelowGap) ? L.gapIfAboveCm : L.gapCm;
       const bottom = Math.max(geo.flapTop + gap, prevTop + GAP0, L.gapCm > 0 ? floor : -Infinity);
       let top = bottom;
       for (const { p, off } of rowX(list, L.from ?? 'inner', geo.maxW)) {
