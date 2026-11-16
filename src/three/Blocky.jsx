@@ -911,8 +911,11 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
         side: per((s) => neckerRollFaces([G.rollT, G.rollH, G.inner + G.rollT + 1.2], P(s), s)),
       },
       upperC: per((s) => neckerTailCanvas(G.tail.w, G.len + 1, P(s), 0, s)),
+      // v33 第二輪：人台卷起嘅旅巾圈（管）貼圖：u = 繞一圈、v = 長度（每邊約 20 cm）
+      rollC: [1, -1].map((s) => neckerTailCanvas(G.tail.w, 20, P(s), 0, s)),
       lowerC: per((s) => neckerTailCanvas(G.tail.w, G.tail.len, P(s), G.tail.tip, s)),
       backC: neckerBackCanvas(G.back.w, G.back.h, NP.left, NP.right),
+      backBridge: { w: Math.min(G.back.w, G.inner + 2), c: per((s) => plain(2, 2, P(s).colours[0])) },
     };
   }, [L, vest, sweater, NP]);
 
@@ -998,6 +1001,7 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
   // v31b 人台：旅巾有布厚（0.25 cm）、巾圈推入貼返旅巾
   const clothT = figure === 'b' ? 0.25 : 0;
   const wogIn = figure === 'b' ? 0.5 : 0;
+  const backUp = figure === 'b' ? 3 : 0;
   const neckwearEl = (
     <>
       {/* 旅巾 + 巾圈（宣誓後先戴；戴喺衣領／背心外面） */}
@@ -1011,7 +1015,7 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
       {invested && !tie && !VL?.bowTie && (
         <group>
           {/* v31 人台：旅巾圈圍住頸（Warped 用頸變形） */}
-          <group userData={{ warp: 'neck' }}>
+          {figure !== 'b' && <group userData={{ warp: 'neck' }}>
             {N.split ? (
               [1, -1].map((s) => (
                 <Box key={`rb${s}`} size={[N.outer / 2, N.rollH, N.rollT]} faces={N.roll.back[s]} painted={painted} position={[(s * N.outer) / 4, L.top + N.rollH / 2, -(N.inner / 2 + N.rollT / 2)]} />
@@ -1022,10 +1026,11 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
             {[1, -1].map((s) => (
               <Box key={s} size={[N.rollT, N.rollH, N.inner + N.rollT + 1.2]} faces={N.roll.side[s]} painted={painted} position={[s * (N.inner / 2 + N.rollT / 2), L.top + N.rollH / 2, 0.6]} />
             ))}
-          </group>
+          </group>}
           {[1, -1].map((s) => (
             <group key={s} userData={{ warp: 'front' }}>
-              <Plane size={[N.tail.w, N.len + 1]} canvas={N.upperC[s]} painted={painted} thick={clothT} position={[s * (N.a[0] + N.b[0]) / 2, (N.a[1] + N.b[1]) / 2, N.front + 0.35 + clothT / 2 + (s > 0 ? 0.08 + clothT : 0)]} rotation={[0, 0, -s * N.ang]} />
+              {/* v33 第二輪：人台嘅旅巾圈＋前面兩條由 Mannequin 跟真衣領做（卷起嘅管） */}
+              {figure !== 'b' && <Plane size={[N.tail.w, N.len + 1]} canvas={N.upperC[s]} painted={painted} thick={clothT} position={[s * (N.a[0] + N.b[0]) / 2, (N.a[1] + N.b[1]) / 2, N.front + 0.35 + clothT / 2 + (s > 0 ? 0.08 + clothT : 0)]} rotation={[0, 0, -s * N.ang]} />}
               <Plane size={[N.tail.w, N.tail.len]} canvas={N.lowerC[s]} painted={painted} thick={clothT} position={[s * N.tail.x, N.tail.top - N.tail.len / 2, N.tailZ(s) + (s > 0 ? clothT : 0)]} />
             </group>
           ))}
@@ -1037,6 +1042,11 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
             <Box size={[8, 2.6, 1.2]} faces={wogFaces} painted={painted} position={[0, N.wogY, N.front + 1.1 - wogIn]} />
           )}
           <Plane size={[N.back.w, N.back.h]} canvas={N.backC} painted={painted} thick={clothT} position={[0, N.back.top - N.back.h / 2, N.back.z - clothT / 2]} rotation={[0, Math.PI, 0]} />
+          {/* v33 第二輪：人台背後三角頂 → 旅巾圈（真衣領後面高過方塊頂）：中間一條窄布接住（唔闊過衣領，唔會伸出膊頭） */}
+          {backUp > 0 &&
+            [1, -1].map((s) => (
+              <Plane key={`bu${s}`} size={[N.backBridge.w / 2, backUp + 0.6]} canvas={N.backBridge.c[s]} painted={painted} thick={clothT} position={[(s * N.backBridge.w) / 4, N.back.top + backUp / 2 - 0.3, N.back.z - clothT / 2]} rotation={[0, Math.PI, 0]} />
+            ))}
           {LN?.necker === 'association' && (
             <TipDecal file={HK_BADGE} w={3} h={4.2} painted={painted} position={[0, N.back.top - N.back.h + 2.6 + 2.1, N.back.z - 0.05]} />
           )}
@@ -1092,6 +1102,9 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
             hats={hatsFor}
             outer={outerB}
             hair={{ style: B.hair, hatCut }}
+            pockets={cub}
+            shoeColour={cub ? C.shoeBlack : C.shoe} /* v33 第二輪：小草蜢白色波鞋（同現有公仔一樣），其他黑皮鞋 */
+            neckRoll={invested && !tie && !VL?.bowTie ? { canvases: N.rollC, wogY: N.wogY, wogZ: N.front + 1.1 - wogIn, rollH: N.rollH, rollT: N.rollT } : null}
             warped={
               <>
                 {strapEl}
