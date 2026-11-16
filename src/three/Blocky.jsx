@@ -50,12 +50,13 @@ function Box({ size, faces, painted, position, rotation, alpha = false, taper = 
   return <mesh position={position} rotation={rotation} material={mats} geometry={geo} castShadow receiveShadow />;
 }
 
-function Plane({ size, canvas, painted, position, rotation }) {
+function Plane({ size, canvas, painted, position, rotation, thick = 0 }) {
   const mat = useMemo(() => material(canvas, { painted, alpha: true, double: true }), [canvas, painted]);
   useEffect(() => () => mat.dispose(), [mat]);
+  // v31b：thick > 0 = 有厚度嘅布（人台旅巾），前後兩面同一張貼圖
   return (
     <mesh position={position} rotation={rotation} material={mat} castShadow receiveShadow>
-      <planeGeometry args={size} />
+      {thick > 0 ? <boxGeometry args={[size[0], size[1], thick]} /> : <planeGeometry args={size} />}
     </mesh>
   );
 }
@@ -132,10 +133,12 @@ function Hat({ B, kind, colour, painted }) {
 function CubHat({ B, girl, painted }) {
   const h = B.head;
   const headTop = h.y + h.h;
-  const base = headTop - 4.5;
+  // v32：人台（頭身 1:6.5，頭大咗）頂帽戴到眉上 3 cm（同頭髮收口一樣，唔再露一圈頭皮）；方塊頭照舊頭頂落 4.5 cm
+  const base = h.brow != null ? Math.min(headTop - 4.5, h.brow + 3) : headTop - 4.5;
+  const deep = headTop - base;
   const badgeTex = useTexture(CAP_BADGE);
   const F = useMemo(() => {
-    const crown = girl ? [h.w + 1.6, 7, h.d + 1.6] : [h.w + 1.2, 6.5, h.d + 1.2];
+    const crown = girl ? [h.w + 1.6, deep + 2.5, h.d + 1.6] : [h.w + 1.2, deep + 2, h.d + 1.2];
     const brim = girl ? [h.w + 7, 0.8, h.d + 7] : [h.w - 2, 0.8, 8];
     return {
       crown, brim,
@@ -143,7 +146,7 @@ function CubHat({ B, girl, painted }) {
       brimF: brimFaces(brim, C.capGreen),
       bowF: hatFaces([2.4, 2.4, 1], C.capGreen),
     };
-  }, [girl, h]);
+  }, [girl, h, deep]);
   const { crown, brim } = F;
   const front = h.z + crown[2] / 2 + 0.06;
   return (
@@ -659,6 +662,8 @@ function lanyardSegments(points, thick, offs) {
 }
 
 const SHORTS_BOTTOM = 38; // 短褲腳離地（cm，膝頭上面）
+/** v31b 人台裙褲直摺角度（0 = 正前）：前後各兩條，離中線 20° */
+const CULOTTE_PLEATS = [-0.35, 0.35, Math.PI - 0.35, Math.PI + 0.35];
 const BEIGE_SHORTS_BOTTOM = { cub: { boy: 47, girl: 45 }, scout: { boy: 54, girl: 52 } }; // 幼童軍／童軍短褲、裙褲腳離地
 const BEIGE_SOCK_H = { cub: 34, scout: 40 }; // 長襪到膝頭下
 const SOCK_H = { short: 6, long: 25 }; // 襪由腳底量起（短襪過腳眼；長襪到膝頭下）
@@ -990,6 +995,9 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
       )}
     </>
   );
+  // v31b 人台：旅巾有布厚（0.25 cm）、巾圈推入貼返旅巾
+  const clothT = figure === 'b' ? 0.25 : 0;
+  const wogIn = figure === 'b' ? 0.5 : 0;
   const neckwearEl = (
     <>
       {/* 旅巾 + 巾圈（宣誓後先戴；戴喺衣領／背心外面） */}
@@ -1017,18 +1025,18 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
           </group>
           {[1, -1].map((s) => (
             <group key={s} userData={{ warp: 'front' }}>
-              <Plane size={[N.tail.w, N.len + 1]} canvas={N.upperC[s]} painted={painted} position={[s * (N.a[0] + N.b[0]) / 2, (N.a[1] + N.b[1]) / 2, N.front + 0.35 + (s > 0 ? 0.08 : 0)]} rotation={[0, 0, -s * N.ang]} />
-              <Plane size={[N.tail.w, N.tail.len]} canvas={N.lowerC[s]} painted={painted} position={[s * N.tail.x, N.tail.top - N.tail.len / 2, N.tailZ(s)]} />
+              <Plane size={[N.tail.w, N.len + 1]} canvas={N.upperC[s]} painted={painted} thick={clothT} position={[s * (N.a[0] + N.b[0]) / 2, (N.a[1] + N.b[1]) / 2, N.front + 0.35 + clothT / 2 + (s > 0 ? 0.08 + clothT : 0)]} rotation={[0, 0, -s * N.ang]} />
+              <Plane size={[N.tail.w, N.tail.len]} canvas={N.lowerC[s]} painted={painted} thick={clothT} position={[s * N.tail.x, N.tail.top - N.tail.len / 2, N.tailZ(s) + (s > 0 ? clothT : 0)]} />
             </group>
           ))}
           {gilwellWog ? (
-            <Box size={GILWELL_WOG} faces={wogFaces} painted={painted} position={[0, N.wogY, N.front + 1.5]} />
+            <Box size={GILWELL_WOG} faces={wogFaces} painted={painted} position={[0, N.wogY, N.front + 1.5 - wogIn]} />
           ) : leather ? (
-            <Box size={[8, 3, 1.4]} faces={wogFaces} painted={painted} position={[0, N.wogY, N.front + 1.2]} />
+            <Box size={[8, 3, 1.4]} faces={wogFaces} painted={painted} position={[0, N.wogY, N.front + 1.2 - wogIn]} />
           ) : (
-            <Box size={[8, 2.6, 1.2]} faces={wogFaces} painted={painted} position={[0, N.wogY, N.front + 1.1]} />
+            <Box size={[8, 2.6, 1.2]} faces={wogFaces} painted={painted} position={[0, N.wogY, N.front + 1.1 - wogIn]} />
           )}
-          <Plane size={[N.back.w, N.back.h]} canvas={N.backC} painted={painted} position={[0, N.back.top - N.back.h / 2, N.back.z]} rotation={[0, Math.PI, 0]} />
+          <Plane size={[N.back.w, N.back.h]} canvas={N.backC} painted={painted} thick={clothT} position={[0, N.back.top - N.back.h / 2, N.back.z - clothT / 2]} rotation={[0, Math.PI, 0]} />
           {LN?.necker === 'association' && (
             <TipDecal file={HK_BADGE} w={3} h={4.2} painted={painted} position={[0, N.back.top - N.back.h + 2.6 + 2.1, N.back.z - 0.05]} />
           )}
@@ -1053,7 +1061,9 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
     // 人台（v30 試做 B → v31）：衫褲由身體推出嚟，章照用同一套厘米位置；帽、旅巾、笛繩等配件共用
     const trousers = !shorts && !(venture && skirt);
     const skirtB = venture && skirt;
-    const pantsHem = trousers ? B.shoe.h + 1.5 : skirtB ? B.shoe.h + 1 : shortsBottom; // 半截裙：絲襪去到鞋
+    // v31b：裙褲（幼童軍、童軍女，手冊：弓字褶）由前面睇似裙：用裙筒＋前後各兩條直摺，入面條褲收埋喺裙入面
+    const culottesB = culottes && !trousers;
+    const pantsHem = trousers ? B.shoe.h + 1.5 : skirtB ? B.shoe.h + 1 : culottesB ? shortsBottom + 4 : shortsBottom; // 半截裙：絲襪去到鞋
     const sockTop = trousers ? 0 : venture && skirt ? 0 : cub ? (B.longSockTop ?? BEIGE_SOCK_H[section]) : SOCK_H[outfit.socks] ?? SOCK_H.short;
     const sockColour = cub ? U.sock : outfit.sockColour ?? '#ffffff';
     return (
@@ -1073,7 +1083,8 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
             trousers={trousers}
             sockColour={sockColour}
             sockTop={sockTop}
-            skirt={skirtB ? { colour: legColour, hem: shortsBottom } : null}
+            belt={cub}
+            skirt={skirtB ? { colour: legColour, hem: shortsBottom } : culottesB ? { colour: legColour, hem: shortsBottom, pleats: CULOTTE_PLEATS } : null}
             torsoItems={torsoItems.filter((p) => p.kind !== 'lanyard' && !p.facing)}
             armItems={armItems}
             patchProps={patchProps}

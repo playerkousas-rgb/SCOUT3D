@@ -97,6 +97,7 @@ export function shell(pos, nrm, faces, keep, offset) {
   const A = [];
   const I = [];
   const src = [];
+  const KK = [];
   for (let f = 0; f < faces.length; f += 3) {
     const v = [faces[f], faces[f + 1], faces[f + 2]];
     if (!use[v[0]] || !use[v[1]] || !use[v[2]]) continue;
@@ -108,12 +109,105 @@ export function shell(pos, nrm, faces, keep, offset) {
         P.push(pos[i * 3] + nrm[i * 3] * o, pos[i * 3 + 1] + nrm[i * 3 + 1] * o, pos[i * 3 + 2] + nrm[i * 3 + 2] * o);
         A.push(Math.min(1, Math.max(0, 0.5 + K[i] / 8)));
         src.push(i);
+        KK.push(K[i]);
       }
       I.push(map[i]);
     }
   }
   const position = new Float32Array(P);
-  return { position, normal: vertexNormals(position, I), alpha: new Float32Array(A), index: I, src };
+  return { position, normal: vertexNormals(position, I), alpha: new Float32Array(A), index: I, src, k: new Float32Array(KK) };
+}
+
+/**
+ * v31b「真衫」：將由身體推出嚟嘅殼（shell）變做一件有厚度、有邊嘅布：
+ * 1. smooth：只向外嘅平滑（inflateSmooth）— 布跨過身體凹位（背脊坑、胸肚之間），唔再似油上皮膚；
+ * 2. 喺 k = 0 真係切開三角形（以前靠 alpha 切），邊位係幾何邊；
+ * 3. 邊（領口、袖口、衫腳、褲腳）：k < band 嗰圈再厚 lift（摺邊）；
+ * 4. Solidify：內層 = 外層沿法線向入 thick（反轉方向）＋ 邊位一圈側面。
+ * 回傳同 shell 一樣格式（alpha 全部 1），outerTris = 外層三角形數（之後係內層同側面）。
+ */
+export function clothify(sh, { thick = 0.3, band = 1.5, lift = 0.18, smooth = 0 } = {}) {
+  // 先喺未平滑嘅殼切 k = 0（平滑會令頂點上下滑 → 切口變鋸齒／褲頭前面凹 V），切完先平滑（邊界釘死）
+  const P0 = sh.position, N0 = sh.normal, K0 = sh.k;
+  const P = Array.from(P0), N = Array.from(N0), K = Array.from(K0), S = Array.from(sh.src);
+  const edgeV = new Map();
+  const nV0 = P0.length / 3;
+  const cut = (a, b) => {
+    const key = a < b ? a * nV0 + b : b * nV0 + a;
+    if (edgeV.has(key)) return edgeV.get(key);
+    const t = K[a] / (K[a] - K[b]);
+    const id = P.length / 3;
+    for (let q = 0; q < 3; q++) {
+      P.push(P[a * 3 + q] + (P[b * 3 + q] - P[a * 3 + q]) * t);
+      N.push(N[a * 3 + q] + (N[b * 3 + q] - N[a * 3 + q]) * t);
+    }
+    K.push(0);
+    S.push(K[a] >= 0 ? S[a] : S[b]);
+    edgeV.set(key, id);
+    return id;
+  };
+  const I = [];
+  const idx = sh.index;
+  for (let t = 0; t < idx.length; t += 3) {
+    const v = [idx[t], idx[t + 1], idx[t + 2]];
+    const pos = v.map((i) => K[i] >= 0);
+    const n = pos.filter(Boolean).length;
+    if (n === 3) { I.push(...v); continue; }
+    if (n === 0) continue;
+    // 轉到特別嗰點喺第一位（保持方向）
+    const odd = n === 1 ? pos.indexOf(true) : pos.indexOf(false);
+    const a = v[odd], b = v[(odd + 1) % 3], c = v[(odd + 2) % 3];
+    if (n === 1) {
+      I.push(a, cut(a, b), cut(a, c));
+    } else {
+      const eb = cut(b, a), ec = cut(c, a);
+      I.push(b, c, ec, b, ec, eb);
+    }
+  }
+  // 冇用到嘅頂點唔理（index 只指有用嘅）；摺邊
+  const nV = P.length / 3;
+  if (smooth > 0) {
+    const sm = inflateSmooth({ position: new Float32Array(P), index: I }, smooth).position;
+    for (let i = 0; i < P.length; i++) P[i] = sm[i];
+  }
+  const Nn = vertexNormals(new Float32Array(P), I);
+  for (let i = 0; i < nV; i++) {
+    if (K[i] < 0) continue;
+    const l = lift * (1 - smooth01((K[i] - band) / 0.6));
+    if (l <= 0) continue;
+    for (let q = 0; q < 3; q++) P[i * 3 + q] += Nn[i * 3 + q] * l;
+  }
+  const outer = new Float32Array(P);
+  const Nout = vertexNormals(outer, I);
+  // 內層
+  const all = new Float32Array(nV * 6);
+  all.set(outer);
+  for (let i = 0; i < nV; i++) for (let q = 0; q < 3; q++) all[(nV + i) * 3 + q] = outer[i * 3 + q] - Nout[i * 3 + q] * thick;
+  const outerTris = I.length / 3;
+  const J = I.slice();
+  for (let t = 0; t < I.length; t += 3) J.push(I[t] + nV, I[t + 2] + nV, I[t + 1] + nV);
+  // 邊：只屬一個三角形嘅邊
+  const cnt = new Map();
+  for (let t = 0; t < I.length; t += 3) {
+    for (let e = 0; e < 3; e++) {
+      const u = I[t + e], w = I[t + ((e + 1) % 3)];
+      const key = u < w ? u * nV + w : w * nV + u;
+      cnt.set(key, (cnt.get(key) ?? 0) + 1);
+    }
+  }
+  for (let t = 0; t < I.length; t += 3) {
+    for (let e = 0; e < 3; e++) {
+      const u = I[t + e], w = I[t + ((e + 1) % 3)];
+      const key = u < w ? u * nV + w : w * nV + u;
+      if (cnt.get(key) !== 1) continue;
+      J.push(u, u + nV, w, w, u + nV, w + nV);
+    }
+  }
+  const src = new Int32Array(nV * 2);
+  for (let i = 0; i < nV; i++) src[i] = src[i + nV] = S[i];
+  const kk = new Float32Array(nV * 2);
+  for (let i = 0; i < nV; i++) kk[i] = kk[i + nV] = K[i];
+  return { position: all, normal: vertexNormals(all, J), alpha: new Float32Array(nV * 2).fill(1), index: J, src, k: kk, outerTris };
 }
 
 /**
@@ -127,7 +221,8 @@ export function torsoGroups(sh, box, isSleeve) {
   const p = sh.position;
   for (let t = 0; t < sh.index.length; t += 3) {
     const a = sh.index[t] * 3, b = sh.index[t + 1] * 3, c = sh.index[t + 2] * 3;
-    if (isSleeve(sh.index[t], sh.index[t + 1], sh.index[t + 2])) {
+    // v31b：內層同邊位側面用素色（第 7 種材質）
+    if ((sh.outerTris !== undefined && t / 3 >= sh.outerTris) || isSleeve(sh.index[t], sh.index[t + 1], sh.index[t + 2])) {
       lists[6].push(t);
       continue;
     }
@@ -295,10 +390,11 @@ export function garmentRules({ pos, regions, joints, L, long, sleeveLen, hem, pa
       const side = armSide(r);
       if (side) {
         const k = Math.min(1, Math.max(0, (frames[side].seamY - along(i, side)) / Math.max(1, sleeveLen)));
-        return 0.8 + (long ? 0.5 : 1.3) * smooth01(k);
+        return 1.0 + (long ? 0.4 : 1.1) * smooth01(k);
       }
       const y = pos[i * 3 + 1];
-      return 0.75 + 0.75 * smooth01((chestY - y) / Math.max(1, chestY - shirtHem));
+      // v31b：衫同身之間約 1 cm（胸 1.0 → 衫腳 1.6）
+      return 1.0 + 0.6 * smooth01((chestY - y) / Math.max(1, chestY - shirtHem));
     },
     frames,
   };
@@ -329,9 +425,7 @@ export function garmentRules({ pos, regions, joints, L, long, sleeveLen, hem, pa
       return Math.min(along(i, side) - (frames[side].wristY + 1), 10);
     },
     offset(i) {
-      const r = regions[i];
-      const side = armSide(r);
-      const base = side ? 0.8 + 0.5 * smooth01(Math.min(1, Math.max(0, (frames[side].seamY - along(i, side)) / Math.max(1, sleeveLen)))) : shirt.offset(i);
+      const base = shirt.offset(i); // v31b：外衣喺恤衫外面（恤衫厚 0.3 + 摺邊 0.18 → extra ≥ 0.5）
       return base + (outer.extra ?? 0.7);
     },
   };
@@ -386,7 +480,9 @@ export function garmentRules({ pos, regions, joints, L, long, sleeveLen, hem, pa
     offset(i) {
       const y = pos[i * 3 + 1];
       if (tights) return 0.12; // 半截裙下面嘅絲襪：貼身
-      const base = 0.45 + 0.35 * smooth01((pantsTop - y) / 4) + 0.3 * smooth01((hipY - y) / 6);
+      // v31b：恤衫塞入褲：褲頭包住恤衫（恤衫 1.6 + 摺邊）→ 褲頭 2.4，向下 6 cm 收返到離身約 1.2 cm
+      const top = tucked ? 1.2 * (1 - smooth01((pantsTop - 3 - y) / 6)) : 0;
+      const base = 1.2 + top;
       const sd = legSide(regions[i]);
       return sd ? base + legEase(sd, y) : base;
     },
@@ -457,7 +553,7 @@ export function inflateSmooth(sh, iters = 24) {
  * 最外嘅半徑，加 ease；向下只會一樣闊或者更闊（裙唔會收入去跟大髀罅），裙腳再微微散開（flare）。
  * 回傳 { position, normal, index }（非索引就唔使；用 index）。
  */
-export function skirtRings(pos, regions, { top, hem, ease = 0.8, step = 2, seg = 48, flare = 0.05 }) {
+export function skirtRings(pos, regions, { top, hem, ease = 0.8, step = 2, seg = 96, flare = 0.03, pleats = [], waistband = 2, thick = 0.3 }) {
   const R = REGION;
   const rows = [];
   for (let y = top; y > hem - 1e-6; y -= step) rows.push(Math.max(hem, y));
@@ -491,24 +587,100 @@ export function skirtRings(pos, regions, { top, hem, ease = 0.8, step = 2, seg =
     prev = out;
     return { ...out, r: r.map((v) => v * (1 + flare * k * k)) };
   });
+  // v31b：直摺（弓字褶 / box pleat）：每個摺位向外凸一條、兩邊向入一條摺痕；腰頭下 6 cm 車死，向下漸深
+  const PW = (8 / 180) * Math.PI; // 摺半闊（角度）
+  const pleatAt = (th, y) => {
+    if (!pleats.length) return 0;
+    const depth = smooth01((top - waistband - 6 - y) / 8) * 0.9 + smooth01((top - waistband - y) / 6) * 0.15;
+    let d = 0;
+    for (const p of pleats) {
+      let a = Math.abs(th - p) % (Math.PI * 2);
+      if (a > Math.PI) a = Math.PI * 2 - a;
+      if (a < PW) d += depth * (1 - a / PW) * 0.9; // 摺面向外
+      else if (a < PW * 1.6) d -= depth * 0.45 * (1 - (a - PW) / (PW * 0.6)); // 摺痕向入
+    }
+    return d;
+  };
+  // 腰頭：上面 waistband cm 再闊 0.35（另一條布）
+  const bandAt = (y) => (y > top - waistband - 0.01 ? 0.35 : 0);
+  // 腰頭底加一圈（同腰頭一樣高度，但冇腰頭厚度）→ 有一級
+  const rows2 = [];
+  for (const g of rings) {
+    rows2.push({ g, band: bandAt(g.y) });
+    if (Math.abs(g.y - (top - waistband)) < 1e-6) rows2.push({ g: { ...g, y: g.y - 0.05 }, band: 0 });
+  }
   const P = [];
   const I = [];
-  for (const g of rings) {
+  for (const { g, band } of rows2) {
     for (let s = 0; s <= seg; s++) {
       const th = (s / seg) * Math.PI * 2;
-      const rr = g.r[s % seg];
+      const rr = g.r[s % seg] + band + pleatAt(th, g.y);
       P.push(Math.sin(th) * rr, g.y, g.zc + Math.cos(th) * rr);
     }
   }
   const W = seg + 1;
-  for (let j = 0; j < rings.length - 1; j++) {
+  const NR = rows2.length;
+  const quad = (a, b, c, d) => I.push(a, c, b, b, c, d);
+  for (let j = 0; j < NR - 1; j++) for (let s = 0; s < seg; s++) quad(j * W + s, j * W + s + 1, (j + 1) * W + s, (j + 1) * W + s + 1);
+  // Solidify：內層（向中心縮 thick，反轉）＋ 裙腳、腰頂兩圈側面
+  const nOut = P.length / 3;
+  const outerTris = I.length / 3;
+  for (let j = 0; j < NR; j++) {
+    const { g } = rows2[j];
+    for (let s = 0; s <= seg; s++) {
+      const i = (j * W + s) * 3;
+      const dx = P[i], dz = P[i + 2] - g.zc;
+      const r = Math.hypot(dx, dz) || 1;
+      P.push(P[i] - (dx / r) * thick, P[i + 1], P[i + 2] - (dz / r) * thick);
+    }
+  }
+  for (let t = 0; t < outerTris * 3; t += 3) I.push(I[t] + nOut, I[t + 2] + nOut, I[t + 1] + nOut);
+  for (const j of [0, NR - 1]) {
     for (let s = 0; s < seg; s++) {
-      const a = j * W + s, b = a + 1, c = a + W, d = c + 1;
-      I.push(a, c, b, b, c, d);
+      const a = j * W + s, b = a + 1;
+      if (j === 0) I.push(a, b, a + nOut, b, b + nOut, a + nOut);
+      else I.push(a, a + nOut, b, b, a + nOut, b + nOut);
     }
   }
   const position = new Float32Array(P);
-  return { position, normal: vertexNormals(position, I), index: I, rings };
+  return { position, normal: vertexNormals(position, I), index: I, rings, outerTris };
+}
+
+/**
+ * v31b：皮帶圈（皮帶原本畫喺身體貼圖；而家褲／裙係獨立布料包住咗，所以另外起一條 3 cm 皮帶）。
+ * 喺 P（褲或裙嘅外層頂點）入面 top..top-h 呢截，每個角度量最外半徑再加 ease → 一條環＋前面扣嘅位置。
+ */
+export function beltRing(P, { top, h = 3, seg = 64, ease = 0.25 }) {
+  const lo = top - h - 0.5, hi = top + 0.5;
+  let zmin = Infinity, zmax = -Infinity;
+  for (let i = 0; i < P.length; i += 3) {
+    if (P[i + 1] < lo || P[i + 1] > hi) continue;
+    zmin = Math.min(zmin, P[i + 2]);
+    zmax = Math.max(zmax, P[i + 2]);
+  }
+  if (!Number.isFinite(zmin)) return null;
+  const zc = (zmin + zmax) / 2;
+  let r = new Array(seg).fill(0);
+  for (let i = 0; i < P.length; i += 3) {
+    if (P[i + 1] < lo || P[i + 1] > hi) continue;
+    const x = P[i], z = P[i + 2] - zc;
+    const s = ((Math.round((Math.atan2(x, z) / (Math.PI * 2)) * seg) % seg) + seg) % seg;
+    r[s] = Math.max(r[s], Math.hypot(x, z));
+  }
+  for (let pass = 0; pass < 3; pass++) r = r.map((v, s) => Math.max(v, r[(s + 1) % seg], r[(s + seg - 1) % seg]));
+  r = r.map((_, s) => (r[(s + seg - 1) % seg] + r[s] + r[(s + 1) % seg]) / 3 + ease);
+  const BP = [];
+  const BI = [];
+  for (const y of [top - 0.1, top - h]) {
+    for (let s = 0; s <= seg; s++) {
+      const th = (s / seg) * Math.PI * 2;
+      BP.push(Math.sin(th) * r[s % seg], y, zc + Math.cos(th) * r[s % seg]);
+    }
+  }
+  const W = seg + 1;
+  for (let s = 0; s < seg; s++) BI.push(s, s + W, s + 1, s + 1, s + W, s + 1 + W);
+  const position = new Float32Array(BP);
+  return { position, normal: vertexNormals(position, BI), index: BI, buckle: { x: 0, y: top - h / 2 - 0.05, z: zc + r[0] + 0.2 } };
 }
 
 /**

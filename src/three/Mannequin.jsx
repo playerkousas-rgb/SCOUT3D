@@ -8,7 +8,7 @@ import { COLOURS as C, shoulderTip } from './body.js';
 import { material, plain } from './pixels.js';
 import { skinMaterial } from './Anatomy.jsx';
 import { TorsoBadges, SleeveBadges } from './Badges.jsx';
-import { MANNEQUIN_DIR, bodyKey, decodePositions, vertexNormals, shell, torsoGroups, heightField, meshSurface, garmentRules, skirtRings, REGION, headBox, bodyWarp, neckField, tessellate, inflateSmooth, hairRules } from './mannequin.js';
+import { MANNEQUIN_DIR, bodyKey, decodePositions, vertexNormals, shell, torsoGroups, heightField, meshSurface, garmentRules, skirtRings, REGION, headBox, bodyWarp, neckField, tessellate, hairRules, clothify, beltRing } from './mannequin.js';
 import { hairDrop } from './anatomy.js';
 
 const cache = new Map();
@@ -167,7 +167,7 @@ export function Warped({ warp, neckWarp = null, frontWarp = null, maxT = 8, chil
   return <group ref={ref}>{children}</group>;
 }
 
-export default function Mannequin({ section, gender, L, painted, shirtFaces, sleeveColour, long, pantsColour, pantsHem, trousers, sockColour, sockTop, skirt = null, torsoItems, armItems, patchProps, selected, hats = null, warped = null, surfaced = null, outer = null, hair = null }) {
+export default function Mannequin({ section, gender, L, painted, shirtFaces, sleeveColour, long, pantsColour, pantsHem, trousers, sockColour, sockTop, skirt = null, belt = false, torsoItems, armItems, patchProps, selected, hats = null, warped = null, surfaced = null, outer = null, hair = null }) {
   const M = useMannequin(section, gender);
   const B = L.B;
   const t = B.torso;
@@ -181,7 +181,8 @@ export default function Mannequin({ section, gender, L, painted, shirtFaces, sle
     skin.setAttribute('normal', new THREE.BufferAttribute(nrm, 3));
     skin.setIndex(new THREE.BufferAttribute(faces, 1));
     // 恤衫：上身用恤衫貼圖（上身方塊平面投影），袖素色
-    const sh = shell(pos, nrm, faces, G.shirt.keep, G.shirt.offset);
+    // v31b 真衫：布跨過身體凹位（只向外平滑）、幾何切邊、摺邊、0.3 cm 厚
+    const sh = clothify(shell(pos, nrm, faces, G.shirt.keep, G.shirt.offset), { smooth: 8 });
     const armR = new Set([REGION.upperarmL, REGION.upperarmR, REGION.lowerarmL, REGION.lowerarmR]);
     const isSleeve = (a, b, c) => armR.has(regions[sh.src[a]]) && armR.has(regions[sh.src[b]]) && armR.has(regions[sh.src[c]]);
     const tg = torsoGroups(sh, { w: t.w, h: t.h, d: t.d, cy: t.y + t.h / 2 }, isSleeve);
@@ -197,7 +198,7 @@ export default function Mannequin({ section, gender, L, painted, shirtFaces, sle
     let box = { w: t.w, d: t.d, y0: t.y, top: L.top };
     let outerGeo = null;
     if (outer && G.outer) {
-      const os = shell(pos, nrm, faces, G.outer.keep, G.outer.offset);
+      const os = clothify(shell(pos, nrm, faces, G.outer.keep, G.outer.offset), { smooth: 8, lift: 0.25 });
       const isO = (a, b, c) => armR.has(regions[os.src[a]]) && armR.has(regions[os.src[b]]) && armR.has(regions[os.src[c]]);
       const og = torsoGroups(os, { w: outer.box[0], h: outer.box[1], d: outer.box[2], cy: outer.cy }, isO);
       outerGeo = new THREE.BufferGeometry();
@@ -224,17 +225,32 @@ export default function Mannequin({ section, gender, L, painted, shirtFaces, sle
       const field = heightField(sleeveLayer.position, sleeveLayer.index, { axis: 'x', sign: sg, min: [-9, F.wristY - 2], max: [9, F.seamY + 6], transform: F.toLocal });
       sleeves[side] = { frame: F, surf: meshSurface(field, { axis: 'x', sign: sg, plane: B.sleeve.w / 2 }), matrix: new THREE.Matrix4().fromArray(F.matrix) };
     }
-    const pants = shellGeometry(shell(pos, nrm, faces, G.pants.keep, G.pants.offset));
-    const socks = sockTop > 0 ? shellGeometry(shell(pos, nrm, faces, G.socks.keep, G.socks.offset)) : null;
-    // v31：鞋向外平滑（腳趾罅填平，唔再似黑色光腳）
-    const shoes = shellGeometry(inflateSmooth(shell(pos, nrm, faces, G.shoes.keep, G.shoes.offset)));
+    const pants = shellGeometry(clothify(shell(pos, nrm, faces, G.pants.keep, G.pants.offset), { smooth: 6, band: 2.5, lift: 0.2 }));
+    const socks = sockTop > 0 ? shellGeometry(clothify(shell(pos, nrm, faces, G.socks.keep, G.socks.offset), { thick: 0.15, band: 2, lift: 0.12 })) : null;
+    // v31：鞋向外平滑（腳趾罅填平，唔再似黑色光腳）；v31b 鞋口有厚度
+    const shoes = shellGeometry(clothify(shell(pos, nrm, faces, G.shoes.keep, G.shoes.offset), { smooth: 24, thick: 0.35, band: 0.8, lift: 0.1 }));
     let skirtGeo = null;
+    let beltGeo = null;
+    let buckle = null;
     if (skirt) {
-      const sk = skirtRings(pos, regions, { top: (B.waist ?? t.y + 3) + 2, hem: skirt.hem });
+      // v31b：裙頭喺皮帶下面、包住恤衫衫腳（恤衫塞入裙，離身 2 cm）；腰頭 2 cm；裙褲（弓字褶）前後各兩條直摺；半截裙（手冊：無褶）直身
+      const sk = skirtRings(pos, regions, { top: (B.waist ?? t.y + 3) + 2, ease: 2.1, hem: skirt.hem, pleats: skirt.pleats ?? [], flare: skirt.pleats?.length ? 0.06 : 0.02 });
       skirtGeo = new THREE.BufferGeometry();
       skirtGeo.setAttribute('position', new THREE.BufferAttribute(sk.position, 3));
       skirtGeo.setAttribute('normal', new THREE.BufferAttribute(sk.normal, 3));
       skirtGeo.setIndex(sk.index);
+    }
+    // v31b：皮帶（以前畫喺身體貼圖；而家褲／裙係獨立布料包住咗 → 喺褲頭／裙頭外面另起一條 3 cm 皮帶＋扣）
+    if (belt && B.waist != null && !(outer && outer.bottom < B.waist + 1.6)) { // 冷衫／外套蓋住就唔使
+      const src = skirtGeo ?? pants;
+      const br = beltRing(src.getAttribute('position').array, { top: B.waist + 1.6, h: 3 });
+      if (br) {
+        beltGeo = new THREE.BufferGeometry();
+        beltGeo.setAttribute('position', new THREE.BufferAttribute(br.position, 3));
+        beltGeo.setAttribute('normal', new THREE.BufferAttribute(br.normal, 3));
+        beltGeo.setIndex(br.index);
+        buckle = br.buckle;
+      }
     }
     // v31：方塊位置 → 人台嘅變形（旅巾、衣領、笛繩、專章帶…）。上身殼（唔包袖）；膊頂包埋袖同頸、上身皮膚；頸用頸、上身皮膚＋恤衫
     const nS = layer.position.length / 3;
@@ -263,8 +279,8 @@ export default function Mannequin({ section, gender, L, painted, shirtFaces, sle
     const cy = hb.y + hb.h / 2;
     // 眉：人台眼大約喺下巴同頭頂正中，眉再高 1.5 cm（軟帽膠邊離眉 2 cm）
     const head = { ...hb, key: `m:${M.key}`, brow: hb.y + hb.h * 0.5 + 1.5, radiusAt: (th, y) => HF.at(th, cy + y) ?? 0 };
-    return { skin, shirt, outer: outerGeo, pants, socks, shoes, skirt: skirtGeo, torsoSurf, sleeves, warp: BW.warp, neckWarp: BW.neckWarp, frontWarp: BW.frontWarp, warpSurf: { snap: BW.warp, route: BW.route, mesh: true }, head };
-  }, [M, L, long, pantsHem, trousers, sockTop, skirt?.hem, B.sleeve.len, B.shoe.h, t.w, t.h, t.d, t.y, outer?.key]); // eslint-disable-line react-hooks/exhaustive-deps
+    return { skin, shirt, outer: outerGeo, pants, socks, shoes, skirt: skirtGeo, belt: beltGeo, buckle, torsoSurf, sleeves, warp: BW.warp, neckWarp: BW.neckWarp, frontWarp: BW.frontWarp, warpSurf: { snap: BW.warp, route: BW.route, mesh: true }, head };
+  }, [M, L, long, pantsHem, trousers, sockTop, skirt?.hem, skirt?.pleats?.length, B.sleeve.len, B.shoe.h, t.w, t.h, t.d, t.y, outer?.key, belt]); // eslint-disable-line react-hooks/exhaustive-deps
   // v31：頭髮 = 頭皮外面一層殼（髮腳同現有公仔一樣 hairDrop；戴帽就帽口以上冇頭髮）
   const hairGeo = useMemo(() => {
     if (!M || !hair || !built) return null;
@@ -315,7 +331,7 @@ export default function Mannequin({ section, gender, L, painted, shirtFaces, sle
   useEffect(() => () => hairGeo?.dispose(), [hairGeo]);
   const hairMat = useMemo(() => cloth('#ffffff', painted, { roughness: 0.45, metalness: 0.05, normalMap: null }), [painted]);
   useEffect(() => () => hairMat.dispose(), [hairMat]);
-  useEffect(() => () => built && ['skin', 'shirt', 'outer', 'pants', 'socks', 'shoes', 'skirt'].forEach((k) => built[k]?.dispose()), [built]);
+  useEffect(() => () => built && ['skin', 'shirt', 'outer', 'pants', 'socks', 'shoes', 'skirt', 'belt'].forEach((k) => built[k]?.dispose()), [built]);
 
   const mats = useMemo(() => {
     const shirtMats = shirtFaces.map((c) => {
@@ -361,6 +377,17 @@ export default function Mannequin({ section, gender, L, painted, shirtFaces, sle
       {built.socks && <mesh geometry={built.socks} material={mats.socks} castShadow receiveShadow />}
       <mesh geometry={built.shoes} material={mats.shoes} castShadow receiveShadow />
       {built.skirt && mats.skirt && <mesh geometry={built.skirt} material={mats.skirt} castShadow receiveShadow />}
+      {built.belt && (
+        <>
+          <mesh geometry={built.belt}>
+            <meshStandardMaterial color={C.belt} roughness={0.7} side={THREE.DoubleSide} />
+          </mesh>
+          <mesh position={[built.buckle.x, built.buckle.y, built.buckle.z]}>
+            <boxGeometry args={[3.6, 2.6, 0.4]} />
+            <meshStandardMaterial color={C.buckle} roughness={0.35} metalness={0.6} />
+          </mesh>
+        </>
+      )}
       {torsoItems.map((p) => (
         <TorsoBadges key={p.key} items={[p]} surf={built.torsoSurf} selected={selected === p.id} {...patchProps} />
       ))}

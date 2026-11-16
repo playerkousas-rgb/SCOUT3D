@@ -12,7 +12,11 @@ SCOUT3D v30 試做 B：用 Anny（NAVER LABS，Apache 2.0；身體數據 = MakeH
     <body>.bin     Int16 × 3 × 頂點數，單位 = 1/40 cm（SCOUT3D 座標：+X = 穿著者左、+Y = 上、+Z = 前，腳底 y = 0）
     index.json     單位、授權、每個人台嘅關節位置（cm）
 
-身形：年齡 → Anny age（0 = 1 歲、1/3 = 11 歲、2/3 = 25 歲、1 = 90 歲），男 gender 0／女 1，肌肉、體重 0.5。
+身形（v31b「童軍中性底」，用戶 spec）：所有支部、男女都用同一個底再縮放 ——
+  年齡 12 歲、中性（gender 0.5、cupsize 0）；頭身比 1:6.5（頭放大 head-scale-* 0.65）；
+  膊頭推闊少少（measure-shoulder-dist +0.3）；胸、臀、肚推平（buttocks −1、stomach-pregnant −1、hip-scale-depth −0.6、
+  torso-scale-depth −0.3），側面直身；身：腳 = 1:1（褲襠高 = 身高一半，upperlegs-height +0.1 補返個頭放大）。
+  （v30 用 age／gender 逐個支部生成：大人女仔底，膊窄臀闊、前凸後翹。）
 再整體縮放到 body.js 嘅身高，然後縱向分段拉伸，令肩峰（膊頭最高點）= body.js 嘅膊頂 L.top，
 咁 badgeLayout.js 以厘米計嘅章位唔使改（ADR-0027）。
 姿勢：手臂由 A 字垂落（外展約 6°）、手踭微屈 12°；兩腳收埋企直。
@@ -100,6 +104,16 @@ def age_param(years):
     return 1.0
 
 
+BASE_YEARS = 12
+BASE_PHENOTYPE = {'gender': 0.5, 'age': age_param(BASE_YEARS), 'proportions': 0.0, 'muscle': 0.5, 'weight': 0.5, 'cupsize': 0.0, 'firmness': 0.5}
+BASE_LOCAL = {
+    'head-scale-vert-incr': 0.65, 'head-scale-horiz-incr': 0.65, 'head-scale-depth-incr': 0.65,  # 頭身比 1:6.5
+    'measure-shoulder-dist-incr': 0.3,  # 膊頭闊啲（唔好膊窄臀闊）
+    'buttocks-volume-incr': -1.0, 'stomach-pregnant-incr': -1.0, 'hip-scale-depth-incr': -0.6, 'torso-scale-depth-incr': -0.3,  # 直身
+    'upperlegs-height-incr': 0.1,  # 身：腳 = 1:1
+}
+
+
 def region_of(label):
     side = 'L' if label.endswith('.L') else 'R' if label.endswith('.R') else ''
     b = label.split('.')[0]
@@ -140,7 +154,7 @@ def rotvec_mat(r):
 
 def main():
     torch.set_grad_enabled(False)
-    model = anny.Anny().to(dtype=torch.float32)
+    model = anny.Anny(local_changes='default', phenotypes='all').to(dtype=torch.float32)
     labels = list(model.bone_labels)
     idx = {n: i for i, n in enumerate(labels)}
     faces = model.faces.numpy().astype(np.int64)
@@ -169,19 +183,22 @@ def main():
     faces.astype('<u2').tofile(os.path.join(OUT, 'faces.bin'))
     regions.tofile(os.path.join(OUT, 'regions.bin'))
     index = {
+        'base': {'name': 'scout-neutral-v31b', 'phenotype': BASE_PHENOTYPE, 'local_changes': BASE_LOCAL},
         'unit': UNIT, 'vertices': int(nV), 'triangles': int(len(faces)), 'regions': REGIONS,
         'source': 'Anny 0.6.2 (NAVER LABS Europe, Apache-2.0) · MakeHuman/MPFB2 body data (CC0 1.0)',
         'bodies': {},
     }
 
-    def run(pose, ph):
-        out = model(pose_parameters=torch.tensor(pose, dtype=torch.float32)[None], phenotype_kwargs=ph)
+    def run(pose, ph, lc=None):
+        out = model(pose_parameters=torch.tensor(pose, dtype=torch.float32)[None], phenotype_kwargs=ph, local_changes_kwargs=lc)
         return out['vertices'][0].numpy(), out['bone_poses'][0].numpy()
 
+    pose_cache = {}
     for section, genders in BODIES.items():
         for gender, (height, ltop, years) in genders.items():
             ph = {k: 0.5 for k in model.phenotype_labels}
-            ph.update(gender=0.0 if gender == 'boy' else 1.0, age=age_param(years), proportions=0.0, muscle=0.5, weight=0.5)
+            ph.update(BASE_PHENOTYPE)
+            lc = dict(BASE_LOCAL)
             base = np.tile(np.eye(4), (len(labels), 1, 1))
 
             def head_of(bp, n):
@@ -203,7 +220,7 @@ def main():
             d_fo = d_up * math.cos(fl) + np.array([0, -1, 0]) * math.sin(fl)
 
             def cost(x):
-                _, bp = run(posed(x), ph)
+                _, bp = run(posed(x), ph, lc)
                 sh, el, wr = head_of(bp, 'upperarm01.L'), head_of(bp, 'lowerarm01.L'), head_of(bp, 'wrist.L')
                 u = (el - sh) / np.linalg.norm(el - sh)
                 f = (wr - el) / np.linalg.norm(wr - el)
@@ -215,8 +232,11 @@ def main():
                 return (np.sum((u - d_up) ** 2) * 4 + np.sum((f - d_fo) ** 2) * 2 + (lg[0] - math.sin(math.radians(1.5))) ** 2 * 4
                         + thumb ** 2 + 0.002 * np.sum(np.asarray(x) ** 2))
 
-            res = minimize(cost, np.array([0, 0.6, 0, 0, 0, 0, -0.05]), method='Powell', options={'maxiter': 3000, 'xtol': 1e-3, 'ftol': 1e-6})
-            V, bp = run(posed(res.x), ph)
+            # v31b：所有人台同一個底 → 姿勢只要計一次
+            if 'res' not in pose_cache:
+                pose_cache['res'] = minimize(cost, np.array([0, 0.6, 0, 0, 0, 0, -0.05]), method='Powell', options={'maxiter': 3000, 'xtol': 1e-3, 'ftol': 1e-6})
+            res = pose_cache['res']
+            V, bp = run(posed(res.x), ph, lc)
             V = V[keep_v]
             # → SCOUT3D cm：X = x、Y = z、Z = −y
             P = np.stack([V[:, 0], V[:, 2], -V[:, 1]], 1) * 100.0
@@ -271,7 +291,7 @@ def main():
             q.astype('<i2').tofile(os.path.join(OUT, name + '.bin'))
             pick = lambda n: [round(float(c), 2) for c in J[n]]
             index['bodies'][name] = {
-                'height': height, 'top': round(ltop, 2), 'years': years, 'acromionScale': round(float(ltop / acro), 4),
+                'height': height, 'top': round(ltop, 2), 'years': BASE_YEARS, 'base': 'scout-neutral-v31b', 'acromionScale': round(float(ltop / acro), 4),
                 'joints': {key: pick(n) for key, n in {
                     'shoulderL': 'upperarm01.L', 'shoulderR': 'upperarm01.R', 'elbowL': 'lowerarm01.L', 'elbowR': 'lowerarm01.R',
                     'wristL': 'wrist.L', 'wristR': 'wrist.R', 'hipL': 'upperleg01.L', 'hipR': 'upperleg01.R',
@@ -279,7 +299,11 @@ def main():
                 }.items()},
                 'pose': [round(float(c), 4) for c in res.x],
             }
-            print(name, 'cost', round(float(res.fun), 5), 'acro', round(float(acro), 1), '→', round(ltop, 1), 'x-span', round(float(P[:, 0].max() - P[:, 0].min()), 1), flush=True)
+            hd = regions == REGIONS.index('head')
+            chinY = P[hd & (P[:, 2] > np.median(P[hd, 2])), 1].min()
+            crotchY = P[(regions == REGIONS.index('pelvis')) & (np.abs(P[:, 0]) < 2.5), 1].min()
+            index['bodies'][name]['measure'] = {'headRatio': round(float(height / (height - chinY)), 2), 'crotchRatio': round(float(crotchY / height), 3)}
+            print(name, index['bodies'][name]['measure'], 'cost', round(float(res.fun), 5), 'acro', round(float(acro), 1), '→', round(ltop, 1), 'x-span', round(float(P[:, 0].max() - P[:, 0].min()), 1), flush=True)
     with open(os.path.join(OUT, 'index.json'), 'w') as f:
         json.dump(index, f, ensure_ascii=False, indent=1)
         f.write('\n')
