@@ -572,6 +572,8 @@ function InfoCard({ rules, id, outfit, badges, picks, unavailable, onClose, onFo
 }
 
 /* ---------- 徽章分頁 ---------- */
+// v29：銅／銀／金級數（幼童軍核心範疇章、三級制度章等）—— 揀級掣同縮圖加顏色標示
+const TIERS = new Set(['bronze', 'silver', 'gold']);
 function BadgeRowArt({ b, badges, picks }) {
   const chosen = b.choices ? b.choices.find((c) => c.id === badges[b.id]) : null;
   if (chosen && !chosen.art) return <span className="badgerow__art badgerow__art--none" aria-hidden="true" />;
@@ -580,7 +582,8 @@ function BadgeRowArt({ b, badges, picks }) {
     : b.dynamic
     ? resolveArt(b, picks, DISTRICTS, PATROLS)
     : { kind: 'image', file: (Array.isArray(b.art) ? b.art[Math.max(0, Math.min(3, (badges.progress || 1) - 1))] : b.art).file };
-  return <ArtImg art={art} alt="" className={`badgerow__art${b.size.shape === 'circle' ? ' is-round' : ''}`} />;
+  const tier = chosen && TIERS.has(chosen.id) && chosen.art.file.startsWith('/badges/cub/') ? ` has-tier tier-ring--${chosen.id}` : '';
+  return <ArtImg art={art} alt="" className={`badgerow__art${b.size.shape === 'circle' ? ' is-round' : ''}${tier}`} />;
 }
 
 /** 成年成員：單位層級 → 職級（職級清單跟層級篩選，手冊 P.94–95、P.103–104） */
@@ -659,6 +662,7 @@ function BadgeRow({ b, rules, section, outfit, badges, set, picks, setPicks, una
               className={`steps__btn steps__btn--wide${badges[b.id] === c.id ? ' is-on' : ''}`}
               onClick={() => set(b.id, c.id)}
             >
+              {TIERS.has(c.id) && <span className={`tier tier--${c.id}`} aria-hidden="true" />}
               {pick(lang, c, 'name')}
             </button>
           ))}
@@ -837,9 +841,14 @@ function ActivityGrid({ rules, list, badges, set }) {
                       title={b.choices ? `${name}：${level ?? t('badge.none')}` : name}
                       onClick={() => next(b)}
                     >
-                      <img src={file} alt="" />
+                      <img src={file} alt="" className={c?.art && TIERS.has(c.id) ? `has-tier tier-ring--${c.id}` : undefined} />
                       <span className="actgrid__name">{name}</span>
-                      {b.choices && <span className="actgrid__level">{level ?? t('badge.none')}</span>}
+                      {b.choices && (
+                        <span className="actgrid__level">
+                          {c?.art && TIERS.has(c.id) && <span className={`tier tier--${c.id}`} aria-hidden="true" />}
+                          {level ?? t('badge.none')}
+                        </span>
+                      )}
                     </button>
                   </li>
                 );

@@ -46,7 +46,7 @@ test('頭髮殼：包住個頭（唔會陷入面）、向外', () => {
     for (const gender of ['boy', 'girl']) {
       const B = layout(gender, s).B;
       const head = { w: B.head.w, h: B.head.h, d: B.head.d };
-      for (const hat of [false, true]) {
+      for (const hat of [false]) { // v29：戴帽時帽口以上嘅頭髮收埋入頭皮（tests/v29.test.mjs）
         const g = hairGeometry(head, B.hair, hat);
         const P = g.attributes.position;
         const row = 32; // NV + 2
@@ -90,7 +90,7 @@ test('手：四隻手指＋拇指；手指喺手掌闊度入面、左右對稱',
 test('接線：流線先用立體頭髮／手指；流線嘅頭冇畫頭髮', () => {
   const b = src('src/three/Blocky.jsx');
   assert.match(b, /\{smooth \? \(\s*\/\/ v27 流線：有手指嘅手\s*<SmoothHand/);
-  assert.match(b, /\{smooth && <SmoothHead head=\{h\} style=\{B\.hair\} hat=\{hatOn\}/);
+  assert.match(b, /\{smooth && <SmoothHead head=\{h\} style=\{B\.hair\} hat=\{hatCut\}/);
   assert.match(b, /\{!smooth && B\.hair === 'pigtails' &&/);
   assert.match(b, /head: headFaces\(B, smooth\)/);
   const px = src('src/three/pixels.js');

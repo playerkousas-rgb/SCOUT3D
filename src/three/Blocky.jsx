@@ -18,6 +18,7 @@ import {
 } from './pixels.js';
 import { COLOURS as C } from './body.js';
 import { SmoothHand, SmoothHead } from './Anatomy.jsx';
+import { headBandGeometry, headRadiusAt, beretShape } from './anatomy.js';
 import { useDetailed, useSmooth, roundedBox, plainBox, smoothBox, partShape, surfaceOf, snapToSurface, MAX_RADIUS, SLEEVE_RADIUS } from './look.js';
 
 const CAP_BADGE = '/badges/cub_cap_badge.png';
@@ -174,18 +175,49 @@ function CubHat({ B, girl, painted }) {
   );
 }
 
+/** v29 流線帽帶：貼住圓頭（離頭皮 0.25 cm、外面厚 0.35 cm）；方塊版照舊用長方體 */
+const BAND_GAP = 0.25;
+const BAND_THICK = 0.35;
+function HatBand({ B, y, hgt, size, faces, colour, painted }) {
+  const smooth = useSmooth();
+  const h = B.head;
+  const cy = h.y + h.h / 2;
+  const geo = useMemo(
+    () => (smooth ? headBandGeometry({ w: h.w, h: h.h, d: h.d }, y - hgt / 2 - cy, y + hgt / 2 - cy, BAND_GAP, BAND_THICK) : null),
+    [smooth, h.w, h.h, h.d, y, hgt, cy],
+  );
+  if (!smooth) return <Box size={size} faces={faces} painted={painted} position={[0, y, h.z]} />;
+  return (
+    <mesh geometry={geo} position={[0, cy, h.z]} castShadow receiveShadow>
+      <meshStandardMaterial color={painted ? colour : '#8f9297'} roughness={0.55} />
+    </mesh>
+  );
+}
+/** 帽帶外面嘅 z（前面）/ x（側面），帽帶上面嘅章貼喺呢度 */
+function bandOuter(B, y, hgt, smooth, theta = 0) {
+  const h = B.head;
+  if (!smooth) return theta === 0 ? h.z + (h.d + 0.8) / 2 : (h.w + 0.8) / 2;
+  const cy = h.y + h.h / 2;
+  const hd = { w: h.w, h: h.h, d: h.d };
+  const r = Math.max(headRadiusAt(theta, y - hgt / 2 - cy, hd), headRadiusAt(theta, y + hgt / 2 - cy, hd), headRadiusAt(theta, y - cy, hd)) + BAND_GAP + BAND_THICK;
+  return theta === 0 ? h.z + r : r;
+}
+
 /**
  * 童軍深綠色軟帽（手冊 P.30、P.98–99、P.102）：黑色膠邊離眉毛約 2 cm；向穿著者右邊（-x）拉低；
  * 金屬帽章戴喺帽身、膠邊上面、左眼（+x）上方（用戶 v17：唔好低到似戴喺頭髮上）。方塊造型只係示意。
  */
 function ScoutBeret({ B, painted, colour = C.beret, cap = null }) {
   const h = B.head;
+  const smooth = useSmooth();
   const headTop = h.y + h.h;
   const browY = headTop - 7.5; // pixels.js headFaces：眉毛離頭頂 7.5 cm
-  const bandY = browY + 2 + 1; // 膠邊底離眉 2 cm，膠邊高 2 cm
+  // v29：黑色膠邊收窄做 1.2 cm 嘅滾邊（以前 2 cm 一大條，用戶話好似多咗一層黑色嘢）；膠邊底照舊離眉 2 cm
+  const BAND_H = 1.2;
+  const bandY = browY + 2 + BAND_H / 2;
   const badgeTex = useTexture(cap?.file ?? SCOUT_CAP_BADGE);
   const F = useMemo(() => {
-    const band = [h.w + 0.8, 2, h.d + 0.8];
+    const band = [h.w + 0.8, BAND_H, h.d + 0.8];
     const crown = [h.w + 3.5, 3.6, h.d + 3];
     return {
       band, crown,
@@ -194,15 +226,54 @@ function ScoutBeret({ B, painted, colour = C.beret, cap = null }) {
       knob: hatFaces([1.2, 0.8, 1.2], colour),
     };
   }, [h, colour]);
+  const cy = h.y + h.h / 2;
+  const shape = useMemo(() => (smooth ? beretShape({ w: h.w, h: h.h, d: h.d }, bandY + BAND_H / 2 - cy) : null), [smooth, h.w, h.h, h.d, bandY, cy]);
+  useEffect(() => () => shape?.geo.dispose(), [shape]);
+  const crownMat = useMemo(() => new THREE.MeshStandardMaterial({ color: painted ? colour : '#9a9da2', roughness: 0.92, side: THREE.DoubleSide }), [painted, colour]);
+  useEffect(() => () => crownMat.dispose(), [crownMat]);
   const { band, crown } = F;
   const eyeX = h.w / 2 - 5.25; // 穿著者左眼（+x）
+  const bandEl = <HatBand B={B} y={bandY} hgt={BAND_H} size={band} faces={F.bandF} colour={C.beretBand} painted={painted} />;
+  if (smooth) {
+    // 帽章：帽身脹出嚟嗰圈、左眼上方，跟帽身表面嘅斜度
+    const theta = Math.atan2(eyeX, h.d / 2);
+    const t = 0.22;
+    const p = shape.profile(theta, t);
+    const n = shape.normal(theta, t);
+    const q = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, 1), n);
+    const rot = new THREE.Euler().setFromQuaternion(q);
+    const pos = [p[0] + n.x * 0.08, p[1] + n.y * 0.08, p[2] + n.z * 0.08];
+    return (
+      <group>
+        {bandEl}
+        <group position={[0, cy, h.z]}>
+          <mesh geometry={shape.geo} material={crownMat} castShadow receiveShadow />
+          <mesh position={[0, h.h / 2 + 1.75, 0]} material={crownMat}>
+            <sphereGeometry args={[0.6, 12, 8]} />
+          </mesh>
+          {cap ? (
+            (() => {
+              // 職級帽章（有帽纓，高）：企喺帽身最脹嗰圈前面，只跟方向轉
+              const pb = shape.profile(theta, 0.3);
+              return <RankCapBadge tex={badgeTex} painted={painted} position={[pb[0] + Math.sin(theta) * 0.12, pb[1] - 0.9, pb[2] + Math.cos(theta) * 0.12]} rotation={[0, theta, 0]} />;
+            })()
+          ) : (
+            <mesh position={pos} rotation={[rot.x, rot.y, rot.z]}>
+              <circleGeometry args={[1.4, 32]} />
+              <meshStandardMaterial map={painted ? badgeTex : null} color={painted ? '#f2f2f2' : '#b4b6b9'} transparent alphaTest={0.3} roughness={0.35} metalness={0.4} polygonOffset polygonOffsetFactor={-2} />
+            </mesh>
+          )}
+        </group>
+      </group>
+    );
+  }
   // 帽章戴喺帽身（綠色）上、左眼上方，底邊貼住膠邊頂（v17 用戶：以前太低，好似戴喺頭髮上）。
   // 放喺帽身 group 入面，跟帽身一齊側；group 原點 x = -2，所以本地 x = eyeX + 2。
-  const CROWN = [-2, bandY + 1 + crown[1] / 2 - 0.2, h.z - 0.5];
+  const CROWN = [-2, bandY + BAND_H / 2 + crown[1] / 2 - 0.2, h.z - 0.5];
   const local = { x: eyeX - CROWN[0], bottom: -crown[1] / 2 + 0.15, z: crown[2] / 2 + 0.08 };
   return (
     <group>
-      <Box size={band} faces={F.bandF} painted={painted} position={[0, bandY, h.z]} />
+      {bandEl}
       <group position={CROWN} rotation={[-0.06, 0, 0.16]}>
         <Box part="hat" size={crown} faces={F.crownF} painted={painted} position={[0, 0, 0]} />
         <Box size={[1.2, 0.8, 1.2]} faces={F.knob} painted={painted} position={[1.5, crown[1] / 2 + 0.4, 0]} />
@@ -251,7 +322,7 @@ function HardHat({ B, painted, cap }) {
   const tex = useTexture(cap.file);
   return (
     <group position={[0, base + size[1] / 2, h.z]}>
-      <Box size={size} faces={faces} painted={painted} position={[0, 0, 0]} />
+      <Box part="hat" size={size} faces={faces} painted={painted} position={[0, 0, 0]} />
       <RankCapBadge tex={tex} painted={painted} position={[-(size[0] / 2 + 0.08), -size[1] / 2 + 0.9, 0.5]} rotation={[0, -Math.PI / 2, 0]} />
     </group>
   );
@@ -264,6 +335,7 @@ function HardHat({ B, painted, cap }) {
  */
 function SeaCap({ B, painted }) {
   const h = B.head;
+  const smooth = useSmooth();
   const headTop = h.y + h.h;
   const browY = headTop - 7.5;
   const bandH = 3.6;
@@ -287,13 +359,13 @@ function SeaCap({ B, painted }) {
   const wallY = bandY + bandH / 2 + wall[1] / 2;
   const topY = wallY + wall[1] / 2 + top[1] / 2 - 0.2;
   const tallyW = Math.min(h.w - 2, 13);
-  const sideX = band[0] / 2 + 0.25;
+  const sideX = bandOuter(B, bandY, bandH, smooth, Math.PI / 2) + 0.25;
   return (
     <group>
-      <Box size={band} faces={F.bandF} painted={painted} position={[0, bandY, h.z]} />
-      <Box size={wall} faces={F.wallF} painted={painted} position={[0, wallY, h.z]} />
-      <Box size={top} faces={F.topF} painted={painted} position={[0, topY, h.z]} />
-      <mesh position={[0, bandY, h.z + band[2] / 2 + 0.06]}>
+      <HatBand B={B} y={bandY} hgt={bandH} size={band} faces={F.bandF} colour={C.beretBand} painted={painted} />
+      <Box part={smooth ? 'hat' : undefined} size={wall} faces={F.wallF} painted={painted} position={[0, wallY, h.z]} />
+      <Box part={smooth ? 'hat' : undefined} size={top} faces={F.topF} painted={painted} position={[0, topY, h.z]} />
+      <mesh position={[0, bandY, bandOuter(B, bandY, bandH, smooth) + 0.06]}>
         <planeGeometry args={[tallyW, tallyW / 4.3]} />
         <meshStandardMaterial map={painted ? tallyTex : null} color={painted ? '#ffffff' : '#9a9da1'} roughness={0.8} polygonOffset polygonOffsetFactor={-2} />
       </mesh>
@@ -317,6 +389,7 @@ function SeaCap({ B, painted }) {
  */
 function SeaLeaderCap({ B, girl, painted, badge = VENTURE_SEA_CAP_BADGE }) {
   const h = B.head;
+  const smooth = useSmooth();
   const headTop = h.y + h.h;
   const browY = headTop - 7.5;
   const bandH = girl ? 2.6 : 3.4;
@@ -335,12 +408,12 @@ function SeaLeaderCap({ B, girl, painted, badge = VENTURE_SEA_CAP_BADGE }) {
   }, [h, girl, bandH]);
   const { band, top, peak } = F;
   const topY = bandY + bandH / 2 + top[1] / 2 - 0.1;
-  const front = h.z + band[2] / 2;
+  const front = bandOuter(B, bandY, bandH, smooth);
   return (
     <group>
-      <Box size={band} faces={F.bandF} painted={painted} position={[0, bandY, h.z]} />
+      <HatBand B={B} y={bandY} hgt={bandH} size={band} faces={F.bandF} colour={C.beretBand} painted={painted} />
       <group position={[0, topY, h.z - (girl ? 0.4 : 0)]} rotation={[girl ? -0.12 : 0, 0, 0]}>
-        <Box size={top} faces={F.topF} painted={painted} position={[0, 0, 0]} />
+        <Box part={smooth ? 'hat' : undefined} size={top} faces={F.topF} painted={painted} position={[0, 0, 0]} />
       </group>
       <Box size={peak} faces={F.peakF} painted={painted} position={[0, bandY - bandH / 2 + 0.2, front + peak[2] / 2 - 0.6]} rotation={[0.28, 0, 0]} />
       <mesh position={[0, bandY + (girl ? 0.3 : 0.2), front + 0.08]}>
@@ -414,6 +487,7 @@ function WoodBadge({ top, knot, beads, painted }) {
  */
 function MessCap({ B, girl, painted, cap }) {
   const h = B.head;
+  const smooth = useSmooth();
   const headTop = h.y + h.h;
   const browY = headTop - 7.5;
   const tex = useTexture(MESS_CAP_BADGE);
@@ -449,14 +523,14 @@ function MessCap({ B, girl, painted, cap }) {
   }
   const bandH = 3.6;
   const bandY = browY + 2 + bandH / 2;
-  const front = h.z + (h.d + 0.8) / 2;
+  const front = bandOuter(B, bandY, bandH, smooth);
   const peakW = h.w - 3;
   const strip = (n) =>
     Array.from({ length: n }, (_, i) => <Box key={i} size={[peakW - 1 - i * 1.5, 0.25, 1.1]} faces={F.metal} painted={painted} position={[0, 0.4, 1.6 - i * 1.3]} />);
   return (
     <group>
-      <Box size={[h.w + 0.8, bandH, h.d + 0.8]} faces={F.band} painted={painted} position={[0, bandY, h.z]} />
-      <Box size={[h.w + 6, 1.8, h.d + 6]} faces={F.top} painted={painted} position={[0, bandY + bandH / 2 + 0.8, h.z]} />
+      <HatBand B={B} y={bandY} hgt={bandH} size={[h.w + 0.8, bandH, h.d + 0.8]} faces={F.band} colour="#101013" painted={painted} />
+      <Box part={smooth ? 'hat' : undefined} size={[h.w + 6, 1.8, h.d + 6]} faces={F.top} painted={painted} position={[0, bandY + bandH / 2 + 0.8, h.z]} />
       <group position={[0, bandY - bandH / 2 + 0.2, front + 5 / 2 - 0.6]} rotation={[0.28, 0, 0]}>
         <Box size={[peakW, 0.6, 5]} faces={F.peak} painted={painted} position={[0, 0, 0]} />
         {cap?.trim === 'oak2' && strip(2)}
@@ -847,6 +921,18 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
     ((section === 'cub' || scout || (venture && !leader)) && !!outfit.invested) ||
     (leader && (hatInfo.kind === 'sea' || hatInfo.kind === 'beret' || hatInfo.kind === 'mess' || (hatInfo.kind === 'hardHat' && !!hatInfo.cap)))
   );
+  // v29：帽口離頭頂幾多 cm（同各款帽一樣）— 帽口以上嘅立體頭髮收埋，唔會穿出帽
+  const hatCut = !hatOn
+    ? 0
+    : !cub && outfit.hat !== 'none' && typeof outfit.hat === 'string'
+      ? 4 // 漁夫帽／鴨咀帽：帽口頭頂落 4 cm
+      : section === 'cub'
+        ? 4.5 // 幼童軍帽
+        : leader && hatInfo.kind === 'hardHat'
+          ? 3.5 // 女領袖硬帽：帽底離眉 4 cm
+          : leader && hatInfo.kind === 'mess' && gender === 'girl'
+            ? 5 // 晚禮服女裝硬帽
+            : 5.5; // 軟帽、海童軍帽、硬帽、晚禮服男裝帽：帽口離眉 2 cm
   // v26 流線：笛繩切細（1.5 cm）再貼返圓滑上身，唔會喺膊頭圓角度浮起
   const lanyardsShown = useMemo(
     () => (smooth ? lanyards.map((q) => ({ ...q, paths: q.paths.map((pts) => subdivide(pts, 1.5).map((v) => snapToSurface(v, torsoSurf))) })) : lanyards),
@@ -915,7 +1001,7 @@ export default function Blocky({ section = 'grasshopper', outfit, badges = {}, p
       <group position={[0, BASE_H, 0]} scale={0.01}>
         {/* 頭、頸、帽 */}
         <Box part="head" size={[h.w, h.h, h.d]} faces={body.head} painted={painted} position={[0, h.y + h.h / 2, h.z]} />
-        {smooth && <SmoothHead head={h} style={B.hair} hat={hatOn} painted={painted} tie={PIGTAIL_TIE} />}
+        {smooth && <SmoothHead head={h} style={B.hair} hat={hatCut} painted={painted} tie={PIGTAIL_TIE} />}
         {!smooth && B.hair === 'pigtails' &&
           [1, -1].map((s) => (
             <Box part="limb" key={s} size={[4.5, 12, 4.5]} faces={body.pigtail} painted={painted} position={[s * (h.w / 2 + 1.6), h.y + 5, -4.5]} rotation={[0.15, 0, s * 0.12]} />

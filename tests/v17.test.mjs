@@ -231,7 +231,7 @@ test('軟帽帽章戴喺帽身上（用戶 v17：以前低到好似戴喺頭髮�
   const beret = blocky.slice(blocky.indexOf('function ScoutBeret'), blocky.indexOf('function RankCapBadge'));
   // 帽章喺帽身 group 入面（跟帽身一齊側），底邊喺帽身底（膠邊頂）上面
   assert.ok(beret.includes('<group position={CROWN} rotation={[-0.06, 0, 0.16]}>'));
-  assert.ok(beret.indexOf('<RankCapBadge') > beret.indexOf('<group position={CROWN}'));
+  assert.ok(beret.lastIndexOf('<RankCapBadge') > beret.indexOf('<group position={CROWN}')); // v29：前面多咗流線版（圓滑帽身）
   assert.ok(beret.includes('bottom: -crown[1] / 2 + 0.15'));
   assert.ok(!beret.includes('bandY - 1.2'), '舊位置（膠邊下面）已拎走');
   assert.ok(!/position=\{\[eyeX, bandY, /.test(beret), '童軍帽章唔再喺膠邊中間');

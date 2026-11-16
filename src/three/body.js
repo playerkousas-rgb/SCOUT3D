@@ -536,14 +536,15 @@ export function neckerLayout(L, { vest = false } = {}) {
  * 章位（slots）：沿中線由上而下，兩行一組（2 × 2），組與組之間多 1 cm；每組次序 = 附圖（一）1 左下、2 右下、3 左上、4 右上。
  * 章嘅方向：附圖（一）帶直放時菱形頂角指向左上（45°）；帶斜咗 θ 之後，章轉 45° − θ（逆時針）。
  */
-export const SASH = { widthCm: 13, edgeCm: 0.75, t: 0.15, endY: 88, topHalfFromEdge: 4.85, rampCm: 10, badgeSide: 3.54, firstCm: 10, rowGap: 0.4, blockGap: 0.6, colGap: 0.4, max: 16 };
+// v29：topOut = 帶頂中線再向膊頭（+x）移幾多 cm（用戶：要更斜、去到膊頭；以前近頸）；外邊出咗膊頭嗰截唔畫（搭落手臂後面）
+export const SASH = { widthCm: 13, edgeCm: 0.75, t: 0.15, endY: 88, topHalfFromEdge: 4.85, topOut: 3, rampCm: 10, badgeSide: 3.54, firstCm: 10, rowGap: 0.4, blockGap: 0.6, colGap: 0.4, max: 16 };
 
 export function sashLayout(L) {
   const T = L.B.torso;
   const hw = T.w / 2;
   const top = L.top;
   const front = T.d / 2;
-  const cTop = hw - SASH.topHalfFromEdge; // 膊頂中線 x（外邊貼膊頂）
+  const cTop = hw - SASH.topHalfFromEdge + SASH.topOut; // 膊頂中線 x（v29：移近膊頭，外邊搭出膊頭）
   const k = (cTop + hw) / (top - SASH.endY); // 每落 1 cm，中線向 −x 移幾多
   const cos = 1 / Math.sqrt(1 + k * k);
   const sin = k * cos;
@@ -563,8 +564,9 @@ export function sashLayout(L) {
     const a = xL(y);
     const b = xR(y);
     const xa = Math.max(a, -side);
-    const xb = Math.min(b, hw);
-    return { y, xa, xb, ua: (xa - a) / (b - a), ub: (xb - a) / (b - a) };
+    const xb = Math.max(-side, Math.min(b, hw));
+    const cl = (v) => Math.min(1, Math.max(0, v));
+    return { y, xa, xb, ua: cl((xa - a) / (b - a)), ub: cl((xb - a) / (b - a)) };
   });
   const edge = SASH.edgeCm / SASH.widthCm;
   const theta = Math.atan(k);
@@ -584,6 +586,18 @@ export function sashLayout(L) {
     slots.push({ i, block, row, x: Math.round(x * 100) / 100, y: Math.round(y * 100) / 100 });
   }
   return { hw, side, top, front, t: SASH.t, cTop, k, theta, full, y1, y2, xLTop: xL(top), xRTop: xR(top), sections, edge, slots, rotZ: Math.PI / 4 - theta, badgeDiag: Math.round(s * Math.SQRT2 * 100) / 100, z: front + SASH.t + 0.04 };
+}
+
+/**
+ * v29：上身前面 (x, y) 有冇俾專章帶遮住（用戶：專章帶喺香港章前面、遮住佢）。
+ * 帶 = 中線 c(y) 兩邊各 full（橫切面半闊，頂 rampCm 收窄），只計膊頂以下、帶最低點以上。
+ */
+export function sashCovers(S, x, y) {
+  if (y > S.top || y < S.y2) return false;
+  const c = S.cTop - S.k * (S.top - y);
+  const ramp = Math.min(1, Math.max(0, (S.top - y) / SASH.rampCm));
+  const half = SASH.topHalfFromEdge + (S.full - SASH.topHalfFromEdge) * ramp;
+  return Math.abs(x - c) <= half;
 }
 
 /**

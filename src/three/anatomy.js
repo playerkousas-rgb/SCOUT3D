@@ -69,18 +69,15 @@ const hairCache = new Map();
  * 座標：頭中心 = 原點。hat = 戴帽時壓薄啲，唔會穿出帽。
  */
 export function hairGeometry(head, style = 'short', hat = false) {
-  const key = [head.w, head.h, head.d, style, hat].join('|');
+  // v29：hat = 帽口離頭頂幾多 cm（true = 4）。帽口以上嘅頭髮收埋入頭皮（以前壓薄都會喺帽同膠邊之間穿出嚟），
+  // 帽口以下先有頭髮，由薄漸漸變返正常厚度。
+  const cut = hat === true ? 4 : +hat || 0;
+  const key = [head.w, head.h, head.d, style, cut].join('|');
   if (hairCache.has(key)) return hairCache.get(key);
   const NU = 240, NV = 30;
   const top = head.h / 2;
-  const base = hat ? 0.35 : style === 'pigtails' ? 0.75 : 0.9;
-  const P = [];
-  const I = [];
-  const row = NV + 2; // 0..NV 表面 + 1 行摺入
-  for (let i = 0; i <= NU; i++) {
-    const theta = (i / NU) * Math.PI * 2;
-    const drop = hairDrop(theta, style, head.h);
-    // 搵 phi：表面點嘅 y = top − drop
+  const base = cut ? 0.6 : style === 'pigtails' ? 0.75 : 0.9;
+  const phiAt = (theta, drop) => {
     let lo = 0, hi = Math.PI * 0.98;
     for (let it = 0; it < 30; it++) {
       const m = (lo + hi) / 2;
@@ -89,15 +86,33 @@ export function hairGeometry(head, style = 'short', hat = false) {
       if (top - y < drop) lo = m;
       else hi = m;
     }
-    const phiMax = (lo + hi) / 2;
+    return (lo + hi) / 2;
+  };
+  const P = [];
+  const I = [];
+  const row = NV + 2; // 0..NV 表面 + 1 行摺入
+  for (let i = 0; i <= NU; i++) {
+    const theta = (i / NU) * Math.PI * 2;
+    const drop = hairDrop(theta, style, head.h);
+    // 搵 phi：表面點嘅 y = top − drop
+    const phiMax = phiAt(theta, drop);
+    const phiMin = cut ? Math.min(phiMax, phiAt(theta, cut)) : 0;
+    const hidden = cut && drop <= cut + 0.2; // 呢個方向嘅頭髮全部喺帽入面
     for (let j = 0; j <= NV + 1; j++) {
       const f = Math.min(1, j / NV);
-      const phi = phiMax * Math.sin((f * Math.PI) / 2); // 近邊位密啲
+      const phi = phiMin + (phiMax - phiMin) * Math.sin((f * Math.PI) / 2); // 近邊位密啲
       const dv = dirOf(theta, phi);
       const R = headRadius(dv, head);
       let off;
-      if (j > NV) off = -0.3; // 摺返入頭皮
-      else {
+      if (hidden || j > NV || (cut && j === 0)) off = -0.4; // 摺返入頭皮（帽口嗰行都係）
+      else if (cut) {
+        const yy = dv[1] * R;
+        const below = top - yy - cut; // 帽口以下幾多 cm
+        const ramp = Math.min(1, Math.max(0, below / 1.5));
+        const swirl = theta * 30 + phi * 2.2;
+        const groove = 0.22 * Math.pow(Math.abs(Math.sin(swirl)), 0.6) * ramp;
+        off = (0.12 + (base - 0.12) * ramp) * (1 - 0.5 * f * f) + groove;
+      } else {
         // 梳紋：一撮撮由頭頂順住梳落嚟（近頭頂細、近邊位明顯）
         const swirl = theta * 30 + phi * 2.2;
         const clump = Math.pow(Math.abs(Math.sin(swirl)), 0.6);
@@ -120,6 +135,108 @@ export function hairGeometry(head, style = 'short', hat = false) {
   g.computeVertexNormals();
   hairCache.set(key, g);
   return g;
+}
+
+/* ---------------- v29 帽：貼頭嘅帽帶、圓滑軟帽 ---------------- */
+/** 頭（中心 = 原點）喺高度 y、方向 theta（0 = 前 +z、π/2 = 左 +x）嘅水平半徑 */
+export function headRadiusAt(theta, y, head) {
+  const dx = Math.sin(theta), dz = Math.cos(theta);
+  let lo = 0, hi = Math.max(head.w, head.d);
+  for (let i = 0; i < 36; i++) {
+    const m = (lo + hi) / 2;
+    if (headSdf([dx * m, y, dz * m], head) > 0) hi = m;
+    else lo = m;
+  }
+  return (lo + hi) / 2;
+}
+
+const bandCache = new Map();
+/**
+ * 貼住個頭嘅帽帶（流線）：y0–y1（頭中心座標）之間，離頭皮 gap cm，外面微微圓（厚 thick cm）。
+ * 方塊版帽帶係一舊比個頭大嘅長方體，圓頭上面四角會凸出嚟，好似多咗一層黑色嘢（v29 用戶）。
+ */
+export function headBandGeometry(head, y0, y1, gap = 0.25, thick = 0.35) {
+  const key = [head.w, head.h, head.d, y0, y1, gap, thick].map((v) => +(+v).toFixed(3)).join('|');
+  if (bandCache.has(key)) return bandCache.get(key);
+  const NU = 96;
+  const prof = [];
+  const hh = (y1 - y0) / 2;
+  prof.push([-0.15, -hh]);
+  for (let k = 0; k <= 8; k++) {
+    const a = -Math.PI / 2 + (Math.PI * k) / 8;
+    prof.push([thick * Math.cos(a), hh * Math.sin(a)]);
+  }
+  prof.push([-0.15, hh]);
+  const P = [];
+  const I = [];
+  const n = prof.length;
+  for (let i = 0; i <= NU; i++) {
+    const th = (i / NU) * Math.PI * 2;
+    const r = Math.max(headRadiusAt(th, y0, head), headRadiusAt(th, y1, head), headRadiusAt(th, (y0 + y1) / 2, head)) + gap;
+    const dx = Math.sin(th), dz = Math.cos(th);
+    for (const [dr, dy] of prof) P.push(dx * (r + dr), (y0 + y1) / 2 + dy, dz * (r + dr));
+  }
+  for (let i = 0; i < NU; i++)
+    for (let j = 0; j < n - 1; j++) {
+      const a = i * n + j, b = (i + 1) * n + j;
+      I.push(a, b, a + 1, a + 1, b, b + 1);
+    }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(P, 3));
+  g.setIndex(I);
+  g.computeVertexNormals();
+  bandCache.set(key, g);
+  return g;
+}
+
+/**
+ * 圓滑軟帽帽身（流線）：由帽帶頂（rimY，頭中心座標）起，向外脹再收埋去頭頂上面；
+ * 向穿著者右邊（−x）拉低、脹多啲（手冊 P.98–99：軟帽拉向右邊）。左邊（+x）唔會揭起（以前方塊帽身斜咗，左邊露出頭髮）。
+ * 回傳 { geo, profile(theta, t) → [x, y, z], normal(theta, t) }。
+ */
+export function beretShape(head, rimY) {
+  const top = head.h / 2 + 1.7;
+  const prof = (theta, t) => {
+    const right = Math.max(0, -Math.sin(theta)); // 1 = 穿著者右邊
+    const rr = headRadiusAt(theta, rimY, head) + 0.55;
+    const bulge = 1.2 + 1.5 * right * right;
+    const droop = 1.3 * right * right;
+    const P0 = [rr, rimY];
+    const P1 = [rr + bulge * 1.5, rimY + 1.6 - droop];
+    const P2 = [rr * 0.62 + bulge * 0.6, top - 0.2 * right];
+    const P3 = [0, top - 0.6 * right];
+    const u = 1 - t;
+    const r = u * u * u * P0[0] + 3 * u * u * t * P1[0] + 3 * u * t * t * P2[0] + t * t * t * P3[0];
+    const y = u * u * u * P0[1] + 3 * u * u * t * P1[1] + 3 * u * t * t * P2[1] + t * t * t * P3[1];
+    return [Math.sin(theta) * r, y, Math.cos(theta) * r];
+  };
+  const NU = 96, NV = 28;
+  const P = [];
+  const I = [];
+  for (let i = 0; i <= NU; i++) {
+    const th = (i / NU) * Math.PI * 2;
+    for (let j = 0; j <= NV; j++) P.push(...prof(th, j / NV));
+  }
+  for (let i = 0; i < NU; i++)
+    for (let j = 0; j < NV; j++) {
+      const a = i * (NV + 1) + j, b = (i + 1) * (NV + 1) + j;
+      I.push(a, b, a + 1, a + 1, b, b + 1);
+    }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(P, 3));
+  g.setIndex(I);
+  g.computeVertexNormals();
+  const normal = (theta, t) => {
+    const e = 1e-3;
+    const p = prof(theta, t);
+    const a = prof(theta, t + e), b = prof(theta + e, t);
+    const v1 = new THREE.Vector3(a[0] - p[0], a[1] - p[1], a[2] - p[2]);
+    const v2 = new THREE.Vector3(b[0] - p[0], b[1] - p[1], b[2] - p[2]);
+    const n = new THREE.Vector3().crossVectors(v2, v1).normalize();
+    if (n.x * p[0] + n.z * p[2] + n.y * (p[1] - rimY) < 0) n.negate();
+    return n;
+  };
+  return { geo: g, profile: prof, normal };
 }
 
 /* ---------------- 手：手掌＋四隻手指（兩節，微微屈）＋拇指 ---------------- */

@@ -2,7 +2,7 @@
 // 全部用厘米，數字直接嚟自規則 JSON 嘅 size / anchor。
 // 上身：x = 穿著者角度（+ = 穿著者左），y = 離地高度。
 // 袖：u = 望住嗰隻袖外側時嘅左右（+ = 望嘅人右手邊），v = 章中心喺肩膊縫線下幾多 cm。
-import { layout, neckerLayout, strapLayout, dressLayout, leaderUniform, isDress, VEST_T, sashLayout } from './body.js';
+import { layout, neckerLayout, strapLayout, dressLayout, leaderUniform, isDress, VEST_T, sashLayout, sashCovers } from './body.js';
 
 const sectionOf = (rules) => rules?.section?.id ?? 'grasshopper';
 
@@ -464,7 +464,27 @@ export function visible(placements, state, { invested, school = false, unavailab
   // 跟住另一個章嘅（「R」字樣別針喺職級肩章上）：嗰個章冇顯示就唔顯示
   const ids = new Set(first.map((p) => p.id));
   const shown = first.filter((p) => !p.requires || ids.has(p.requires));
-  return arrangeSlots(arrangeRacks(centreLonePair(placements, sash ? onSash(shown) : shown)));
+  const out = arrangeSlots(arrangeRacks(centreLonePair(placements, sash ? onSash(shown) : shown)));
+  return sash ? underSash(out, shown) : out;
+}
+
+/**
+ * v29：專章帶喺上身章前面（用戶：遮住香港章）—— 前面嘅上身章同帶有重疊就標 underSash：
+ * 畫嗰陣唔企出（冇厚度），俾帶遮住；章照計戴咗（面板照列）。
+ */
+export function underSash(list, shown) {
+  const S = shown.find((p) => p.slot?.def?.sash && p.slot.geo?.sash)?.slot.geo.sash;
+  if (!S) return list;
+  const hit = (p) => {
+    const n = 4;
+    for (let i = 0; i <= n; i++) {
+      for (let j = 0; j <= n; j++) {
+        if (sashCovers(S, p.x - p.w / 2 + (p.w * i) / n, p.y - p.h / 2 + (p.h * j) / n)) return true;
+      }
+    }
+    return false;
+  };
+  return list.map((p) => (p.mount === 'torso' && !p.onSash && !p.facing && p.kind !== 'lanyard' && p.z > 0 && Number.isFinite(p.x) && hit(p) ? { ...p, underSash: true } : p));
 }
 
 /**
