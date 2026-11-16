@@ -163,3 +163,26 @@ test('幼童軍銅／銀／金邊：3D 金屬邊框＋深色外線（跟圖案�
     assert.match(css, new RegExp(`\\.tier-ring--${t} \\{`));
   }
 });
+
+test('紀念章示例：2026 香港童軍大會操紀念章（綠邊，7 × 5.1 cm，大會操第 03/2026 號通告），舊色塊已拎走', async () => {
+  const { existsSync, statSync } = await import('node:fs');
+  const pub = (f) => new URL(`../public${f}`, import.meta.url);
+  assert.ok(!existsSync(pub('/badges/handbook_example_commemorative.png')), '舊示例色塊已刪');
+  assert.ok(existsSync(pub('/badges/rally2026_green.png')));
+  assert.ok(statSync(pub('/badges/rally2026_green.png')).size < 30_000);
+  const png = readFileSync(pub('/badges/rally2026_green.png'));
+  assert.deepEqual([png.readUInt32BE(16), png.readUInt32BE(20)], [280, 203]);
+  for (const id of ['cub', 'grasshopper', 'leader', 'rover', 'venture']) {
+    const R = read(`src/data/${id}_rules_v1.0.json`);
+    assert.match(R.sources.RALLY.url, /rcr0326c\.pdf$/);
+    const b = R.badges.find((x) => x.id === 'commemorative');
+    assert.equal(b.art.file, '/badges/rally2026_green.png', id);
+    assert.deepEqual(b.art.px, [280, 203]);
+    assert.equal(b.size.wCm, 7);
+    assert.equal(b.size.hCm, 5.1);
+    assert.ok(b.sources.some((s) => s.ref === 'RALLY'));
+    assert.ok(Math.abs(b.size.wCm / b.size.hCm - 280 / 203) < 0.02, '比例同圖一樣');
+  }
+  for (const id of ['cub', 'grasshopper', 'leader', 'rover', 'venture', 'scout']) assert.ok(!src(`src/data/${id}_rules_v1.0.json`).includes('handbook_example_commemorative'));
+  assert.match(src('scripts/guard.mjs'), /const DIST_MAX_MB = 10;/, '用戶 v29：dist 上限 10 MB');
+});

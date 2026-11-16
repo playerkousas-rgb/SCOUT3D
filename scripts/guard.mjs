@@ -152,8 +152,10 @@ function checkDist() {
       else { total += st.size; biggest = Math.max(biggest, st.size); }
     }
   }
-  if (total >= 5 * 1024 * 1024) err(`S7：dist ${(total / 1024 / 1024).toFixed(2)} MB >= 5MB`);
-  else ok(`S7：dist ${(total / 1024 / 1024).toFixed(2)} MB < 5MB`);
+  // v29 用戶：5MB 係之前 Vercel 爆過先設嘅基本線，有需要可以多（「多 1 倍都仲係細」）→ dist 上限 10MB；單一 bundle 仍然 < 2MB
+  const DIST_MAX_MB = 10;
+  if (total >= DIST_MAX_MB * 1024 * 1024) err(`S7：dist ${(total / 1024 / 1024).toFixed(2)} MB >= ${DIST_MAX_MB}MB`);
+  else ok(`S7：dist ${(total / 1024 / 1024).toFixed(2)} MB < ${DIST_MAX_MB}MB`);
   if (biggest >= 2 * 1024 * 1024) err(`S7：單一 bundle ${(biggest / 1024 / 1024).toFixed(2)} MB >= 2MB`);
 }
 

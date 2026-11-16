@@ -145,6 +145,15 @@
         "en": "14 August 2026 edition (11th); cited only for p.57, the Rover Scout Link Badge (earned in the Venture Scout Section)"
       },
       "url": null
+    },
+    "RALLY": {
+      "zh": "香港童軍總會大會操第 03/2026 號通告《2026 年香港童軍大會操（三）》",
+      "en": "SAHK Rally Circular 03/2026, 2026 Hong Kong Scout Rally (3)",
+      "edition": {
+        "zh": "2026 年 9 月 1 日；紀念章 7 cm（闊）× 5.1 cm（高），綠邊／金邊兩款，參加者獲派綠邊款式；2026 年 11 月 1 日起佩戴 6 個月；縫喺右胸袋冚上方。圖片由用戶提供（2026-11-16），由金邊款式原圖按通告綠邊款式轉色",
+        "en": "1 September 2026; commemorative badge 7 cm wide × 5.1 cm high, green-edge and gold-edge styles, participants receive the green-edge style; worn for 6 months from 1 November 2026; sewn above the right pocket flap. Image supplied by the user (2026-11-16), recoloured from the gold-edge artwork to the circular's green-edge style"
+      },
+      "url": "https://scout.org.hk/uploads/tc/circulars/26009/rcr0326c.pdf"
     }
   },
   "garments": [
@@ -1393,11 +1402,11 @@
       },
       "size": {
         "shape": "rect",
-        "wCm": 5,
-        "hCm": 5,
-        "measured": false,
-        "ref": null,
-        "page": null
+        "wCm": 7,
+        "hCm": 5.1,
+        "measured": true,
+        "ref": "RALLY",
+        "page": "1"
       },
       "anchor": {
         "part": "torso",
@@ -1415,22 +1424,27 @@
         {
           "ref": "RTS",
           "page": "12"
+        },
+        {
+          "ref": "RALLY",
+          "page": "1"
         }
       ],
       "status": "verified",
       "art": {
-        "file": "/badges/handbook_example_commemorative.png",
-        "ref": "UH",
-        "page": "25",
+        "file": "/badges/rally2026_green.png",
+        "ref": "RALLY",
+        "page": "1",
         "example": true,
         "px": [
-          128,
-          129
-        ]
+          280,
+          203
+        ],
+        "user": true
       },
       "modelNote": {
-        "zh": "圖案係手冊示例色塊，每個紀念章唔同；模型用 5 × 5 cm（上限 7 × 7 cm）。",
-        "en": "The artwork is the handbook's example block; each badge differs. The model uses 5 × 5 cm (limit 7 × 7 cm)."
+        "zh": "圖案用 2026 年香港童軍大會操紀念章（綠邊款式，7 × 5.1 cm，大會操第 03/2026 號通告）做示例；每個紀念章唔同，上限 7 × 7 cm。",
+        "en": "The artwork uses the 2026 Hong Kong Scout Rally commemorative badge (green-edge style, 7 × 5.1 cm, Rally Circular 03/2026) as the example; each badge differs, limit 7 × 7 cm."
       },
       "sweater": false
     },
