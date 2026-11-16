@@ -98,22 +98,26 @@ const SENIOR = new Set(['venture', 'rover']);
 /** 各支部共用嘅設定（轉支部時保留） */
 const SHARED_OUTFIT_KEYS = ['gender', 'finish', 'invested'];
 
-/** v25 外觀（精緻／簡約）：記喺瀏覽器；私隱模式唔記得都照用 */
-const LOOK_KEY = 'scout3d.look';
-/** v26：流線（預設，圓滑公仔）→ 精緻（圓角方塊）→ 簡約（像素方塊），撳一下轉下一個 */
-const LOOK_ORDER = ['smooth', 'detailed', 'simple'];
-const LOOK_LABEL = { smooth: 'view.lookSmooth', detailed: 'view.lookDetailed', simple: 'view.lookSimple' };
-function readLook() {
+/**
+ * v29c 人形試做：現有（流線）→ A 修正（比例、關節、皮膚）→ B 真人人台（Anny／MakeHuman CC0）。
+ * 只係俾用戶比較；記喺瀏覽器。網址加 ?figure=a／b 可以直接開（截圖用）。外觀只留「流線」（精緻／簡約已刪）。
+ */
+const FIGURE_KEY = 'scout3d.figure';
+const FIGURE_ORDER = ['current', 'a', 'b'];
+const FIGURE_LABEL = { current: 'view.figureCurrent', a: 'view.figureA', b: 'view.figureB' };
+function readFigure() {
   try {
-    const v = window.localStorage.getItem(LOOK_KEY);
-    return LOOK_ORDER.includes(v) ? v : LOOK_ORDER[0];
+    const q = new URLSearchParams(window.location.search).get('figure');
+    if (FIGURE_ORDER.includes(q)) return q;
+    const v = window.localStorage.getItem(FIGURE_KEY);
+    return FIGURE_ORDER.includes(v) ? v : FIGURE_ORDER[0];
   } catch {
-    return LOOK_ORDER[0];
+    return FIGURE_ORDER[0];
   }
 }
-function saveLook(v) {
+function saveFigure(v) {
   try {
-    window.localStorage.setItem(LOOK_KEY, v);
+    window.localStorage.setItem(FIGURE_KEY, v);
   } catch {
     /* 唔記得都照用 */
   }
@@ -1668,12 +1672,12 @@ export default function App() {
   const heightBar = useRef();
   const onHeight = useCallback((y) => heightBar.current?.set(y), []);
   const [exportOpen, setExportOpen] = useState(false);
-  // v25 外觀：精緻（預設）／簡約；記喺瀏覽器
-  const [look, setLook] = useState(readLook);
-  const toggleLook = () =>
-    setLook((x) => {
-      const next = LOOK_ORDER[(LOOK_ORDER.indexOf(x) + 1) % LOOK_ORDER.length];
-      saveLook(next);
+  // v29c 人形試做（現有／A／B）；記喺瀏覽器
+  const [figure, setFigure] = useState(readFigure);
+  const toggleFigure = () =>
+    setFigure((x) => {
+      const next = FIGURE_ORDER[(FIGURE_ORDER.indexOf(x) + 1) % FIGURE_ORDER.length];
+      saveFigure(next);
       return next;
     });
 
@@ -1748,7 +1752,7 @@ export default function App() {
         <section className="stage" aria-label={t('app.title')}>
           {webgl ? (
             <Suspense fallback={<div className="stage__msg">{t('loading')}</div>}>
-              <Scene ref={scene} section={section} look={look} outfit={outfit} badges={badges} picks={artPicks} selected={selected} onSelect={onSceneSelect} onHeight={onHeight} />
+              <Scene ref={scene} section={section} figure={figure} outfit={outfit} badges={badges} picks={artPicks} selected={selected} onSelect={onSceneSelect} onHeight={onHeight} />
             </Suspense>
           ) : (
             <div className="stage__msg">{t('nowebgl')}</div>
@@ -1774,11 +1778,11 @@ export default function App() {
               <button
                 type="button"
                 className="chipbtn chipbtn--look"
-                aria-pressed={look !== 'simple'}
-                title={t('view.lookHint')}
-                onClick={toggleLook}
+                aria-pressed={figure !== 'current'}
+                title={t('view.figureHint')}
+                onClick={toggleFigure}
               >
-                {t(LOOK_LABEL[look])}
+                {t(FIGURE_LABEL[figure])}
               </button>
               <button type="button" className="chipbtn chipbtn--accent" onClick={shot} disabled={busy}>
                 {t('view.shot')}

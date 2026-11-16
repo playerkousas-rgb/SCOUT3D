@@ -89,12 +89,11 @@ test('手：四隻手指＋拇指；手指喺手掌闊度入面、左右對稱',
 
 test('接線：流線先用立體頭髮／手指；流線嘅頭冇畫頭髮', () => {
   const b = src('src/three/Blocky.jsx');
-  assert.match(b, /\{smooth \? \(\s*\/\/ v27 流線：有手指嘅手\s*<SmoothHand/);
-  assert.match(b, /\{smooth && <SmoothHead head=\{h\} style=\{B\.hair\} hat=\{hatCut\}/);
-  assert.match(b, /\{!smooth && B\.hair === 'pigtails' &&/);
-  assert.match(b, /head: headFaces\(B, smooth\)/);
-  const px = src('src/three/pixels.js');
-  assert.match(px, /if \(smooth\) \{\s*\/\/ 流線：/);
+  // v30：只剩流線，一定用立體頭髮同手指
+  assert.match(b, /<SmoothHand size=/);
+  assert.match(b, /<SmoothHead head=\{h\} style=\{B\.hair\} hat=\{hatCut\}/);
+  assert.doesNotMatch(b, /pigtailFaces|handFaces/);
+  assert.match(b, /head: headFaces\(B\)/);
   // 冇章喺頭／手：badgeLayout 唔識 anatomy
   assert.doesNotMatch(src('src/three/badgeLayout.js'), /anatomy/);
 });

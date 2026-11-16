@@ -4,6 +4,15 @@
 
 ## [Unreleased]
 
+### Changed
+- **外觀只留「流線」**（ADR-0027 v30）：刪咗「精緻」同「簡約」同外觀掣，程式細咗（Blocky／pixels／look 少咗約 400 行）；章嘅厚度、反光、屈面照舊。旅巾遮住少少香港特區章維持現狀（用戶揀 (a)，同真人戴法一樣）。
+
+### Added
+- **人形試做 A／B**（ADR-0027 v30，試做，等用戶揀）：3D 畫面下面多咗人形掣（現有 → A 試做 → B 人台），網址 `?figure=a`／`?figure=b` 直接開。
+  - A：頭窄啲（真人比例）、下巴收窄；手肘、膝頭、小腿肚有形；手肘微屈；皮膚有光澤同體積。
+  - B：真人比例無面容人台（MakeHuman／MPFB2 CC0 身體，用 Anny 0.6.2 Apache-2.0 生成；10 個身形約 1 MB），恤衫、褲、半截裙、襪、鞋由身體推出嚟，章照用厘米位置投影上衫面。未有旅巾、帽、頭髮、笛繩、專章帶、毛衣、連身裙。
+  - 測試加到 313 個（`tests/v30.test.mjs`）；dist 約 6.29 MB。
+
 ### Docs
 - **真人人台研究**（`docs/research/realistic-mannequin.md`，純研究，冇改程式）：Ready Player Me 已經停服；Mixamo 唔可以再發佈原檔，唔啱公開 repo；建議用 Anny（Apache 2.0／MakeHuman CC0，一個模型涵蓋小童到成人）。章位 cm 系統保留，真正工作量喺件衫。建議先做一輪 spike。
 

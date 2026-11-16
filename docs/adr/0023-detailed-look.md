@@ -2,7 +2,7 @@
 
 SCOUT3D v1.0 · © SCOUT SYSTEM
 
-- Status: accepted（2026-11-15）
+- Status: superseded by 0027（v30 刪咗「精緻」同「簡約」，只留「流線」）
 
 用戶 v25：「睇落去係個網頁度靚D同真D」，揀咗方向 1（材質同燈光）同方向 2（精緻化方塊人）都試；「今次唔好一定要靠預覽了」（Vercel 一日 100 次部署上限）——用本機 headless 截圖驗證、一輪先 push 一次。寫實人體模型（glTF＋decal）、相片疊圖、AR 唔做：章位會變形、要重新校準、檔案太大。
 

@@ -2,7 +2,7 @@
 
 SCOUT3D v1.0 · © SCOUT SYSTEM
 
-- Status: accepted（2026-11-15）
+- Status: accepted（2026-11-15）；v30 起「流線」係唯一外觀（見 0027）
 
 用戶 v26：「精緻的確好了一點，但不能脫離方塊人」，想要好似 Hero Forge 咁圓滑嘅公仔。揀咗方案 A（用程式砌圓滑身體，章位照舊厘米準確）；方案 B（下載／自製 glTF 人體模型＋decal）唔做：章位要重新校準、會變形、檔案大（dist 5 MB 上限）。
 

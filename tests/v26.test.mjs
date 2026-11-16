@@ -12,7 +12,7 @@ const SIZES = [[31, 50, 17], [10, 22, 14], [20, 23, 21], [7, 21, 7], [6.5, 13, 5
 
 test('流線係預設外觀', () => {
   assert.equal(DEFAULT_LOOK, 'smooth');
-  assert.ok(LOOKS.includes('smooth') && LOOKS.includes('detailed') && LOOKS.includes('simple'));
+  assert.deepEqual(LOOKS, ['smooth'], 'v30：精緻、簡約已刪');
 });
 
 test('smoothBox：所有三角形向外（唔會反轉變「入面睇出嚟」）', () => {
@@ -109,8 +109,9 @@ test('專章帶貼返落圓滑上身：圓角位最多推入 0.6 × rc，平面�
 
 test('接線：Box 用 part；章、專章帶、笛繩喺流線模式先貼；badgeLayout 唔理外觀', () => {
   const b = src('src/three/Blocky.jsx');
-  assert.match(b, /if \(smooth\) return smoothBox\(/);
-  assert.match(b, /<Box part="torso"/);
+  assert.match(b, /return smoothBox\(w, h, d, \{ \.\.\.partShape\(/);
+  assert.doesNotMatch(b, /roundedBox|plainBox|useSmooth|useDetailed/);
+  assert.match(b, /<Box part=\{torsoPart\}/);
   assert.match(b, /<Box part="head"/);
   assert.match(b, /surf=\{torsoSurf\}/);
   assert.match(b, /surf=\{sleeveSurf\}/);
@@ -119,5 +120,6 @@ test('接線：Box 用 part；章、專章帶、笛繩喺流線模式先貼；ba
   assert.match(badges, /bendGeometry/);
   assert.doesNotMatch(src('src/three/badgeLayout.js'), /look\.js|smooth|detailed/);
   const i18n = src('src/i18n.jsx');
-  assert.equal((i18n.match(/'view\.lookSmooth'/g) || []).length, 2);
+  assert.equal((i18n.match(/'view\.lookSmooth'/g) || []).length, 0, 'v30：冇外觀掣');
+  assert.equal((i18n.match(/'view\.figureB'/g) || []).length, 2);
 });

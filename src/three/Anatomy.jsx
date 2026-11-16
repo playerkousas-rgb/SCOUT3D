@@ -3,11 +3,27 @@
 import { useEffect, useMemo } from 'react';
 import * as THREE from 'three';
 import { COLOURS as C } from './body.js';
-import { smoothBox, partShape } from './look.js';
+import { smoothBox, partShape, useFigure } from './look.js';
 import { hairGeometry, pigtailGeometry, capsule, handLayout } from './anatomy.js';
 
+/** v30 試做 A／B：皮膚有柔光（sheen）同少少油光，唔再係平塗膠面 */
+export function skinMaterial(painted, rich = false, map = null) {
+  if (!rich) return new THREE.MeshStandardMaterial({ color: painted ? C.skin : '#b4b6b9', roughness: 0.62, map });
+  return new THREE.MeshPhysicalMaterial({
+    color: painted ? C.skin : '#b4b6b9',
+    map,
+    roughness: 0.5,
+    sheen: painted ? 0.6 : 0.2,
+    sheenRoughness: 0.42,
+    sheenColor: new THREE.Color(painted ? '#ff9f86' : '#d0d3d8'),
+    clearcoat: 0.06,
+    clearcoatRoughness: 0.6,
+  });
+}
+
 function useSkin(painted) {
-  const mat = useMemo(() => new THREE.MeshStandardMaterial({ color: painted ? C.skin : '#b4b6b9', roughness: 0.62 }), [painted]);
+  const rich = useFigure() !== 'current';
+  const mat = useMemo(() => skinMaterial(painted, rich), [painted, rich]);
   useEffect(() => () => mat.dispose(), [mat]);
   return mat;
 }
@@ -40,7 +56,7 @@ export function SmoothHand({ size, side, painted, position, overlap = 1 }) {
 /** 立體頭髮、耳仔、鼻；head = B.head（中心 = [0, y + h/2, z]） */
 export function SmoothHead({ head, style, hat, painted, tie = '#5b3fa0' }) {
   const centre = [0, head.y + head.h / 2, head.z];
-  const geo = useMemo(() => hairGeometry({ w: head.w, h: head.h, d: head.d }, style, hat), [head.w, head.h, head.d, style, hat]);
+  const geo = useMemo(() => hairGeometry({ w: head.w, h: head.h, d: head.d, profile: head.profile }, style, hat), [head.w, head.h, head.d, head.profile, style, hat]);
   const hairMat = useMemo(
     () => new THREE.MeshStandardMaterial({ color: painted ? C.hair : '#8d9095', roughness: 0.48, metalness: 0.05, side: THREE.DoubleSide }),
     [painted],

@@ -149,7 +149,7 @@ test('幼童軍銅／銀／金邊：3D 金屬邊框＋深色外線（跟圖案�
   assert.match(badges, /gold: \{ rim: '#[0-9a-f]{6}', line: '#[0-9a-f]{6}' \}/);
   assert.match(badges, /p\.art\.startsWith\('\/badges\/cub\/'\)/, '只限幼童軍圖案（領袖英勇獎章、青年獎勵計劃唔加框）');
   assert.match(badges, /bendGeometry\(geo, bend\.matrix, bend\.surf\)/, '流線邊框跟表面屈');
-  assert.match(badges, /depthWrite=\{false\}[^\n]*metalness=\{detailed && f\.i/, '邊框唔寫深度（章喺上面）');
+  assert.match(badges, /depthWrite=\{false\}[^\n]*metalness=\{f\.i/, '邊框唔寫深度（章喺上面）');
   const cub = read('src/data/cub_rules_v1.0.json');
   const tiered = cub.badges.filter((b) => b.choices && ['bronze', 'silver', 'gold'].every((t) => b.choices.some((c) => c.id === t && c.art?.file.startsWith('/badges/cub/'))));
   assert.equal(tiered.length, 11, '4 個核心範疇章＋7 個三級制度章');

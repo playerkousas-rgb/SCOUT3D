@@ -1,7 +1,7 @@
 // SCOUT3D v1.0 · © SCOUT SYSTEM
 // v27「流線」細節：立體頭髮、手指、耳仔、鼻（ADR-0025）。只係形狀，冇章喺上面；徽章位置唔受影響。
 import * as THREE from 'three';
-import { partShape } from './look.js';
+import { partShape, profileAt } from './look.js';
 
 /* ---------------- 頭嘅有號距離（同 smoothBox 一樣嘅形狀；外面 = 正） ---------------- */
 function roundRectSd(x, z, a, b, r) {
@@ -9,13 +9,17 @@ function roundRectSd(x, z, a, b, r) {
   return Math.min(Math.max(qx, qz), 0) + Math.hypot(Math.max(qx, 0), Math.max(qz, 0)) - r;
 }
 
-/** 頭（中心喺原點）嘅 SDF：橫切面圓角長方形，頂底各自收圓 */
-export function headSdf([x, y, z], { w, h, d }) {
+/**
+ * 頭（中心喺原點）嘅 SDF：橫切面圓角長方形，頂底各自收圓。
+ * v30 試做 A：profile = 由頂（t = 0）到底（t = 1）嘅闊度比例（下巴收窄），同 smoothBox 一樣縮橫切面。
+ */
+export function headSdf([x, y, z], { w, h, d, profile = null }) {
   const S = partShape('head', w, h, d);
   const a = w / 2, b = d / 2, hh = h / 2;
   const r = Math.min(S.rc, a, b);
   const re = y >= 0 ? S.reTop : S.reBot;
-  const d2 = roundRectSd(x, z, a, b, r);
+  const k = profile ? profileAt(profile, Math.min(1, Math.max(0, (hh - y) / h))) : 1;
+  const d2 = roundRectSd(x / k, z / k, a, b, r) * k;
   const wx = d2 + re, wy = Math.abs(y) - hh + re;
   return Math.min(Math.max(wx, wy), 0) + Math.hypot(Math.max(wx, 0), Math.max(wy, 0)) - re;
 }
@@ -72,7 +76,7 @@ export function hairGeometry(head, style = 'short', hat = false) {
   // v29：hat = 帽口離頭頂幾多 cm（true = 4）。帽口以上嘅頭髮收埋入頭皮（以前壓薄都會喺帽同膠邊之間穿出嚟），
   // 帽口以下先有頭髮，由薄漸漸變返正常厚度。
   const cut = hat === true ? 4 : +hat || 0;
-  const key = [head.w, head.h, head.d, style, cut].join('|');
+  const key = [head.w, head.h, head.d, style, cut, JSON.stringify(head.profile ?? null)].join('|');
   if (hairCache.has(key)) return hairCache.get(key);
   const NU = 240, NV = 30;
   const top = head.h / 2;
@@ -156,7 +160,7 @@ const bandCache = new Map();
  * 方塊版帽帶係一舊比個頭大嘅長方體，圓頭上面四角會凸出嚟，好似多咗一層黑色嘢（v29 用戶）。
  */
 export function headBandGeometry(head, y0, y1, gap = 0.25, thick = 0.35) {
-  const key = [head.w, head.h, head.d, y0, y1, gap, thick].map((v) => +(+v).toFixed(3)).join('|');
+  const key = [head.w, head.h, head.d, y0, y1, gap, thick].map((v) => +(+v).toFixed(3)).join('|') + JSON.stringify(head.profile ?? null);
   if (bandCache.has(key)) return bandCache.get(key);
   const NU = 96;
   const prof = [];
