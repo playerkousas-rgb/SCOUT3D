@@ -5,15 +5,15 @@ import { readFileSync } from 'node:fs';
 import * as THREE from 'three';
 import { placeAll } from '../src/three/badgeLayout.js';
 import { layout } from '../src/three/body.js';
-import { planarUV, roundedBox, plainBox, radiusFor, MAX_RADIUS, SLEEVE_RADIUS, BADGE_LIFT, BADGE_THICK, isMetalBadge, LOOKS, DEFAULT_LOOK } from '../src/three/look.js';
+import { planarUV, radiusFor, MAX_RADIUS, SLEEVE_RADIUS, BADGE_LIFT, BADGE_THICK, isMetalBadge, LOOKS, DEFAULT_LOOK } from '../src/three/look.js';
 
 const src = (p) => readFileSync(new URL(`../${p}`, import.meta.url), 'utf8');
 const SECTIONS = ['grasshopper', 'cub', 'scout', 'venture', 'rover', 'leader'];
 const R = Object.fromEntries(SECTIONS.map((s) => [s, JSON.parse(src(`src/data/${s}_rules_v1.0.json`))]));
 const SIZES = [[24, 30, 12], [10, 22, 14], [7.7, 15.5, 10.5], [2, 1, 2], [0.4, 3, 0.4]];
 
-test('外觀：v26 起預設「流線」，仲可以轉「精緻」同「簡約」', () => {
-  assert.deepEqual(LOOKS, ['smooth', 'detailed', 'simple']);
+test('外觀：v30 起只留「流線」（精緻、簡約已刪，減輕負擔）', () => {
+  assert.deepEqual(LOOKS, ['smooth']);
   assert.equal(DEFAULT_LOOK, 'smooth');
 });
 
@@ -27,30 +27,6 @@ test('planarUV 同 three.js BoxGeometry 嘅 UV 一模一樣（六面）', () => 
       assert.ok(Math.abs(u - uv.getX(i)) < 1e-6 && Math.abs(v - uv.getY(i)) < 1e-6, `${w}×${h}×${d} 第 ${i} 點`);
     }
   }
-});
-
-test('圓角方塊：平面部分嘅 UV 同普通方塊一樣（貼圖唔會郁），大小、面次序唔變', () => {
-  for (const [w, h, d] of SIZES) {
-    const g = roundedBox(w, h, d);
-    assert.equal(g.groups.length, 6, '六面材質');
-    g.computeBoundingBox();
-    const s = g.boundingBox.getSize(new THREE.Vector3());
-    assert.ok(Math.abs(s.x - w) < 1e-6 && Math.abs(s.y - h) < 1e-6 && Math.abs(s.z - d) < 1e-6, '外框大小同普通方塊一樣');
-    const pos = g.attributes.position, uv = g.attributes.uv;
-    const per = pos.count / 6;
-    let flat = 0;
-    for (let i = 0; i < pos.count; i++) {
-      const f = Math.floor(i / per);
-      const z = pos.getZ(i);
-      if (f !== 4 || Math.abs(z - d / 2) > 1e-6) continue; // 前面平面上嘅點
-      flat++;
-      assert.ok(Math.abs(uv.getX(i) - (pos.getX(i) + w / 2) / w) < 1e-6, 'u');
-      assert.ok(Math.abs(uv.getY(i) - (pos.getY(i) + h / 2) / h) < 1e-6, 'v');
-    }
-    assert.ok(flat >= 4, '前面有平面');
-  }
-  assert.equal(roundedBox(10, 22, 14), roundedBox(10, 22, 14), '有快取');
-  assert.equal(plainBox(10, 22, 14), plainBox(10, 22, 14), '簡約方塊都有快取');
 });
 
 test('圓角半徑最多 0.6 cm，細方塊按比例', () => {
@@ -95,16 +71,14 @@ test('所有支部、男女：袖章最多只係喺圓角邊浮起 0.03 cm（袖
 test('收窄／放闊只用喺冇章嘅褲腳、短褲、半截裙', () => {
   const b = src('src/three/Blocky.jsx');
   const lines = b.split('\n').filter((l) => /taper=\{/.test(l));
-  // 精緻模式：只有褲／短褲／半截裙；v26 流線模式另外收窄手臂同小腿（taper={smooth ? … : 1}），兩樣都冇章
-  const fixed = lines.filter((l) => !/taper=\{smooth \? [\d.]+ : 1\}/.test(l));
-  assert.equal(fixed.length, 3);
-  for (const l of fixed) assert.match(l, /legs\.(trousers|shorts|skirtF)/);
-  for (const l of lines.filter((l) => !fixed.includes(l))) assert.match(l, /B\.(upperArm|lowerArm)|cuff\[0\]|legs\.shinSize/);
+  // v30：只剩流線；手臂、袖口、小腿、褲、短褲、半截裙收窄／放闊，全部冇章
+  assert.equal(lines.length, 7);
+  for (const l of lines) assert.match(l, /B\.(upperArm|lowerArm)|cuff\[0\]|legs\.(shinSize|trousers|shorts|skirtF)/);
 });
 
 test('章嘅位置由 badgeLayout 計，同外觀無關；精緻模式只係章面企出（z），x／y 唔變', () => {
   const layoutSrc = src('src/three/badgeLayout.js');
-  assert.doesNotMatch(layoutSrc, /look\.js|detailed/);
+  assert.doesNotMatch(layoutSrc, /look\.js|detailed|figure/);
   const badges = src('src/three/Badges.jsx');
   assert.match(badges, /position=\{lift \? \[0, 0, lift\] : undefined\}/);
   assert.ok(BADGE_LIFT > 0 && BADGE_LIFT < BADGE_THICK && BADGE_THICK - BADGE_LIFT < 0.06, '厚度背面仍然喺布面上面（EPS 0.06 cm）');
@@ -119,10 +93,14 @@ test('金屬章：勳章、別針、金屬肩章；布章唔係', () => {
   assert.ok(!isMetalBadge({ id: 'hongKong' }));
 });
 
-test('外觀掣：中英文字都有；記喺瀏覽器', () => {
+test('v30：外觀掣已刪；改做人形試做掣（中英文字都有；記喺瀏覽器；?figure= 可直接開）', () => {
   const i18n = src('src/i18n.jsx');
-  for (const k of ['view.lookDetailed', 'view.lookSimple', 'view.lookHint']) assert.equal(i18n.split(`'${k}'`).length - 1, 2, k);
+  for (const k of ['view.lookDetailed', 'view.lookSimple', 'view.lookHint']) assert.equal(i18n.split(`'${k}'`).length - 1, 0, k);
+  for (const k of ['view.figureCurrent', 'view.figureB', 'view.figureHint']) assert.equal(i18n.split(`'${k}'`).length - 1, 2, k);
+  assert.equal(i18n.split("'view.figureA'").length - 1, 0, 'v31：A 已刪');
   const app = src('src/App.jsx');
-  assert.match(app, /scout3d\.look/);
-  assert.match(app, /look=\{look\}/);
+  assert.doesNotMatch(app, /scout3d\.look/);
+  assert.match(app, /scout3d\.figure/);
+  assert.match(app, /get\('figure'\)/);
+  assert.match(app, /figure=\{figure\}/);
 });

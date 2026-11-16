@@ -7,11 +7,23 @@ import { meritCanvas } from '../lib/meritCanvas.js';
 import { nameTagCanvas } from '../lib/nameTagCanvas.js';
 import { troopTapeCanvas } from '../lib/troopTapeCanvas.js';
 import { sleevePose } from './badgeLayout.js';
-import { useDetailed, useSmooth, isMetalBadge, badgeEdge, stitchNormal, bendGeometry, BEND_MIN, BADGE_THICK, BADGE_LIFT } from './look.js';
+import { isMetalBadge, badgeEdge, stitchNormal, bendGeometry, BEND_MIN, BADGE_THICK, BADGE_LIFT } from './look.js';
 
 const EPS = 0.06; // 離布面 0.06 cm，避免閃
 const ACCENT = '#f2791c';
 const STITCH_SCALE = new THREE.Vector2(0.45, 0.45);
+/**
+ * v29 幼童軍核心範疇章／三級制度章：初級銅邊、中級銀邊、高級金邊（綱要 P.7）—— 原圖個邊得 1–2 px，
+ * 喺卡其衫上面（尤其銀邊）睇唔出；3D 加一圈跟圖案輪廓嘅金屬邊（rim cm）同深色外線（line cm）。
+ */
+export const TIER_FRAME = {
+  rim: 0.28,
+  line: 0.08,
+  bronze: { rim: '#c47a3a', line: '#5e3412' },
+  silver: { rim: '#eef1f5', line: '#6d737b' },
+  gold: { rim: '#f7c325', line: '#8a6200' },
+};
+export const tierOf = (p) => (typeof p?.art === 'string' && p.art.startsWith('/badges/cub/') && TIER_FRAME[p.choice]?.rim ? p.choice : null);
 
 /** 一次過載入所有用到嘅圖（drei 會 cache） */
 export function useBadgeTextures(urls) {
@@ -195,9 +207,8 @@ function Patch({ p, tex, painted, selected, onSelect, registry, bend = null }) {
   }, [photo, strap, tex]);
   const map = painted && photo ? photo : null;
   // v25 精緻：布章 = 刺繡針步＋厚度（章面企出 BADGE_LIFT，只改 z）；金屬章 = 金屬反光
-  const detailed = useDetailed();
-  const metal = detailed && isMetalBadge(p);
-  const edge = useMemo(() => (detailed && !metal && !crop && tex ? badgeEdge(tex.image, round) : null), [detailed, metal, crop, tex, round]);
+  const metal = isMetalBadge(p);
+  const edge = useMemo(() => (!metal && !crop && tex ? badgeEdge(tex.image, round) : null), [metal, crop, tex, round]);
   // v26 流線：章屈返貼住圓滑表面（bend = { matrix: 局部 → 部件座標, surf }）；屈咗就唔畫厚度
   const bentInfo = useMemo(() => {
     if (!bend) return null;
@@ -218,7 +229,7 @@ function Patch({ p, tex, painted, selected, onSelect, registry, bend = null }) {
     if (registry && ref.current) registry.set(p.key, ref.current); // 屈／唔屈會換 mesh
   }, [registry, p.key, bent]);
   // v28：透明底圖案嘅揀中／hover 外框跟輪廓（唔畫長方形）
-  const padCm = selected ? 0.55 : 0.35;
+  const padCm = (selected ? 0.55 : 0.35) + (!round && tierOf(p) ? TIER_FRAME.rim + TIER_FRAME.line : 0);
   const sil = useMemo(() => {
     if (!ring || round || !tex?.image) return null;
     const c = silhouetteCanvas(tex.image, w, padCm, crop ?? 1);
@@ -228,6 +239,25 @@ function Patch({ p, tex, painted, selected, onSelect, registry, bend = null }) {
     return t;
   }, [ring, round, tex, w, padCm, crop]);
   useEffect(() => () => sil?.dispose(), [sil]);
+  // v29 銅／銀／金邊框（金屬邊＋深色外線），跟圖案輪廓擴張；屈面位跟表面屈
+  const tier = round ? null : tierOf(p);
+  const frames = useMemo(() => {
+    if (!tier || !tex?.image) return null;
+    return [TIER_FRAME.rim + TIER_FRAME.line, TIER_FRAME.rim].map((pad, i) => {
+      const c = silhouetteCanvas(tex.image, w, pad, 1);
+      if (!c) return null;
+      const t = new THREE.CanvasTexture(c.canvas);
+      const fw = w * (1 + 2 * c.padX);
+      const fh = h * (1 + 2 * c.padY);
+      let geo = null;
+      if (bent && bend) {
+        geo = new THREE.PlaneGeometry(fw, fh, Math.max(4, Math.ceil(fw / 0.6)), Math.max(4, Math.ceil(fh / 0.6)));
+        bendGeometry(geo, bend.matrix, bend.surf);
+      }
+      return { t, fw, fh, geo, colour: TIER_FRAME[tier][i === 0 ? 'line' : 'rim'], i };
+    }).filter(Boolean);
+  }, [tier, tex, w, h, bent, bend]);
+  useEffect(() => () => frames?.forEach((f) => (f.t.dispose(), f.geo?.dispose())), [frames]);
   const silW = sil ? w * (1 + 2 * sil.userData.pad[0]) : 0;
   const silH = sil ? h * (1 + 2 * sil.userData.pad[1]) : 0;
   // 外框都跟表面屈（平面框會喺曲面勳章前面，遮住勳章下半）
@@ -240,9 +270,9 @@ function Patch({ p, tex, painted, selected, onSelect, registry, bend = null }) {
     return g;
   }, [ring, round, bent, bend, ringW, ringH]);
   useEffect(() => () => ringGeo?.dispose(), [ringGeo]);
-  const thick = !bent && !!edge && (round || edge.opaque);
+  const thick = !bent && !!edge && (round || edge.opaque) && !p.underSash; // v29：專章帶下面嘅章唔企出
   const lift = thick ? BADGE_LIFT : 0;
-  const stitch = detailed && !metal && map ? stitchNormal(w, h) : null;
+  const stitch = !metal && map ? stitchNormal(w, h) : null;
   return (
     <group position={shift}>
       {crop && p.strapCm > 0 && (
@@ -281,11 +311,11 @@ function Patch({ p, tex, painted, selected, onSelect, registry, bend = null }) {
       >
         {bent ? null : round ? <circleGeometry args={[w / 2, 48]} /> : <planeGeometry args={[w, h]} />}
         <meshStandardMaterial
-          key={`${photo ? photo.uuid : 'none'}-${detailed ? (metal ? 'm' : 'd') : 's'}`}
+          key={`${photo ? photo.uuid : 'none'}-${metal ? 'm' : 'd'}`}
           map={map}
           alphaTest={map ? 0.5 : 0} // 勳章、感謝章等透明底 PNG：透明位唔畫
-          color={painted ? (photo ? (detailed ? '#ffffff' : '#f2f2f2') : '#9aa0a6') : '#b4b6b9'}
-          roughness={metal ? 0.32 : detailed ? 0.72 : 0.8}
+          color={painted ? (photo ? '#ffffff' : '#9aa0a6') : '#b4b6b9'}
+          roughness={metal ? 0.32 : 0.72}
           metalness={metal ? 0.65 : 0}
           normalMap={stitch}
           normalScale={stitch ? STITCH_SCALE : undefined}
@@ -300,6 +330,14 @@ function Patch({ p, tex, painted, selected, onSelect, registry, bend = null }) {
           <meshStandardMaterial color={painted ? edge.edge : '#a9abae'} roughness={0.85} />
         </mesh>
       )}
+      {painted &&
+        frames?.map((f) => (
+          // 屈面同章同一個表面，polygonOffset 分唔開 —— 改用次序：衫（0）→ 外線（1.2）→ 金屬邊（1.4）→ 章（2），邊框唔寫深度
+          <mesh key={`tier${f.i}${f.geo ? 'b' : 'f'}`} position={[0, 0, f.geo ? 0 : f.i ? lift * 0.6 - EPS / 6 : lift * 0.4 - EPS / 4]} renderOrder={f.i ? 1.4 : 1.2} geometry={f.geo ?? undefined} receiveShadow>
+            {f.geo ? null : <planeGeometry args={[f.fw, f.fh]} />}
+            <meshStandardMaterial key={f.t.uuid} color={f.colour} alphaMap={f.t} alphaTest={0.5} depthWrite={false} metalness={f.i ? 0.55 : 0} roughness={f.i ? 0.35 : 0.8} polygonOffset polygonOffsetFactor={-1} />
+          </mesh>
+        ))}
       {ring && sil && (
         <mesh key={ringGeo ? 'rb' : 'rf'} position={[0, 0, -EPS / 2]} renderOrder={1} geometry={ringGeo ?? undefined}>
           {ringGeo ? null : <planeGeometry args={[silW, silH]} />}
@@ -322,15 +360,14 @@ export function TorsoBadges({ items, textures, surf = null, ...rest }) {
 }
 
 function TorsoBadge({ p, tex, surf, ...rest }) {
-  const smooth = useSmooth();
-  const position = p.facing === 'up' ? [p.x, p.y + EPS, p.z] : [p.x, p.y, p.facing === 'back' ? p.z - EPS * 2 : p.z + EPS];
+  const position = p.facing === 'up' ? [p.x, p.y + EPS, p.z] : [p.x, p.y, p.facing === 'back' ? p.z - EPS * 2 : p.z + (p.underSash ? EPS / 2 : EPS)];
   const rotation = p.rot ?? (p.facing === 'back' ? [0, Math.PI, 0] : undefined);
   // 肩章（平放喺肩帶）、領巾尖背面嘅章唔屈
   const bend = useMemo(() => {
-    if (!smooth || !surf || p.facing) return null;
+    if (!surf || p.facing) return null;
     const e = rotation ? new THREE.Euler(rotation[0], rotation[1], rotation[2], rotation[3] ?? 'XYZ') : new THREE.Euler();
     return { matrix: new THREE.Matrix4().compose(new THREE.Vector3(...position), new THREE.Quaternion().setFromEuler(e), new THREE.Vector3(1, 1, 1)), surf };
-  }, [smooth, surf, p.facing, ...position, ...(rotation ?? [])]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [surf, p.facing, ...position, ...(rotation ?? [])]); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <group position={position} rotation={rotation}>
       <Patch p={p} tex={tex} bend={bend} {...rest} />
@@ -350,13 +387,12 @@ export function SleeveBadges({ items, textures, side, sleeveW, sleeveD, seamY, s
 }
 
 function SleeveBadge({ p, tex, side, sleeveW, seamY, surf, ...rest }) {
-  const smooth = useSmooth();
   const pose = sleevePose(side, sleeveW, seamY, p, EPS);
   const bend = useMemo(() => {
-    if (!smooth || !surf) return null;
+    if (!surf) return null;
     const m = new THREE.Matrix4().compose(new THREE.Vector3(...pose.position), new THREE.Quaternion().setFromEuler(new THREE.Euler(0, pose.rotY, 0)), new THREE.Vector3(1, 1, 1));
     return { matrix: m, surf };
-  }, [smooth, surf, ...pose.position, pose.rotY]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [surf, ...pose.position, pose.rotY]); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <group position={pose.position} rotation={[0, pose.rotY, 0]}>
       <Patch p={p} tex={tex} bend={bend} {...rest} />

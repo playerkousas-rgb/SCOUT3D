@@ -1313,3 +1313,25 @@ a {
     min-height: 0;
   }
 }
+
+/* v29 銅／銀／金級數標示（幼童軍核心範疇章、三級制度章；綱要 P.7：初級銅邊、中級銀邊、高級金邊） */
+.tier {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 4px;
+  border-radius: 50%;
+  vertical-align: -1px;
+  border: 1px solid rgba(0, 0, 0, 0.45);
+}
+.tier--bronze { background: linear-gradient(135deg, #e0a06a, #9a5a26); }
+.tier--silver { background: linear-gradient(135deg, #ffffff, #a9b0b8); }
+.tier--gold { background: linear-gradient(135deg, #ffe27a, #d29a00); }
+.has-tier {
+  border-radius: 6px;
+  padding: 1px;
+}
+.tier-ring--bronze { box-shadow: 0 0 0 2px #b06a30; }
+.tier-ring--silver { box-shadow: 0 0 0 2px #8d949c; }
+.tier-ring--gold { box-shadow: 0 0 0 2px #e0a800; }
+.actgrid__level { display: inline-flex; align-items: center; }

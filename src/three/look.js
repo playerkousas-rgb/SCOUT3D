@@ -1,16 +1,21 @@
-// 外觀模式（v25）：「精緻」＝圓角方塊、布紋、刺繡章、金屬反光、環境光；「簡約」＝原本嘅像素方塊。
+// 外觀（v25–v29c）：只留「流線」（圓滑公仔＋布紋、刺繡章、金屬反光、環境光）；v29c 刪咗「精緻」「簡約」。
 // 只改「點樣畫」，唔改任何位置：徽章位置照舊由 badgeLayout.js 以厘米計（ADR-0023）。
 // © SCOUT SYSTEM · SCOUT3D v1.0
 import { createContext, useContext } from 'react';
 import * as THREE from 'three';
-import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
 import { PX } from './body.js';
 
-export const LOOKS = ['smooth', 'detailed', 'simple'];
+/** v29c：外觀只留「流線」（精緻／簡約已刪，用戶：減輕負擔）。 */
+export const LOOKS = ['smooth'];
 export const DEFAULT_LOOK = 'smooth';
-export const LookContext = createContext(DEFAULT_LOOK);
-/** 而家係咪「精緻」模式 */
-export const useDetailed = () => useContext(LookContext) !== 'simple';
+/**
+ * v29c 人形試做：current = 現有流線公仔；a = 修正比例／關節／皮膚（程式砌）；b = 真人人台（Anny／MakeHuman CC0 模型）。
+ * 只係預覽，徽章位置一樣由 badgeLayout.js 以厘米計。
+ */
+export const FIGURES = ['current', 'b'];
+export const DEFAULT_FIGURE = 'current';
+export const FigureContext = createContext(DEFAULT_FIGURE);
+export const useFigure = () => useContext(FigureContext);
 
 /* ---------------- 圓角方塊 ---------------- */
 /**
@@ -38,51 +43,6 @@ export function planarUV(face, x, y, z, w, h, d) {
     case 4: return [cl((x + w / 2) / w), cl((y + h / 2) / h)]; // +z
     default: return [cl((w / 2 - x) / w), cl((y + h / 2) / h)]; // -z
   }
-}
-
-const geoCache = new Map();
-/**
- * 圓角方塊（有快取，唔好 dispose）。max = 最大圓角半徑；taper = 底面闊度比例（褲腳收窄 < 1、裙腳放闊 > 1；1 = 唔變）。
- * 面嘅次序同材質陣列同 BoxGeometry 一樣：[+x, -x, +y, -y, +z, -z]。
- */
-export function roundedBox(w, h, d, taper = 1, max = MAX_RADIUS) {
-  const key = `${w.toFixed(3)}|${h.toFixed(3)}|${d.toFixed(3)}|${taper.toFixed(3)}|${max}`;
-  const hit = geoCache.get(key);
-  if (hit) return hit;
-  const r = radiusFor(w, h, d, max);
-  const g = new RoundedBoxGeometry(w, h, d, 2, r);
-  const pos = g.attributes.position;
-  const uv = g.attributes.uv;
-  const per = pos.count / 6;
-  for (let i = 0; i < pos.count; i++) {
-    const [u, v] = planarUV(Math.floor(i / per), pos.getX(i), pos.getY(i), pos.getZ(i), w, h, d);
-    uv.setXY(i, u, v);
-  }
-  if (taper !== 1) {
-    // 由頂（y = h/2，比例 1）到底（y = -h/2，比例 taper）線性收窄，只改 x、z
-    for (let i = 0; i < pos.count; i++) {
-      const t = (h / 2 - pos.getY(i)) / h;
-      const k = 1 + (taper - 1) * t;
-      pos.setX(i, pos.getX(i) * k);
-      pos.setZ(i, pos.getZ(i) * k);
-    }
-    g.computeVertexNormals();
-  }
-  uv.needsUpdate = true;
-  geoCache.set(key, g);
-  return g;
-}
-
-const plainCache = new Map();
-/** 普通方塊（簡約模式；有快取，唔好 dispose）。同圓角方塊一樣用 geometry 屬性，轉模式時唔會甩咗 geometry */
-export function plainBox(w, h, d) {
-  const key = `${w.toFixed(3)}|${h.toFixed(3)}|${d.toFixed(3)}`;
-  let g = plainCache.get(key);
-  if (!g) {
-    g = new THREE.BoxGeometry(w, h, d);
-    plainCache.set(key, g);
-  }
-  return g;
 }
 
 /* ---------------- 像素畫放大（Scale2x × 2）＋布面雜色 ---------------- */
@@ -330,8 +290,6 @@ export function badgeEdge(image, round) {
 }
 
 /* ---------------- v26 流線公仔：圓滑部件（程式砌，唔使模型檔） ---------------- */
-/** 而家係咪「流線」模式（流線都用精緻材質） */
-export const useSmooth = () => useContext(LookContext) === 'smooth';
 
 /** 上身、衫袖橫切面圓角：章、專章帶、笛繩用 snapToSurface 貼返落圓滑表面（平面部分位置唔變） */
 export const TORSO_RC_K = 0.42; // 上身圓角 = 0.42 × 厚度（側面差唔多半圓）
@@ -483,6 +441,7 @@ export function smoothBox(w, h, d, { rc = 1, reTop = 0.6, reBot = 0.6, taper = 1
  * S = { cx, cy, cz, w, h, d, rc, reTop, reBot }（同 smoothBox 一樣嘅形狀）。maxT：離表面太遠（例如喺手臂）就唔郁。
  */
 export function snapToSurface([x, y, z], S, maxT = 2.5) {
+  if (S.snap) return S.snap([x, y, z], maxT); // v30 試做 B：網格表面（mannequin.js meshSurface）
   const hh = S.h / 2;
   const Y = y - S.cy;
   let X = x - S.cx;

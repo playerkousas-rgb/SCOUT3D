@@ -98,22 +98,26 @@ const SENIOR = new Set(['venture', 'rover']);
 /** 各支部共用嘅設定（轉支部時保留） */
 const SHARED_OUTFIT_KEYS = ['gender', 'finish', 'invested'];
 
-/** v25 外觀（精緻／簡約）：記喺瀏覽器；私隱模式唔記得都照用 */
-const LOOK_KEY = 'scout3d.look';
-/** v26：流線（預設，圓滑公仔）→ 精緻（圓角方塊）→ 簡約（像素方塊），撳一下轉下一個 */
-const LOOK_ORDER = ['smooth', 'detailed', 'simple'];
-const LOOK_LABEL = { smooth: 'view.lookSmooth', detailed: 'view.lookDetailed', simple: 'view.lookSimple' };
-function readLook() {
+/**
+ * v31 人形：現有（流線公仔）↔ 真人人台（Anny／MakeHuman CC0）。v31 刪咗試做 A。
+ * 記喺瀏覽器；網址加 ?figure=b 可以直接開（截圖用）。外觀只留「流線」。
+ */
+const FIGURE_KEY = 'scout3d.figure';
+const FIGURE_ORDER = ['current', 'b'];
+const FIGURE_LABEL = { current: 'view.figureCurrent', b: 'view.figureB' };
+function readFigure() {
   try {
-    const v = window.localStorage.getItem(LOOK_KEY);
-    return LOOK_ORDER.includes(v) ? v : LOOK_ORDER[0];
+    const q = new URLSearchParams(window.location.search).get('figure');
+    if (FIGURE_ORDER.includes(q)) return q;
+    const v = window.localStorage.getItem(FIGURE_KEY);
+    return FIGURE_ORDER.includes(v) ? v : FIGURE_ORDER[0];
   } catch {
-    return LOOK_ORDER[0];
+    return FIGURE_ORDER[0];
   }
 }
-function saveLook(v) {
+function saveFigure(v) {
   try {
-    window.localStorage.setItem(LOOK_KEY, v);
+    window.localStorage.setItem(FIGURE_KEY, v);
   } catch {
     /* 唔記得都照用 */
   }
@@ -572,6 +576,8 @@ function InfoCard({ rules, id, outfit, badges, picks, unavailable, onClose, onFo
 }
 
 /* ---------- 徽章分頁 ---------- */
+// v29：銅／銀／金級數（幼童軍核心範疇章、三級制度章等）—— 揀級掣同縮圖加顏色標示
+const TIERS = new Set(['bronze', 'silver', 'gold']);
 function BadgeRowArt({ b, badges, picks }) {
   const chosen = b.choices ? b.choices.find((c) => c.id === badges[b.id]) : null;
   if (chosen && !chosen.art) return <span className="badgerow__art badgerow__art--none" aria-hidden="true" />;
@@ -580,7 +586,8 @@ function BadgeRowArt({ b, badges, picks }) {
     : b.dynamic
     ? resolveArt(b, picks, DISTRICTS, PATROLS)
     : { kind: 'image', file: (Array.isArray(b.art) ? b.art[Math.max(0, Math.min(3, (badges.progress || 1) - 1))] : b.art).file };
-  return <ArtImg art={art} alt="" className={`badgerow__art${b.size.shape === 'circle' ? ' is-round' : ''}`} />;
+  const tier = chosen && TIERS.has(chosen.id) && chosen.art.file.startsWith('/badges/cub/') ? ` has-tier tier-ring--${chosen.id}` : '';
+  return <ArtImg art={art} alt="" className={`badgerow__art${b.size.shape === 'circle' ? ' is-round' : ''}${tier}`} />;
 }
 
 /** 成年成員：單位層級 → 職級（職級清單跟層級篩選，手冊 P.94–95、P.103–104） */
@@ -659,6 +666,7 @@ function BadgeRow({ b, rules, section, outfit, badges, set, picks, setPicks, una
               className={`steps__btn steps__btn--wide${badges[b.id] === c.id ? ' is-on' : ''}`}
               onClick={() => set(b.id, c.id)}
             >
+              {TIERS.has(c.id) && <span className={`tier tier--${c.id}`} aria-hidden="true" />}
               {pick(lang, c, 'name')}
             </button>
           ))}
@@ -837,9 +845,14 @@ function ActivityGrid({ rules, list, badges, set }) {
                       title={b.choices ? `${name}：${level ?? t('badge.none')}` : name}
                       onClick={() => next(b)}
                     >
-                      <img src={file} alt="" />
+                      <img src={file} alt="" className={c?.art && TIERS.has(c.id) ? `has-tier tier-ring--${c.id}` : undefined} />
                       <span className="actgrid__name">{name}</span>
-                      {b.choices && <span className="actgrid__level">{level ?? t('badge.none')}</span>}
+                      {b.choices && (
+                        <span className="actgrid__level">
+                          {c?.art && TIERS.has(c.id) && <span className={`tier tier--${c.id}`} aria-hidden="true" />}
+                          {level ?? t('badge.none')}
+                        </span>
+                      )}
                     </button>
                   </li>
                 );
@@ -1659,12 +1672,12 @@ export default function App() {
   const heightBar = useRef();
   const onHeight = useCallback((y) => heightBar.current?.set(y), []);
   const [exportOpen, setExportOpen] = useState(false);
-  // v25 外觀：精緻（預設）／簡約；記喺瀏覽器
-  const [look, setLook] = useState(readLook);
-  const toggleLook = () =>
-    setLook((x) => {
-      const next = LOOK_ORDER[(LOOK_ORDER.indexOf(x) + 1) % LOOK_ORDER.length];
-      saveLook(next);
+  // v29c 人形試做（現有／A／B）；記喺瀏覽器
+  const [figure, setFigure] = useState(readFigure);
+  const toggleFigure = () =>
+    setFigure((x) => {
+      const next = FIGURE_ORDER[(FIGURE_ORDER.indexOf(x) + 1) % FIGURE_ORDER.length];
+      saveFigure(next);
       return next;
     });
 
@@ -1739,7 +1752,7 @@ export default function App() {
         <section className="stage" aria-label={t('app.title')}>
           {webgl ? (
             <Suspense fallback={<div className="stage__msg">{t('loading')}</div>}>
-              <Scene ref={scene} section={section} look={look} outfit={outfit} badges={badges} picks={artPicks} selected={selected} onSelect={onSceneSelect} onHeight={onHeight} />
+              <Scene ref={scene} section={section} figure={figure} outfit={outfit} badges={badges} picks={artPicks} selected={selected} onSelect={onSceneSelect} onHeight={onHeight} />
             </Suspense>
           ) : (
             <div className="stage__msg">{t('nowebgl')}</div>
@@ -1765,11 +1778,11 @@ export default function App() {
               <button
                 type="button"
                 className="chipbtn chipbtn--look"
-                aria-pressed={look !== 'simple'}
-                title={t('view.lookHint')}
-                onClick={toggleLook}
+                aria-pressed={figure !== 'current'}
+                title={t('view.figureHint')}
+                onClick={toggleFigure}
               >
-                {t(LOOK_LABEL[look])}
+                {t(FIGURE_LABEL[figure])}
               </button>
               <button type="button" className="chipbtn chipbtn--accent" onClick={shot} disabled={busy}>
                 {t('view.shot')}

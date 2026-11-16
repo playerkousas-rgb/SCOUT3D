@@ -145,7 +145,8 @@ test('全部開：同一面嘅章唔重疊（袖、胸前），全部喺袖外�
 test('胸前：右胸袋袋蓋上金紫荊（外）→ 總領袖 → 深資童軍先修章 → 樂行童軍先修章（內）；宗教章喺紀念章內側；左胸袋服務年星、飛行章、香港章', () => {
   const { B, top } = layout('boy', 'venture');
   const flapTop = top - B.pocket.top;
-  const on = visible(placeFor(venture, OUTFIT), ALL, { invested: true });
+  // v29b：香港特區章另外測（tests/v29.test.mjs；位唔夠時會迫細章距）—— 呢度驗手冊位置
+  const on = visible(placeFor(venture, OUTFIT), { ...ALL, hksarFlag: false }, { invested: true });
   const [bau, chief, link, rlink] = ['emblemBauhinia', 'emblemChief', 'ventureLink', 'roverLink'].map((id) => one(on, id));
   assert.ok(bau.x < chief.x && chief.x < link.x && link.x < rlink.x && rlink.x < 0, '右胸（x −）：外 → 內');
   for (const p of [bau, chief, link, rlink]) assert.ok(Math.abs(p.y - p.h / 2 - flapTop) < 1e-9, `${p.id} 緊貼袋蓋`);

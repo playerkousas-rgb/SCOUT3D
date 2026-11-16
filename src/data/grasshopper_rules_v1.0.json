@@ -73,6 +73,24 @@
         "en": "Retrieved 2026-11-14"
       },
       "url": "https://www.scout.org.hk/tc/scout-units/regions-districts/index.html"
+    },
+    "RALLY": {
+      "zh": "香港童軍總會大會操第 03/2026 號通告《2026 年香港童軍大會操（三）》",
+      "en": "SAHK Rally Circular 03/2026, 2026 Hong Kong Scout Rally (3)",
+      "edition": {
+        "zh": "2026 年 9 月 1 日；紀念章 7 cm（闊）× 5.1 cm（高），綠邊／金邊兩款，參加者獲派綠邊款式；2026 年 11 月 1 日起佩戴 6 個月；縫喺右胸袋冚上方。圖片由用戶提供（2026-11-16），由金邊款式原圖按通告綠邊款式轉色",
+        "en": "1 September 2026; commemorative badge 7 cm wide × 5.1 cm high, green-edge and gold-edge styles, participants receive the green-edge style; worn for 6 months from 1 November 2026; sewn above the right pocket flap. Image supplied by the user (2026-11-16), recoloured from the gold-edge artwork to the circular's green-edge style"
+      },
+      "url": "https://scout.org.hk/uploads/tc/circulars/26009/rcr0326c.pdf"
+    },
+    "HKSAR": {
+      "zh": "香港童軍總會政策通告第 04/2024 號《佩戴香港特別行政區區旗布章（香港特區章）》",
+      "en": "SAHK Policy Circular 04/2024, Wearing the HKSAR Regional Flag Cloth Badge (HKSAR Badge)",
+      "edition": {
+        "zh": "2024 年 5 月 1 日；尺寸 7.5 cm × 5 cm；佩戴喺左胸袋上方，頂部要高過其他胸前徽章或勳章；只限經批准嘅國際或內地交流活動",
+        "en": "1 May 2024; size 7.5 cm × 5 cm; worn above the left chest pocket, its top higher than any other badge or medal on the chest; approved international or Mainland exchange activities only"
+      },
+      "url": "https://www.scout.org.hk/uploads/tc/circulars/16350/policycircular_042024_c_v2.pdf"
     }
   },
   "garments": [
@@ -630,12 +648,12 @@
         "conditions": "Optional; approved and valid only."
       },
       "size": {
-        "shape": "square",
-        "wCm": 5,
-        "hCm": 5,
-        "measured": false,
-        "ref": null,
-        "page": null
+        "shape": "rect",
+        "wCm": 7,
+        "hCm": 5.1,
+        "measured": true,
+        "ref": "RALLY",
+        "page": "1"
       },
       "anchor": {
         "part": "torso",
@@ -652,19 +670,84 @@
         {
           "ref": "GSG",
           "page": "P.9"
+        },
+        {
+          "ref": "RALLY",
+          "page": "1"
         }
       ],
       "status": "verified",
       "art": {
-        "file": "/badges/handbook_example_commemorative.png",
-        "ref": "UH",
-        "page": "25",
-        "example": true
+        "file": "/badges/rally2026_green.png",
+        "ref": "RALLY",
+        "page": "1",
+        "example": true,
+        "px": [
+          280,
+          203
+        ],
+        "user": true
       },
       "modelNote": {
-        "zh": "手冊 P.163：紀念章最大 7 × 7 cm；模型用 5 × 5 cm，位置跟 P.25 附圖。圖案係手冊示例色塊，每個紀念章唔同。",
-        "en": "Handbook p.163: commemorative badges are at most 7 × 7 cm; the model uses 5 × 5 cm, placed as in the p.25 figure. The artwork is the handbook's example block; each badge differs."
+        "zh": "圖案用 2026 年香港童軍大會操紀念章（綠邊款式，7 × 5.1 cm，大會操第 03/2026 號通告）做示例；每個紀念章唔同，上限 7 × 7 cm。",
+        "en": "The artwork uses the 2026 Hong Kong Scout Rally commemorative badge (green-edge style, 7 × 5.1 cm, Rally Circular 03/2026) as the example; each badge differs, limit 7 × 7 cm."
       }
+    },
+    {
+      "id": "hksarFlag",
+      "required": false,
+      "side": "left",
+      "group": "extra",
+      "topmost": true,
+      "zh": {
+        "name": "香港特區章（區旗布章）",
+        "place": "穿著者左胸（小童軍制服冇胸袋：喺會員章上面）；章頂要高過所有其他胸前徽章（政策通告第 04/2024 號）。",
+        "quote": "成員只可於獲批准的指定活動（國際或內地交流活動）佩戴總會指定的香港特區章。香港特區章尺寸為 7.5 釐米 × 5 釐米，佩戴於制服左胸袋上方，其頂部須高於其他胸前徽章或勳章。",
+        "conditions": "選擇性佩戴；只限經總會及香港特區政府批准嘅國際或內地交流活動（經助理香港總監向國際總監申請），只可以用總會指定嘅章，要符合《區旗及區徽條例》。"
+      },
+      "en": {
+        "name": "HKSAR Badge (regional flag cloth badge)",
+        "place": "Wearer's left chest (the Grasshopper uniform has no pocket: above the Membership Badge); its top must be higher than every other chest badge (Policy Circular 04/2024).",
+        "quote": "Members may wear the Association-designated HKSAR Badge only at approved designated activities (international or Mainland exchanges). The badge measures 7.5 cm × 5 cm and is worn above the left chest pocket of the uniform, its top higher than any other badge or medal on the chest.",
+        "conditions": "Optional; only at international or Mainland exchange activities approved by SAHK and the HKSAR Government (applied for through the Assistant Chief Commissioner to the International Commissioner); Association-designated badge only, in line with the Regional Flag and Regional Emblem Ordinance."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 7.5,
+        "hCm": 5,
+        "measured": true,
+        "ref": "HKSAR",
+        "page": "1"
+      },
+      "anchor": {
+        "part": "torso",
+        "side": "left",
+        "xCm": 7,
+        "fromTopCm": 10.5,
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "HKSAR",
+          "page": "1"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/hksar_flag.png",
+        "ref": "HKSAR",
+        "page": "1",
+        "example": true,
+        "px": [
+          300,
+          200
+        ]
+      },
+      "modelNote": {
+        "zh": "圖案用香港特別行政區區旗（3:2，維基共享資源公有領域圖）做示意，總會指定嘅布章可能有邊框；小童軍制服冇胸袋，模型放喺左胸會員章上面，按通告要求自動升到高過其他胸前章 0.5 cm。",
+        "en": "The artwork shows the HKSAR regional flag (3:2, public-domain Wikimedia Commons image) for illustration; the Association-designated cloth badge may have a border. The Grasshopper uniform has no chest pocket, so the model places it on the left chest above the Membership Badge, raised to sit 0.5 cm above every other chest badge as the circular requires."
+      },
+      "sweater": false
     }
   ],
   "schoolTop": {
@@ -799,7 +882,7 @@
     }
   ],
   "artCredit": {
-    "zh": "徽章圖案取自香港童軍總會《儀容與制服手冊》P.23、P.25、P.159、《小童軍活動指引》（第三版）P.10–12 及香港童軍總會網頁「地域及區」，版權屬香港童軍總會。旅章、紀念章用手冊附圖嘅示例，各旅實際圖案唔同；區章可以揀返自己嘅區。",
-    "en": "Badge artwork is from the Scout Association of Hong Kong Uniform Handbook (pp.23, 25, 159), the Grasshopper Scout Activity Guide, 3rd ed. (P.10–12) and the SAHK “Regions and Districts” page; copyright the Scout Association of Hong Kong. The Group and Commemorative badges use the handbook's example artwork and real badges differ by Group; pick your own District Badge."
+    "zh": "徽章圖案取自香港童軍總會《儀容與制服手冊》P.23、P.25、P.159、《小童軍活動指引》（第三版）P.10–12 及香港童軍總會網頁「地域及區」，版權屬香港童軍總會。旅章、紀念章用手冊附圖嘅示例，各旅實際圖案唔同；區章可以揀返自己嘅區。香港特區章用香港特別行政區區旗圖（維基共享資源，公有領域）示意。",
+    "en": "Badge artwork is from the Scout Association of Hong Kong Uniform Handbook (pp.23, 25, 159), the Grasshopper Scout Activity Guide, 3rd ed. (P.10–12) and the SAHK “Regions and Districts” page; copyright the Scout Association of Hong Kong. The Group and Commemorative badges use the handbook's example artwork and real badges differ by Group; pick your own District Badge. The HKSAR Badge uses the HKSAR regional flag image (Wikimedia Commons, public domain) for illustration."
   }
 }

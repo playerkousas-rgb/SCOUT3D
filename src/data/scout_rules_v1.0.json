@@ -94,6 +94,24 @@
         "en": "9 August 2026 edition; pp.6–7 uniform and badge chart, p.8 training areas, pp.13–22 Membership Badge and progress awards (core area badges), pp.25–67 Cub Scout activity badges, p.68 Religious Badge, p.70 Scout Link Badge, p.72 Sixer / Second badges"
       },
       "url": null
+    },
+    "RALLY": {
+      "zh": "香港童軍總會大會操第 03/2026 號通告《2026 年香港童軍大會操（三）》",
+      "en": "SAHK Rally Circular 03/2026, 2026 Hong Kong Scout Rally (3)",
+      "edition": {
+        "zh": "2026 年 9 月 1 日；紀念章 7 cm（闊）× 5.1 cm（高），綠邊／金邊兩款，參加者獲派綠邊款式；2026 年 11 月 1 日起佩戴 6 個月；縫喺右胸袋冚上方。圖片由用戶提供（2026-11-16），由金邊款式原圖按通告綠邊款式轉色",
+        "en": "1 September 2026; commemorative badge 7 cm wide × 5.1 cm high, green-edge and gold-edge styles, participants receive the green-edge style; worn for 6 months from 1 November 2026; sewn above the right pocket flap. Image supplied by the user (2026-11-16), recoloured from the gold-edge artwork to the circular's green-edge style"
+      },
+      "url": "https://scout.org.hk/uploads/tc/circulars/26009/rcr0326c.pdf"
+    },
+    "HKSAR": {
+      "zh": "香港童軍總會政策通告第 04/2024 號《佩戴香港特別行政區區旗布章（香港特區章）》",
+      "en": "SAHK Policy Circular 04/2024, Wearing the HKSAR Regional Flag Cloth Badge (HKSAR Badge)",
+      "edition": {
+        "zh": "2024 年 5 月 1 日；尺寸 7.5 cm × 5 cm；佩戴喺左胸袋上方，頂部要高過其他胸前徽章或勳章；只限經批准嘅國際或內地交流活動",
+        "en": "1 May 2024; size 7.5 cm × 5 cm; worn above the left chest pocket, its top higher than any other badge or medal on the chest; approved international or Mainland exchange activities only"
+      },
+      "url": "https://www.scout.org.hk/uploads/tc/circulars/16350/policycircular_042024_c_v2.pdf"
     }
   },
   "garments": [
@@ -1881,6 +1899,123 @@
       },
       "sweater": false,
       "fit": true
+    },
+    {
+      "id": "commemorative",
+      "required": false,
+      "side": "right",
+      "group": "extra",
+      "zh": {
+        "name": "紀念章",
+        "place": "穿著者右胸袋袋蓋上方 3 cm 中央（手冊 P.163）；喺金紫荊獎章標誌、先修章（緊貼袋蓋）上面。",
+        "quote": "紀念章佩戴在制服恤衫右胸袋袋蓋上方三釐米中央位置。假若與其他標誌或徽章一起佩戴，兩章並行排列，紀念章在其右方位置。紀念章最大尺寸以七釐米（闊）× 七釐米（高）為限。",
+        "conditions": "只限已獲批准、喺指定期間內佩戴；同一時間只戴一個。"
+      },
+      "en": {
+        "name": "Commemorative Badge",
+        "place": "Centred 3 cm above the wearer's right pocket flap (Handbook p.163); above the Golden Bauhinia Award Emblem and Link Badges (which sit on the flap).",
+        "quote": "Worn centred 3 cm above the right pocket flap. With another emblem or badge the two sit side by side, the Commemorative Badge on the right. At most 7 cm wide × 7 cm high.",
+        "conditions": "Approved badges only, within the set period; one at a time."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 7,
+        "hCm": 5.1,
+        "measured": true,
+        "ref": "RALLY",
+        "page": "1"
+      },
+      "anchor": {
+        "part": "torso",
+        "slot": "pocketR",
+        "layer": "upper",
+        "rank": 1,
+        "side": "right",
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "UH",
+          "page": "163–164"
+        },
+        {
+          "ref": "RALLY",
+          "page": "1"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/rally2026_green.png",
+        "ref": "RALLY",
+        "page": "1",
+        "example": true,
+        "px": [
+          280,
+          203
+        ],
+        "user": true
+      },
+      "modelNote": {
+        "zh": "圖案用 2026 年香港童軍大會操紀念章（綠邊款式，7 × 5.1 cm，大會操第 03/2026 號通告）做示例；每個紀念章唔同，上限 7 × 7 cm。",
+        "en": "The artwork uses the 2026 Hong Kong Scout Rally commemorative badge (green-edge style, 7 × 5.1 cm, Rally Circular 03/2026) as the example; each badge differs, limit 7 × 7 cm."
+      },
+      "sweater": false
+    },
+    {
+      "id": "hksarFlag",
+      "required": false,
+      "side": "left",
+      "group": "extra",
+      "topmost": true,
+      "zh": {
+        "name": "香港特區章（區旗布章）",
+        "place": "穿著者左胸袋上方；章頂要高過所有其他胸前徽章同勳章（政策通告第 04/2024 號）。",
+        "quote": "成員只可於獲批准的指定活動（國際或內地交流活動）佩戴總會指定的香港特區章。香港特區章尺寸為 7.5 釐米 × 5 釐米，佩戴於制服左胸袋上方，其頂部須高於其他胸前徽章或勳章。",
+        "conditions": "選擇性佩戴；只限經總會及香港特區政府批准嘅國際或內地交流活動（經助理香港總監向國際總監申請），只可以用總會指定嘅章，要符合《區旗及區徽條例》。"
+      },
+      "en": {
+        "name": "HKSAR Badge (regional flag cloth badge)",
+        "place": "Above the wearer's left chest pocket; its top must be higher than every other badge and medal on the chest (Policy Circular 04/2024).",
+        "quote": "Members may wear the Association-designated HKSAR Badge only at approved designated activities (international or Mainland exchanges). The badge measures 7.5 cm × 5 cm and is worn above the left chest pocket of the uniform, its top higher than any other badge or medal on the chest.",
+        "conditions": "Optional; only at international or Mainland exchange activities approved by SAHK and the HKSAR Government (applied for through the Assistant Chief Commissioner to the International Commissioner); Association-designated badge only, in line with the Regional Flag and Regional Emblem Ordinance."
+      },
+      "size": {
+        "shape": "rect",
+        "wCm": 7.5,
+        "hCm": 5,
+        "measured": true,
+        "ref": "HKSAR",
+        "page": "1"
+      },
+      "anchor": {
+        "part": "torso",
+        "side": "left",
+        "pocket": "aboveFlap",
+        "gapCm": 3,
+        "measured": true
+      },
+      "sources": [
+        {
+          "ref": "HKSAR",
+          "page": "1"
+        }
+      ],
+      "status": "verified",
+      "art": {
+        "file": "/badges/hksar_flag.png",
+        "ref": "HKSAR",
+        "page": "1",
+        "example": true,
+        "px": [
+          300,
+          200
+        ]
+      },
+      "modelNote": {
+        "zh": "圖案用香港特別行政區區旗（3:2，維基共享資源公有領域圖）做示意，總會指定嘅布章可能有邊框；模型按通告用 7.5 × 5 cm，放喺左胸袋上方最高嗰層，再自動升到高過其他胸前章同勳章 0.5 cm。",
+        "en": "The artwork shows the HKSAR regional flag (3:2, public-domain Wikimedia Commons image) for illustration; the Association-designated cloth badge may have a border. The model uses 7.5 × 5 cm per the circular, on the top layer above the left pocket, raised automatically to sit 0.5 cm above every other chest badge and medal."
+      },
+      "sweater": false
     },
     {
       "id": "earthTribe",
@@ -9365,8 +9500,8 @@
     }
   ],
   "artCredit": {
-    "zh": "徽章圖案取自香港童軍總會《儀容與制服手冊》P.25、P.92–93、P.102、P.159、《童軍支部訓練綱要》P.200–202 及香港童軍總會網頁「地域及區」，版權屬香港童軍總會。海童軍帽帶取自手冊 P.102。旅章係手冊示例圖案；區章、地域章、小隊章可以揀返自己嘅。",
-    "en": "Badge artwork is from the Scout Association of Hong Kong Uniform Handbook (pp.25, 92–93, 102, 159), the Scout Section Training Scheme (pp.200–202) and the SAHK “Regions and Districts” page; copyright the Scout Association of Hong Kong. The Sea Scout cap tally is from Handbook p.102. The Group Badge is the handbook example; pick your own District and Patrol to get the right badges."
+    "zh": "徽章圖案取自香港童軍總會《儀容與制服手冊》P.25、P.92–93、P.102、P.159、《童軍支部訓練綱要》P.200–202 及香港童軍總會網頁「地域及區」，版權屬香港童軍總會。海童軍帽帶取自手冊 P.102。旅章係手冊示例圖案；區章、地域章、小隊章可以揀返自己嘅。香港特區章用香港特別行政區區旗圖（維基共享資源，公有領域）示意。",
+    "en": "Badge artwork is from the Scout Association of Hong Kong Uniform Handbook (pp.25, 92–93, 102, 159), the Scout Section Training Scheme (pp.200–202) and the SAHK “Regions and Districts” page; copyright the Scout Association of Hong Kong. The Sea Scout cap tally is from Handbook p.102. The Group Badge is the handbook example; pick your own District and Patrol to get the right badges. The HKSAR Badge uses the HKSAR regional flag image (Wikimedia Commons, public domain) for illustration."
   },
   "slots": {
     "pocketL": {
@@ -9403,10 +9538,15 @@
           "gapCm": 0,
           "max": 3,
           "from": "outer"
+        },
+        {
+          "id": "upper",
+          "gapCm": 3,
+          "max": 1
         }
       ],
-      "zh": "穿著者右胸袋袋蓋上方（緊貼袋蓋）：金紫荊獎章標誌喺右（外側），先修章（深資童軍先修章、童軍先修章）喺佢左方（內側）；只戴一個就置中（綱要 P.12 附圖；手冊 P.134、P.142–143）。",
-      "en": "On top of the wearer's right pocket flap: the Golden Bauhinia Award Emblem on the right (outer side), the Link Badges (Venture Scout, Scout) to its left (inner side); a single badge is centred (Training Scheme p.12 figure; Handbook pp.134, 142–143).",
+      "zh": "穿著者右胸袋袋蓋上方（緊貼袋蓋）：金紫荊獎章標誌喺右（外側），先修章（深資童軍先修章、童軍先修章）喺佢左方（內側）；只戴一個就置中（綱要 P.12 附圖；手冊 P.134、P.142–143）。紀念章喺袋蓋上方 3 cm 中央，喺佢哋上面（手冊 P.163）。",
+      "en": "On top of the wearer's right pocket flap: the Golden Bauhinia Award Emblem on the right (outer side), the Link Badges (Venture Scout, Scout) to its left (inner side); a single badge is centred (Training Scheme p.12 figure; Handbook pp.134, 142–143). The Commemorative Badge is centred 3 cm above the flap, above them (Handbook p.163).",
       "sources": [
         {
           "ref": "STS",
@@ -9414,7 +9554,7 @@
         },
         {
           "ref": "UH",
-          "page": "134, 142–143"
+          "page": "134, 142–143, 163"
         }
       ]
     },

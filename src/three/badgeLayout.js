@@ -2,7 +2,7 @@
 // 全部用厘米，數字直接嚟自規則 JSON 嘅 size / anchor。
 // 上身：x = 穿著者角度（+ = 穿著者左），y = 離地高度。
 // 袖：u = 望住嗰隻袖外側時嘅左右（+ = 望嘅人右手邊），v = 章中心喺肩膊縫線下幾多 cm。
-import { layout, neckerLayout, strapLayout, dressLayout, leaderUniform, isDress, VEST_T, sashLayout } from './body.js';
+import { layout, neckerLayout, strapLayout, dressLayout, leaderUniform, isDress, VEST_T, sashLayout, sashCovers } from './body.js';
 
 const sectionOf = (rules) => rules?.section?.id ?? 'grasshopper';
 
@@ -88,6 +88,9 @@ export function placeAll(rules, gender, { sweater = false, uniform = null, occas
   const face = sleeveFace(gender, section);
   const out = [];
   const box = {}; // 每個章喺袖上面佔嘅 v 範圍：{ top, bottom }
+  // v29b 香港特區章（topmost）：升高之後可能撞到旅巾上段 —— 俾 liftTopmost 旅巾外邊條線同上身邊位
+  const NK = neckerLayout(L, { vest: sweater });
+  const clear = { ax: NK.a[0], ay: NK.a[1], bx: NK.b[0], by: NK.b[1], half: NK.tail.w / 2 / Math.cos(NK.ang), maxX: B.torso.w / 2 - 2, maxTop: top - SHOULDER_CLEAR };
 
   // 先擺唔靠其他章嘅，再擺「喺某個章下面／上面」嘅
   const dep = (a) => !!(a.belowBadge || a.aboveBadge || a.onBadge || (a.slot && rules.slots?.[a.slot]?.belowBadge));
@@ -102,7 +105,7 @@ export function placeAll(rules, gender, { sweater = false, uniform = null, occas
     const { wCm: w, hCm: h, shape } = b.size;
     const art = b.dynamic ? dynKey(b.id) : Array.isArray(b.art) ? null : b.art?.file ?? null;
     const fit = b.dynamic === 'district' || b.dynamic === 'region' || b.dynamic === 'nameTag'; // 各區圖案比例唔同：喺 w × h 入面置中縮放
-    const extra = { ...(b.needsInvestiture ? { inv: true } : {}), ...(b.levels ? { levels: b.levels } : {}), ...(b.hiddenBy ? { hiddenBy: b.hiddenBy } : {}), ...(b.limitWhen ? { limitWhen: b.limitWhen } : {}), ...(b.requires ? { requires: b.requires } : {}) };
+    const extra = { ...(b.needsInvestiture ? { inv: true } : {}), ...(b.levels ? { levels: b.levels } : {}), ...(b.hiddenBy ? { hiddenBy: b.hiddenBy } : {}), ...(b.limitWhen ? { limitWhen: b.limitWhen } : {}), ...(b.requires ? { requires: b.requires } : {}), ...(b.topmost ? { topmost: true, clear } : {}) };
     const sx = a.side === 'left' ? 1 : -1;
     const withArt = (b.choices || []).filter((c) => c.art);
     if (RB && (a.part === 'neck' || a.rack)) {
@@ -464,7 +467,86 @@ export function visible(placements, state, { invested, school = false, unavailab
   // 跟住另一個章嘅（「R」字樣別針喺職級肩章上）：嗰個章冇顯示就唔顯示
   const ids = new Set(first.map((p) => p.id));
   const shown = first.filter((p) => !p.requires || ids.has(p.requires));
-  return arrangeSlots(arrangeRacks(centreLonePair(placements, sash ? onSash(shown) : shown)));
+  const out = liftTopmost(arrangeSlots(arrangeRacks(centreLonePair(placements, sash ? onSash(shown) : shown))));
+  return sash ? underSash(out, shown) : out;
+}
+
+/** 胸前徽章／勳章（唔計背面、肩章、掛頸勳章、雞繩） */
+const onChest = (q) => q.mount === 'torso' && !q.facing && !q.strapCm && q.kind !== 'lanyard' && q.z > 0;
+export const TOPMOST_CLEAR = 0.5;
+/**
+ * v29b 香港特區章（政策通告第 04/2024 號）：章頂要高過其他胸前徽章或勳章 ——
+ * 排好之後，佢個頂唔夠高就成個升上去（高過最高嗰個 TOPMOST_CLEAR cm）。
+ */
+export function liftTopmost(list) {
+  const tops = list.filter((p) => p.topmost);
+  if (!tops.length) return list;
+  const r2 = (v) => Math.round(v * 100) / 100;
+  let cur = list;
+  for (const t of tops) {
+    const others = cur.filter((q) => !q.topmost && onChest(q));
+    const maxTop = Math.max(-Infinity, ...others.map((q) => q.y + q.h / 2));
+    let q = cur.find((p) => p.key === t.key);
+    const C = q.clear;
+    const xHit = (o) => Math.abs(o.x - q.x) < (o.w + q.w) / 2;
+    // 兩轉：升高 → （撞旅巾就）向外移 → 移完再睇有冇同其他章重疊
+    for (let k = 0; k < 2; k++) {
+      // 1) 章頂高過所有其他胸前章 TOPMOST_CLEAR cm
+      let bottom = Math.max(q.y - q.h / 2, maxTop + TOPMOST_CLEAR - q.h);
+      // 2) v29b 幼童軍／童軍香港章唔喺 slot：同一個 x 範圍有章就要喺佢上面 TOPMOST_GAP cm（唔重疊）
+      for (const o of others) if (xHit(o)) bottom = Math.max(bottom, o.y + o.h / 2 + TOPMOST_GAP);
+      // 3) 唔可以超出膊頭（離膊線 SHOULDER_CLEAR cm）
+      if (C && bottom + q.h > C.maxTop) bottom = C.maxTop - q.h;
+      if (r2(bottom + q.h / 2) !== r2(q.y)) q = { ...q, y: r2(bottom + q.h / 2), lifted: true };
+      // 4) 旅巾上段（由頸邊斜落巾圈）越高越闊：章內邊要喺旅巾外邊 NECKER_GAP cm 以外，唔夠就向外移（最多去到上身邊 2 cm；唔會向內移）
+      if (C && q.x > 0) {
+        const want = Math.min(neckerEdgeAt(C, q.y + q.h / 2) + NECKER_GAP + q.w / 2, C.maxX - q.w / 2);
+        if (q.x < want - 0.005) q = { ...q, x: r2(want), nudged: true };
+        // 上身窄（小童軍 24 cm）：外邊離上身邊最少 2 cm
+        if (q.x > C.maxX - q.w / 2 + 0.005) q = { ...q, x: r2(C.maxX - q.w / 2), nudged: true };
+      }
+    }
+    // 5) 膊頭頂住、仲係撞到下面嘅章（幼童軍身形細：香港章 + 特區章疊唔落）→ 下面嗰個（同一 x 範圍）向下移讓位
+    //    連鎖：俾人推落去嘅章再推佢下面嘅（例：深資香港章 → 跳傘章）；迫位時章與章之間只留 SQUEEZE_GAP cm，貼住袋蓋嘅年星唔使郁
+    const fq = q;
+    const moved = new Map([[fq.key, fq]]);
+    const pushers = [fq];
+    const hit = (a, b) => Math.abs(a.x - b.x) < (a.w + b.w) / 2;
+    for (const o of [...cur].filter((o) => !o.topmost && onChest(o)).sort((a, b) => b.y + b.h / 2 - (a.y + a.h / 2))) {
+      let floor = Infinity;
+      for (const pu of pushers) if (hit(o, pu) && o.y - o.h / 2 < pu.y - pu.h / 2) floor = Math.min(floor, pu.y - pu.h / 2 - SQUEEZE_GAP);
+      if (!(o.y + o.h / 2 > floor + 0.005)) continue;
+      const n = { ...o, y: r2(floor - o.h / 2), pushedDown: r2(o.y + o.h / 2 - floor) };
+      moved.set(o.key, n);
+      pushers.push(n);
+    }
+    cur = cur.map((o) => moved.get(o.key) ?? o);
+  }
+  return cur;
+}
+export const SHOULDER_CLEAR = 1;
+export const SQUEEZE_GAP = 0.2;
+export const TOPMOST_GAP = 0.4;
+export const NECKER_GAP = 0.3;
+export const neckerEdgeAt = (C, y) => C.bx + ((C.ax - C.bx) * (Math.min(C.ay, y) - C.by)) / (C.ay - C.by) + C.half;
+
+/**
+ * v29：專章帶喺上身章前面（用戶：遮住香港章）—— 前面嘅上身章同帶有重疊就標 underSash：
+ * 畫嗰陣唔企出（冇厚度），俾帶遮住；章照計戴咗（面板照列）。
+ */
+export function underSash(list, shown) {
+  const S = shown.find((p) => p.slot?.def?.sash && p.slot.geo?.sash)?.slot.geo.sash;
+  if (!S) return list;
+  const hit = (p) => {
+    const n = 4;
+    for (let i = 0; i <= n; i++) {
+      for (let j = 0; j <= n; j++) {
+        if (sashCovers(S, p.x - p.w / 2 + (p.w * i) / n, p.y - p.h / 2 + (p.h * j) / n)) return true;
+      }
+    }
+    return false;
+  };
+  return list.map((p) => (p.mount === 'torso' && !p.onSash && !p.facing && p.kind !== 'lanyard' && p.z > 0 && Number.isFinite(p.x) && hit(p) ? { ...p, underSash: true } : p));
 }
 
 /**
@@ -542,7 +624,8 @@ export function arrangeSlot(items, others) {
     let prevTop = -Infinity;
     byLayer.forEach(({ L, list }, i) => {
       GAP = L.spacingCm ?? GAP0;
-      const gap = L.gapIfAboveCm != null && i < byLayer.length - 1 ? L.gapIfAboveCm : L.gapCm;
+      // v29b noBelowGap：呢層（例：香港特區章）喺上面唔會令下面層改用 gapIfAboveCm（手冊淨係講寰宇童軍章喺飛行章上面）
+      const gap = L.gapIfAboveCm != null && byLayer.slice(i + 1).some((x) => !x.L.noBelowGap) ? L.gapIfAboveCm : L.gapCm;
       const bottom = Math.max(geo.flapTop + gap, prevTop + GAP0, L.gapCm > 0 ? floor : -Infinity);
       let top = bottom;
       for (const { p, off } of rowX(list, L.from ?? 'inner', geo.maxW)) {

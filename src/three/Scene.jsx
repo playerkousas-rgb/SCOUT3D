@@ -5,7 +5,7 @@ import { OrbitControls, ContactShadows, Environment, Lightformer, useProgress } 
 import * as THREE from 'three';
 import Blocky from './Blocky.jsx';
 import { useLang } from '../i18n.jsx';
-import { LookContext, DEFAULT_LOOK } from './look.js';
+import { FigureContext, DEFAULT_FIGURE } from './look.js';
 
 const TARGET = new THREE.Vector3(0, 0.6, 0);
 /** 幼童軍、童軍、深資童軍高啲（135、155、168 cm vs 117 cm）：望住點同相機一齊升 */
@@ -151,18 +151,6 @@ function Exposure({ value }) {
   return null;
 }
 
-/** 簡約：原本嘅燈（v1–v24） */
-function SimpleLights() {
-  return (
-    <>
-      <hemisphereLight args={['#ffffff', '#9aa3ad', 1.5]} />
-      <directionalLight position={[1.1, 2.4, 3.0]} intensity={2.3} castShadow shadow-mapSize={[2048, 2048]} {...SHADOW_BOX} shadow-bias={-0.0004} shadow-normalBias={0.03} />
-      <directionalLight position={[-1.6, 2, -2.4]} intensity={1.5} />
-      <directionalLight position={[-1.6, 1.2, 1.8]} intensity={0.35} />
-    </>
-  );
-}
-
 /**
  * v25 精緻：影樓燈。環境光由 Lightformer 即場畫（唔使下載 HDR 檔）：頂燈箱、前面主燈箱、兩邊輪廓光，
  * 金屬章同布面先有反光同柔和明暗；主燈軟陰影。
@@ -195,7 +183,7 @@ function StudioLights() {
   );
 }
 
-const Scene = forwardRef(function Scene({ section = 'grasshopper', look = DEFAULT_LOOK, outfit, badges, picks, selected, onSelect, onReady, onHeight }, ref) {
+const Scene = forwardRef(function Scene({ section = 'grasshopper', figure: figureKind = DEFAULT_FIGURE, outfit, badges, picks, selected, onSelect, onReady, onHeight }, ref) {
   const rig = useRef();
   const lift = LIFT[section] ?? 0;
   const zoom = ZOOM[section] ?? 1;
@@ -207,7 +195,6 @@ const Scene = forwardRef(function Scene({ section = 'grasshopper', look = DEFAUL
   const getState = useRef(null);
   const figure = useRef();
   const registry = useMemo(() => new Map(), []);
-  const detailed = look !== 'simple';
 
   useImperativeHandle(ref, () => ({
     view: (name) => rig.current?.view(name, { lift, zoom }),
@@ -287,24 +274,18 @@ const Scene = forwardRef(function Scene({ section = 'grasshopper', look = DEFAUL
         }}
         onPointerMissed={() => onSelect?.(null)}
       >
-        <color attach="background" args={[detailed ? '#e6eaee' : '#e9edf1']} />
-        {detailed ? <StudioLights /> : <SimpleLights />}
-        <Exposure value={detailed ? 0.92 : 1} />
+        <color attach="background" args={['#e6eaee']} />
+        <StudioLights />
+        <Exposure value={0.92} />
         <Suspense fallback={null}>
-          <LookContext.Provider value={look}>
+          <FigureContext.Provider value={figureKind}>
             <group ref={figure} name="SCOUT3D figure" userData={{ copyright: '© SCOUT SYSTEM · SCOUT3D v1.0' }}>
               <Blocky section={section} outfit={outfit} badges={badges} picks={picks} selected={selected} onSelect={onSelect} registry={registry} />
             </group>
-          </LookContext.Provider>
+          </FigureContext.Provider>
         </Suspense>
-        {detailed ? (
-          <>
-            <ContactShadows position={[0, 0.001, 0]} scale={1.8} blur={3.2} opacity={0.5} far={0.6} resolution={512} />
-            <ContactShadows position={[0, 0.0015, 0]} scale={0.9} blur={1.2} opacity={0.35} far={0.12} resolution={512} />
-          </>
-        ) : (
-          <ContactShadows position={[0, 0.001, 0]} scale={1.8} blur={2.6} opacity={0.4} far={0.5} />
-        )}
+        <ContactShadows position={[0, 0.001, 0]} scale={1.8} blur={3.2} opacity={0.5} far={0.6} resolution={512} />
+        <ContactShadows position={[0, 0.0015, 0]} scale={0.9} blur={1.2} opacity={0.35} far={0.12} resolution={512} />
         <Rig ref={rig} lift={lift} zoom={zoom} onHeight={onHeight} />
         <Grab into={getState} />
       </Canvas>

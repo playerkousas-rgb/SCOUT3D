@@ -151,7 +151,8 @@ test('領袖圖案細（Vercel 唔爆 storage）', () => {
   }
   // v21：加咗獎章領袖標誌、公教章、飛行章等 10 個圖（約 75 KB），上限由 400 KB 調到 480 KB（dist 仍遠低於 guard S7 嘅 5 MB）
   // v22：加咗模範童軍肩帶相（約 20 KB），上限調到 520 KB
-  assert.ok(total < 520_000, `total ${total}`);
+  // v29：紀念章示例換做 2026 大會操紀念章（約 20 KB，取代 1 KB 色塊），上限調到 540 KB；guard S7 dist 上限用戶批准調到 10 MB
+  assert.ok(total < 540_000, `total ${total}`);
 });
 
 

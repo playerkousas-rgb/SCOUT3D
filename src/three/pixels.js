@@ -62,30 +62,11 @@ export function boxFaces([w, h, d], faces, base) {
 }
 
 /* ---------------- 頭 ---------------- */
-function headFacesRaw(B, smooth = false) {
+function headFacesRaw(B) {
   const { w, h, d } = B.head;
-  const long = B.hair === 'pigtails';
+  // v26／v27 流線：立體頭髮、耳仔、鼻另外砌（Anatomy.jsx），呢度只畫五官（v30 試做 A 都保留五官；B 人台用自己嘅網格）
   const front = (g) => {
     g.fill(C.skin);
-    // 頭髮 + 陰（v27 流線：頭髮係立體，唔畫）
-    if (!smooth) g.rect(0, 0, w, long ? 5 : 4.5, C.hair);
-    if (smooth) {
-      // 立體頭髮遮住額頭；只畫五官
-    } else if (long) {
-      // 女仔：齊陰 + 兩邊長髮
-      g.shape((x, y) => y < 6 && (x < 3 || x > w - 3 || (y < 5.5 && Math.floor(x * PX) % 5 !== 0)), C.hair);
-      g.rect(0, 0, 2, h, C.hair);
-      g.rect(w - 2, 0, 2, h, C.hair);
-    } else {
-      // 男仔：短陰，參差
-      g.shape((x, y) => y < 5.5 && [1, 2, 4, 5, 6, 8, 9, 11, 12, 13, 15, 16].includes(Math.floor(x)), C.hair);
-      g.rect(0, 0, 1.5, 8, C.hair);
-      g.rect(w - 1.5, 0, 1.5, 8, C.hair);
-    }
-    if (!smooth) {
-      g.px(6, 2, C.hairHi, 3, 1);
-      g.px(22, 3, C.hairHi, 4, 1);
-    }
     // 眉
     g.rect(4, 7.5, 3, 0.5, C.brow);
     g.rect(w - 7, 7.5, 3, 0.5, C.brow);
@@ -103,49 +84,9 @@ function headFacesRaw(B, smooth = false) {
     g.rect(w / 2 - 1.5, 15.5, 3, 0.5, C.mouth);
     g.rect(w / 2 - 1, 16, 2, 0.5, C.mouth);
   };
-  // 側面：canvas 左 = 前（+x 面）或 後（-x 面）
-  const side = (frontOnLeft) => (g) => {
-    g.fill(C.skin);
-    const toX = (fromFront) => (frontOnLeft ? fromFront : d - fromFront); // 厘米，由前面量起
-    g.rect(0, 0, d, long ? 7 : 6, C.hair);
-    const backH = long ? h : 14;
-    g.shape((x, y) => { const f = frontOnLeft ? x : d - x; return f > d * 0.45 && y < backH; }, C.hair);
-    g.shape((x, y) => { const f = frontOnLeft ? x : d - x; return f < 3 && y < (long ? h : 8); }, C.hair);
-    // 耳仔
-    const ex = toX(d * 0.47);
-    g.rect(Math.min(ex, ex - 2), 9, 2, 4, C.skinShade);
-    g.rect(Math.min(ex, ex - 2) + 0.5, 9.5, 1, 3, C.skin);
-  };
-  const back = (g) => {
-    g.fill(C.skin);
-    g.rect(0, 0, w, long ? h : 15, C.hair);
-    g.px(10, 6, C.hairHi, 6, 1);
-    g.px(18, 14, C.hairHi, 5, 1);
-  };
-  if (smooth) {
-    // 流線：側面只畫耳仔位嘅陰影都唔要（有立體耳仔），頂底全皮膚（頂俾頭髮遮住）
-    const skin = (g) => g.fill(C.skin);
-    return boxFaces([w, h, d], { px: skin, nx: skin, py: skin, ny: skin, pz: front, nz: skin });
-  }
-  return boxFaces([w, h, d], {
-    px: side(true),
-    nx: side(false),
-    py: (g) => { g.fill(C.hair); g.px(8, 10, C.hairHi, 5, 1); g.px(20, 22, C.hairHi, 6, 1); },
-    ny: (g) => { g.fill(C.skin); g.rect(0, 0, w, long ? d : 4, C.hair); },
-    pz: front,
-    nz: back,
-  });
-}
-
-/** 女仔孖辮 */
-function pigtailFacesRaw(size, tie) {
-  const [w, h, d] = size;
-  const f = (ww) => (g) => {
-    g.fill(C.hair);
-    g.rect(0, 2, ww, 1, tie);
-    g.shape((x, y) => y > 4 && Math.floor(y * PX) % 6 === 0 && x > 1 && x < ww - 1, C.hairHi);
-  };
-  return boxFaces([w, h, d], { px: f(d), nx: f(d), pz: f(w), nz: f(w), py: (g) => g.fill(C.hair), ny: (g) => g.fill(C.hair) });
+  // 側面、頂底全皮膚（立體耳仔；頂俾頭髮遮住）
+  const skin = (g) => g.fill(C.skin);
+  return boxFaces([w, h, d], { px: skin, nx: skin, py: skin, ny: skin, pz: front, nz: skin });
 }
 
 export const neckFaces = (B) => {
@@ -722,11 +663,8 @@ export function hardHatFaces(size) {
 }
 
 /* ---------------- v25 材質種類標記（皮膚、頭髮、鞋唔要布紋） ---------------- */
-export function headFaces(B, smooth = false) {
-  return tagKind(headFacesRaw(B, smooth), 'skin');
-}
-export function pigtailFaces(size, tie) {
-  return tagKind(pigtailFacesRaw(size, tie), 'hair');
+export function headFaces(B) {
+  return tagKind(headFacesRaw(B), 'skin');
 }
 export function handFaces(size) {
   return tagKind(handFacesRaw(size), 'skin');
@@ -736,18 +674,6 @@ export function shoeFaces(size, opts) {
 }
 
 /* ---------------- 材質 ---------------- */
-const texCache = new WeakMap();
-function texOf(c) {
-  if (texCache.has(c)) return texCache.get(c);
-  const t = new THREE.CanvasTexture(c);
-  t.colorSpace = THREE.SRGBColorSpace;
-  t.magFilter = THREE.NearestFilter;
-  t.minFilter = THREE.NearestFilter;
-  t.generateMipmaps = false;
-  texCache.set(c, t);
-  return t;
-}
-
 /** 灰模：保留圖案光暗同透明度，顏色變灰（Hero Forge「未上色」） */
 const greyCache = new WeakMap();
 export function greyOf(c) {
@@ -768,27 +694,28 @@ export function greyOf(c) {
   return g;
 }
 
-export function material(c, { painted = true, alpha = false, double = false, detailed = false } = {}) {
+export function material(c, { painted = true, alpha = false, double = false, rich = false } = {}) {
   // alpha：透明位（例如背心領口）要 alphaTest，唔係會見到黑色
-  if (!detailed) {
-    return new THREE.MeshStandardMaterial({
-      map: texOf(painted ? c : greyOf(c)),
-      roughness: painted ? 0.85 : 0.6,
-      metalness: 0,
-      alphaTest: alpha ? 0.5 : 0,
-      side: double ? THREE.DoubleSide : THREE.FrontSide,
-    });
-  }
   // v25 精緻：放大貼圖（斜邊順滑）＋布紋法線；皮膚、鞋、頭髮、皮革唔要布紋
+  // 人台（rich）：皮膚用有柔光（sheen）嘅物理材質
   const K = KIND_PROPS[c.kind] ?? KIND_PROPS.cloth;
   const [wcm, hcm] = canvasCm(c);
-  const m = new THREE.MeshStandardMaterial({
+  const Mat = rich && c.kind === 'skin' ? THREE.MeshPhysicalMaterial : THREE.MeshStandardMaterial;
+  const m = new Mat({
     map: fineTexOf(fineCanvas(painted ? c : greyOf(c), K.cloth)),
     roughness: painted ? K.roughness : 0.6,
     metalness: 0,
     alphaTest: alpha ? 0.5 : 0,
     side: double ? THREE.DoubleSide : THREE.FrontSide,
   });
+  if (Mat === THREE.MeshPhysicalMaterial) {
+    m.roughness = painted ? 0.5 : 0.6;
+    m.sheen = painted ? 0.6 : 0.2;
+    m.sheenRoughness = 0.42;
+    m.sheenColor = new THREE.Color(painted ? '#ff9f86' : '#d0d3d8');
+    m.clearcoat = 0.06;
+    m.clearcoatRoughness = 0.6;
+  }
   if (K.normal > 0) {
     m.normalMap = fabricNormal(wcm, hcm);
     m.normalScale = new THREE.Vector2(K.normal, K.normal);
