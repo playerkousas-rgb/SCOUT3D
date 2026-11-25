@@ -5,10 +5,10 @@ import { useLang, LangToggle, bi, pick } from './i18n.jsx';
 import { SECTIONS, SECTION_IDS, DISTRICTS, PATROLS, RULE_ERRORS, badgeById, sourceLines } from './data/rules.js';
 import { garmentsFor, variantOf } from './data/validate.js';
 import { NECKER, WOGGLE, PLAIN } from './palette.js';
-import { shownReason, ribbonsOn, profOverflow, sashActive } from './three/badgeLayout.js';
+import { shownReason, ribbonsOn, profOverflow, sashActive, placeFor, visible, sleevePose } from './three/badgeLayout.js';
 import { resolveArt, meritYearOk, findDistrict, findPatrol, ranksFor, fixRank, rankRowOf, leaderNeckwear, messCapOf, troopNumber, ordinalSuffix } from './lib/picks.js';
 import { NECKER_THIRD } from './lib/necker.js';
-import { leaderUniform, isDress } from './three/body.js';
+import { leaderUniform, isDress, layout, scoutVariant, ventureVariant, roverVariant, leaderVariant, SCOUT_VARIANTS, COLOURS, isSenior, ventureLegwear, leaderLegwear } from './three/body.js';
 import { APP_VERSION } from './version.js';
 
 const Scene = lazy(() => import('./three/Scene.jsx'));
@@ -942,8 +942,191 @@ const HeightBar = forwardRef(function HeightBar({ scene }, ref) {
 
 const PNG_SCALES = [0, 2, 4];
 
+const ANIM_CODE_PREFIX_COMPRESSED = 'S3D1_';
+const ANIM_CODE_PREFIX_PLAIN = 'S3D_';
+
+function toBase64Url(bytes) {
+  let bin = '';
+  for (let i = 0; i < bytes.length; i += 1) bin += String.fromCharCode(bytes[i]);
+  return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
+}
+
+async function deflateToBase64Url(json) {
+  const bytes = new TextEncoder().encode(json);
+  if (typeof CompressionStream === 'undefined') return { code: ANIM_CODE_PREFIX_PLAIN + toBase64Url(bytes), compressed: false };
+  const stream = new Blob([bytes]).stream().pipeThrough(new CompressionStream('deflate'));
+  const buf = await new Response(stream).arrayBuffer();
+  return { code: ANIM_CODE_PREFIX_COMPRESSED + toBase64Url(new Uint8Array(buf)), compressed: true };
+}
+
+function sectionZhOf(section, outfit) {
+  const v = outfit?.variant || 'land';
+  if (section === 'scout') return v === 'sea' ? '海童軍' : v === 'air' ? '空童軍' : '童軍（陸上）';
+  if (section === 'venture') return v === 'sea' ? '深資海童軍' : v === 'air' ? '深資空童軍' : '深資童軍';
+  if (section === 'rover') return v === 'sea' ? '樂行海童軍' : v === 'air' ? '樂行空童軍' : '樂行童軍';
+  if (section === 'leader') return v === 'sea' ? '海童軍領袖' : v === 'air' ? '空童軍領袖' : '成年領袖';
+  if (section === 'cub') return '幼童軍';
+  if (section === 'grasshopper') return '小童軍';
+  return SECTIONS[section]?.section?.zh || section;
+}
+
+function uniformVariantOf(section, outfit) {
+  const leader = section === 'leader';
+  const senior = isSenior(section);
+  const scout = section === 'scout';
+  const cubLike = section === 'cub' || scout || senior;
+  const U = scout
+    ? scoutVariant(outfit.variant)
+    : leader
+    ? leaderVariant(['u1', 'u2'].includes(outfit.uniform) ? 'land' : outfit.variant)
+    : section === 'rover'
+    ? roverVariant(outfit.variant)
+    : senior
+    ? ventureVariant(outfit.variant)
+    : SCOUT_VARIANTS.land;
+  const gender = outfit.gender === 'girl' ? 'girl' : 'boy';
+  const VL = leader ? leaderLegwear(gender, outfit.uniform) : senior ? ventureLegwear(gender, outfit.ventureLegwear) : null;
+  const dress = leader ? VL?.dress : null;
+  const longPants = leader ? !VL?.shorts && !VL?.skirt : senior ? !VL?.skirt : false;
+  let hatColor = null;
+  if (U.beret) hatColor = U.beret;
+  else if (U.hat === 'sea' || U.hat === 'seaLeader') hatColor = COLOURS.seaCapTop;
+  else if (outfit.hatColour) hatColor = outfit.hatColour;
+  const shoe = cubLike ? COLOURS.shoeBlack : (COLOURS.shoe ?? '#f4f4f4');
+  const belt = cubLike ? COLOURS.belt : null;
+  const buckle = cubLike ? COLOURS.buckle : null;
+  const sock = leader ? (VL?.sock ?? COLOURS.blackSock) : (U.sock ?? (cubLike ? COLOURS.cubSock : (outfit.sockColour ?? '#ffffff')));
+  const shirt = !cubLike ? (outfit.topColour ?? '#ffffff') : (dress === 'mess' ? COLOURS.messShirt : U.shirt);
+  const leg = !cubLike ? (outfit.legColour ?? '#8d8e90') : (dress === 'mess' ? COLOURS.messBlack : U.leg);
+  return { shirt, leg, sock, shoe, belt, buckle, hat: U.hat, hatColor, longPants, woggle: U.woggle };
+}
+
+function badgeNameZh(p, badgeDef, picks) {
+  if (!badgeDef) return p.id;
+  if (p.id === 'troop' && badgeDef.dynamic === 'troop') {
+    const no = troopNumber(picks?.troopNo);
+    return no ? `香港第 ${no} 旅旅號` : (badgeDef.zh?.name || p.id);
+  }
+  if (p.id === 'district') {
+    const hit = picks?.districtId ? findDistrict(DISTRICTS, picks.districtId) : null;
+    if (hit?.district?.zh) return `${hit.district.zh}章`;
+    return badgeDef.zh?.name || p.id;
+  }
+  if (p.id === 'region') {
+    if (picks?.level === 'region' && picks?.regionId) {
+      const region = (DISTRICTS?.regions || []).find((r) => r.id === picks.regionId);
+      if (region?.zh) return `${region.zh}章`;
+    }
+    const hit = picks?.districtId ? findDistrict(DISTRICTS, picks.districtId) : null;
+    if (hit?.region?.zh) return `${hit.region.zh}章`;
+    return badgeDef.zh?.name || p.id;
+  }
+  if (p.id === 'patrol') {
+    const patrol = picks?.patrolId ? findPatrol(PATROLS, picks.patrolId) : null;
+    if (patrol?.zh) return `${patrol.zh}小隊章`;
+    return badgeDef.zh?.name || p.id;
+  }
+  if (p.id === 'meritorious' && picks?.meritYear) return `${picks.meritYear}年優異旅團獎章`;
+  return badgeDef.zh?.name || badgeDef.en?.name || p.id;
+}
+
+function animationPayload({ section, look, outfit, badges, picks }) {
+  const rules = SECTIONS[section];
+  const variant = uniformVariantOf(section, outfit);
+  const gender = outfit.gender === 'girl' ? 'girl' : 'boy';
+  const bodySection = section;
+  const L = layout(gender, bodySection);
+  const all = placeFor(rules, outfit);
+  const sashOn = sashActive(rules, outfit, badges);
+  const leader = section === 'leader';
+  const unavailable = rules.badges.filter((b) => b.dynamic && !resolveArt(b, picks, DISTRICTS, PATROLS)).map((b) => b.id);
+  const shown = visible(all, badges, {
+    invested: outfit.invested !== false,
+    school: !!outfit.school,
+    unavailable,
+    sash: sashOn,
+    level: leader ? (picks.level ?? 'group') : null,
+  });
+
+  const artPicks = section === 'leader' ? { ...picks, season: outfit.season, gender: outfit.gender } : picks;
+  const districtHit = picks?.districtId ? findDistrict(DISTRICTS, picks.districtId) : null;
+  const patrolHit = picks?.patrolId ? findPatrol(PATROLS, picks.patrolId) : null;
+  const rankLabel = leader ? (ranksFor(rules, picks?.level ?? 'group').find((r) => r.id === (fixRank(rules, picks?.level ?? 'group', picks?.rank)))?.zh?.name || '') : '';
+
+  const badgeOut = shown.map((p) => {
+    const badgeDef = badgeById(rules, p.id) || rules.badges.find((b) => b.id === p.id);
+    const artRes = badgeDef?.dynamic ? resolveArt(badgeDef, artPicks, DISTRICTS, PATROLS) : null;
+    const artFile = artRes?.file || artRes?.base || p.art || '';
+    const art = (artFile && !artFile.startsWith('dyn:'))
+      ? (artFile.startsWith('/badges/') ? artFile.slice('/badges/'.length) : artFile.replace(/^\/+/, ''))
+      : '';
+    const item = {
+      key: p.key,
+      id: p.id,
+      zh: badgeNameZh(p, badgeDef, artPicks),
+      mount: p.mount,
+      onSash: !!p.onSash,
+      facing: p.facing || 'front',
+      shape: p.shape || 'rect',
+      w: p.w,
+      h: p.h,
+      art,
+    };
+    if (badgeDef?.dynamic === 'troop') item.dyn = { kind: 'troopTape', no: Number(troopNumber(picks?.troopNo)) || 1 };
+    else if (badgeDef?.dynamic === 'merit' || badgeDef?.dynamic === 'meritorious') item.dyn = { kind: 'merit', year: picks?.meritYear || null };
+    else if (badgeDef?.dynamic === 'nameTag') item.dyn = { kind: 'nameTag', zh: picks?.nameZh || '', en: picks?.nameEn || '' };
+    if (p.mount === 'torso') {
+      item.x = p.x;
+      item.y = p.y;
+      item.z = p.z;
+      item.rotZ = Array.isArray(p.rot) ? p.rot[2] : 0;
+    } else if (p.mount === 'l' || p.mount === 'r') {
+      const sp = sleevePose(p.mount, L.B.sleeve.w, L.top - L.shoulderY, p, 0.12);
+      item.armLocalPos = sp.position;
+      item.armArtRight = sp.artRight;
+    }
+    return item;
+  });
+
+  return {
+    v: 1,
+    app: 'SCOUT3D',
+    section,
+    rigSection: (section === 'scout' && outfit.variant === 'sea') ? 'sea_scout' : (section === 'scout' && outfit.variant === 'air') ? 'air_scout' : section,
+    variant: outfit.variant || 'land',
+    sectionZh: sectionZhOf(section, outfit),
+    gender: outfit.gender === 'girl' ? 'F' : 'M',
+    look,
+    hat: !!outfit.hat && outfit.hat !== 'none',
+    sash: !!sashOn,
+    colors: {
+      shirt: variant.shirt,
+      leg: variant.leg,
+      sock: variant.sock,
+      shoe: variant.shoe,
+      belt: variant.belt || null,
+      buckle: variant.buckle || null,
+      hatColor: variant.hatColor || outfit.hatColour || null,
+      longPants: !!variant.longPants,
+      neckerMain: outfit.neckerMain,
+      neckerBorder: outfit.neckerBorder || outfit.neckerMain,
+      woggle: outfit.woggle || variant.woggle || '#7a4b2a',
+    },
+    unit: {
+      regionZh: districtHit?.region?.zh || ((picks?.level === 'region' && (DISTRICTS?.regions || []).find((r) => r.id === picks.regionId)?.zh) || ''),
+      districtZh: districtHit?.district?.zh || '',
+      troopNo: picks?.troopNo ? String(picks.troopNo) : '',
+      patrolZh: patrolHit?.zh || '',
+      meritYear: picks?.meritYear || null,
+      rankZh: rankLabel,
+    },
+    badgeNamesZh: badgeOut.map((b) => b.zh),
+    badges: badgeOut,
+  };
+}
+
 /** 匯出：PNG 所有人用得；GLB／STL 要密碼（伺服器環境變數 EXPORT_PIN，經 /api/export-pin 驗） */
-function ExportPanel({ scene, variantTag, onClose, toast }) {
+function ExportPanel({ scene, variantTag, onClose, toast, section, look, outfit, badges, picks }) {
   const { t } = useLang();
   const [scale, setScale] = useState(2);
   const [transparent, setTransparent] = useState(false);
@@ -1004,6 +1187,20 @@ function ExportPanel({ scene, variantTag, onClose, toast }) {
       setChecking(false);
     }
   };
+  const copyAnimCode = async () => {
+    setBusy(true);
+    try {
+      const payload = animationPayload({ section, look, outfit, badges, picks });
+      const json = JSON.stringify(payload);
+      const { code } = await deflateToBase64Url(json);
+      await navigator.clipboard.writeText(code);
+      toast(t('export.animCodeDone'));
+    } catch {
+      toast(t('export.fail'));
+    } finally {
+      setBusy(false);
+    }
+  };
   return (
     <section className="exportpanel" aria-label={t('export.title')}>
       <header className="exportpanel__head">
@@ -1021,6 +1218,9 @@ function ExportPanel({ scene, variantTag, onClose, toast }) {
       <Switch label={t('export.transparent')} checked={transparent} onChange={setTransparent} />
       <button type="button" className="btn" onClick={png} disabled={busy}>
         {t('export.png')}
+      </button>
+      <button type="button" className="btn btn--ghost" onClick={copyAnimCode} disabled={busy}>
+        {t('export.animCode')}
       </button>
       {PIN && (
         <div className="exportpanel__3d">
@@ -1747,7 +1947,7 @@ export default function App() {
           <p className="hint hint--mouse">{t('hint.drag')}</p>
           <p className="hint hint--touch">{t('hint.touch')}</p>
           {webgl && <HeightBar ref={heightBar} scene={scene} />}
-          {webgl && exportOpen && <ExportPanel scene={scene} variantTag={variantTag} onClose={() => setExportOpen(false)} toast={setToast} />}
+          {webgl && exportOpen && <ExportPanel scene={scene} variantTag={variantTag} onClose={() => setExportOpen(false)} toast={setToast} section={section} look={look} outfit={outfit} badges={badges} picks={artPicks} />}
           {webgl && (
             <div className="views" role="toolbar" aria-label={t('view.group')}>
               {['front', 'back', 'left', 'right'].map((v) => (
