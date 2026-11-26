@@ -18,6 +18,7 @@
 | 出正式版 | `npm run build`（先驗規則資料，再 `vite build` 去 `dist/`） |
 | 改徽章位置／規則 | `src/data/<支部>_rules_v1.0.json`（例：[`rover_rules_v1.0.json`](src/data/rover_rules_v1.0.json)）+ [docs/01-rules-review.md](docs/01-rules-review.md) |
 | 知規矩 | [AGENTS.md](AGENTS.md) · [SCOPE.md](SCOPE.md) · [GLOSSARY.md](GLOSSARY.md) |
+| 白名單點入 | [docs/whitelist.md](docs/whitelist.md)（由 APP STORE 入；直打網址會見提示卡） |
 | 一頁紙速查 | [docs/quickcard.md](docs/quickcard.md) |
 | 原本計劃書 | [docs/PLAN.md](docs/PLAN.md) |
 | 交付前檢查 | `node scripts/guard.mjs` + `node scripts/final_check_v1.0.mjs --json` |
@@ -60,6 +61,21 @@
 | 唔設定 | 匯出面板只有 PNG，唔顯示 3D 匯出 |
 
 密碼唔會出現喺打包後嘅 JS 入面。不過匯出本身喺瀏覽器做，密碼只係一道門檻：4 位數字始終有限，識寫程式嘅人可以繞過前端。唔好用同其他系統一樣嘅密碼。GLB 有顏色同徽章貼圖；STL 係 1:10 毫米、冇顏色，徽章係薄片，打印前喺切片軟件調整。
+
+## 準入白名單（APP STORE 入口）
+
+| 項目 | 設定 |
+|---|---|
+| 點入 | 喺 [SCOUT APP STORE](https://scoutappstore.vercel.app/?app=scout3d) 撳「開啟」；由通告圖書館撳入亦自動放行（唔畫成掣） |
+| 直接打網址 | 唔會白屏／404：會出清晰提示卡，得「前往 SCOUT APP STORE」一粒掣（`autoRedirectSeconds: 0`，唔秒彈走） |
+| 模式 | `entry-gate`（頂層跳板，唔用 `iframe-only`，保住每個瀏覽器嘅語言設定同 PWA「加入主畫面」）；`allowStandalone: true` |
+| 設定喺邊 | 根目錄 `index.html`／`shell/index_v1.0.html` 嘅 `initStoreGate`；閘門程式 `public/store_gate_v1.0.js` 由真理倉模板原封不動抄入，唔喺本 repo 改邏輯 |
+| 主站讚好／收藏 | 頂欄 ❤️ 掣（SG18），用 `ScoutStoreGate.getAppStoreUrl('scout3d')` 開新分頁返 App 詳情卡；唔直連主站資料庫 |
+| 技術邊界 | 前端閘門只擋一般直入，識改 `Referer` 嘅人仍可繞過；`/api/export-pin` 仍然公開可打，但只驗 4 位 PIN、唔寫資料、唔使外部額度。唔做帳號／後端簽票（SG12） |
+
+本機 `npm run dev` 直接開 `localhost:5173` 也會見到提示卡（正常）。要睇 3D 畫面：喺瀏覽器 console 執行 `sessionStorage.setItem('scout3d.store_pass', '1')` 再重整（只喺該分頁有效，唔會deploy）。
+
+詳細交接、核實同實測紀錄：[docs/whitelist.md](docs/whitelist.md) · 決定原因：[ADR-0026](docs/adr/0026-store-gate-entry-whitelist.md)。
 
 ## 資料來源
 

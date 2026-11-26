@@ -11,6 +11,7 @@
 | [quickcard.md](quickcard.md) | 一頁紙速查 |
 | [pre-mortem.md](pre-mortem.md) | 開工前預想失敗 |
 | [system-basics.md](system-basics.md) | 第 14 項（本 repo 唔適用） |
+| [whitelist.md](whitelist.md) | 準入白名單交接、六題核實同本機／真機驗收（SG1–SG19） |
 | [adr/](adr/0001-procedural-figure-and-decals.md) | 決定紀錄 |
 | [out-of-scope/](out-of-scope/README.md) | 已拒絕嘅提議 |
 | [review/](review/) | 設計截圖 |

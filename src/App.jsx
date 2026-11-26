@@ -1855,6 +1855,12 @@ export default function App() {
   const [toast, setToast] = useState('');
   const [busy, setBusy] = useState(false);
   const webgl = useMemo(hasWebGL, []);
+  // SG18：一鍵回跳主站讚好／收藏；網址由 store_gate 嘅 PORTAL_REGISTRY 計，唔寫死、唔直連 Supabase。
+  // 閘門未載入 → 唔出死連（維持隐藏）。
+  const storeSupportUrl = useMemo(() => {
+    const gate = typeof window !== 'undefined' ? window.ScoutStoreGate : null;
+    return gate ? gate.getAppStoreUrl('scout3d') : '';
+  }, []);
   const scene = useRef();
   const heightBar = useRef();
   const onHeight = useCallback((y) => heightBar.current?.set(y), []);
@@ -1926,6 +1932,19 @@ export default function App() {
             </button>
           ))}
         </div>
+        {storeSupportUrl && (
+          <a
+            id="storeSupportTop"
+            className="support-btn"
+            href={storeSupportUrl}
+            target="_blank"
+            rel="noopener"
+            aria-label={t('store.supportAria')}
+            title={t('store.supportTitle')}
+          >
+            <span aria-hidden="true">❤️</span> {t('store.support')}
+          </a>
+        )}
         <LangToggle />
       </header>
 
