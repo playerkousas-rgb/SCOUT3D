@@ -5,6 +5,8 @@
 ## [Unreleased]
 
 ### Added
+- **準入白名單**（SG1–SG19，ADR-0026）：`public/store_gate_v1.0.js` 由真理倉模板原封不動抄入；APP STORE 撳入正常使用、圖書館靜默放行、直打網址見「需經由 SCOUT APP STORE 開啟」提示卡（只出 1 粒掣）、已加主畫面照入；唔用 `iframe-only`、唔加後端簽票。
+- **SG18 讚好／收藏掣**：頂欄 ❤️ 一鍵開新分頁返 `https://scoutappstore.vercel.app/?app=scout3d`，網址由 `ScoutStoreGate.getAppStoreUrl()` 計，唔直連主站 Supabase；中英同步，列印隱藏，未載入閘門就唔出死連。交接六題同本機／真機驗收寫喺 [docs/whitelist.md](docs/whitelist.md)；測試加到 243 個（`tests/whitelist.test.mjs`）。
 - **流線細節**（ADR-0025）：立體頭髮（男仔短陰一撮撮、鬢角；女仔齊陰、長啲，孖辮有梳紋同髮圈；戴帽會壓薄）、四隻手指＋拇指、立體耳仔同鼻、下巴圓啲。章位冇改。
 
 ### Fixed

@@ -193,6 +193,39 @@ a {
   flex: none;
 }
 
+/* SG18：一鍵回跳 APP STORE 讚好／收藏（常駐、低調、非阻塞；唔寫死網址） */
+.support-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex: none;
+  min-height: 40px;
+  padding: 4px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--accent-ink);
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.support-btn[hidden] {
+  display: none !important;
+}
+
+.support-btn:hover {
+  border-color: var(--accent);
+}
+
+@media (max-width: 599px) {
+  .support-btn {
+    padding: 4px 8px;
+    font-size: 11px;
+  }
+}
+
 /* ---------- 側欄 ---------- */
 .panel {
   background: var(--card);
@@ -888,6 +921,7 @@ a {
 /* 列印：唔印語言掣同 3D 控制 */
 @media print {
   .chipbtn--lang,
+  .support-btn,
   .views,
   .hint {
     display: none !important;

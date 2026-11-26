@@ -45,8 +45,10 @@ export function collectFiles(target) {
       if (SKIP.has(n)) continue;
       const p = path.join(dir, n);
       if (statSync(p).isDirectory()) walk(p);
-      // 排除測試檔同檢查器自己：佢哋含 data-lang-toggle 等樣式字串，會被誤當實作
-      else if (CODE_EXT.has(path.extname(n)) && !n.endsWith('.test.mjs') && !/^i18n_check_v[\d.]+\.mjs$/.test(n))
+      // 排除測試檔同檢查器自己：佢哋含 data-lang-toggle 等樣式字串，會被誤當實作。
+      // store_gate_v1.0.js 係真理倉原封不動抄入嘅第三方閘門模板（SG1–SG19），
+      // 佢自己嘅 COPY.en 字典有已知缺口；唔可以改模板，亦唔應該用佢嚟判本 app 嘅 i18n。
+      else if (CODE_EXT.has(path.extname(n)) && !n.endsWith('.test.mjs') && !/^i18n_check_v[\d.]+\.mjs$/.test(n) && n !== 'store_gate_v1.0.js')
         out.push({ name: path.relative(target, p).replace(/\\/g, '/'), text: readFileSync(p, 'utf8') });
     }
   };

@@ -8,6 +8,18 @@
 <html lang="zh-Hant-HK" data-lang="zh">
   <head>
     <meta charset="UTF-8" />
+    <!-- 準入白名單（真理倉 docs/50 SG1–SG19）：原封不動由 templates/vercel/store_gate_v1.0.js 抄入 public/ -->
+    <script src="/store_gate_v1.0.js"></script>
+    <script>
+      initStoreGate({
+        appKey: 'scout3d',
+        mode: 'entry-gate',
+        portalIds: ['appstore'],
+        silentPortalIds: ['library'],
+        allowStandalone: true,
+        autoRedirectSeconds: 0
+      });
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="copyright" content="© SCOUT SYSTEM" />
     <meta name="app-version" content="v1.0" />
